@@ -1,0 +1,81 @@
+{
+  "name": "bc-web",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@hvisions/core": "2.1.4",
+    "@hvisions/h-ui": "2.0.10-alpha.25",
+    "@hvisions/module-base": "2.4.1-alpha.5",
+    "@hvisions/module-board": "2.1.1-beta.4",
+    "@hvisions/module-eam": "2.4.1-alpha.7",
+    "@hvisions/module-etraining": "1.1.5-beta.0",
+    "@hvisions/module-message": "2.3.2-alpha.0",
+    "@hvisions/module-pms": "2.4.1-alpha.3",
+    "@hvisions/module-qms": "2.4.1-alpha.0",
+    "@hvisions/module-wms": "2.4.0",
+    "@hvisions/needle-service": "2.0.51",
+    "@hvisions/plugin-new-layout": "2.0.58-next.19",
+    "@hvisions/plugin-new-login": "2.0.53-next.2",
+    "@hvisions/toolkit": "2.0.64",
+    "@needle/block": "1.0.3",
+    "antd": "3.26.20",
+    "axios": "0.18.1",
+    "cross-env": "7.0.3",
+    "dhtmlx-gantt": "^6.2.6",
+    "echarts": "^5.2.1",
+    "echarts-for-react": "3.0.1",
+    "echarts-liquidfill": "^3.1.0",
+    "gg-editor": "2.0.4",
+    "history": "4.10.1",
+    "jsbarcode": "^3.11.5",
+    "lodash": "4.17.21",
+    "moment": "2.29.4",
+    "node-sass": "4.14.1",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
+    "react-full-screen": "^1.1.1",
+    "react-intl-universal": "2.5.3",
+    "react-loadingg": "1.7.2",
+    "react-media": "1.10.0",
+    "react-redux": "5.1.2",
+    "react-resize-detector": "7.1.2",
+    "react-router-cache-route": "1.12.11",
+    "react-router-dom": "4.3.1",
+    "react-router-redux": "5.0.0-alpha.8",
+    "react-to-print": "^2.14.7",
+    "redux": "4.2.0",
+    "redux-actions": "2.6.5",
+    "redux-thunk": "2.4.1",
+    "reselect": "4.1.6",
+    "styled-components": "5.2.0",
+    "swiper": "5.2.0",
+    "uuid": "7.0.3"
+  },
+  "scripts": {
+    "start": "needle-service start",
+    "build": "cross-env NODE_OPTIONS=--max_old_space_size=4096 needle-service build",
+    "build-lib": "needle-service build-lib",
+    "lint": "eslint \"src/**/*.js\"",
+    "test": "needle-service test"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@hvisions/eslint-config-react-app"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "engines": {
+    "node": ">=8.10"
+  }
+}

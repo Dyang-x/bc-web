@@ -1,0 +1,26 @@
+.drawer-control {
+  position: relative;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  text-align: right;
+  border-top: 1px solid #e8e8e8;
+
+  & button {
+    margin: 10px;
+  }
+}
+
+.drawer-control2 {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  text-align: right;
+  border-top: 1px solid #e8e8e8;
+
+
+  & button {
+    margin: 10px 8px 10px 0;
+  }
+}

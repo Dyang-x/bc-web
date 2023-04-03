@@ -1,0 +1,46 @@
+module.exports = {
+  en_US: {
+    notify:{
+      success:'success',
+      fail:'fail'
+    },
+    title:{
+      weighingThickness:'weighingThickness',
+      selection:'selection',
+      heightLimit:'heightLimit',
+      xcoordinate:'xcoordinate',
+      ycoordinate:'ycoordinate',
+      attribute:'attribute',
+      positions:'positions',
+      location:'location',
+    },
+    notification:{
+      updateSuccess:'updateSuccess',
+      updateFailure:'updateFailure',
+      addSuccess:'addSuccess',
+      addFailure:'addFailure',
+    },
+  },
+  zh_CN: {
+    notify:{
+      success:'查询成功',
+      fail:'查询失败'
+    },
+    title:{
+      weighingThickness:'是否称重/测厚',
+      selection:'左右架选择',
+      heightLimit:'限高',
+      xcoordinate:'X轴坐标',
+      ycoordinate:'Y轴坐标',
+      attribute:'属性',
+      positions:'仓位',
+      location:'库位',
+    },
+    notification:{
+      updateSuccess:'修改成功',
+      updateFailure:'修改失败',
+      addSuccess:'新增成功',
+      addFailure:'新增失败',
+    },
+  }
+};

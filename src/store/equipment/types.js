@@ -1,0 +1,22 @@
+export const GET_EQUIPMENT_LIST = 'equipment/GET_EQUIPMENT_LIST';
+
+export const CREATE_EQUIPMENT = 'equipment/CREATE_EQUIPMENT';
+
+export const UPDATE_EQUIPMENT = 'equipment/UPDATE_EQUIPMENT';
+
+export const DELETE_EQUIPMENT = 'equipment/DELETE_EQUIPMENT';
+
+export const GET_TREE_EQUIPMENT_LIST = 'equipment/GET_TREE_EQUIPMENT_LIST';
+
+// Extend Columns
+export const GET_EXTEND_COLUMNS = 'equipment/GET_EXTEND_COLUMNS';
+export const GET_ALLEQUIPMENT = 'equipment/GET_ALLEQUIPMENT';
+export const GET_EQUIPMENTBYID = 'equipment/GET_EQUIPMENTBYID';
+export const GET_FILEIDSBYEQUIPMENTID = 'equipment/GET_FILEIDSBYEQUIPMENTID';
+export const GET_EQUIPMENT_EVENT = 'equipment/GET_EQUIPMENT_EVENT';
+export const GET_EUQIPMENT_TAG_VALUE = 'equipment/GET_EUQIPMENT_TAG_VALUE';
+export const GET_ALL_EQUIPMENT_TAG_VALUE = 'equipment/GET_ALL_EQUIPMENT_TAG_VALUE';
+export const GET_EQUIPMENT_PARAMETER_VALUE = 'equipment/GET_EQUIPMENT_PARAMETER_VALUE';
+
+// EquipmentType
+export const GET_EQUIPMENT_TYPE_LIST = 'equipment/GET_EQUIPMENT_TYPE_LIST';
