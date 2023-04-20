@@ -1,6 +1,15 @@
 import { Service } from '@hvisions/core';
 const appName = '/warehouse-service';
 class EmptyPalletDelivery extends Service {
+  //自动空托盘出库
+  async autoTransferOut(data) {
+    try {
+      return await this.post(`${appName}/PalletOutWarehouseController/autoTransferOut`, data);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
   // 删除
   async deleteById(id) {
     try {
@@ -11,22 +20,22 @@ class EmptyPalletDelivery extends Service {
   }
 
   // 下架
-  async downShelves(data) {
+  async downShelves(id) {
     try {
-      return await this.put(`${appName}/PalletOutWarehouseController/downShelves`, data);
+      return await this.put(`${appName}/PalletOutWarehouseController/downShelves?id=${id}`);
     } catch (error) {
       throw new Error(error);
     }
   }
 
-    // 完成
-    async finishById(data) {
-      try {
-        return await this.put(`${appName}/PalletOutWarehouseController/finish`, data);
-      } catch (error) {
-        throw new Error(error);
-      }
+  // 完成
+  async finishById(data) {
+    try {
+      return await this.put(`${appName}/PalletOutWarehouseController/finish`, data);
+    } catch (error) {
+      throw new Error(error);
     }
+  }
 
   // 根据id查询单据
   async getById(id) {
@@ -51,10 +60,19 @@ class EmptyPalletDelivery extends Service {
     }
   }
 
-  //修改
+  //新增/修改
   async saveOrUpdate(data) {
     try {
       return await this.post(`${appName}/PalletOutWarehouseController/saveOrupdate`, data);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  // 上架
+  async upShelves(id) {
+    try {
+      return await this.put(`${appName}/PalletOutWarehouseController/upShelves/${id}`);
     } catch (error) {
       throw new Error(error);
     }

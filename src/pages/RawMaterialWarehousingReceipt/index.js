@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { HVLayout, Button, notification, Modal, Divider, Spin, Radio, Pagination, SearchForm, DatePicker, Input, Tooltip, Drawer } from '@hvisions/h-ui';
 import { i18n, page } from '@hvisions/toolkit';
-// import styles from './style.scss';
 import { CacheTable } from '~/components';
 import moment from 'moment';
 import RawMaterialWarehousingReceiptApi from '~/api/RawMaterialWarehousingReceipt';
+import EmptyPalletDeliveryApi from '~/api/EmptyPalletDelivery';
 import UpdateForm from './UpdateForm';
 import ManualTable from './ManualTable';
 import BindingForm from './BindingForm';
+import { isEmpty } from 'lodash';
 
 const getFormattedMsg = i18n.getFormattedMsg;
 const { RangePicker } = DatePicker;
@@ -31,11 +32,15 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
   const updateRef = useRef();
 
   const [manualVis, setManualVis] = useState(false);
+  const [selectedInstoreRowKeys, setSelectedInstoreRowKeys] = useState([]);
+
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [selectedDatas, setSelectedDatas] = useState([]);
   const manualRef = useRef();
 
   const [bindingVis, setBindingVis] = useState(false);
   const bindingForm = useRef();
+  const [weighingId,setWeighingId] = useState();
 
   useEffect(() => {
     loadData(page, pageSize, { ...setSearchValue, state: selectedstatus });
@@ -130,17 +135,22 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
       title: getFormattedMsg('RawMaterialWarehousingReceipt.title.operation'),
       key: 'opt',
       align: 'center',
+      width: 200,
       render: (_, record) => [
-        <a key="update" onClick={() => handleUpdate(record)}>
+        record.state != 2 && <a key="update" onClick={() => handleUpdate(record)}>
           {getFormattedMsg('RawMaterialWarehousingReceipt.button.update')}
         </a>,
-        <Divider key="divider1" type="vertical" />,
-        <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)}>
-          {getFormattedMsg('RawMaterialWarehousingReceipt.button.delete')}
-        </a>
+        record.state == 0 && [
+          <Divider key="divider1" type="vertical" />,
+          <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)}>
+            {getFormattedMsg('RawMaterialWarehousingReceipt.button.delete')}
+          </a>
+        ],
+        // <Divider key="divider2" type="vertical" />,
+        // <a key="warehousing" type="primary" onClick={(record) => handleWarehousing(record)} >
+        //   {getFormattedMsg('RawMaterialWarehousingReceipt.button.warehousing')}
+        // </a>
       ],
-      // width: 80,
-      // fixed: 'right'
     }
   ];
 
@@ -150,10 +160,15 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
     RawMaterialWarehousingReceiptApi
       .getByQuery({ ...searchValue, page: page - 1, pageSize })
       .then(res => {
-        setTableData(res.content);
-        setTotalPage(res.totalElements);
-        setPage(res.pageable.pageNumber + 1)
-        setPageSize(res.pageable.pageSize)
+        if(res!= null&& !isEmpty(res.content)){
+          if(res.content[0].state == 1){
+            setWeighingId(res.content[0].id)
+          }
+          setTableData(res.content);
+          setTotalPage(res.totalElements);
+          setPage(res.pageable.pageNumber + 1)
+          setPageSize(res.pageable.pageSize)
+        }
         setLoading(false);
       })
       .catch(err => {
@@ -172,12 +187,10 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
 
   const onShowSizeChange = (p, s) => {
     loadData(p, s, { ...searchValue, state: selectedstatus });
-    // loadData(p, s, { ...setSearchValue });
     setPageSize(s);
   };
 
   const pageChange = (p, s) => {
-    // loadData(p, s, { ...setSearchValue });
     loadData(p, s, { ...searchValue, state: selectedstatus });
     setPage(p);
   };
@@ -199,9 +212,7 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
       params.endTime = moment(params.creationTime[1]).format(dateTime)
     }
     delete params.creationTime
-    console.log('params', params);
 
-    // setSearchValue({ ...params, state: selectedstatus });
     setSearchValue({ ...params });
     setPage(1);
     setPageSize(10);
@@ -286,46 +297,91 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
   }
 
   const handleWeighing = async () => {
-    notification.warning({ message: '没有接口' })
-    // await RawMaterialWarehousingReceiptApi
-    // .getWeigh(record.id)
-    // .then(res => {
-    //   notification.success({
-    //     message: '称重成功'
-    //   });
-    //   loadData(page, pageSize, { ...searchValue, state: selectedstatus });
-    // })
-    // .catch(err => {
-    //   notification.warning({
-    //     description: err.message
-    //   });
-    // });
+    await RawMaterialWarehousingReceiptApi
+    .getWeigh(weighingId)
+    .then(res => {
+      notification.success({
+        message: '称重成功'
+      });
+      loadData(page, pageSize, { ...searchValue, state: selectedstatus });
+    })
+    .catch(err => {
+      notification.warning({
+        description: err.message
+      });
+    });
   }
 
   const handleAutomatic = async () => {
-    notification.warning({ message: '没有接口' })
+    const data ={
+      destination:'原材料组托点',
+      middle:'J001',
+      taskType:6, //原料托盘出库
+      transferType:0 //原料托盘
+    }
+    await EmptyPalletDeliveryApi.autoTransferOut(data)
+    .then(res=>{
+      notification.success({
+        message: '托盘自动出库成功'
+      });
+      loadData(page, pageSize, { ...searchValue, state: selectedstatus });
+    })
+    .catch(err=>{
+      notification.warning({
+        description: err.message
+      });
+    })
+    //托盘出库   托盘自动出库
   }
 
   const handleManual = () => {
     setManualVis(true)
+    //查询
+    //托盘管理  原料托盘
   }
 
   const handleCancelManual = () => {
     setManualVis(false)
-    // setModifyData(null)
-  }
+  }                                                                                                                                       
 
   const modalManualFoot = () => [
-    <Button key="save" type="primary" onClick={handleSaveManual}>
-      {getFormattedMsg('RawMaterialWarehousingReceipt.button.save')}
+    <Button key="save" type="primary" onClick={handleSaveManual} >
+      {getFormattedMsg('RawMaterialWarehousingReceipt.button.takeOff')}
     </Button>,
-    <Button key="cancel" onClick={handleCancelManual}>
+    <Button key="cancel" onClick={handleCancelManual} style={{marginRight:30}}>
       {getFormattedMsg('RawMaterialWarehousingReceipt.button.cancel')}
     </Button>
   ];
 
-  const handleSaveManual = () => {
-    notification.warning({ message: '没有接口' })
+  const handleSaveManual = async () => {
+    //托盘出库   托盘下架  新增
+    console.log('selectedDatas', selectedDatas);
+    if (isEmpty(selectedRowKeys)) {
+      notification.warning({
+        message: getFormattedMsg('SemiFinishedWarehousingReceipt.message.pickTray'),
+      })
+      return
+    }
+    const data = {
+      trayNumber: selectedDatas[0].code,
+      inType: 6, //原料托盘出库
+      state: 0,
+      destination:'原材料组托点',
+      middle:'J001',
+    }
+    await EmptyPalletDeliveryApi.saveOrUpdate(data)
+      .then(res => {
+        notification.success({
+          message: '托盘出库任务创建成功'
+        });
+        // loadData(page, pageSize, { ...searchValue, state: selectedstatus });
+        handleCancelManual();
+      })
+      .catch(err => {
+        notification.warning({
+          description: err.message
+        });
+      })
   }
 
   const handleBinding = () => {
@@ -370,21 +426,36 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
   }
 
   const handleWarehousing = async () => {
-    notification.warning({ message: '没有接口' })
-    // await RawMaterialWarehousingReceiptApi
-    // .inStore(record.id)
-    // .then(res => {
-    //   notification.success({
-    //     message: '入库成功'
-    //   });
-    //   loadData(page, pageSize, { ...searchValue, state: selectedstatus });
-    // })
-    // .catch(err => {
-    //   notification.warning({
-    //     description: err.message
-    //   });
-    // });
+    await RawMaterialWarehousingReceiptApi
+    .inStore(selectedInstoreRowKeys)
+    .then(res => {
+      notification.success({
+        message: '入库成功'
+      });
+      loadData(page, pageSize, { ...searchValue, state: selectedstatus });
+    })
+    .catch(err => {
+      notification.warning({
+        description: err.message
+      });
+    });
   }
+
+  const onHandleTableSelect = e => {
+    if (selectedInstoreRowKeys.indexOf(e.id) === -1) {
+      setSelectedInstoreRowKeys([...selectedInstoreRowKeys, e.id])
+    } else {
+      setSelectedInstoreRowKeys(selectedInstoreRowKeys.filter(i => i != e.id))
+    }
+  };
+
+  const onHandleTableSelectAll = (e, a) => {
+    if (e) {
+      setSelectedInstoreRowKeys(a.map(i => i.id))
+    } else {
+      setSelectedInstoreRowKeys([])
+    }
+  };
 
   return (
     <>
@@ -426,19 +497,19 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
           icon={<i className="h-visions hv-table" />}
           title={getFormattedMsg('RawMaterialWarehousingReceipt.title.tableName')}
           buttons={[
-            <Button key="weighing" type="primary" onClick={() => handleWeighing()} >
-              {getFormattedMsg('RawMaterialWarehousingReceipt.button.weighing')}
-            </Button>,
-            <Button key="automatic" type="primary" onClick={() => handleAutomatic()} >
+            selectedstatus == 0 && <Button key="automatic" type="primary" onClick={() => handleAutomatic()} >
               {getFormattedMsg('RawMaterialWarehousingReceipt.button.automatic')}
             </Button>,
-            <Button key="manual" type="primary" onClick={() => handleManual()} >
+            selectedstatus == 0 && <Button key="manual" type="primary" onClick={() => handleManual()} >
               {getFormattedMsg('RawMaterialWarehousingReceipt.button.manual')}
             </Button>,
-            <Button key="binding" type="primary" onClick={() => handleBinding()}>
+            selectedstatus == 0 && <Button key="binding" type="primary" onClick={() => handleBinding()}>
               {getFormattedMsg('RawMaterialWarehousingReceipt.button.binding')}
             </Button>,
-            <Button key="warehousing" type="primary" onClick={() => handleWarehousing()} >
+            selectedstatus == 1 && <Button key="weighing" type="primary" onClick={() => handleWeighing()} >
+              {getFormattedMsg('RawMaterialWarehousingReceipt.button.weighing')}
+            </Button>,
+            selectedstatus == 2 && <Button key="warehousing" type="primary" onClick={() => handleWarehousing()} >
               {getFormattedMsg('RawMaterialWarehousingReceipt.button.warehousing')}
             </Button>
           ]}
@@ -467,6 +538,17 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
               }))}
               columns={columns}
               rowKey={record => record.id}
+              rowSelection={{
+                onSelect: onHandleTableSelect,
+                onSelectAll: onHandleTableSelectAll,
+                selectedRowKeys: selectedInstoreRowKeys,
+                hideDefaultSelections: true,
+              }}
+              onRow={record => {
+                return {
+                  onClick: () => onHandleTableSelect(record)
+                };
+              }}
             />
           </Spin>
           <HVLayout.Pane.BottomBar>
@@ -492,21 +574,26 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
         <Drawer.DrawerBottomBar>{modalUpdateFoot()}</Drawer.DrawerBottomBar>
       </Drawer>
       <Modal
-        title={getFormattedMsg('RawMaterialWarehousingReceipt.title.manual')}
+        // title={getFormattedMsg('RawMaterialWarehousingReceipt.title.manual')}
         visible={manualVis}
-        footer={modalManualFoot()}
+        // footer={modalManualFoot()}
+        footer={null}
         onCancel={handleCancelManual}
-        destroyOnClose
         width={800}
+        bodyStyle={{
+          paddingTop:0,
+          paddingLeft: 0,
+          paddingRight: 0,
+          paddingBottom: 0,
+        }}
       >
-        <ManualTable selectedRowKeys={selectedRowKeys} setSelectedRowKeys={setSelectedRowKeys} />
+        <ManualTable selectedRowKeys={selectedRowKeys} setSelectedRowKeys={setSelectedRowKeys} setSelectedDatas={setSelectedDatas} modalManualFoot={modalManualFoot}/>
       </Modal>
       <Modal
         title={getFormattedMsg('RawMaterialWarehousingReceipt.title.binding')}
         visible={bindingVis}
         footer={modalBindingFoot()}
         onCancel={handleCancelBinding}
-        destroyOnClose
         width={800}
       >
         <BindingForm ref={bindingForm} />

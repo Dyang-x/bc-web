@@ -1,17 +1,14 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { HVLayout, Button, notification, Modal, Divider, Spin, Radio, Pagination, SearchForm, DatePicker, Input, Tooltip, Drawer } from '@hvisions/h-ui';
 import { i18n, page } from '@hvisions/toolkit';
-// import styles from './style.scss';
 import { CacheTable } from '~/components';
 import moment from 'moment';
-import { session } from '@hvisions/toolkit';
+import EmptyPalletDeliveryApi from '~/api/EmptyPalletDelivery';
 import SemiFinishedWarehousingReceiptApi from '~/api/SemiFinishedWarehousingReceipt';
-import UpdateForm from './UpdateForm';
 import PickTrayTable from './PickTrayTable';
 import CallTrayForm from './CallTrayForm';
 import AddOrUpdateForm from './AddOrUpdateForm';
-import { forIn, isEmpty, map } from 'lodash';
-// import { attributeOne,attributeTwo,dockingPoints,sortPositions } from '~/enum/semiFinished';
+import { isEmpty } from 'lodash';
 import { attributeOne,attributeTwo,dockingPoints,sortPositions } from '~/enum/enum';
 
 const getFormattedMsg = i18n.getFormattedMsg;
@@ -48,33 +45,6 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
   const [pickTrayVis, setPickTrayVis] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [selectedDatas, setSelectedDatas] = useState([]);
-
-  // const attributeOne = [
-  //   { id: 1, name: '大', value: '大', },
-  //   { id: 2, name: '中', value: '中', },
-  //   { id: 3, name: '小', value: '小', },
-  // ]
-
-  // const attributeTwo = [
-  //   { id: 1, name: '切割完工', value: '切割完工', },
-  //   { id: 2, name: '切割未完工', value: '切割未完工', },
-  //   { id: 3, name: '折弯完工', value: '折弯完工', },
-  //   { id: 4, name: '折弯未完工', value: '折弯未完工', },
-  // ]
-
-  // const dockingPoints = [
-  //   { id: 1, name: 'J002', value: 'J002', },
-  //   { id: 2, name: 'J003', value: 'J003', },
-  // ]
-
-  // const sortPositions = [
-  //   { id: 1, name: 'J004', value: 'J004', },
-  //   { id: 2, name: 'J005', value: 'J005', },
-  //   { id: 3, name: 'J006', value: 'J006', },
-  //   { id: 4, name: 'J007', value: 'J007', },
-  //   { id: 5, name: 'J008', value: 'J008', },
-  //   { id: 6, name: 'J009', value: 'J009', },
-  // ]
 
   useEffect(() => {
     loadData(page, pageSize, { ...setSearchValue, state: selectedstatus });
@@ -142,8 +112,6 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
       render: (text, record, index) => {
         const dataSource = [
           { id: 1, trayNumber: 'J004004004004004004', location: 'J004', attributeTwo: 'J004', pickingPoint: 'J004', },
-          // { id: 2, trayNumber: 'J005005005005005005', location: 'J005', attributeTwo: 'J005', pickingPoint: 'J005', },
-          // { id: 3, trayNumber: 'J006006006006006006', location: 'J006', attributeTwo: 'J006', pickingPoint: 'J006', },
         ]
         const table = <div > <ul style={{paddingLeft:15,marginBottom:"0px"}}> {dataSource.map(item => <li key={item.id} >{item.trayNumber}</li>)} </ul> </div>
         return (
@@ -238,12 +206,10 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
 
   const onShowSizeChange = (p, s) => {
     loadData(p, s, { ...searchValue, state: selectedstatus });
-    // loadData(p, s, { ...setSearchValue });
     setPageSize(s);
   };
 
   const pageChange = (p, s) => {
-    // loadData(p, s, { ...setSearchValue });
     loadData(p, s, { ...searchValue, state: selectedstatus });
     setPage(p);
   };
@@ -265,9 +231,7 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
       params.endTime = moment(params.creationTime[1]).format(dateTime)
     }
     delete params.creationTime
-    console.log('params', params);
 
-    // setSearchValue({ ...params, state: selectedstatus });
     setSearchValue({ ...params });
     setPage(1);
     setPageSize(10);
@@ -329,6 +293,8 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
 
   const handleUpdate = (record) => {
     console.log(record,'handleUpdate  record');
+    setAttributeOneState(record.attributeoneState)
+    setAttributeTwoState(record.attributetwoState)
     setUpdateVis(true)
     setUpdateData(record)
   }
@@ -428,23 +394,50 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
       if (err) return;
       const params = getFieldsValue();
       console.log(params, 'params');
-      notification.warning({
-        message: '没有接口'
-      })
-      // await SemiFinishedWarehousingReceiptApi
-      //   .bindSemiMaterial(params)
-      //   .then(res => {
-      //     notification.success({
-      //       message: getFormattedMsg('SemiFinishedWarehousingReceipt.message.callSuccess')
-      //     });
-      //     loadData(page, pageSize, { ...searchValue, state: selectedstatus });
-      //   })
-      //   .catch(err => {
-      //     notification.warning({
-      //       message: getFormattedMsg('SemiFinishedWarehousingReceipt.message.callFailure'),
-      //       description: err.message
-      //     });
-      //   });
+      //  接口  空托盘出库
+
+      if (!isEmpty(selectedRowKeys)) {
+        //托盘出库   托盘下架  新增
+        const data = {
+          trayNumber: selectedDatas[0].code,
+          inType: 8, //半成品托盘出库
+          state: 0,
+          destination: params.sortPosition,
+          middle: params.dockingPoint,
+        }
+        await EmptyPalletDeliveryApi.saveOrUpdate(data)
+          .then(res => {
+            notification.success({
+              message: '托盘出库任务创建成功'
+            });
+            // loadData(page, pageSize, { ...searchValue, state: selectedstatus });
+            handleCancelCallTray();
+          })
+          .catch(err => {
+            notification.warning({
+              description: err.message
+            });
+          })
+        return
+      }
+      const data = {
+        destination: params.sortPosition,
+        middle: params.dockingPoint,
+        taskType: 8, //半成品托盘出库
+        transferType: 1 //半成品托盘
+      }
+      await EmptyPalletDeliveryApi.autoTransferOut(data)
+        .then(res => {
+          notification.success({
+            message: '托盘自动出库成功'
+          });
+          loadData(page, pageSize, { ...searchValue, state: selectedstatus });
+        })
+        .catch(err => {
+          notification.warning({
+            description: err.message
+          });
+        })
       handleCancelCallTray();
     })
   }
@@ -462,11 +455,16 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
     <Button key="takeOff" type="primary" onClick={handleSavePickTray}>
       {getFormattedMsg('SemiFinishedWarehousingReceipt.button.takeOff')}
     </Button>,
+    <Button key="cancel" onClick={handleCancelPickTray} style={{ marginRight: 30 }}>
+      {getFormattedMsg('RawMaterialWarehousingReceipt.button.cancel')}
+    </Button>
   ]
 
   const handleSavePickTray = () => {
     console.log(selectedRowKeys);
     console.log(selectedDatas);
+
+    //调用托盘出库  下架
     if (isEmpty(selectedRowKeys)) {
       notification.warning({
         message: getFormattedMsg('SemiFinishedWarehousingReceipt.message.pickTray'),
@@ -633,20 +631,25 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
         visible={callTrayVis}
         footer={modalCallTrayFoot()}
         onCancel={handleCancelCallTray}
-        destroyOnClose
         width={500}
       >
         <CallTrayForm ref={callTrayForm} selectedDatas={selectedDatas} />
       </Modal>
       <Modal
-        title={getFormattedMsg('SemiFinishedWarehousingReceipt.button.pickTray')}
+        // title={getFormattedMsg('SemiFinishedWarehousingReceipt.button.pickTray')}
         visible={pickTrayVis}
-        footer={modalPickTrayFoot()}
+        // footer={modalPickTrayFoot()}
+        footer={null}
         onCancel={handleCancelPickTray}
-        destroyOnClose
         width={800}
+        bodyStyle={{
+          paddingTop:0,
+          paddingLeft: 0,
+          paddingRight: 0,
+          paddingBottom: 0,
+        }}
       >
-        <PickTrayTable selectedRowKeys={selectedRowKeys} setSelectedRowKeys={setSelectedRowKeys} setSelectedDatas={setSelectedDatas} />
+        <PickTrayTable selectedRowKeys={selectedRowKeys} setSelectedRowKeys={setSelectedRowKeys} setSelectedDatas={setSelectedDatas} modalPickTrayFoot={modalPickTrayFoot}/>
       </Modal>
 
 

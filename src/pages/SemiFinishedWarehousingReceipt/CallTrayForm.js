@@ -24,37 +24,9 @@ const CallTrayForm = ({
   selectedDatas
 }) => {
 
-  const [materialList, setMaterialList] = useState([])
-
-  // const attribute1 = [
-  //   { key: 0, name: '大', value: '大', },
-  //   { key: 1, name: '中', value: '中', },
-  //   { key: 2, name: '小', value: '小', }
-  // ]
-
-  // const attribute2 = [
-  //   { key: 0, name: '切割完成', value: '切割完成', },
-  //   { key: 1, name: '切割未完成', value: '切割未完成', },
-  //   { key: 2, name: '折弯完成', value: '折弯完成', },
-  //   { key: 3, name: '折弯未完成', value: '折弯未完成', }
-  // ]
-
-  // const dockingPoints = [
-  //   { id: 1, name: 'J002', value: 'J002', },
-  //   { id: 2, name: 'J003', value: 'J003', },
-  // ]
-
-  // const sortPositions = [
-  //   { id: 1, name: 'J004', value: 'J004', },
-  //   { id: 2, name: 'J005', value: 'J005', },
-  //   { id: 3, name: 'J006', value: 'J006', },
-  //   { id: 4, name: 'J007', value: 'J007', },
-  //   { id: 5, name: 'J008', value: 'J008', },
-  //   { id: 6, name: 'J009', value: 'J009', },
-  // ]
 
   useEffect(() => {
-    // getMaterial()
+
   }, [])
 
   return (
@@ -62,14 +34,14 @@ const CallTrayForm = ({
       {!isEmpty(selectedDatas) &&
         <Form.Item {...formItemLayout} label={getFormattedMsg('SemiFinishedWarehousingReceipt.label.trayNumber')}>
           {
-            getFieldDecorator('trayNumber', {
+            getFieldDecorator('code', {
               rules: [
                 {
                   required: true,
                   message: getFormattedMsg('SemiFinishedWarehousingReceipt.placeholder.trayNumber'),
                 },
               ],
-              initialValue: selectedDatas[0].trayNumber
+              initialValue: selectedDatas[0].code
             })(
               <Input disabled={true} placeholder={getFormattedMsg('SemiFinishedWarehousingReceipt.placeholder.orderNumber')} style={{ width: '100%' }} />
             )}
@@ -91,7 +63,7 @@ const CallTrayForm = ({
               filterOption={false}
             >
               {sortPositions.map((value, index) => (
-                <Option value={value.id} key={value.id}>
+                <Option value={value.value} key={value.id}>
                   {value.name}
                 </Option>
               ))}
@@ -116,7 +88,7 @@ const CallTrayForm = ({
               filterOption={false}
             >
               {dockingPoints.map((value, index) => (
-                <Option value={value.id} key={value.id}>
+                <Option value={value.value} key={value.id}>
                   {value.name}
                 </Option>
               ))}

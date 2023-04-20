@@ -84,6 +84,7 @@ module.exports = {
       delete:'delete',
       save:'save',
       cancel:'cancel',
+      takeOff:'takeOff',
     },
     operation:{
       delete:'Do you want to delete these items?'
@@ -120,7 +121,7 @@ module.exports = {
       tableName:'原材料收料单',
 
       update:'修改',
-      manual:'手动托盘下架',
+      manual:'托盘手动下架',
       binding:'物料绑定',
     },
     message: {
@@ -159,15 +160,17 @@ module.exports = {
       bindingFailure:'绑定失败',
     },
     button:{
-      weighing:'称重',
-      automatic:'自动下架',
-      manual:'手动下架',
-      binding:'物料绑定',
+      weighing:'原材料称重',
+      automatic:'托盘自动下架',
+      manual:'托盘手动下架',
+      binding:'托盘物料绑定',
+      // warehousing:'原材料入库',
       warehousing:'入库',
       update:'修改',
       delete:'删除',
       save:'保存',
       cancel:'取消',
+      takeOff:'下架',
     },
     operation:{
       delete:'确认删除当前收料单?'

@@ -17,8 +17,10 @@ const ReservoirPLC = require('./ReservoirPLC').en_US;
 const AgvManagement = require('./AgvManagement').en_US;
 const UpAndDown = require('./UpAndDown').en_US;
 const PalletManagement = require('./PalletManagement').en_US;
-const global = require('./global').zh_CN;
-const newWaresLocation = require('./newWaresLocation').zh_CN;
+const global = require('./global').en_US;
+const newWaresLocation = require('./newWaresLocation').en_US;
+const SurplusInStorage = require('./SurplusInStorage').en_US;
+const SemiFinishedReturn = require('./SemiFinishedReturn').en_US;
 
 module.exports = {
   user,
@@ -42,4 +44,6 @@ module.exports = {
   PalletManagement,
   global,
   newWaresLocation,
+  SurplusInStorage,
+  SemiFinishedReturn,
 };

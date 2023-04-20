@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { HVLayout, Button, notification, Modal, Divider, Spin, Radio, Pagination, SearchForm, DatePicker, Input, Tooltip, Drawer } from '@hvisions/h-ui';
 import { i18n, page } from '@hvisions/toolkit';
-// import styles from './style.scss';
+import styles from './style.scss';
 import { CacheTable } from '~/components';
 import moment from 'moment';
 import UpdateForm from './UpdateForm';
 import ManualTable from './ManualTable';
 import EmptyForm from './EmptyForm';
 import SurplusTable from './SurplusTable';
+import DetailTable from './DetailTable';
 
 const getFormattedMsg = i18n.getFormattedMsg;
 const { RangePicker } = DatePicker;
@@ -22,7 +23,7 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
   const [loading, setLoading] = useState(false);
   const [searchValue, setSearchValue] = useState(null);
   const state = {
-    0: '新建', 1: '称重中', 2: '已完成'
+    0: '新建', 1: '运行中', 2: '已完成'
   }
   const [selectedstatus, setSelectedstatus] = useState('0');
 
@@ -39,6 +40,8 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
   const [surplusVis, setSurplusVis] = useState(false);
   const surplusRef = useRef();
 
+  const [detailVis, setDetailVis] = useState(false);
+  const [detailData, setDetailData] = useState([]);
 
 
   useEffect(() => {
@@ -95,17 +98,51 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
       align: 'center',
     },
     {
+      title: '原料编码',
+      dataIndex: 'materialName',
+      key: 'materialName',
+      align: 'center',
+    },
+    {
+      title: '原料名称',
+      dataIndex: 'materialName',
+      key: 'materialName',
+      align: 'center',
+    },
+    {
+      title: '原料规格',
+      dataIndex: 'materialName',
+      key: 'materialName',
+      align: 'center',
+    },
+    {
+      title: '需求数量',
+      dataIndex: 'materialName',
+      key: 'materialName',
+      align: 'center',
+    },
+    {
+      title: '已发货数量',
+      dataIndex: 'materialName',
+      key: 'materialName',
+      align: 'center',
+    },
+    {
       title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.operation'),
       key: 'opt',
       align: 'center',
       render: (_, record) => [
         <a key="update" onClick={() => handleUpdate(record)}>
-          { getFormattedMsg('RawMaterialDeliveryOrderManagement.button.update')}
+          {getFormattedMsg('RawMaterialDeliveryOrderManagement.button.update')}
         </a>,
         <Divider key="divider1" type="vertical" />,
         <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)}>
-          { getFormattedMsg('RawMaterialDeliveryOrderManagement.button.delete')}
-        </a>
+          {getFormattedMsg('RawMaterialDeliveryOrderManagement.button.delete')}
+        </a>,
+        <Divider key="divider2" type="vertical" />,
+        <a key="detail" onClick={() => handleOpenDetailModal(record)}>
+          详情
+        </a>,
       ],
       // width: 80,
       // fixed: 'right'
@@ -116,15 +153,60 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
   const loadData = async (page, pageSize, searchValue) => {
     const data = [
       {
-        id:0,
-        orderNumber: 111,
-        orderCountr: 222,
-        finishNumber: 333,
-        surplusNumber: 444,
-        orderPriority: 555,
-        cuttingMachine: 666,
-        materialCode: 777,
-        materialName: 888
+        id: 0,
+        orderNumber: 'D0001',
+        orderCountr: 100,
+        finishNumber: 50,
+        surplusNumber: 50,
+        orderPriority: 1,
+        cuttingMachine: '切割机1',
+        materialCode: 'PR001',
+        materialName: '物料1',
+        detail: [
+          {
+            id: 0,
+            trayNumber: 'D0001',
+            count: 100,
+            uesd: 50,
+            surplus: 50,
+            station: 1,
+          }, {
+            id: 1,
+            trayNumber: 'D0002',
+            count: 100,
+            uesd: 0,
+            surplus: 100,
+            station: 2,
+          }
+        ]
+      },
+      {
+        id: 1,
+        orderNumber: 'D0002',
+        orderCountr: 100,
+        finishNumber: 0,
+        surplusNumber: 100,
+        orderPriority: 2,
+        cuttingMachine: '切割机2',
+        materialCode: 'PR001',
+        materialName: '物料1',
+        detail: [
+          {
+            id: 0,
+            trayNumber: 'D0001',
+            count: 100,
+            uesd: 50,
+            surplus: 50,
+            station: 1,
+          }, {
+            id: 1,
+            trayNumber: 'D0002',
+            count: 100,
+            uesd: 0,
+            surplus: 100,
+            station: 2,
+          }
+        ]
       },
     ]
     setTableData(data);
@@ -315,6 +397,22 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
     });
   }
 
+  const onHandleTableSelect = e => {
+    setSelectedRowKeys([e.id])
+    // if (selectedRowKeys.indexOf(e.id) === -1) {
+    //   setSelectedRowKeys([...selectedRowKeys, e.id])
+    //   setSelectedDatas([...selectedDatas, e])
+    // } else {
+    //   setSelectedRowKeys(selectedRowKeys.filter(i => i != e.id))
+    //   setSelectedDatas(selectedDatas.filter(i => i.id != e.id))
+    // }
+  };
+
+  const handleOpenDetailModal = (record)=>{
+    setDetailVis(true)
+    setDetailData(record.detail)
+  }
+
   return (
     <>
       <HVLayout>
@@ -346,6 +444,10 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
           icon={<i className="h-visions hv-table" />}
           title={getFormattedMsg('RawMaterialDeliveryOrderManagement.title.tableName')}
           buttons={[
+            <Radio.Group className={styles.Radio} key="Radio" defaultValue="1" buttonStyle="solid" style={{ marginRight: 16 }} size='small' onChange={(e) => { console.log(e.target.value); notification.warning({ message: '没有接口' }) }}>
+              <Radio.Button value="1" className={styles.leftRadius}>先入先出</Radio.Button>
+              <Radio.Button value="2" className={styles.rightRadius}>路径最优</Radio.Button>
+            </Radio.Group>,
             <Button key="automatic" type="primary" onClick={() => handleAutomatic()} >
               {getFormattedMsg('RawMaterialDeliveryOrderManagement.button.automatic')}
             </Button>,
@@ -376,6 +478,8 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
           </div>
           <Spin spinning={loading}>
             <Table
+              // className={styles.mainTable}
+
               pagination={false}
               scroll={{ x: 'max-content' }}
               dataSource={tableData.map((i, idx) => ({
@@ -384,6 +488,23 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
               }))}
               columns={columns}
               rowKey={record => record.id}
+              rowSelection={{
+                type: 'radio',
+                onSelect: onHandleTableSelect,
+                // onSelectAll: onHandleTableSelectAll,
+                selectedRowKeys: selectedRowKeys,
+                hideDefaultSelections: true,
+                // getCheckboxProps={record => ({ 
+                //   // 单行禁用
+                //     disabled: record.status === 1
+                //   })
+                // } 
+              }}
+              onRow={record => {
+                return {
+                  onClick: () => onHandleTableSelect(record)
+                };
+              }}
             />
           </Spin>
           <HVLayout.Pane.BottomBar>
@@ -437,13 +558,22 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
         destroyOnClose
         width={800}
         bodyStyle={{
-          // paddingTop:0
+          paddingTop:0,
           paddingLeft: 0,
           paddingRight: 0,
           paddingBottom: 0,
         }}
       >
         <SurplusTable ref={surplusRef} />
+      </Modal>
+      <Modal
+        title={'详情'}
+        visible={detailVis}
+        footer={null}
+        onCancel={()=>{setDetailVis(false);setDetailData([])}}
+        width={800}
+      >
+        <DetailTable dataSource={detailData} />
       </Modal>
     </>
   );

@@ -12,17 +12,19 @@ module.exports = {
       destination: 'Destination',
       DockingPort: 'Docking port',
       operation: 'operationoperation',
-      delete:'Confirm the deletion?',
+      delete:'Confirm the deletion ?',
       tableName:'Port pallet management',
       add: 'add',
       binding: 'Binding TransferCode',
       areaState:'areaState',
       updateState: 'update AreaState',
+      unbind:'Confirm untying tray ?'
     },
     button:{
       shelf:'shelf',
       transport:'transport',
       addTransfer:'addTransfer',
+      unbind:'unbind',
       updateState:'updateState',
       delete:'delete',
 
@@ -35,11 +37,13 @@ module.exports = {
       addFailure:'Add failure',
       deleteSuccess:'Deleted successfully',
       deleteFailure:'Deletion failure',
-      bindingSuccess:'Binding success',
+      bindingSuccess:'Binding successfully',
       bindingFailure:'Binding failure',
       updateSuccess:'Modified successfully',
       updateFailure:'Modification failure',
       portNumber:'Please enter the port number',
+      unbindingSuccess:'Unbind successfully',
+      unbindingFailure:'Unbinding failure',
     },
     label:{
       portNumber:'Port number'
@@ -63,11 +67,13 @@ module.exports = {
       binding: '绑定托盘',
       areaState:'备料区状态',
       updateState: '更新备料口状态',
+      unbind:'确认解绑托盘?'
     },
     button:{
       shelf:'上架',
       transport:'运输',
       addTransfer:'绑定托盘',
+      unbind:'解绑托盘',
       updateState:'更新接驳口状态',
       delete:'删除',
 
@@ -84,7 +90,9 @@ module.exports = {
       bindingFailure:'绑定失败',
       updateSuccess:'修改成功',
       updateFailure:'修改失败',
-      portNumber:'请输入接驳口编码'
+      portNumber:'请输入接驳口编码',
+      unbindingSuccess:'解绑成功',
+      unbindingFailure:'解绑失败',
     },
     label:{
       portNumber:'接驳口编码'

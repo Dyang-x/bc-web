@@ -19,8 +19,8 @@ const UpAndDown = require('./UpAndDown').zh_CN;
 const PalletManagement = require('./PalletManagement').zh_CN;
 const global = require('./global').zh_CN;
 const newWaresLocation = require('./newWaresLocation').zh_CN;
-
-
+const SurplusInStorage = require('./SurplusInStorage').zh_CN;
+const SemiFinishedReturn = require('./SemiFinishedReturn').zh_CN;
 
 module.exports = {
   user,
@@ -44,4 +44,6 @@ module.exports = {
   PalletManagement,
   global,
   newWaresLocation,
+  SurplusInStorage,
+  SemiFinishedReturn,
 };

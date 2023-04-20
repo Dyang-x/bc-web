@@ -74,6 +74,10 @@ const PalletManagementConnectionPort = () => {
           {getFormattedMsg('PalletManagementConnectionPort.button.addTransfer')}
         </a>,
         <Divider key="divider3" type="vertical" />,
+        <a key="unbind" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleUnbind(record)}>
+          {getFormattedMsg('PalletManagementConnectionPort.button.unbind')}
+        </a>,
+        <Divider key="divider4" type="vertical" />,
         <a key="updateState" onClick={() => handleUpdateState(record)}>
           {getFormattedMsg('PalletManagementConnectionPort.button.updateState')}
         </a>,
@@ -249,6 +253,28 @@ const PalletManagementConnectionPort = () => {
       sm: { span: 16 },
     },
   };
+
+  const handleUnbind =(record)=>{
+    Modal.confirm({
+      title: getFormattedMsg('PalletManagementConnectionPort.title.unbind'),
+      okType: 'danger',
+      onOk: async () => {
+        await joinAreaServices.deleteTransfer(record.joinCode,record.transferCode)
+          .then(res => {
+            notification.success({
+              message: getFormattedMsg('PalletManagementConnectionPort.message.unbindingSuccess')
+            })
+            loadData();
+          })
+          .catch(err => {
+            notification.warning({
+              message: getFormattedMsg('PalletManagementConnectionPort.message.unbindingFailure'),
+              description: err.message
+            })
+          })
+      }
+    });
+  }
 
   const handleUpdateState = (record) => {
     setUpdateStateVisVis(true)

@@ -30,34 +30,7 @@ const TrayForm = ({
 }) => {
   const [pageInfo, setPageInfo] = useState({ page: 1, pageSize: 10 });
   const [transferList, setTransferList] = useState([])
-
-  // const attributeOne = [
-  //   { id: 1, name: '大', value: '大', },
-  //   { id: 2, name: '中', value: '中', },
-  //   { id: 3, name: '小', value: '小', },
-  // ]
-
-  // const attributeTwo = [
-  //   { id: 1, name: '切割完工', value: '切割完工', },
-  //   { id: 2, name: '切割未完工', value: '切割未完工', },
-  //   { id: 3, name: '折弯完工', value: '折弯完工', },
-  //   { id: 4, name: '折弯未完工', value: '折弯未完工', },
-  // ]
-
-  // const dockingPoints = [
-  //   { id: 1, name: 'J002', value: 'J002', },
-  //   { id: 2, name: 'J003', value: 'J003', },
-  // ]
-
-  // const sortPositions = [
-  //   { id: 1, name: 'J004', value: 'J004', },
-  //   { id: 2, name: 'J005', value: 'J005', },
-  //   { id: 3, name: 'J006', value: 'J006', },
-  //   { id: 4, name: 'J007', value: 'J007', },
-  //   { id: 5, name: 'J008', value: 'J008', },
-  //   { id: 6, name: 'J009', value: 'J009', },
-  // ]
-
+  
   useEffect(() => {
     console.log(modifyData, 'modifyData');
     getTransfer()

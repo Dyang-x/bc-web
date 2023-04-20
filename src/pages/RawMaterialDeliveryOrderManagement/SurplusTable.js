@@ -5,7 +5,7 @@ import AddSurplusForm from './AddSurplusForm';
 
 const { getFormattedMsg } = i18n;
 
-const TrayForm = ({
+const SurplusTable = ({
   form: { getFieldDecorator, validateFields, getFieldValue, setFieldsValue },
 }) => {
 
@@ -103,7 +103,7 @@ const TrayForm = ({
           icon={<i className="h-visions hv-table" />}
           title={getFormattedMsg('RawMaterialDeliveryOrderManagement.title.surplus')}
           buttons={[
-            <Button key="add" type="primary" style={{ marginRight: 40 }} onClick={() => handleAdd()} >
+            <Button key="add" type="primary" style={{ marginRight: 30 }} onClick={() => handleAdd()} >
               {getFormattedMsg('RawMaterialDeliveryOrderManagement.button.add')}
             </Button>
           ]}
@@ -137,4 +137,4 @@ const TrayForm = ({
   )
 }
 
-export default Form.create()(TrayForm)
+export default Form.create()(SurplusTable)

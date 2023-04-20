@@ -29,9 +29,9 @@ class RawMaterialWarehousingReceipt extends Service {
   }
 
   // 称重
-  async getWeigh(data) {
+  async getWeigh(id) {
     try {
-      return await this.put(`${appName}/RawMaterialInWarehouse/getWeigh`, data);
+      return await this.put(`${appName}/RawMaterialInWarehouse/getWeigh?id=${id}`);
     } catch (error) {
       throw new Error(error);
     }
@@ -59,6 +59,15 @@ class RawMaterialWarehousingReceipt extends Service {
       throw new Error(error);
     }
   }
+
+    // 手动上架(receiptNumber入库单号,trayNumber托盘号)
+    async handInStore(receiptNumber,trayNumber) {
+      try {
+        return await this.put(`${appName}/RawMaterialInWarehouse/handInStore?receiptNumber=${receiptNumber}&trayNumber=${trayNumber}`);
+      } catch (error) {
+        throw new Error(error);
+      }
+    }
 
   //修改
   async updateRawMaterial(data) {

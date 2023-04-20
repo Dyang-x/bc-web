@@ -50,6 +50,12 @@ import UpAndDownOn2nd from '~/pages/UpAndDownOn2nd';
 //库位管理
 import NewWaresLocation from '~/pages/NewWaresLocation';
 
+//余料入库
+import SurplusInStorage from '~/pages/SurplusInStorage';
+
+//余料入库
+import SemiFinishedReturn from '~/pages/SemiFinishedReturn';
+
 export default [
 
   {
@@ -124,6 +130,15 @@ export default [
     path: '/wares-location-v2',
     component: NewWaresLocation
   },
+  {
+    path: '/surplus_putInStorage',
+    component: SurplusInStorage
+  },
+  {
+    path: '/semi_finishe_return',
+    component: SemiFinishedReturn
+  },
+  
   // 以下是示例功能代码， 正式开发时请删除
   // {
   //   path: '/user',

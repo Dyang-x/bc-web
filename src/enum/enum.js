@@ -27,11 +27,17 @@ export const dockingPoints = [
     { id: 2, name: 'J003', value: 'J003', },
 ]
 
-//托盘类型
+// 托盘类型
 export const palletType = [
     { id: 0, name: '原料托盘', value: '原料托盘', },
     { id: 1, name: '半成品托盘', value: '半成品托盘', }
 ]
+
+// export const palletType = [
+//     { id: 0, name: '板料托盘', value: '板料托盘', },
+//     { id: 1, name: '半成品托盘', value: '半成品托盘', },
+//     { id: 2, name: '通用托盘', value: '通用托盘', },
+// ]
 
 //托盘状态
 export const palletState = [
@@ -78,19 +84,19 @@ export const taskState = [
 
 // 全部 任务类型
 export const taskType = [
-    { id: 1, name: '原料入库', value: '原料入库', },
-    { id: 2, name: '原料出库', value: '原料出库', },
-    { id: 3, name: '半成品入库', value: '半成品入库', },
-    { id: 4, name: '半成品出库', value: '半成品出库', },
+    { id: 1, name: '原料采购入库', value: '原料采购入库', },
+    { id: 2, name: '原料领料出库', value: '原料领料出库', },
+    { id: 3, name: '半成品生产入库', value: '半成品生产入库', },
+    { id: 4, name: '半成品领料出库', value: '半成品领料出库', },
     { id: 5, name: '原料托盘回库', value: '原料托盘回库', },
-    { id: 6, name: '原料托盘下架', value: '原料托盘下架', },
+    { id: 6, name: '原料托盘出库', value: '原料托盘出库', },
     { id: 7, name: '半成品托盘回库', value: '半成品托盘回库', },
     { id: 8, name: '半成品托盘出库', value: '半成品托盘出库', },
     { id: 9, name: '原材料运输小车', value: '原材料运输小车', },
-    { id: 10, name: '链条', value: '链条', },
-    { id: 11, name: '原料托盘上架', value: '原料托盘上架', },
-    { id: 12, name: '半成品托盘上架', value: '半成品托盘上架', },
-    { id: 13, name: '半成品托盘下架', value: '半成品托盘下架', },
+    // { id: 10, name: '链条', value: '链条', },
+    // { id: 11, name: '原料托盘上架', value: '原料托盘上架', },
+    // { id: 12, name: '半成品托盘上架', value: '半成品托盘上架', },
+    // { id: 13, name: '半成品托盘下架', value: '半成品托盘下架', },
 ]
 
 // AGV 任务种类
@@ -109,3 +115,13 @@ export const sortPositions = [
     { id: 5, name: 'J008', value: 'J008', },
     { id: 6, name: 'J009', value: 'J009', },
 ]
+
+
+/*
+
+J001    原料交接区
+
+
+*/
+
+
