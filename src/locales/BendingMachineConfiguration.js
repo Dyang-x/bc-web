@@ -71,7 +71,7 @@ module.exports = {
       bendingName: '请输入折弯机名称',
       ifout: '请勾选是否允许折弯未完成出库',
       warhouseTime: '请输入最小在库时间',
-      attribute: '请选择托盘属性',
+      attribute: '请选择折弯机属性',
       readyMaterials:'选择备料区',
     },
     label: {
@@ -79,7 +79,7 @@ module.exports = {
       bendingName: '折弯机名称',
       ifout: '允许折弯未完成出库',
       warhouseTime: '最小在库时间',
-      attribute: '托盘属性',
+      attribute: '折弯机属性',
       readyMaterials:'备料区',
     },
     placeholder: {
@@ -87,7 +87,7 @@ module.exports = {
       bendingName: '请输入折弯机名称',
       ifout: '请勾选是否允许折弯未完成出库',
       warhouseTime: '请输入最小在库时间',
-      attribute: '请选择托盘属性',
+      attribute: '请选择折弯机属性',
       readyMaterials:'选择备料区',
     },
 

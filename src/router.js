@@ -42,11 +42,6 @@ import AgvManagement from '~/pages/AgvManagement';
 //上下料
 import UpAndDownOn from '~/pages/UpAndDownOn';
 
-//1号上下料
-import UpAndDownOn1st from '~/pages/UpAndDownOn1st';
-//2号上下料
-import UpAndDownOn2nd from '~/pages/UpAndDownOn2nd';
-
 //库位管理
 import NewWaresLocation from '~/pages/NewWaresLocation';
 
@@ -117,14 +112,6 @@ export default [
   {
     path: '/upAndDownOn',
     component: UpAndDownOn
-  },
-  {
-    path: '/upAndDownOn1st',
-    component: UpAndDownOn1st
-  },
-  {
-    path: '/upAndDownOn2nd',
-    component: UpAndDownOn2nd
   },
   {
     path: '/wares-location-v2',

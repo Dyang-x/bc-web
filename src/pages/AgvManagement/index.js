@@ -123,11 +123,18 @@ const Index = ({ history }) => {
           nowTab == 1 && [
             <a key="adjust" onClick={() => handleAdjust(record)}>{getFormattedMsg('AgvManagement.button.adjust')}</a>,
             <Divider key="divider1" type="vertical" />,
-            <a key="pause" onClick={() => handlePause(record)}>{getFormattedMsg('AgvManagement.button.pause')}</a>,
-            <Divider key="divider2" type="vertical" />,
+            // <a key="pause" onClick={() => handlePause(record)}>{getFormattedMsg('AgvManagement.button.pause')}</a>,
+            // <Divider key="divider2" type="vertical" />,
             <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)} >
               {getFormattedMsg('AgvManagement.button.delete')}
             </a>
+          ],
+          nowTab == 2 && [
+            <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
+              {getFormattedMsg('AgvManagement.button.pause')}
+              </a>,
+            <Divider key="divider2" type="vertical" />,
+            <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('AgvManagement.button.complete')}</a>
           ],
           nowTab == 3 && [
             <a key="continue" onClick={() => handleContinue(record)} >{getFormattedMsg('AgvManagement.button.continue')}</a>
@@ -142,6 +149,33 @@ const Index = ({ history }) => {
         ],
         width: 300,
       }
+      // {
+      //   title: getFormattedMsg('AgvManagement.title.operation'),
+      //   key: 'opt',
+      //   align: 'center',
+      //   render: (_, record) => [
+      //     nowTab == 1 && [
+      //       <a key="adjust" onClick={() => handleAdjust(record)}>{getFormattedMsg('AgvManagement.button.adjust')}</a>,
+      //       <Divider key="divider1" type="vertical" />,
+      //       <a key="pause" onClick={() => handlePause(record)}>{getFormattedMsg('AgvManagement.button.pause')}</a>,
+      //       <Divider key="divider2" type="vertical" />,
+      //       <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)} >
+      //         {getFormattedMsg('AgvManagement.button.delete')}
+      //       </a>
+      //     ],
+      //     nowTab == 3 && [
+      //       <a key="continue" onClick={() => handleContinue(record)} >{getFormattedMsg('AgvManagement.button.continue')}</a>
+      //     ],
+      //     nowTab == 5 && [
+      //       <a key="rollback" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleRollback(record)} >
+      //         {getFormattedMsg('AgvManagement.button.rollback')}
+      //       </a>,
+      //       <Divider key="divider3" type="vertical" />,
+      //       <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('AgvManagement.button.complete')}</a>
+      //     ],
+      //   ],
+      //   width: 300,
+      // }
     ];
   }, [nowTab]);
 

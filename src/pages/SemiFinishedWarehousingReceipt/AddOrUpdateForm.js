@@ -32,7 +32,6 @@ const TrayForm = ({
   const [transferList, setTransferList] = useState([])
   
   useEffect(() => {
-    console.log(modifyData, 'modifyData');
     getTransfer()
   }, [])
 
@@ -111,7 +110,7 @@ const TrayForm = ({
                 message:getFormattedMsg('SemiFinishedWarehousingReceipt.placeholder.attributeOne'),
               },
             ],
-            initialValue: modifyData&&modifyData['attributeOne'] ? parseInt(modifyData['attributeOne']) : []
+            initialValue: modifyData&&modifyData['attributeOne'] ? ((modifyData['attributeOne']).split(',')).map(Number) : []
           })(
             <Select
             placeholder={getFormattedMsg('SemiFinishedWarehousingReceipt.placeholder.attributeOne')}

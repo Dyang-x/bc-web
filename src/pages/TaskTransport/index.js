@@ -12,7 +12,7 @@ const { Pane } = HVLayout;
 const { showTotal } = page
 const { Option } = Select;
 
-const Index = ({ history }) => {
+const Index = ({ taskKind }) => {
   const [workOrderList, setWorkOrderList] = useState([]);
 
   const [tableData, setTableData] = useState([]);

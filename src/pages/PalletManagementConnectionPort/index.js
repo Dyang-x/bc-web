@@ -8,6 +8,8 @@ import JoinAreaForm from './JoinAreaForm';
 // import { state } from '~/enum/PalletManagementConnectionPort';
 import { dockingPointState } from '~/enum/enum';
 import TransferBoxServices from '~/api/TransferBox';
+import EmptyPalletsWarehousingApi from '~/api/EmptyPalletsWarehousing';
+import EmptyPalletDeliveryApi from '~/api/EmptyPalletDelivery'
 
 
 const getFormattedMsg = i18n.getFormattedMsg;
@@ -66,8 +68,9 @@ const PalletManagementConnectionPort = () => {
           {getFormattedMsg('PalletManagementConnectionPort.button.shelf')}
         </a>,
         <Divider key="divider1" type="vertical" />,
-        <a key="transport" onClick={() => HandleTransport(record)}>
-          {getFormattedMsg('PalletManagementConnectionPort.button.transport')}
+        <a key="takedown" onClick={() => HandleTakedown(record)}>
+          {/* {getFormattedMsg('PalletManagementConnectionPort.button.Takedown')} */}
+          下架
         </a>,
         <Divider key="divider2" type="vertical" />,
         <a key="addTransfer" onClick={() => handleAddTransfer(record)}>
@@ -103,16 +106,38 @@ const PalletManagementConnectionPort = () => {
     setLoading(false);
   };
 
-  const HandleShelf = record => {
-    notification.warning({
-      message: '没有接口',
-    });
+  const HandleShelf = async record => {
+    await EmptyPalletsWarehousingApi.callTransferIn(record.joinCode)
+      .then(res => {
+        notification.success({
+          message: '托盘上架成功'
+        })
+        loadData();
+      })
+      .catch(err => {
+        notification.warning({
+          message: '托盘上架失败',
+          description: err.message
+        })
+        loadData();
+      })
   };
 
-  const HandleTransport = record => {
-    notification.warning({
-      message: '没有接口',
-    });
+  const HandleTakedown = async record => {
+    await EmptyPalletDeliveryApi.callTransferOut(record.joinCode)
+    .then(res => {
+      notification.success({
+        message: '托盘下架成功'
+      })
+      loadData();
+    })
+    .catch(err => {
+      notification.warning({
+        message: '托盘下架失败',
+        description: err.message
+      })
+      loadData();
+    })
   };
 
   const { Table, SettingButton } = useMemo(

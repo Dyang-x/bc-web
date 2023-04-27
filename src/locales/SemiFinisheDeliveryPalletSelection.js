@@ -56,7 +56,7 @@ module.exports = {
       machine: '折弯机',
       outOrderNumber: '出库单号',
       orderNumber: '订单号',
-      information:'托盘信息',
+      information:'半成品出库单',
       tray:'托盘',
       relatedOrder:'相关订单',
       out:'出库',

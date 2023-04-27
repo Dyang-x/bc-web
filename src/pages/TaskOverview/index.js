@@ -122,11 +122,18 @@ const Index = ({ history }) => {
           nowTab == 1 && [
             <a key="adjust" onClick={() => handleAdjust(record)}>{getFormattedMsg('TaskOverview.button.adjust')}</a>,
             <Divider key="divider1" type="vertical" />,
-            <a key="pause" onClick={() => handlePause(record)}>{getFormattedMsg('TaskOverview.button.pause')}</a>,
-            <Divider key="divider2" type="vertical" />,
+            // <a key="pause" onClick={() => handlePause(record)}>{getFormattedMsg('TaskOverview.button.pause')}</a>,
+            // <Divider key="divider2" type="vertical" />,
             <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)} >
               {getFormattedMsg('TaskOverview.button.delete')}
             </a>
+          ],
+          nowTab == 2 && [
+            <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
+              {getFormattedMsg('TaskOverview.button.pause')}
+              </a>,
+            <Divider key="divider2" type="vertical" />,
+            <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskOverview.button.complete')}</a>
           ],
           nowTab == 3 && [
             <a key="continue" onClick={() => handleContinue(record)} >{getFormattedMsg('TaskOverview.button.continue')}</a>

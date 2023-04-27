@@ -117,6 +117,14 @@ export const sortPositions = [
 ]
 
 
+//接驳口
+export const emptyInMid = [
+    { id: 1, name: 'J001', value: 'J001', },
+    { id: 2, name: 'J002', value: 'J002', },
+    { id: 3, name: 'J003', value: 'J003', },
+]
+
+
 /*
 
 J001    原料交接区

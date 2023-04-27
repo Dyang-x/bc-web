@@ -1,6 +1,7 @@
 import React from 'react';
-import {  Form, Input, Select} from '@hvisions/h-ui'
+import { Form, Input, Select } from '@hvisions/h-ui'
 import { i18n } from '@hvisions/toolkit';
+import { emptyInMid } from '~/enum/enum';
 
 const { getFormattedMsg } = i18n;
 const { Option } = Select
@@ -22,7 +23,7 @@ const TrayForm = ({
 
   return (
     <Form >
-      <Form.Item {...formItemLayout} label={getFormattedMsg('EmptyPalletsWarehousing.title.receiptNumber')}>
+      {/* <Form.Item {...formItemLayout} label={getFormattedMsg('EmptyPalletsWarehousing.title.receiptNumber')}>
         {
           getFieldDecorator('receiptNumber', {
             rules: [
@@ -34,7 +35,7 @@ const TrayForm = ({
             initialValue: addOrUpdateData ? addOrUpdateData['receiptNumber'] : ''
           })(<Input placeholder={getFormattedMsg('EmptyPalletsWarehousing.message.receiptNumber')} style={{ width: '100%' }} />)
         }
-      </Form.Item>
+      </Form.Item> */}
       <Form.Item {...formItemLayout} label={getFormattedMsg('EmptyPalletsWarehousing.title.trayNumber')}>
         {
           getFieldDecorator('trayNumber', {
@@ -48,6 +49,47 @@ const TrayForm = ({
           })(<Input placeholder={getFormattedMsg('EmptyPalletsWarehousing.message.trayNumber')} style={{ width: '100%' }} />)
         }
       </Form.Item>
+
+      <Form.Item {...formItemLayout} label={'起点'}>
+        {
+          getFieldDecorator('origin', {
+            rules: [
+              {
+                required: true,
+                message: '请选择起点',
+              },
+            ],
+            initialValue: addOrUpdateData ? addOrUpdateData['origin'] : ''
+          })(<Input placeholder={'请选择起点'} style={{ width: '100%' }} />)
+        }
+      </Form.Item>
+      <Form.Item {...formItemLayout} label={'中间点'}>
+        {
+          getFieldDecorator('middle', {
+            rules: [
+              {
+                required: true,
+                message: '请选择中间点',
+              },
+            ],
+            initialValue: addOrUpdateData ? addOrUpdateData['middle'] : ''
+          })(
+            <Select
+              placeholder={'请选择中间点'}
+              showSearch
+              filterOption={false}
+            >
+              {
+                emptyInMid.length && emptyInMid.map(item => {
+                  return (<Option key={item.id} value={item.value}>{item.value}</Option>)
+                })
+              }
+            </Select>
+          )
+        }
+      </Form.Item>
+
+{/* 
       <Form.Item {...formItemLayout} label={getFormattedMsg('EmptyPalletsWarehousing.title.state')}>
         {
           getFieldDecorator('state', {
@@ -71,33 +113,6 @@ const TrayForm = ({
               }
             </Select>
           )
-        }
-      </Form.Item>
-      {/* <Form.Item {...formItemLayout} label={getFormattedMsg('EmptyPalletsWarehousing.title.createTime')}>
-        {
-          getFieldDecorator('createTime', {
-            rules: [
-              {
-                required: true,
-                message: getFormattedMsg('EmptyPalletsWarehousing.message.createTime'),
-              },
-            ],
-            initialValue: addOrUpdateData ? moment(addOrUpdateData['createTime']): moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
-          })(<DatePicker disabled={!isEmpty(addOrUpdateData)} placeholder={getFormattedMsg('EmptyPalletsWarehousing.message.createTime')} style={{ width: '100%' }} format={"YYYY-MM-DD"} />)
-        }
-      </Form.Item>
-      <Form.Item {...formItemLayout} label={getFormattedMsg('EmptyPalletsWarehousing.title.creator')}>
-        {
-          getFieldDecorator('creator', {
-            rules: [
-              {
-                required: true,
-                message: getFormattedMsg('EmptyPalletsWarehousing.message.creator'),
-              },
-            ],
-            initialValue: addOrUpdateData ? addOrUpdateData['creator'] : ''
-          // })(<Input disabled={!isEmpty(addOrUpdateData)} placeholder={getFormattedMsg('EmptyPalletsWarehousing.message.creator')} style={{ width: '100%' }} />)
-        })(<Input placeholder={getFormattedMsg('EmptyPalletsWarehousing.message.creator')} style={{ width: '100%' }} />)
         }
       </Form.Item> */}
     </Form>

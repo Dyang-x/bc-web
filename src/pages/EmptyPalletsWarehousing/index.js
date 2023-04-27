@@ -20,7 +20,7 @@ const EmptyPalletsWarehousingPage = ({ history }) => {
   const [searchValue, setSearchValue] = useState(null);
 
   const state = {
-    0: '新建', 1: '下发中', 2: '已完成'
+    0: '新建', 1: '上架中', 2: '已完成'
   }
   const [selectedstatus, setSelectedstatus] = useState('0');
 
@@ -47,6 +47,24 @@ const EmptyPalletsWarehousingPage = ({ history }) => {
       align: 'center',
     },
     {
+      title: '起点',
+      dataIndex: 'origin',
+      key: 'origin',
+      align: 'center',
+    },
+    {
+      title: '中间点',
+      dataIndex: 'middle',
+      key: 'middle',
+      align: 'center',
+    },
+    {
+      title: '终点',
+      dataIndex: 'destination',
+      key: 'destination',
+      align: 'center',
+    },
+    {
       title: getFormattedMsg('EmptyPalletsWarehousing.title.createTime'),
       dataIndex: 'createTime',
       key: 'createTime',
@@ -63,6 +81,14 @@ const EmptyPalletsWarehousingPage = ({ history }) => {
       key: 'opt',
       align: 'center',
       render: (_, record) => [
+        record.state == 0 && [<a key="upShelves" onClick={() => handleUpShelves(record)}>
+          上架
+        </a>,
+        <Divider key="divider2" type="vertical" />],
+        record.state == 1 && [<a key="finishOrder" onClick={() => handleFinishOrder(record)}>
+          完成
+        </a>,
+        <Divider key="divider3" type="vertical" />],
         <a key="update" onClick={() => handleUpdate(record)}>
           {getFormattedMsg('EmptyPalletsWarehousing.button.update')}
         </a>,
@@ -171,13 +197,14 @@ const EmptyPalletsWarehousingPage = ({ history }) => {
         }
         addOrUpdateData[i] = params[i]
       })
+      if(!Object.keys(addOrUpdateData).includes('id')){
+        addOrUpdateData.state = 0
+      }
+
       await EmptyPalletsWarehousing
         .saveOrUpdate(addOrUpdateData)
         .then(res => {
-          // const title = addOrUpdateData.id==null?'新增':'修改'
-          const title = addOrUpdateData.id == null ? getFormattedMsg('EmptyPalletsWarehousing.button.create') : getFormattedMsg('EmptyPalletsWarehousing.button.update')
           notification.success({
-            // message: `${title}成功`
             message: addOrUpdateData.id == null ? getFormattedMsg('EmptyPalletsWarehousing.message.addSuccess') : getFormattedMsg('EmptyPalletsWarehousing.message.updateSuccess')
           });
           loadData(page, pageSize, { ...searchValue, state: selectedstatus });
@@ -196,6 +223,52 @@ const EmptyPalletsWarehousingPage = ({ history }) => {
     setAddOrUpdateVis(true)
     setAddOrUpdateData(record)
   }
+
+const handleUpShelves =(record)=>{
+  Modal.confirm({
+    title: '确认上架？',
+    onOk: async () => {
+      await EmptyPalletsWarehousing
+        .upShelves(record.id)
+        .then(res => {
+          notification.success({
+            message: '上架开始成功'
+          });
+          loadData(page, pageSize, { ...searchValue, state: selectedstatus });
+        })
+        .catch(err => {
+          notification.warning({
+            message: '上架开始失败',
+            description: err.message
+          });
+        });
+    },
+    onCancel() { },
+  })
+}
+
+const handleFinishOrder =(record)=>{
+  Modal.confirm({
+    title: '确认完成任务？',
+    onOk: async () => {
+      await EmptyPalletsWarehousing
+        .finishById(record.id)
+        .then(res => {
+          notification.success({
+            message: '任务完成成功'
+          });
+          loadData(page, pageSize, { ...searchValue, state: selectedstatus });
+        })
+        .catch(err => {
+          notification.warning({
+            message: '任务完成失败',
+            description: err.message
+          });
+        });
+    },
+    onCancel() { },
+  })
+}
 
   const handleDelete = (record) => {
     Modal.confirm({

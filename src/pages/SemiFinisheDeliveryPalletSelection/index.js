@@ -38,6 +38,12 @@ const SemiFinisheDeliveryPalletSelection = ({ history }) => {
 
   const columns = [
     {
+      title: getFormattedMsg('SemiFinisheDeliveryPalletSelection.title.outOrderNumber'),
+      dataIndex: 'owNumber',
+      key: 'owNumber',
+      align: 'center',
+    },
+    {
       title: getFormattedMsg('SemiFinisheDeliveryPalletSelection.title.trayNumber'),
       dataIndex: 'trayNumber',
       key: 'trayNumber',
@@ -54,6 +60,18 @@ const SemiFinisheDeliveryPalletSelection = ({ history }) => {
       dataIndex: 'orderCount',
       key: 'orderCount',
       align: 'center',
+      render: (text, record, index) => {
+        if(text == null){
+          return
+        }
+        const arr = record.orderNumber.split(',');
+        const table = <div > <ul style={{paddingLeft:15,marginBottom:"0px"}}> {arr.map(item => <li key={item} >{item}</li>)} </ul> </div>
+        return (
+          <Tooltip placement="rightTop" title={table} arrowPointAtCenter>
+            <span>{text}</span>
+          </Tooltip>
+        )
+      }
     },
     {
       title: getFormattedMsg('SemiFinisheDeliveryPalletSelection.title.attributeOne'),
@@ -118,9 +136,9 @@ const SemiFinisheDeliveryPalletSelection = ({ history }) => {
       }
     },
     {
-      title: getFormattedMsg('SemiFinisheDeliveryPalletSelection.title.machine'),
-      dataIndex: 'machine',
-      key: 'machine',
+      title: '收料单号',
+      dataIndex: 'receiptNumber',
+      key: 'receiptNumber',
       align: 'center',
     },
     {
@@ -218,12 +236,12 @@ const SemiFinisheDeliveryPalletSelection = ({ history }) => {
   };
 
   const handleOut = () => {
-    if (isEmpty(selectedRowKeys)) {
-      notification.warning({
-        message: getFormattedMsg('SemiFinisheDeliveryPalletSelection.message.trayNumber')
-      })
-      return
-    }
+    // if (isEmpty(selectedRowKeys)) {
+    //   notification.warning({
+    //     message: getFormattedMsg('SemiFinisheDeliveryPalletSelection.message.trayNumber')
+    //   })
+    //   return
+    // }
     setOutModalVis(true)
   }
 
@@ -248,9 +266,24 @@ const SemiFinisheDeliveryPalletSelection = ({ history }) => {
       if (err) return;
       const params = getFieldsValue();
       console.log(params, 'params');
-      notification.warning({
-        message: '没有接口'
+      const data ={...params,selectedRowKeys}
+      console.log(data, 'data');
+
+      SemiFinisheDeliveryPalletSelectionServices
+      .outStore({ ...searchValue, page: page - 1, pageSize })
+      .then(res => {
+        notification.success({
+          message: '出库成功',
+        });
+        loadData(page, pageSize, { ...searchValue });
       })
+      .catch(err => {
+        setLoading(false);
+        notification.warning({
+          message: '出库失败',
+          description: err.message
+        });
+      });
 
       handleCancelOut();
     })
@@ -362,7 +395,7 @@ const SemiFinisheDeliveryPalletSelection = ({ history }) => {
               />
             </HVLayout.Pane.BottomBar>
           </Pane>
-          <Pane
+          {/* <Pane
             title={getFormattedMsg('SemiFinisheDeliveryPalletSelection.title.tray')+`${trayNumber == null ? '' : trayNumber}` +getFormattedMsg('SemiFinisheDeliveryPalletSelection.title.relatedOrder') }
             // buttons={[
             //   <Input key="input" placeholder ={'请输入订单号'} style={{marginRight:10}}></Input>,
@@ -380,7 +413,7 @@ const SemiFinisheDeliveryPalletSelection = ({ history }) => {
                 </List.Item>
               )}
             />
-          </Pane>
+          </Pane> */}
         </HVLayout>
       </HVLayout>
       <Modal

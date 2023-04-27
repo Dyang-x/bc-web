@@ -1,15 +1,17 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { HVLayout, Button, notification, Modal,  Spin,  Pagination, SearchForm,  Input, Divider ,Drawer} from '@hvisions/h-ui';
+import { HVLayout, Button, notification, Modal,  Spin,  Pagination, SearchForm,  Input, Divider ,Drawer,Form,Select} from '@hvisions/h-ui';
 import { i18n, page } from '@hvisions/toolkit';
 import { CacheTable } from '~/components';
 import { isEmpty } from 'lodash';
 import bendingMachineServices from '~/api/bendingMachine';
+import TransferBoxServices from '~/api/TransferBox';
 import AddOrUpdateForm from './AddOrUpdateForm';
 import { attributeOne } from '~/enum/enum';
 
 const getFormattedMsg = i18n.getFormattedMsg;
 const { showTotal } = page
 const { Pane } = HVLayout;
+const { Option } = Select;
 
 const BendingMachineConfiguration = () => {
   const [tableData, setTableData] = useState([]);
@@ -22,6 +24,12 @@ const BendingMachineConfiguration = () => {
   const [addOrUpdateModalVis, setAddOrUpdateModalVis] = useState(false);
   const addOrUpdateForm = useRef();
   const [updateFormData,setUpdateFormData] = useState({})
+
+  const [bindVis,setBindVis] = useState(false)
+  const [bindData,setBindData] = useState()
+  const [pageInfo, setPageInfo] = useState({ page: 1, pageSize: 10 });
+  const [transferList, setTransferList] = useState([]);
+  const [selectedTransfer,setSelectedTransfer] = useState()
 
   useEffect(() => {
     loadData(page, pageSize, { ...setSearchValue });
@@ -38,6 +46,12 @@ const BendingMachineConfiguration = () => {
       title: getFormattedMsg('BendingMachineConfiguration.title.bendingName'),
       dataIndex: 'bendingName',
       key: 'bendingName',
+      align: 'center',
+    },
+    {
+      title: '折弯机状态',
+      dataIndex: 'bendingState',
+      key: 'bendingState',
       align: 'center',
     },
     {
@@ -80,10 +94,25 @@ const BendingMachineConfiguration = () => {
       align: 'center',
     },
     {
+      title: "托盘号",
+      dataIndex: 'transferCode',
+      key: 'transferCode',
+      align: 'center',
+    },
+    {
       title:getFormattedMsg('BendingMachineConfiguration.title.operation'),
       key: 'opt',
       align: 'center',
       render: (_, record) => [
+        
+        <a key="addTransfer" onClick={() => handlebind(record)}>
+          {getFormattedMsg('PalletManagementConnectionPort.button.addTransfer')}
+        </a>,
+        <Divider key="divider3" type="vertical" />,
+        <a key="unbind" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleUnbind(record)}>
+          {getFormattedMsg('PalletManagementConnectionPort.button.unbind')}
+        </a>,
+        <Divider key="divider2" type="vertical" />,
         <a key="update" onClick={()=>handleUpdate(record)}>
           {getFormattedMsg('BendingMachineConfiguration.button.update')}
         </a>,
@@ -231,6 +260,81 @@ const BendingMachineConfiguration = () => {
     })
   }
 
+
+  const handlebind=(record)=>{
+    setBindVis(true)
+    setBindData(record)
+    getTransfer();
+  }
+
+  const getTransfer = async (searchValue) => {
+    //折弯机 绑定 半成品托盘
+    await TransferBoxServices.getPage({ type: 1, page: pageInfo.page - 1, pageSize: pageInfo.pageSize })
+      .then(res => {
+        setTransferList(res.content);
+      }).catch(err => {
+        notification.warning({
+          message: getFormattedMsg('global.notify.fail'),
+          description: err.message
+        });
+      });
+  };
+  
+  const bindSave = async () => {
+    await bendingMachineServices.addTransfer(bindData.bendingNumber, selectedTransfer)
+    .then(res => {
+      notification.warning({
+        message: getFormattedMsg('PalletManagementConnectionPort.message.bindingSuccess'),
+      });
+      loadData(page, pageSize, { ...searchValue });
+    }).catch(err => {
+      notification.warning({
+        message: getFormattedMsg('PalletManagementConnectionPort.message.bindingFailure'),
+        description: err.message
+      });
+    });
+    bindCancel()
+  }
+
+  const bindCancel = () => {
+    setBindVis(false)
+    setSelectedTransfer()
+    setBindData()
+  }
+
+  const handleUnbind=(record)=>{
+    Modal.confirm({
+      title: getFormattedMsg('PalletManagementConnectionPort.title.unbind'),
+      okType: 'danger',
+      onOk: async () => {
+        await bendingMachineServices.deleteTransfer(record.bendingNumber)
+          .then(res => {
+            notification.success({
+              message: getFormattedMsg('PalletManagementConnectionPort.message.unbindingSuccess')
+            })
+            loadData(page, pageSize, { ...searchValue });
+          })
+          .catch(err => {
+            notification.warning({
+              message: getFormattedMsg('PalletManagementConnectionPort.message.unbindingFailure'),
+              description: err.message
+            })
+          })
+      }
+    });
+  }
+
+  const formItemLayout = {
+    labelCol: {
+      xs: { span: 24 },
+      sm: { span: 8 },
+    },
+    wrapperCol: {
+      xs: { span: 24 },
+      sm: { span: 16 },
+    },
+  };
+
   return (
     <>
       <HVLayout>
@@ -291,17 +395,34 @@ const BendingMachineConfiguration = () => {
         </Drawer.DrawerContent>
         <Drawer.DrawerBottomBar>{modalAddOrUpdateFoot()}</Drawer.DrawerBottomBar>
       </Drawer>
-
-      {/* <Modal
-        title={'新增'}
-        visible={addModalVis}
-        footer={modalAddOrUpdateFoot()}
-        onCancel={handleCancelAddOrUpdate}
+      <Modal
+        title={getFormattedMsg('PalletManagementConnectionPort.title.binding')}
+        visible={bindVis}
+        onOk={bindSave}
+        onCancel={bindCancel}
         destroyOnClose
         width={500}
       >
-        <AddOrUpdateForm ref={addForm} />
-      </Modal> */}
+        <Form {...formItemLayout}>
+          <Form.Item label={getFormattedMsg('PalletManagementConnectionPort.title.trayNumber')}>
+            <Select
+              placeholder={getFormattedMsg('PalletManagementConnectionPort.placeholder.transferCode')}
+              onSearch={getTransfer}
+              showSearch
+              filterOption={false}
+              onChange={(value) => {
+                setSelectedTransfer(value)
+              }}
+            >
+              {transferList.map((value, index) => (
+                <Option value={value.code} key={value.id}>
+                  {value.code} -- {value.name}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+        </Form>
+      </Modal>
     </>
   );
 };

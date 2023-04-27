@@ -1,16 +1,15 @@
 import React, { useEffect, useState, useMemo, useRef } from 'react';
-import { HVLayout, notification, Drawer, Select, Button,SearchForm, Pagination, Input, Divider, Checkbox, Modal } from '@hvisions/h-ui';
+import { HVLayout, notification, Drawer, Select, Button,SearchForm, Pagination, Input, Divider, Modal } from '@hvisions/h-ui';
 import { page, i18n } from '@hvisions/toolkit';
-import { debounce, isEmpty } from 'lodash';
 import { CacheTable } from '~/components';
 import CardItem from './CardItem/CardItem';
 import SelectForm from './SelectForm';
 import TransferBoxServices from '~/api/TransferBox';
-// import { palletType } from '~/components/palletType';
 import { palletType } from '~/enum/enum';
 import AddForm from './AddForm';
-import SearchForms from './SearchForm';
-import EmptyPalletsWarehousingServices from '~/api/EmptyPalletsWarehousing';
+import EmptyPalletsWarehousingApi from '~/api/EmptyPalletsWarehousing';
+import EmptyPalletDeliveryApi from '~/api/EmptyPalletDelivery';
+
 
 const getFormattedMsg = i18n.getFormattedMsg;
 const { Option } = Select;
@@ -80,7 +79,7 @@ const PalletManagement = () => {
           {getFormattedMsg('PalletManagement.button.putOn')}
         </a>,
         <Divider key="divider1" type="vertical" />,
-        <a key="pullOff" onClick={() => HandlePullOf(record)}>
+        <a key="pullOff" onClick={() => HandlePullOff(record)}>
           {getFormattedMsg('PalletManagement.button.pullOff')}
         </a>,
         <Divider key="divider2" type="vertical" />,
@@ -147,19 +146,66 @@ const PalletManagement = () => {
   };
 
   const HandlePutOn = record => {
+    if(record.locationCode == null){
+        notification.warning({ message: '未绑定库位' })
+        return
+    }
     Modal.confirm({
       title: `${getFormattedMsg('PalletManagement.title.putOnPallet')}${record.code}?`,
-      onOk: () => {
-        notification.warning({ message: '接口' })
+      onOk: async() => {
+        const data = {
+          origin:'J001',
+          destination:record.locationCode,
+          trayNumber:record.code,
+          state:0
+        }
+        await EmptyPalletsWarehousingApi
+        .saveOrUpdate(data)
+        .then(res => {
+          notification.success({
+            message: '空托入库任务生成成功'
+          });
+          loadData(pageInfo.page, pageInfo.pageSize, searchValue);
+        })
+        .catch(err => {
+          notification.warning({
+            description: err.message
+          });
+        });
       }
     });
   };
 
-  const HandlePullOf = async record => {
+  const HandlePullOff = record => {
+    console.log('record',record);
+    console.log('record.location !== "在库"',record.location !== "在库");
+    if(record.location != "在库"){
+      notification.warning({ message: '托盘未完成上架' })
+      return
+    }
     Modal.confirm({
       title: `${getFormattedMsg('PalletManagement.title.pullOffPallet')}${record.code}?`,
-      onOk: () => {
-        notification.warning({ message: '接口' })
+      onOk: async() => {
+        // { id: 6, name: '原料托盘出库', value: '原料托盘出库', },
+        // { id: 8, name: '半成品托盘出库', value: '半成品托盘出库', },
+        const data = {
+          inType: selectedType == 0 ? 6 : 8,
+          trayNumber: record.code,
+          state: 0
+        }
+        await EmptyPalletDeliveryApi
+        .saveOrUpdate(data)
+        .then(res => {
+          notification.success({
+            message: '空托出库任务生成成功'
+          });
+          loadData(pageInfo.page, pageInfo.pageSize, searchValue);
+        })
+        .catch(err => {
+          notification.warning({
+            description: err.message
+          });
+        });
       }
     });
   };

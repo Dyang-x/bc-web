@@ -198,6 +198,7 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
   const handleChangeStatus = e => {
     setTableData([]);
     setSelectedstatus(e.target.value);
+    setSelectedRowKeys([])
     setPage(1);
     // setPageSize(10);
     loadData(1, pageSize, { ...searchValue, state: e.target.value });

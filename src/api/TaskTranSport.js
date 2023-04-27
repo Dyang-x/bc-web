@@ -1,6 +1,7 @@
 import { Service } from '@hvisions/core';
 const appName = '/warehouse-service';
-class ReservoirPLCServices extends Service {
+//  库区转运  +  上下料  +   链条传动 
+class TaskTranSportServices extends Service {
   // 调整任务优先级
   async adjustPriority(id, priority) {
     try {
@@ -80,4 +81,4 @@ class ReservoirPLCServices extends Service {
 
 }
 
-export default new ReservoirPLCServices();
+export default new TaskTranSportServices();

@@ -110,10 +110,11 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
       key: 'orderCount',
       align: 'center',
       render: (text, record, index) => {
-        const dataSource = [
-          { id: 1, trayNumber: 'J004004004004004004', location: 'J004', attributeTwo: 'J004', pickingPoint: 'J004', },
-        ]
-        const table = <div > <ul style={{paddingLeft:15,marginBottom:"0px"}}> {dataSource.map(item => <li key={item.id} >{item.trayNumber}</li>)} </ul> </div>
+        if(text == null){
+          return
+        }
+        const arr = record.orderNumber.split(',');
+        const table = <div > <ul style={{paddingLeft:15,marginBottom:"0px"}}> {arr.map(item => <li key={item} >{item}</li>)} </ul> </div>
         return (
           <Tooltip placement="rightTop" title={table} arrowPointAtCenter>
             <span>{text}</span>
@@ -627,6 +628,7 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
         <Drawer.DrawerBottomBar>{modalUpdateFoot()}</Drawer.DrawerBottomBar>
       </Drawer>
       <Modal
+        key={Math.random()}
         title={getFormattedMsg('SemiFinishedWarehousingReceipt.button.callTray')}
         visible={callTrayVis}
         footer={modalCallTrayFoot()}
@@ -636,6 +638,7 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
         <CallTrayForm ref={callTrayForm} selectedDatas={selectedDatas} />
       </Modal>
       <Modal
+        // key={Math.random()}
         // title={getFormattedMsg('SemiFinishedWarehousingReceipt.button.pickTray')}
         visible={pickTrayVis}
         // footer={modalPickTrayFoot()}

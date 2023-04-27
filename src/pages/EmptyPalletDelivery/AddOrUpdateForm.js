@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Form, Input, Select } from '@hvisions/h-ui'
 import { i18n } from '@hvisions/toolkit';
+import { emptyInMid, taskType } from '~/enum/enum';
+import { isEmpty } from 'lodash';
+
 
 const { getFormattedMsg } = i18n;
 const { Option } = Select
@@ -22,7 +25,7 @@ const TrayForm = ({
 
   return (
     <Form >
-      <Form.Item {...formItemLayout} label={getFormattedMsg('EmptyPalletsWarehousing.title.receiptNumber')}>
+      {/* <Form.Item {...formItemLayout} label={getFormattedMsg('EmptyPalletsWarehousing.title.receiptNumber')}>
         {
           getFieldDecorator('receiptNumber', {
             rules: [
@@ -34,7 +37,7 @@ const TrayForm = ({
             initialValue: addOrUpdateData ? addOrUpdateData['receiptNumber'] : ''
           })(<Input placeholder={getFormattedMsg('EmptyPalletsWarehousing.message.receiptNumber')} style={{ width: '100%' }} />)
         }
-      </Form.Item>
+      </Form.Item> */}
       <Form.Item {...formItemLayout} label={getFormattedMsg('EmptyPalletsWarehousing.title.trayNumber')}>
         {
           getFieldDecorator('trayNumber', {
@@ -48,6 +51,72 @@ const TrayForm = ({
           })(<Input placeholder={getFormattedMsg('EmptyPalletsWarehousing.message.trayNumber')} style={{ width: '100%' }} />)
         }
       </Form.Item>
+
+      <Form.Item {...formItemLayout} label={'中间点'}>
+        {
+          getFieldDecorator('middle', {
+            rules: [
+              {
+                required: true,
+                message: '请选择中间点',
+              },
+            ],
+            initialValue: addOrUpdateData ? addOrUpdateData['middle'] : ''
+          })(
+            <Select
+              placeholder={'请选择中间点'}
+              showSearch
+              filterOption={false}
+            >
+              {
+                emptyInMid.length && emptyInMid.map(item => {
+                  return (<Option key={item.id} value={item.value}>{item.value}</Option>)
+                })
+              }
+            </Select>
+          )
+        }
+      </Form.Item>
+      <Form.Item {...formItemLayout} label={'终点'}>
+        {
+          getFieldDecorator('toLocation', {
+            rules: [
+              {
+                required: true,
+                message: '请选择终点',
+              },
+            ],
+            initialValue: addOrUpdateData ? addOrUpdateData['toLocation'] : ''
+          })(<Input placeholder={'请选择终点'} style={{ width: '100%' }} />)
+        }
+      </Form.Item>
+      <Form.Item {...formItemLayout} label={'出库类型'}>
+        {
+          getFieldDecorator('inType', {
+            rules: [
+              {
+                required: true,
+                message: '请选择出库类型',
+              },
+            ],
+            initialValue: !isEmpty(addOrUpdateData) ? Number(addOrUpdateData['inType']) : undefined
+          })(
+            <Select
+              placeholder={'请选择出库类型'}
+              showSearch
+              filterOption={false}
+            >
+              {
+                taskType.length && taskType.map(item => {
+                  return (<Option key={item.id} value={item.id}>{item.value}</Option>)
+                })
+              }
+            </Select>
+          )
+        }
+      </Form.Item>
+
+      {/*       
       <Form.Item {...formItemLayout} label={getFormattedMsg('EmptyPalletsWarehousing.title.state')}>
         {
           getFieldDecorator('state', {
@@ -72,7 +141,7 @@ const TrayForm = ({
             </Select>
           )
         }
-      </Form.Item>
+      </Form.Item> */}
     </Form>
   )
 }

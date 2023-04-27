@@ -10,6 +10,15 @@ class EmptyPalletDelivery extends Service {
     }
   }
 
+  //呼叫器空托盘出库
+  async callTransferOut(location) {
+    try {
+      return await this.put(`${appName}/PalletOutWarehouseController/callTransferOut?location=${location}`);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
   // 删除
   async deleteById(id) {
     try {
@@ -29,9 +38,9 @@ class EmptyPalletDelivery extends Service {
   }
 
   // 完成
-  async finishById(data) {
+  async finishById(id) {
     try {
-      return await this.put(`${appName}/PalletOutWarehouseController/finish`, data);
+      return await this.put(`${appName}/PalletOutWarehouseController/finish?id=${id}`);
     } catch (error) {
       throw new Error(error);
     }
