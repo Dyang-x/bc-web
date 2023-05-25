@@ -1,9 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { HTable, Table, Button, HLayout, Modal, Pagination, notification, Form, Input, Select, DatePicker, Divider, InputNumber, Cascader } from '@hvisions/h-ui'
-import moment from 'moment';
-import { tree } from '@hvisions/toolkit';
+import React from 'react';
+import { Form, Input, Select } from '@hvisions/h-ui';
 import { i18n } from '@hvisions/core';
-import waresLocationServices from '~/api/waresLocation';
 
 const { getFormattedMsg } = i18n;
 const { Option } = Select

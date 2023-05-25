@@ -48,7 +48,8 @@ const PalletManagementStockLevel = () => {
       key: 'areaState',
       align: 'center',
       render: (text, record) => {
-        return PrepareAreaState[text].name
+        const a = text - 1
+        return PrepareAreaState[a].name
       }
     },
     {

@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useMemo, Fragment, useRef } from 'react';
-import { HVLayout, Button, Spin, Pagination, SearchForm, Select, DatePicker, Divider, Input, Modal } from '@hvisions/h-ui';
+import React, { useEffect, useState, useMemo, useRef } from 'react';
+import { HVLayout, Button, Spin, Pagination, SearchForm, Select, Divider, Input, Modal } from '@hvisions/h-ui';
 import { i18n, page } from '@hvisions/toolkit';
 import { CacheTable } from '~/components';
-import { taskState, taskType,taskKind } from '~/enum/enum';
+import { taskType,taskKind } from '~/enum/enum';
 import AgvManagementServices from '~/api/AgvManagement';
 import { notification } from '~/../node_modules/antd/lib/index';
 import AdjustForm from './AdjustForm';
@@ -13,9 +13,7 @@ const { Pane } = HVLayout;
 const { showTotal } = page
 const { Option } = Select;
 
-const Index = ({ history }) => {
-  const [workOrderList, setWorkOrderList] = useState([]);
-
+const Index = ( ) => {
   const [tableData, setTableData] = useState([]);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -31,10 +29,6 @@ const Index = ({ history }) => {
     loadData(page, pageSize, { ...setSearchValue, taskState: nowTab });
   }, []);
 
-  useEffect(() => {
-
-  }, [workOrderList]);
-
   const columns = useMemo(() => {
     return [
       {
@@ -48,7 +42,7 @@ const Index = ({ history }) => {
         dataIndex: 'taskType',
         key: 'taskType',
         align: 'center',
-        render: (text, recoed, index) => {
+        render: (text) => {
           if (text == null) {
             return
           }
@@ -79,42 +73,12 @@ const Index = ({ history }) => {
         key: 'fromLocation',
         align: 'center',
       },
-      // {
-      //   title: getFormattedMsg('AgvManagement.title.middle'),
-      //   dataIndex: 'middle',
-      //   key: 'middle',
-      //   align: 'center',
-      // },
       {
         title: getFormattedMsg('AgvManagement.title.toLocation'),
         dataIndex: 'toLocation',
         key: 'toLocation',
         align: 'center',
       },
-      // {
-      //   title: getFormattedMsg('AgvManagement.title.agvState'),
-      //   dataIndex: 'agvState',
-      //   key: 'agvState',
-      //   align: 'center',
-      //   render: (text, recoed, index) => {
-      //     if (text == null) {
-      //       return
-      //     }
-      //     return taskState[text - 1].name
-      //   }
-      // },
-      // {
-      //   title: getFormattedMsg('AgvManagement.title.transportState'),
-      //   dataIndex: 'transportState',
-      //   key: 'transportState',
-      //   align: 'center',
-      //   render: (text, recoed, index) => {
-      //     if (text == null) {
-      //       return
-      //     }
-      //     return taskState[text - 1].name
-      //   }
-      // },
       {
         title: getFormattedMsg('AgvManagement.title.operation'),
         key: 'opt',
@@ -123,8 +87,6 @@ const Index = ({ history }) => {
           nowTab == 1 && [
             <a key="adjust" onClick={() => handleAdjust(record)}>{getFormattedMsg('AgvManagement.button.adjust')}</a>,
             <Divider key="divider1" type="vertical" />,
-            // <a key="pause" onClick={() => handlePause(record)}>{getFormattedMsg('AgvManagement.button.pause')}</a>,
-            // <Divider key="divider2" type="vertical" />,
             <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)} >
               {getFormattedMsg('AgvManagement.button.delete')}
             </a>
@@ -149,33 +111,6 @@ const Index = ({ history }) => {
         ],
         width: 300,
       }
-      // {
-      //   title: getFormattedMsg('AgvManagement.title.operation'),
-      //   key: 'opt',
-      //   align: 'center',
-      //   render: (_, record) => [
-      //     nowTab == 1 && [
-      //       <a key="adjust" onClick={() => handleAdjust(record)}>{getFormattedMsg('AgvManagement.button.adjust')}</a>,
-      //       <Divider key="divider1" type="vertical" />,
-      //       <a key="pause" onClick={() => handlePause(record)}>{getFormattedMsg('AgvManagement.button.pause')}</a>,
-      //       <Divider key="divider2" type="vertical" />,
-      //       <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)} >
-      //         {getFormattedMsg('AgvManagement.button.delete')}
-      //       </a>
-      //     ],
-      //     nowTab == 3 && [
-      //       <a key="continue" onClick={() => handleContinue(record)} >{getFormattedMsg('AgvManagement.button.continue')}</a>
-      //     ],
-      //     nowTab == 5 && [
-      //       <a key="rollback" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleRollback(record)} >
-      //         {getFormattedMsg('AgvManagement.button.rollback')}
-      //       </a>,
-      //       <Divider key="divider3" type="vertical" />,
-      //       <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('AgvManagement.button.complete')}</a>
-      //     ],
-      //   ],
-      //   width: 300,
-      // }
     ];
   }, [nowTab]);
 

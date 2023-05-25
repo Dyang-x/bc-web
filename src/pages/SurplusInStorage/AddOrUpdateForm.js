@@ -15,23 +15,19 @@ const formItemLayout = {
   wrapperCol: { span: 14 },
 };
 
-const TrayForm = ({
+const AddForm = ({
   form: { getFieldDecorator, validateFields, getFieldValue, setFieldsValue },
-  modifyData,
-  dockingPoints,
-  sortPositions,
 }) => {
   const [pageInfo, setPageInfo] = useState({ page: 1, pageSize: 10 });
   const [transferList, setTransferList] = useState([])
-  
+
   useEffect(() => {
-    console.log(modifyData, 'modifyData');
     getTransfer()
   }, [])
 
   const getTransfer = async (searchValue) => {
     const params = {
-      code:searchValue,
+      type: 0,
       page: pageInfo.page - 1,
       pageSize: pageInfo.pageSize
     }
@@ -46,10 +42,19 @@ const TrayForm = ({
       });
   };
 
-  const CheckboxChange = async (e) => {
-    const automaticState = e.target.checked
+  const fromLocation = [
+    { id: 1, name: 'J004', value: 'J004', },
+    { id: 2, name: 'J005', value: 'J005', },
+    { id: 3, name: 'J006', value: 'J006', },
+    { id: 4, name: 'J007', value: 'J007', },
+    { id: 5, name: 'J008', value: 'J008', },
+    { id: 6, name: 'J009', value: 'J009', },
+  ]
 
-  }
+  const middle = [
+    { id: 1, name: 'J002', value: 'J002', },
+    { id: 2, name: 'J003', value: 'J003', },
+  ]
 
   return (
     <Form >
@@ -62,92 +67,178 @@ const TrayForm = ({
                 message: getFormattedMsg('SurplusInStorage.placeholder.trayNumber'),
               },
             ],
-            initialValue: modifyData ? modifyData['trayNumber'] : undefined
           })(
-            <Input placeholder={getFormattedMsg('SurplusInStorage.placeholder.orderNumber')} style={{ width: '100%' }} />
+            <Select
+              placeholder={getFormattedMsg('SurplusInStorage.placeholder.trayNumber')}
+              showSearch
+              filterOption={false}
+            >
+              {transferList.map((value, index) => (
+                <Option value={value.id} key={value.id}>
+                  {value.name}
+                </Option>
+              ))}
+            </Select>
           )}
       </Form.Item>
-      <Form.Item {...formItemLayout} label={getFormattedMsg('SurplusInStorage.label.orderNumber')}>
+      <Form.Item {...formItemLayout} label={"切割机"}>
         {
-          getFieldDecorator('orderNumber', {
+          getFieldDecorator('cuttingMachine', {
             rules: [
               {
                 required: true,
-                message: getFormattedMsg('SurplusInStorage.placeholder.orderNumber'),
+                message: '请选择切割机',
               },
             ],
-            initialValue: modifyData ? modifyData['orderNumber'] : ''
-          })(<Input placeholder={getFormattedMsg('SurplusInStorage.placeholder.orderNumber')} style={{ width: '100%' }} />)
+          })(<Input placeholder={'请选择切割机'} style={{ width: '100%' }} />)
         }
       </Form.Item>
-      <Form.Item {...formItemLayout} label={getFormattedMsg('SurplusInStorage.label.attributeThree')}>
+      <Form.Item {...formItemLayout} label={'材料编码'}>
         {
-          getFieldDecorator('attributeThree', {
+          getFieldDecorator('materialCode', {
             rules: [
               {
                 required: true,
-                message:getFormattedMsg('SurplusInStorage.placeholder.attributeThree'),
+                message: '请输入材料编码',
               },
             ],
-            initialValue: modifyData&&modifyData['attributeThree'] ? parseInt(modifyData['attributeThree']) : '余料'
-          })(<Input disabled={true}  placeholder={getFormattedMsg('SurplusInStorage.placeholder.attributeThree')} style={{ width: '100%' }} />)
+          })(<Input placeholder={'请输入材料编码'} style={{ width: '100%' }} />)
         }
       </Form.Item>
-      <Form.Item {...formItemLayout} label={getFormattedMsg('SurplusInStorage.label.sortPosition')}>
+      <Form.Item {...formItemLayout} label={'材料名称'}>
         {
-          getFieldDecorator('sortPosition', {
+          getFieldDecorator('materialName', {
             rules: [
               {
                 required: true,
-                message:getFormattedMsg('SurplusInStorage.placeholder.sortPosition'),
+                message: '请输入材料名称',
               },
             ],
-            initialValue: modifyData ? parseInt(modifyData['sortPosition']) : undefined
+          })(<Input placeholder={'请输入材料名称'} style={{ width: '100%' }} />)
+        }
+      </Form.Item>
+      <Form.Item {...formItemLayout} label={'材料大小 X'}>
+        {
+          getFieldDecorator('materialSizeX', {
+            rules: [
+              {
+                required: true,
+                message: '请输入材料大小 X',
+              },
+            ],
+          })(<Input placeholder={'请输入材料大小 X'} style={{ width: '100%' }} />)
+        }
+      </Form.Item>
+      <Form.Item {...formItemLayout} label={'材料大小 Y'}>
+        {
+          getFieldDecorator('materialSizeY', {
+            rules: [
+              {
+                required: true,
+                message: '请输入材料大小 Y',
+              },
+            ],
+          })(<Input placeholder={'请输入材料大小 Y'} style={{ width: '100%' }} />)
+        }
+      </Form.Item>
+      <Form.Item {...formItemLayout} label={'材料规格'}>
+        {
+          getFieldDecorator('materialSpecs', {
+            rules: [
+              {
+                required: true,
+                message: '请输入材料规格',
+              },
+            ],
+          })(<Input placeholder={'请输入材料规格'} style={{ width: '100%' }} />)
+        }
+      </Form.Item>
+      <Form.Item {...formItemLayout} label={'材料厚度'}>
+        {
+          getFieldDecorator('materialThickness', {
+            rules: [
+              {
+                required: true,
+                message: '请输入材料厚度',
+              },
+            ],
+          })(<Input placeholder={'请输入材料厚度'} style={{ width: '100%' }} />)
+        }
+      </Form.Item>
+      <Form.Item {...formItemLayout} label={'出库总数量'}>
+        {
+          getFieldDecorator('quantity', {
+            rules: [
+              {
+                required: true,
+                message: '请输入出库总数量',
+              },
+            ],
+          })(<Input placeholder={'请输入出库总数量'} style={{ width: '100%' }} />)
+        }
+      </Form.Item>
+      <Form.Item {...formItemLayout} label={'起始位置'}>
+        {
+          getFieldDecorator('fromLocation', {
+            rules: [
+              {
+                required: true,
+                message: '请输入起始位置',
+              },
+            ],
           })(
             <Select
-            placeholder={getFormattedMsg('SurplusInStorage.placeholder.sortPosition')}
-            showSearch
-            filterOption={false}
-            // mode="multiple"
-          >
-            {sortPositions.map((value, index) => (
-              <Option value={value.id} key={value.id}>
-                {value.name}
-              </Option>
-            ))}
-          </Select>
+              placeholder={'请输入起始位置'}
+              showSearch
+              filterOption={false}
+            >
+              {fromLocation.map((value, index) => (
+                <Option value={value.value} key={value.id}>
+                  {value.name}
+                </Option>
+              ))}
+            </Select>
           )
         }
       </Form.Item>
-      <Form.Item {...formItemLayout} label={getFormattedMsg('SurplusInStorage.label.dockingPoint')}>
+      <Form.Item {...formItemLayout} label={'中间位置'}>
         {
-          getFieldDecorator('dockingPoint', {
+          getFieldDecorator('middle', {
             rules: [
               {
                 required: true,
-                message:getFormattedMsg('SurplusInStorage.placeholder.dockingPoint'),
+                message: '请输入中间位置',
               },
             ],
-            initialValue: modifyData ? parseInt(modifyData['dockingPoint'])  : undefined
           })(
             <Select
-            placeholder={getFormattedMsg('SurplusInStorage.placeholder.dockingPoint')}
-            showSearch
-            filterOption={false}
-            // mode="multiple"
-          >
-            {dockingPoints.map((value, index) => (
-              <Option value={value.id} key={value.id}>
-                {value.name}
-              </Option>
-            ))}
-          </Select>
+              placeholder={'请输入中间位置'}
+              showSearch
+              filterOption={false}
+            >
+              {middle.map((value, index) => (
+                <Option value={value.value} key={value.id}>
+                  {value.name}
+                </Option>
+              ))}
+            </Select>
           )
         }
       </Form.Item>
-     
+      <Form.Item {...formItemLayout} label={'目标位置'}>
+        {
+          getFieldDecorator('toLocation', {
+            rules: [
+              {
+                required: true,
+                message: '请输入目标位置',
+              },
+            ],
+          })(<Input placeholder={'请输入目标位置'} style={{ width: '100%' }} />)
+        }
+      </Form.Item>
     </Form>
   )
 }
 
-export default Form.create()(TrayForm)
+export default Form.create()(AddForm)

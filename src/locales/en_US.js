@@ -11,16 +11,14 @@ const RawMaterialDeliveryOrderManagement = require('./RawMaterialDeliveryOrderMa
 const SemiFinishedWarehousingReceipt = require('./SemiFinishedWarehousingReceipt').en_US;
 const SemiFinisheDeliveryPalletSelection = require('./SemiFinisheDeliveryPalletSelection').en_US;
 const BendingMachineConfiguration = require('./BendingMachineConfiguration').en_US;
-const TransportSystem = require('./TransportSystem').en_US;
 const TaskOverview = require('./TaskOverview').en_US;
-const ReservoirPLC = require('./ReservoirPLC').en_US;
 const AgvManagement = require('./AgvManagement').en_US;
-const UpAndDown = require('./UpAndDown').en_US;
 const PalletManagement = require('./PalletManagement').en_US;
 const global = require('./global').en_US;
 const newWaresLocation = require('./newWaresLocation').en_US;
 const SurplusInStorage = require('./SurplusInStorage').en_US;
 const SemiFinishedReturn = require('./SemiFinishedReturn').en_US;
+const TaskTransport = require('./TaskTransport').en_US;
 
 module.exports = {
   user,
@@ -36,14 +34,12 @@ module.exports = {
   SemiFinishedWarehousingReceipt,
   SemiFinisheDeliveryPalletSelection,
   BendingMachineConfiguration,
-  TransportSystem,
   TaskOverview,
-  ReservoirPLC,
   AgvManagement,
-  UpAndDown,
   PalletManagement,
   global,
   newWaresLocation,
   SurplusInStorage,
   SemiFinishedReturn,
+  TaskTransport
 };

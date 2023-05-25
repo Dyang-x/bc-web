@@ -13,14 +13,12 @@ const { showTotal } = page
 const { Option } = Select;
 
 const Index = ({ taskKind }) => {
-  const [workOrderList, setWorkOrderList] = useState([]);
-
   const [tableData, setTableData] = useState([]);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [totalPage, setTotalPage] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [searchValue, setSearchValue] = useState({ taskKind: 1 }); //库区转运
+  const [searchValue, setSearchValue] = useState({ taskKind: taskKind }); 
   const [nowTab, setNowTab] = useState(1);
   const [adjustModalVis, setAdjustModalVis] = useState(false);
   const [adjustModalData, setAdjustModalData] = useState({});
@@ -30,20 +28,16 @@ const Index = ({ taskKind }) => {
     loadData(page, pageSize, { ...searchValue, taskState: nowTab });
   }, []);
 
-  useEffect(() => {
-
-  }, [workOrderList]);
-
   const columns = useMemo(() => {
     return [
       {
-        title: getFormattedMsg('ReservoirPLC.title.taskCode'),
+        title: getFormattedMsg('TaskTransport.title.taskCode'),
         dataIndex: 'taskCode',
         key: 'taskCode',
         align: 'center',
       },
       {
-        title: getFormattedMsg('ReservoirPLC.title.taskType'),
+        title: getFormattedMsg('TaskTransport.title.taskType'),
         dataIndex: 'taskType',
         key: 'taskType',
         align: 'center',
@@ -54,76 +48,64 @@ const Index = ({ taskKind }) => {
           return taskType[text - 1].name
         }
       },
-      // {
-      //   title: getFormattedMsg('ReservoirPLC.title.taskKind'),
-      //   dataIndex: 'taskKind',
-      //   key: 'taskKind',
-      //   align: 'center',
-      //   render: (text, recoed, index) => {
-      //     if (text == null) {
-      //       return
-      //     }
-      //     return taskKind[text - 1].name
-      //   }
-      // },
       {
-        title: '托盘号',
+        title: getFormattedMsg('TaskTransport.title.transferCode'),
         dataIndex: 'transferCode',
         key: 'transferCode',
         align: 'center',
       },
       {
-        title: '起始位置',
+        title: getFormattedMsg('TaskTransport.title.fromLocation'),
         dataIndex: 'fromLocation',
         key: 'fromLocation',
         align: 'center',
       },
       {
-        title: '中间位置',
+        title: getFormattedMsg('TaskTransport.title.middle'),
         dataIndex: 'middle',
         key: 'middle',
         align: 'center',
       },
       {
-        title: '目标位置',
+        title: getFormattedMsg('TaskTransport.title.toLocation'),
         dataIndex: 'toLocation',
         key: 'toLocation',
         align: 'center',
       },
       {
-        title: '优先级',
+        title: getFormattedMsg('TaskTransport.title.priority'),
         dataIndex: 'priority',
         key: 'priority',
         align: 'center',
       },
       {
-        title: getFormattedMsg('ReservoirPLC.title.operation'),
+        title: getFormattedMsg('TaskTransport.title.operation'),
         key: 'opt',
         align: 'center',
         render: (_, record) => [
           nowTab == 1 && [
-            <a key="adjust" onClick={() => handleAdjust(record)}>{getFormattedMsg('ReservoirPLC.button.adjust')}</a>,
+            <a key="adjust" onClick={() => handleAdjust(record)}>{getFormattedMsg('TaskTransport.button.adjust')}</a>,
             <Divider key="divider1" type="vertical" />,
             <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)} >
-              {getFormattedMsg('ReservoirPLC.button.delete')}
+              {getFormattedMsg('TaskTransport.button.delete')}
             </a>
           ],
           nowTab == 2 && [
             <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
-              {getFormattedMsg('ReservoirPLC.button.pause')}
+              {getFormattedMsg('TaskTransport.button.pause')}
             </a>,
             <Divider key="divider2" type="vertical" />,
-            <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('ReservoirPLC.button.complete')}</a>
+            <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskTransport.button.complete')}</a>
           ],
           nowTab == 3 && [
-            <a key="continue" onClick={() => handleContinue(record)} >{getFormattedMsg('ReservoirPLC.button.continue')}</a>
+            <a key="continue" onClick={() => handleContinue(record)} >{getFormattedMsg('TaskTransport.button.continue')}</a>
           ],
           nowTab == 5 && [
             <a key="rollback" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleRollback(record)} >
-              {getFormattedMsg('ReservoirPLC.button.rollback')}
+              {getFormattedMsg('TaskTransport.button.rollback')}
             </a>,
             <Divider key="divider3" type="vertical" />,
-            <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('ReservoirPLC.button.complete')}</a>
+            <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskTransport.button.complete')}</a>
           ],
         ],
         width: 300,
@@ -173,10 +155,10 @@ const Index = ({ taskKind }) => {
     if (data.taskType == undefined) { delete data.taskType }
     if (data.oderCode == "") { delete data.oderCode }
     const params = { ...data }
-    setSearchValue({ ...params, taskKind: 1 });
+    setSearchValue({ ...params, taskKind: taskKind });
     setPage(1);
     setPageSize(10);
-    loadData(1, 10, { ...params, taskKind: 1, taskState: nowTab });
+    loadData(1, 10, { ...params, taskKind: taskKind, taskState: nowTab });
   };
 
   const handleAdjust = (record) => {
@@ -191,10 +173,10 @@ const Index = ({ taskKind }) => {
 
   const modalAdjustFoot = () => [
     <Button key="confirm" type="primary" onClick={HandleSaveAdjust}>
-      {getFormattedMsg('ReservoirPLC.button.confirm')}
+      {getFormattedMsg('TaskTransport.button.confirm')}
     </Button>,
     <Button key="cancel" onClick={handleCancelAdjust}>
-      {getFormattedMsg('ReservoirPLC.button.cancel')}
+      {getFormattedMsg('TaskTransport.button.cancel')}
     </Button>
   ]
 
@@ -206,13 +188,13 @@ const Index = ({ taskKind }) => {
       await TaskTranSportServices.adjustPriority(adjustModalData.id, params.priority)
         .then(res => {
           notification.success({
-            message: getFormattedMsg('ReservoirPLC.message.adjustSuccess'),
+            message: getFormattedMsg('TaskTransport.message.adjustSuccess'),
           })
           loadData(page, pageSize, { ...searchValue, taskState: nowTab });
         })
         .catch(err => {
           notification.warning({
-            message: getFormattedMsg('ReservoirPLC.message.adjustFailure'),
+            message: getFormattedMsg('TaskTransport.message.adjustFailure'),
             description: err.message
           })
         })
@@ -225,13 +207,13 @@ const Index = ({ taskKind }) => {
     await TaskTranSportServices.suspendTask(record.id)
       .then(res => {
         notification.success({
-          message: getFormattedMsg('ReservoirPLC.message.pauseSuccess'),
+          message: getFormattedMsg('TaskTransport.message.pauseSuccess'),
         })
         loadData(page, pageSize, { ...searchValue, taskState: nowTab });
       })
       .catch(err => {
         notification.warning({
-          message: getFormattedMsg('ReservoirPLC.message.pauseFailure'),
+          message: getFormattedMsg('TaskTransport.message.pauseFailure'),
           description: err.message
         })
       })
@@ -239,19 +221,19 @@ const Index = ({ taskKind }) => {
 
   const handleDelete = (record) => {
     Modal.confirm({
-      title: getFormattedMsg('ReservoirPLC.title.delete'),
+      title: getFormattedMsg('TaskTransport.title.delete'),
       okType: 'danger',
       onOk: async () => {
         await TaskTranSportServices.deleteById(record.id)
           .then(res => {
             notification.success({
-              message: getFormattedMsg('ReservoirPLC.message.deleteSuccess'),
+              message: getFormattedMsg('TaskTransport.message.deleteSuccess'),
             })
             loadData(page, pageSize, { ...searchValue, taskState: nowTab });
           })
           .catch(err => {
             notification.warning({
-              message: getFormattedMsg('ReservoirPLC.message.deleteFailure'),
+              message: getFormattedMsg('TaskTransport.message.deleteFailure'),
               description: err.message
             })
           })
@@ -263,13 +245,13 @@ const Index = ({ taskKind }) => {
     await TaskTranSportServices.continueTask(record.id)
       .then(res => {
         notification.success({
-          message: getFormattedMsg('ReservoirPLC.message.continueSuccess'),
+          message: getFormattedMsg('TaskTransport.message.continueSuccess'),
         })
         loadData(page, pageSize, { ...searchValue, taskState: nowTab });
       })
       .catch(err => {
         notification.warning({
-          message: getFormattedMsg('ReservoirPLC.message.continueFailure'),
+          message: getFormattedMsg('TaskTransport.message.continueFailure'),
           description: err.message
         })
       })
@@ -277,19 +259,19 @@ const Index = ({ taskKind }) => {
 
   const handleRollback = (record) => {
     Modal.confirm({
-      title: getFormattedMsg('ReservoirPLC.title.rollback'),
+      title: getFormattedMsg('TaskTransport.title.rollback'),
       okType: 'danger',
       onOk: async () => {
         await TaskTranSportServices.backTask(record.id)
           .then(res => {
             notification.success({
-              message: getFormattedMsg('ReservoirPLC.message.rollbackSuccess'),
+              message: getFormattedMsg('TaskTransport.message.rollbackSuccess'),
             })
             loadData(page, pageSize, { ...searchValue, taskState: nowTab });
           })
           .catch(err => {
             notification.warning({
-              message: getFormattedMsg('ReservoirPLC.message.rollbackFailure'),
+              message: getFormattedMsg('TaskTransport.message.rollbackFailure'),
               description: err.message
             })
           })
@@ -299,18 +281,18 @@ const Index = ({ taskKind }) => {
 
   const handleComplete = (record) => {
     Modal.confirm({
-      title: getFormattedMsg('ReservoirPLC.title.complete'),
+      title: getFormattedMsg('TaskTransport.title.complete'),
       onOk: async () => {
         await TaskTranSportServices.finishTask(record.id)
           .then(res => {
             notification.success({
-              message: getFormattedMsg('ReservoirPLC.message.completeSuccess'),
+              message: getFormattedMsg('TaskTransport.message.completeSuccess'),
             })
             loadData(page, pageSize, { ...searchValue, taskState: nowTab });
           })
           .catch(err => {
             notification.warning({
-              message: getFormattedMsg('ReservoirPLC.message.completeFailure'),
+              message: getFormattedMsg('TaskTransport.message.completeFailure'),
               description: err.message
             })
           })
@@ -359,19 +341,19 @@ const Index = ({ taskKind }) => {
         <Pane height={'auto'}>
           <SearchForm onSearch={handleSearch}>
             <SearchForm.Item
-              label={getFormattedMsg('ReservoirPLC.label.taskCode')}
+              label={getFormattedMsg('TaskTransport.label.taskCode')}
               name="taskCode"
             >
               <Input
-                placeholder={getFormattedMsg('ReservoirPLC.placeholder.taskCode')}
+                placeholder={getFormattedMsg('TaskTransport.placeholder.taskCode')}
               />
             </SearchForm.Item>
             <SearchForm.Item
-              label={getFormattedMsg('ReservoirPLC.label.taskType')}
+              label={getFormattedMsg('TaskTransport.label.taskType')}
               name="taskType"
             >
               <Select
-                placeholder={getFormattedMsg('ReservoirPLC.placeholder.taskType')}
+                placeholder={getFormattedMsg('TaskTransport.placeholder.taskType')}
               >
                 {taskType.map((value, index) => (
                   <Option value={value.id} key={value.id}>
@@ -379,28 +361,6 @@ const Index = ({ taskKind }) => {
                   </Option>
                 ))}
               </Select>
-            </SearchForm.Item>
-            <SearchForm.Item
-              label={getFormattedMsg('ReservoirPLC.label.taskKind')}
-              name="taskKind"
-            >
-              <Select
-                placeholder={getFormattedMsg('ReservoirPLC.placeholder.taskKind')}
-              >
-                {taskKind.map((value, index) => (
-                  <Option value={value.id} key={value.id}>
-                    {value.name}
-                  </Option>
-                ))}
-              </Select>
-            </SearchForm.Item>
-            <SearchForm.Item
-              label={getFormattedMsg('ReservoirPLC.label.orderCode')}
-              name="oderCode"
-            >
-              <Input
-                placeholder={getFormattedMsg('ReservoirPLC.placeholder.orderCode')}
-              />
             </SearchForm.Item>
           </SearchForm>
         </Pane>
@@ -412,7 +372,7 @@ const Index = ({ taskKind }) => {
           }}
         >
           <Pane.Tab
-            title={getFormattedMsg('ReservoirPLC.title.lineTab')}
+            title={getFormattedMsg('TaskTransport.title.lineTab')}
             name='1'
             isComponent
             settingButton={<SettingButton />}
@@ -421,7 +381,7 @@ const Index = ({ taskKind }) => {
             {renderTable}
           </Pane.Tab>
           <Pane.Tab
-            title={getFormattedMsg('ReservoirPLC.title.executionTab')}
+            title={getFormattedMsg('TaskTransport.title.executionTab')}
             name={2}
             isComponent
             settingButton={<SettingButton />}
@@ -430,7 +390,7 @@ const Index = ({ taskKind }) => {
             {renderTable}
           </Pane.Tab>
           <Pane.Tab
-            title={getFormattedMsg('ReservoirPLC.title.pauseTab')}
+            title={getFormattedMsg('TaskTransport.title.pauseTab')}
             name={3}
             isComponent
             settingButton={<SettingButton />}
@@ -439,7 +399,7 @@ const Index = ({ taskKind }) => {
             {renderTable}
           </Pane.Tab>
           <Pane.Tab
-            title={getFormattedMsg('ReservoirPLC.title.completeTab')}
+            title={getFormattedMsg('TaskTransport.title.completeTab')}
             name={4}
             settingButton={<SettingButton />}
             onRefresh={reFreshFunc()}
@@ -448,7 +408,7 @@ const Index = ({ taskKind }) => {
             {renderTable}
           </Pane.Tab>
           <Pane.Tab
-            title={getFormattedMsg('ReservoirPLC.title.anomalyTab')}
+            title={getFormattedMsg('TaskTransport.title.anomalyTab')}
             name={5}
             settingButton={<SettingButton />}
             onRefresh={reFreshFunc()}

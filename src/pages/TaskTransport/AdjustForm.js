@@ -19,23 +19,23 @@ const AdjustForm = ({
 
   return (
     <Form >
-      <Form.Item {...formItemLayout} label={getFormattedMsg('TaskOverview.label.taskCode')}>
+      <Form.Item {...formItemLayout} label={getFormattedMsg('TaskTransport.label.taskCode')}>
         <Input disabled={true} value={formData.taskCode} />
       </Form.Item>
-      <Form.Item {...formItemLayout} label={getFormattedMsg('TaskOverview.label.priorityOld')}>
+      <Form.Item {...formItemLayout} label={getFormattedMsg('TaskTransport.label.priorityOld')}>
         <Input disabled={true} value={formData.priority} />
       </Form.Item>
-      <Form.Item {...formItemLayout} label={getFormattedMsg('TaskOverview.label.priority')}>
+      <Form.Item {...formItemLayout} label={getFormattedMsg('TaskTransport.label.priority')}>
         {getFieldDecorator('priority', {
           rules: [
             {
               required: true,
-              message: getFormattedMsg('TaskOverview.message.priority')
+              message: getFormattedMsg('TaskTransport.message.priority')
             }
           ]
         })(
           <Input
-            placeholder={getFormattedMsg('TaskOverview.placeholder.priority')}
+            placeholder={getFormattedMsg('TaskTransport.placeholder.priority')}
           />
         )}
       </Form.Item>

@@ -1,10 +1,3 @@
-import Example from '~/pages/Example';
-import MaterialForCompent from '~/pages/Example';
-import Bom from '~/pages/Bom';
-import Equipment from '~/pages/Equipment';
-import EquipmentDetails from '~/pages/Equipment/Details';
-
-
 //备料位托盘管理
 import PalletManagementStockLevel from '~/pages/PalletManagementStockLevel';
 //接驳口托盘管理
@@ -13,22 +6,22 @@ import PalletManagementConnectionPort from '~/pages/PalletManagementConnectionPo
 import PalletManagement from '~/pages/PalletManagement';
 
 //空托盘入库
-import EmptyPalletsWarehousing from '~/pages/EmptyPalletsWarehousing';
+import EmptyPalletWarehousing from '~/pages/EmptyPalletWarehousing';
 //空托盘出库
 import EmptyPalletDelivery from '~/pages/EmptyPalletDelivery';
 
 //原材料入库收料单
-import RawMaterialWarehousingReceipt from '~/pages/RawMaterialWarehousingReceipt';
+import RawMaterialWarehousing from '~/pages/RawMaterialWarehousing';
 //原材料出库订单管理
-import RawMaterialDeliveryOrderManagement from '~/pages/RawMaterialDeliveryOrderManagement';
+import RawMaterialDelivery from '~/pages/RawMaterialDelivery';
 
 //半成品入库收料单
-import SemiFinishedWarehousingReceipt from '~/pages/SemiFinishedWarehousingReceipt';
+import SemiFinishedWarehousing from '~/pages/SemiFinishedWarehousing';
 //半成品出库托盘拣选
-import SemiFinisheDeliveryPalletSelection from '~/pages/SemiFinisheDeliveryPalletSelection';
+import SemiFinisheDelivery from '~/pages/SemiFinisheDelivery';
 
 //折弯机配置
-import BendingMachineConfiguration from '~/pages/BendingMachineConfiguration';
+import BendingConfiguration from '~/pages/BendingConfiguration';
 
 //转运系统
 import TransportSystem from '~/pages/TransportSystem';
@@ -48,9 +41,6 @@ import NewWaresLocation from '~/pages/NewWaresLocation';
 //余料入库
 import SurplusInStorage from '~/pages/SurplusInStorage';
 
-//余料入库
-import SemiFinishedReturn from '~/pages/SemiFinishedReturn';
-
 export default [
 
   {
@@ -67,7 +57,7 @@ export default [
   },
   {
     path: '/empty-pallets-warehousing',
-    component: EmptyPalletsWarehousing
+    component: EmptyPalletWarehousing
   },
   {
     path: '/empty-pallets-delivery',
@@ -75,23 +65,23 @@ export default [
   },
   {
     path: '/raw-material-warehousing-receipt',
-    component: RawMaterialWarehousingReceipt
+    component: RawMaterialWarehousing
   },
   {
     path: '/raw-material-delivery-order-management',
-    component: RawMaterialDeliveryOrderManagement
+    component: RawMaterialDelivery
   },
   {
     path: '/semi-finished-warehousing-receipt',
-    component: SemiFinishedWarehousingReceipt
+    component: SemiFinishedWarehousing
   },
   {
     path: '/semi-finishe-delivery-pallet-selection',
-    component: SemiFinisheDeliveryPalletSelection
+    component: SemiFinisheDelivery
   },
   {
     path: '/bending-machine-configuration',
-    component: BendingMachineConfiguration
+    component: BendingConfiguration
   },
   {
     path: '/transport-system',
@@ -120,10 +110,6 @@ export default [
   {
     path: '/surplus_putInStorage',
     component: SurplusInStorage
-  },
-  {
-    path: '/semi_finishe_return',
-    component: SemiFinishedReturn
   },
   
   // 以下是示例功能代码， 正式开发时请删除

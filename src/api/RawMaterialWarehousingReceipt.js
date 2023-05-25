@@ -28,19 +28,19 @@ class RawMaterialWarehousingReceipt extends Service {
     }
   }
 
-    //分页查询接口
-    async getByQuery(data) {
-      try {
-        return await this.post(`${appName}/RawMaterialInWarehouse/getByquery`, {
-          ...data,
-          direction: false,
-          sort: true,
-          sortCol: 'id'
-        });
-      } catch (error) {
-        throw new Error(error);
-      }
+  //分页查询接口
+  async getByQuery(data) {
+    try {
+      return await this.post(`${appName}/RawMaterialInWarehouse/getByquery`, {
+        ...data,
+        direction: false,
+        sort: true,
+        sortCol: 'id'
+      });
+    } catch (error) {
+      throw new Error(error);
     }
+  }
 
   // 称重
   async getWeigh(id) {
@@ -51,19 +51,19 @@ class RawMaterialWarehousingReceipt extends Service {
     }
   }
 
-      // 手动上架(receiptNumber入库单号,trayNumber托盘号)
-      async handInStore(receiptNumber,trayNumber) {
-        try {
-          return await this.put(`${appName}/RawMaterialInWarehouse/handInStore?receiptNumber=${receiptNumber}&trayNumber=${trayNumber}`);
-        } catch (error) {
-          throw new Error(error);
-        }
-      }
+  // 手动上架(receiptNumber入库单号,trayNumber托盘号)
+  async handInStore(receiptNumber, trayNumber) {
+    try {
+      return await this.put(`${appName}/RawMaterialInWarehouse/handInStore?receiptNumber=${receiptNumber}&trayNumber=${trayNumber}`);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 
   // 入库
   async inStore(data) {
     try {
-      return await this.get(`${appName}/RawMaterialInWarehouse/inStore/${data}` );
+      return await this.post(`${appName}/RawMaterialInWarehouse/inStore/${data}`);
     } catch (error) {
       throw new Error(error);
     }

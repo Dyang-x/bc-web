@@ -1,16 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Table,
-  Divider,
-  Drawer,
-  notification,
-  Modal,
-  Pagination,
-  Tooltip,
-  HLayout,
-  Button
-} from '@hvisions/h-ui';
+import { Table, Divider, Drawer, notification, Modal, Pagination, Tooltip, HLayout, Button } from '@hvisions/h-ui';
 import MaterialService from '~/api/material';
 import { ExportButton, ImportButton } from '~/components';
 import SearchForm from './SearchForm';
@@ -143,35 +133,35 @@ class Material extends Component {
     ];
   }
 
-    // 初始化物料表格数据
-    loadData = (page = 1, pageSiz = 10) => {
-      const { searchTerm, pageSize } = this.state;
-      if (pageSiz == 10) {
-        pageSiz = pageSize;
-      }
-      try {
-        MaterialService.getMaterial(searchTerm, page, pageSiz).then(data => {
-          this.setState({ list: data.content, total: data.totalElements });
-        });
-      } catch (err) {
-        notification.warning({
-          message: getFormattedMsg('message.notify.fail'),
-          description: err.message
-        });
-      }
-    };
-
-    // 新增物料侧滑窗口
-    onHandleCreate = () => {
-      this.setState({
-        formData: {},
-        drawerTitle: getFormattedMsg('material.label.materialManage'),
-        visible: true
+  // 初始化物料表格数据
+  loadData = (page = 1, pageSiz = 10) => {
+    const { searchTerm, pageSize } = this.state;
+    if (pageSiz == 10) {
+      pageSiz = pageSize;
+    }
+    try {
+      MaterialService.getMaterial(searchTerm, page, pageSiz).then(data => {
+        this.setState({ list: data.content, total: data.totalElements });
       });
-    };
+    } catch (err) {
+      notification.warning({
+        message: getFormattedMsg('message.notify.fail'),
+        description: err.message
+      });
+    }
+  };
+
+  // 新增物料侧滑窗口
+  onHandleCreate = () => {
+    this.setState({
+      formData: {},
+      drawerTitle: getFormattedMsg('material.label.materialManage'),
+      visible: true
+    });
+  };
 
 
-     // 新增和更新物料信息
+  // 新增和更新物料信息
   onHandleOk = () => {
     const { validateFields } = this.form;
     const { formData } = this.state;

@@ -131,9 +131,11 @@ module.exports = {
   },
   zh_CN: {
     label: {
+      cuttingMachine: '切割机',
       trayNumber: '托盘号',
-      orderNumber: '订单号',
       creationTime: '创建时间',
+
+      orderNumber: '订单号',
       material: '原料',
       receiptNumber: '入库单号',
       attributeOne: '属性1',
@@ -146,7 +148,10 @@ module.exports = {
       required: '是否必填',
     },
     placeholder: {
+      cuttingMachine: '请选择切割机',
       trayNumber: '请输入托盘号',
+      creationTime: '请输入创建时间',
+
       orderNumber: '请输入订单号',
       receiptNumber: '请输入单号',
       attributeOne: '请输入属性1',
@@ -156,6 +161,22 @@ module.exports = {
       dockingPoint: '请输入接驳点',
     },
     title: {
+      trayNumber:'托盘号',
+      cuttingMachine: '切割机',
+      materialCode: '材料编码',
+      materialName: '材料名称',
+      materialSizeX: '材料大小 X',
+      materialSizeY: '材料大小 Y',
+      materialSpecs: '材料规格',
+      materialThickness: '材料厚度',
+      quantity: '出库总数量',
+      fromLocation: '起始位置',
+      middle: '中间位置',
+      toLocation: '目标位置',
+      operation: '操作',
+      tableName: '余料回库单',
+      addOrder: '新增余料回库单',
+
       attributeOne: '属性1',
       attributeTwo: '属性2',
       attributeThree:'属性3',
@@ -167,43 +188,39 @@ module.exports = {
       receiptNumber: '收料单号',
       sortPosition: '分拣位置',
       state: '状态',
-      trayNumber: '托盘号',
       createTime: '创建时间',
       creator: '创建人',
       updateCreator: '修改人',
       updateTime: '修改时间',
-      addOrder: '新增半成品收料单',
 
       lineNumber: '行号',
       associatedNumber: '关联单号',
       number: '单据数量',
-      materialCode: '单据物料编码',
-      materialName: '单据物料名称',
       specifications: '规格',
       actualWeight: '实际重量',
       actualNumber: '实际数量',
       realityMaterialCode: '实际物料编码',
       realityMaterialName: '实际物料名称',
-      operation: '操作',
       location: '库位号',
-      tableName: '半成品收料单',
+
       update: '修改',
       delete: '删除',
     },
     message: {
       addSuccess: '新增成功',
       addFailure: '新增失败',
-      updateSuccess: '修改成功',
-      updateFailure: '修改失败',
       deleteSuccess: '删除成功',
       deleteFailure: '删除失败',
+
+
+      updateSuccess: '修改成功',
+      updateFailure: '修改失败',
       callSuccess: '呼叫成功',
       callFailure: '呼叫失败',
       removedSuccess: '下架成功',
       removalFailure: '下架失败',
       warehousingSuccess: '入库成功',
       warehousingFailure: '入库失败',
-
       trayNumber: '请输入托盘号',
       orderNumber: '请输入订单号',
       attribute1: '请选择属性1',
@@ -233,20 +250,24 @@ module.exports = {
       warehousing: '确认入库？'
     },
     button: {
+      delete: '删除',   
+      save:'保存',
+      cancel:'取消',
+      add: '新增',
+
+
+
+
       callTray: '空托呼叫',
       pickTray: '挑选托盘',
-      add: '新增',
-      warehousing: '回库',
 
+      warehousing: '回库',
       weighing: '称重',
       automatic: '自动下架',
       manual: '手动下架',
       binding: '物料绑定',
-
       update: '修改',
-      delete: '删除',
-      save:'保存',
-      cancel:'取消',
+   
       call: '呼叫',
       takeOff:'下架',
     },

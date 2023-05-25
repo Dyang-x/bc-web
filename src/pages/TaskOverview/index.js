@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useMemo, Fragment, useRef } from 'react';
-import { HVLayout, Button, Spin, Pagination, SearchForm, Select, DatePicker, Divider, Input, Modal } from '@hvisions/h-ui';
+import React, { useEffect, useState, useMemo, useRef } from 'react';
+import { HVLayout, Button, Spin, Pagination, SearchForm, Select, Divider, Input, Modal } from '@hvisions/h-ui';
 import { i18n, page } from '@hvisions/toolkit';
 import { CacheTable } from '~/components';
 import { taskState, taskType } from '~/enum/enum';
@@ -13,7 +13,6 @@ const { showTotal } = page
 const { Option } = Select;
 
 const Index = ({ history }) => {
-  const [workOrderList, setWorkOrderList] = useState([]);
 
   const [tableData, setTableData] = useState([]);
   const [page, setPage] = useState(1);
@@ -30,10 +29,6 @@ const Index = ({ history }) => {
     loadData(page, pageSize, { ...setSearchValue, taskState: nowTab });
   }, []);
 
-  useEffect(() => {
-
-  }, [workOrderList]);
-
   const columns = useMemo(() => {
     return [
       {
@@ -47,7 +42,7 @@ const Index = ({ history }) => {
         dataIndex: 'taskType',
         key: 'taskType',
         align: 'center',
-        render: (text, recoed, index) => {
+        render: (text) => {
           if (text == null) {
             return
           }
@@ -95,7 +90,7 @@ const Index = ({ history }) => {
         dataIndex: 'agvState',
         key: 'agvState',
         align: 'center',
-        render: (text, recoed, index) => {
+        render: (text) => {
           if (text == null) {
             return
           }
@@ -107,7 +102,7 @@ const Index = ({ history }) => {
         dataIndex: 'transportState',
         key: 'transportState',
         align: 'center',
-        render: (text, recoed, index) => {
+        render: (text) => {
           if (text == null) {
             return
           }
@@ -122,8 +117,6 @@ const Index = ({ history }) => {
           nowTab == 1 && [
             <a key="adjust" onClick={() => handleAdjust(record)}>{getFormattedMsg('TaskOverview.button.adjust')}</a>,
             <Divider key="divider1" type="vertical" />,
-            // <a key="pause" onClick={() => handlePause(record)}>{getFormattedMsg('TaskOverview.button.pause')}</a>,
-            // <Divider key="divider2" type="vertical" />,
             <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)} >
               {getFormattedMsg('TaskOverview.button.delete')}
             </a>

@@ -1,29 +1,12 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import {
-  HVLayout,
-  Button,
-  notification,
-  Modal,
-  Divider,
-  Spin,
-  Radio,
-  Pagination,
-  SearchForm,
-  DatePicker,
-  Input,
-  Tooltip,
-  Drawer
-} from '@hvisions/h-ui';
+import {  HVLayout,  Button,  notification,  Modal,  Spin,  Pagination,  SearchForm,  DatePicker,  Input,  Drawer} from '@hvisions/h-ui';
 import { i18n, page } from '@hvisions/toolkit';
-// import styles from './style.scss';
 import { CacheTable } from '~/components';
 import moment from 'moment';
-import { session } from '@hvisions/toolkit';
-import SemiFinishedWarehousingReceiptApi from '~/api/SemiFinishedWarehousingReceipt';
+import SurplusMaterialApi from '~/api/SurplusMaterial';
 import AddOrUpdateForm from './AddOrUpdateForm';
-import { forIn, isEmpty, map } from 'lodash';
-// import { attributeOne,attributeTwo,dockingPoints,sortPositions } from '~/enum/semiFinished';
-import { attributeOne, attributeTwo, dockingPoints, sortPositions } from '~/enum/enum';
+import { dockingPoints, sortPositions } from '~/enum/enum';
+
 
 const getFormattedMsg = i18n.getFormattedMsg;
 const { RangePicker } = DatePicker;
@@ -37,55 +20,14 @@ const SurplusInStorage = ({ history }) => {
   const [totalPage, setTotalPage] = useState(0);
   const [loading, setLoading] = useState(false);
   const [searchValue, setSearchValue] = useState(null);
-  const state = {
-    0: '新建',
-    1: '转运中',
-    2: '已完成'
-  };
-  const [selectedstatus, setSelectedstatus] = useState('0');
-
   const [addVis, setAddVis] = useState(false);
   const addForm = useRef();
 
-  const [updateVis, setUpdateVis] = useState(false);
-  const [updateData, setUpdateData] = useState({});
-  const updateForm = useRef();
-
   useEffect(() => {
-    loadData(page, pageSize, { ...setSearchValue, state: selectedstatus });
+    loadData(page, pageSize, { ...setSearchValue });
   }, []);
 
   const columns = [
-    {
-      title: getFormattedMsg('SurplusInStorage.title.receiptNumber'),
-      dataIndex: 'receiptNumber',
-      key: 'receiptNumber',
-      align: 'center'
-    },
-    {
-      title: getFormattedMsg('SurplusInStorage.title.createTime'),
-      dataIndex: 'createTime',
-      key: 'createTime',
-      align: 'center'
-    },
-    {
-      title: getFormattedMsg('SurplusInStorage.title.creator'),
-      dataIndex: 'creator',
-      key: 'creator',
-      align: 'center'
-    },
-    {
-      title: getFormattedMsg('SurplusInStorage.title.updateTime'),
-      dataIndex: 'updateTime',
-      key: 'updateTime',
-      align: 'center'
-    },
-    {
-      title: getFormattedMsg('SurplusInStorage.title.updateCreator'),
-      dataIndex: 'updateCreator',
-      key: 'updateCreator',
-      align: 'center'
-    },
     {
       title: getFormattedMsg('SurplusInStorage.title.trayNumber'),
       dataIndex: 'trayNumber',
@@ -93,73 +35,70 @@ const SurplusInStorage = ({ history }) => {
       align: 'center'
     },
     {
-      title: getFormattedMsg('SurplusInStorage.title.orderCount'),
-      dataIndex: 'orderCount',
-      key: 'orderCount',
-      align: 'center',
-      render: (text, record, index) => {
-        const dataSource = [
-          {
-            id: 1,
-            trayNumber: 'J004004004004004004',
-            location: 'J004',
-            attributeTwo: 'J004',
-            pickingPoint: 'J004'
-          }
-        ];
-        const table = (
-          <div>
-            {' '}
-            <ul style={{ paddingLeft: 15, marginBottom: '0px' }}>
-              {' '}
-              {dataSource.map(item => (
-                <li key={item.id}>{item.trayNumber}</li>
-              ))}{' '}
-            </ul>{' '}
-          </div>
-        );
-        return (
-          <Tooltip placement="rightTop" title={table} arrowPointAtCenter>
-            <span>{text}</span>
-          </Tooltip>
-        );
-      }
+      title: getFormattedMsg('SurplusInStorage.title.cuttingMachine'),
+      dataIndex: 'cuttingMachine',
+      key: 'cuttingMachine',
+      align: 'center'
     },
     {
-      title: getFormattedMsg('SurplusInStorage.title.attributeThree'),
-      dataIndex: 'attributeThree',
-      key: 'attributeThree',
-      align: 'center',
-      render: (text, record, index) => {
-        if (text == null) {
-          return;
-        }
-        return attributeTwo[text - 1].name;
-      }
+      title: getFormattedMsg('SurplusInStorage.title.materialCode'),
+      dataIndex: 'materialCode',
+      key: 'materialCode',
+      align: 'center'
     },
     {
-      title: getFormattedMsg('SurplusInStorage.title.dockingPoint'),
-      dataIndex: 'dockingPoint',
-      key: 'dockingPoint',
-      align: 'center',
-      render: (text, record, index) => {
-        if (text == null) {
-          return;
-        }
-        return dockingPoints[text - 1].name;
-      }
+      title: getFormattedMsg('SurplusInStorage.title.materialName'),
+      dataIndex: 'materialName',
+      key: 'materialName',
+      align: 'center'
     },
     {
-      title: getFormattedMsg('SurplusInStorage.title.sortPosition'),
-      dataIndex: 'sortPosition',
-      key: 'sortPosition',
-      align: 'center',
-      render: (text, record, index) => {
-        if (text == null) {
-          return;
-        }
-        return sortPositions[text - 1].name;
-      }
+      title: getFormattedMsg('SurplusInStorage.title.materialSizeX'),
+      dataIndex: 'materialSizeX',
+      key: 'materialSizeX',
+      align: 'center'
+    },
+    {
+      title:getFormattedMsg('SurplusInStorage.title.materialSizeY'),
+      dataIndex: 'materialSizeY',
+      key: 'materialSizeY',
+      align: 'center'
+    },
+    {
+      title: getFormattedMsg('SurplusInStorage.title.materialSpecs'),
+      dataIndex: 'materialSpecs',
+      key: 'materialSpecs',
+      align: 'center'
+    },
+    {
+      title: getFormattedMsg('SurplusInStorage.title.materialThickness'),
+      dataIndex: 'materialThickness',
+      key: 'materialThickness',
+      align: 'center'
+    },
+    {
+      title: getFormattedMsg('SurplusInStorage.title.quantity'),
+      dataIndex: 'quantity',
+      key: 'quantity',
+      align: 'center'
+    },
+    {
+      title: getFormattedMsg('SurplusInStorage.title.fromLocation'),
+      dataIndex: 'fromLocation',
+      key: 'fromLocation',
+      align: 'center'
+    },
+    {
+      title: getFormattedMsg('SurplusInStorage.title.middle'),
+      dataIndex: 'middle',
+      key: 'middle',
+      align: 'center'
+    },
+    {
+      title: getFormattedMsg('SurplusInStorage.title.toLocation'),
+      dataIndex: 'toLocation',
+      key: 'toLocation',
+      align: 'center'
     },
     {
       title: getFormattedMsg('SurplusInStorage.title.operation'),
@@ -167,10 +106,6 @@ const SurplusInStorage = ({ history }) => {
       align: 'center',
       width: 200,
       render: (_, record) => [
-        <a key="update" onClick={() => handleUpdate(record)}>
-          {getFormattedMsg('SurplusInStorage.button.update')}
-        </a>,
-        <Divider key="divider1" type="vertical" />,
         <a
           key="delete"
           style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }}
@@ -178,10 +113,6 @@ const SurplusInStorage = ({ history }) => {
         >
           {getFormattedMsg('SurplusInStorage.button.delete')}
         </a>,
-        <Divider key="divider2" type="vertical" />,
-        <a key="warehousing" type="primary" onClick={() => handleWarehousing(record)}>
-          {getFormattedMsg('SurplusInStorage.button.warehousing')}
-        </a>
       ]
     }
   ];
@@ -189,7 +120,7 @@ const SurplusInStorage = ({ history }) => {
   //查询页面数据
   const loadData = async (page, pageSize, searchValue) => {
     setLoading(true);
-    SemiFinishedWarehousingReceiptApi.getByQuery({ ...searchValue, page: page - 1, pageSize })
+    SurplusMaterialApi.getByQuery({ ...searchValue, page: page - 1, pageSize })
       .then(res => {
         setTableData(res.content);
         setTotalPage(res.totalElements);
@@ -208,49 +139,35 @@ const SurplusInStorage = ({ history }) => {
 
   //刷新按钮
   const reFreshFunc = () => {
-    return () => loadData(page, pageSize, { ...searchValue, state: selectedstatus });
+    return () => loadData(page, pageSize, { ...searchValue });
   };
 
   const onShowSizeChange = (p, s) => {
-    loadData(p, s, { ...searchValue, state: selectedstatus });
-    // loadData(p, s, { ...setSearchValue });
+    loadData(p, s, { ...searchValue });
     setPageSize(s);
   };
 
   const pageChange = (p, s) => {
-    // loadData(p, s, { ...setSearchValue });
-    loadData(p, s, { ...searchValue, state: selectedstatus });
+    loadData(p, s, { ...searchValue });
     setPage(p);
-  };
-
-  const handleChangeStatus = e => {
-    setTableData([]);
-    setSelectedstatus(e.target.value);
-    setPage(1);
-    // setPageSize(10);
-    loadData(1, pageSize, { ...searchValue, state: e.target.value });
   };
 
   //查询按钮
   const handleSearch = data => {
     const params = { ...data };
-
     if (params.creationTime && params.creationTime.length > 0) {
       params.startTime = moment(params.creationTime[0]).format(dateTime);
       params.endTime = moment(params.creationTime[1]).format(dateTime);
     }
     delete params.creationTime;
-    console.log('params', params);
-
-    // setSearchValue({ ...params, state: selectedstatus });
     setSearchValue({ ...params });
     setPage(1);
     setPageSize(10);
-    loadData(1, 10, { ...params, state: selectedstatus });
+    loadData(1, 10, { ...params });
   };
 
   const { Table, SettingButton } = useMemo(
-    () => CacheTable({ columns, scrollHeight: 'calc(100vh - 470px)', key: 'wms_quality' }),
+    () => CacheTable({ columns, scrollHeight: 'calc(100vh - 470px)', key: 'wms_surplus_inStorage' }),
     []
   );
 
@@ -278,79 +195,21 @@ const SurplusInStorage = ({ history }) => {
     validateFields(async (err, values) => {
       if (err) return;
       const params = getFieldsValue();
-      if (!isEmpty(params.attributeOne)) {
-        params.attributeOne = params.attributeOne.toString();
-      }
-      console.log(params, 'params');
-      // await SemiFinishedWarehousingReceiptApi
-      //   .bindSemiMaterial(params)
-      //   .then(res => {
-      //     notification.success({
-      //       message: getFormattedMsg('SurplusInStorage.message.addSuccess')
-      //     });
-      //     loadData(page, pageSize, { ...searchValue, state: selectedstatus });
-      //   })
-      //   .catch(err => {
-      //     notification.warning({
-      //       message: getFormattedMsg('SurplusInStorage.message.addFailure'),
-      //       description: err.message
-      //     });
-      //   });
+      await SurplusMaterialApi
+        .addSurplus(params)
+        .then(res => {
+          notification.success({
+            message: getFormattedMsg('SurplusInStorage.message.addSuccess')
+          });
+          loadData(page, pageSize, { ...searchValue});
+        })
+        .catch(err => {
+          notification.warning({
+            message: getFormattedMsg('SurplusInStorage.message.addFailure'),
+            description: err.message
+          });
+        });
       handleCancelAdd();
-    });
-  };
-
-  const handleUpdate = record => {
-    console.log(record, 'handleUpdate  record');
-    setUpdateVis(true);
-    setUpdateData(record);
-  };
-
-  const handleCancelUpdate = () => {
-    const { resetFields } = updateForm.current;
-    resetFields();
-    setUpdateVis(false);
-    setUpdateData(null);
-  };
-
-  const modalUpdateFoot = () => [
-    <Button key="save" type="primary" onClick={HandleSaveUpdate}>
-      {getFormattedMsg('SurplusInStorage.button.save')}
-    </Button>,
-    <Button key="cancel" onClick={handleCancelUpdate}>
-      {getFormattedMsg('SurplusInStorage.button.cancel')}
-    </Button>
-  ];
-
-  const HandleSaveUpdate = () => {
-    const { getFieldsValue, validateFields, setFieldsValue } = updateForm.current;
-    validateFields(async (err, values) => {
-      if (err) return;
-      const params = getFieldsValue();
-      if (!isEmpty(params.attributeOne)) {
-        params.attributeOne = params.attributeOne.toString();
-      }
-      Object.keys(params).map(i => {
-        updateData[i] = params[i];
-      });
-      notification.warning({
-        message: '没有接口'
-      });
-      // await SemiFinishedWarehousingReceiptApi
-      //   .updateSemiMaterial(updateData)
-      //   .then(res => {
-      //     notification.success({
-      //       message: getFormattedMsg('SurplusInStorage.message.updateSuccess'),
-      //     });
-      //     loadData(page, pageSize, { ...searchValue, state: selectedstatus });
-      //   })
-      //   .catch(err => {
-      //     notification.warning({
-      //       message: getFormattedMsg('SurplusInStorage.message.updateFailure'),
-      //       description: err.message
-      //     });
-      //   });
-      handleCancelUpdate();
     });
   };
 
@@ -359,49 +218,20 @@ const SurplusInStorage = ({ history }) => {
       title: getFormattedMsg('SurplusInStorage.operation.delete'),
       okType: 'danger',
       onOk: async () => {
-        notification.warning({
-          message: '没有接口'
-        });
-        // await SemiFinishedWarehousingReceiptApi
-        //   .deleteById(record.id)
-        //   .then(res => {
-        //     notification.success({
-        //       message: getFormattedMsg('SurplusInStorage.message.deleteSuccess'),
-        //     });
-        //     loadData(page, pageSize, { ...searchValue, state: selectedstatus });
-        //   })
-        //   .catch(err => {
-        //     notification.warning({
-        //       message: getFormattedMsg('SurplusInStorage.message.deleteFailure'),
-        //       description: err.message
-        //     });
-        //   });
-      },
-      onCancel() {}
-    });
-  };
-
-  const handleWarehousing = record => {
-    Modal.confirm({
-      title: getFormattedMsg('SurplusInStorage.message.warehousing'),
-      onOk: async () => {
-        notification.warning({
-          message: '没有接口'
-        });
-        // await SemiFinishedWarehousingReceiptApi
-        //   .inStore(record.id)
-        //   .then(res => {
-        //     notification.success({
-        //       message: getFormattedMsg('SurplusInStorage.message.warehousingSuccess'),
-        //     });
-        //     loadData(page, pageSize, { ...searchValue, state: selectedstatus });
-        //   })
-        //   .catch(err => {
-        //     notification.warning({
-        //       message: getFormattedMsg('SurplusInStorage.message.warehousingFailure'),
-        //       description: err.message
-        //     });
-        //   });
+        await SurplusMaterialApi
+          .deleteById(record.id)
+          .then(res => {
+            notification.success({
+              message: getFormattedMsg('SurplusInStorage.message.deleteSuccess'),
+            });
+            loadData(page, pageSize, { ...searchValue});
+          })
+          .catch(err => {
+            notification.warning({
+              message: getFormattedMsg('SurplusInStorage.message.deleteFailure'),
+              description: err.message
+            });
+          });
       },
       onCancel() {}
     });
@@ -413,11 +243,11 @@ const SurplusInStorage = ({ history }) => {
         <HVLayout.Pane height={'auto'}>
           <SearchForm onSearch={handleSearch}>
             <SearchForm.Item
-              label={getFormattedMsg('SurplusInStorage.label.receiptNumber')}
-              name="receiptNumber"
+              label={getFormattedMsg('SurplusInStorage.label.cuttingMachine')}
+              name="cuttingMachine"
             >
               <Input
-                placeholder={getFormattedMsg('SurplusInStorage.placeholder.receiptNumber')}
+                placeholder={getFormattedMsg('SurplusInStorage.placeholder.cuttingMachine')}
                 allowClear
               />
             </SearchForm.Item>
@@ -454,18 +284,6 @@ const SurplusInStorage = ({ history }) => {
           settingButton={<SettingButton />}
           onRefresh={reFreshFunc()}
         >
-          <div style={{ marginBottom: '12px' }}>
-            <Radio.Group defaultValue={selectedstatus} onChange={handleChangeStatus} size="large">
-              {state &&
-                Object.keys(state).map(item => {
-                  return (
-                    <Radio.Button key={item} value={item}>
-                      {state[item]}
-                    </Radio.Button>
-                  );
-                })}
-            </Radio.Group>
-          </div>
           <Spin spinning={loading}>
             <Table
               pagination={false}
@@ -508,22 +326,6 @@ const SurplusInStorage = ({ history }) => {
           />
         </Drawer.DrawerContent>
         <Drawer.DrawerBottomBar>{modalAddFoot()}</Drawer.DrawerBottomBar>
-      </Drawer>
-      <Drawer
-        title={getFormattedMsg('SurplusInStorage.button.update')}
-        visible={updateVis}
-        onClose={handleCancelUpdate}
-        width={500}
-      >
-        <Drawer.DrawerContent>
-          <AddOrUpdateForm
-            ref={updateForm}
-            modifyData={updateData}
-            dockingPoints={dockingPoints}
-            sortPositions={sortPositions}
-          />
-        </Drawer.DrawerContent>
-        <Drawer.DrawerBottomBar>{modalUpdateFoot()}</Drawer.DrawerBottomBar>
       </Drawer>
     </>
   );

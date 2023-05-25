@@ -48,6 +48,15 @@ class joinAreaServices extends Service {
     }
   }
 
+    // 上架
+    async shelfJoin(joinCode, transferCode) {
+      try {
+        return await this.put(`${appName}/joinArea/shelfJoin?joinCode=${joinCode}&transferCode=${transferCode}`);
+      } catch (error) {
+        throw new Error(error);
+      }
+    }
+
   //修改接驳口
   async updateJoinAre(data) {
     try {

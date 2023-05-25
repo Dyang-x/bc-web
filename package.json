@@ -31,6 +31,7 @@
     "lodash": "4.17.21",
     "moment": "2.29.4",
     "node-sass": "4.14.1",
+    "qrcodejs2": "0.0.2",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "react-full-screen": "^1.1.1",
@@ -49,7 +50,8 @@
     "reselect": "4.1.6",
     "styled-components": "5.2.0",
     "swiper": "5.2.0",
-    "uuid": "7.0.3"
+    "uuid": "7.0.3",
+    "zpl-image": "^0.2.0"
   },
   "scripts": {
     "start": "needle-service start",

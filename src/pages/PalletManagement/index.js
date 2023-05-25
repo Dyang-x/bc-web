@@ -9,7 +9,12 @@ import { palletType } from '~/enum/enum';
 import AddForm from './AddForm';
 import EmptyPalletsWarehousingApi from '~/api/EmptyPalletsWarehousing';
 import EmptyPalletDeliveryApi from '~/api/EmptyPalletDelivery';
-
+import PullOnForm from './PullOnForm';
+import PullOffForm from './PullOffForm';
+import PrintService from '~/api/print';
+import { isEmpty, set } from 'lodash';
+import ModalQR from './ModalQR';
+import { imageToZ64 } from "./imageToZ64";
 
 const getFormattedMsg = i18n.getFormattedMsg;
 const { Option } = Select;
@@ -31,9 +36,16 @@ const PalletManagement = () => {
   const [palletTypeList, setPalletTypeList] = useState(palletType);
   const [bindingData, setBindingData] = useState({});
 
+  const [pullFormVis, setPullFormVis] = useState(false);
+  const [pullType, setPullType] = useState();
+  const [pullFormData, setPullFormData] = useState({});
+
+  const [modalVis, setModalVis] = useState(false);
+
   const addRef = useRef();
   const selectRef = useRef();
   const searchForm = useRef();
+  const pullForm = useRef();
 
   useEffect(() => {
 
@@ -146,67 +158,150 @@ const PalletManagement = () => {
   };
 
   const HandlePutOn = record => {
-    if(record.locationCode == null){
-        notification.warning({ message: '未绑定库位' })
-        return
-    }
-    Modal.confirm({
-      title: `${getFormattedMsg('PalletManagement.title.putOnPallet')}${record.code}?`,
-      onOk: async() => {
-        const data = {
-          origin:'J001',
-          destination:record.locationCode,
-          trayNumber:record.code,
-          state:0
-        }
-        await EmptyPalletsWarehousingApi
-        .saveOrUpdate(data)
-        .then(res => {
-          notification.success({
-            message: '空托入库任务生成成功'
-          });
-          loadData(pageInfo.page, pageInfo.pageSize, searchValue);
-        })
-        .catch(err => {
-          notification.warning({
-            description: err.message
-          });
-        });
-      }
-    });
+    // if(record.locationCode == null){
+    //     notification.warning({ message: '未绑定库位' })
+    //     return
+    // }
+    // Modal.confirm({
+    //   title: `${getFormattedMsg('PalletManagement.title.putOnPallet')}${record.code}?`,
+    //   onOk: async() => {
+    //     const data = {
+    //       origin:'J001',
+    //       destination:record.locationCode,
+    //       trayNumber:record.code,
+    //       state:0
+    //     }
+    //     await EmptyPalletsWarehousingApi
+    //     .saveOrUpdate(data)
+    //     .then(res => {
+    //       notification.success({
+    //         message: '空托入库任务生成成功'
+    //       });
+    //       loadData(pageInfo.page, pageInfo.pageSize, searchValue);
+    //     })
+    //     .catch(err => {
+    //       notification.warning({
+    //         description: err.message
+    //       });
+    //     });
+    //   }
+    // });
+    setPullFormVis(true)
+    setPullType(1)
+    setPullFormData(record)
   };
 
   const HandlePullOff = record => {
-    console.log('record',record);
-    console.log('record.location !== "在库"',record.location !== "在库");
-    if(record.location != "在库"){
-      notification.warning({ message: '托盘未完成上架' })
-      return
-    }
-    Modal.confirm({
-      title: `${getFormattedMsg('PalletManagement.title.pullOffPallet')}${record.code}?`,
-      onOk: async() => {
-        // { id: 6, name: '原料托盘出库', value: '原料托盘出库', },
-        // { id: 8, name: '半成品托盘出库', value: '半成品托盘出库', },
-        const data = {
-          inType: selectedType == 0 ? 6 : 8,
-          trayNumber: record.code,
-          state: 0
-        }
-        await EmptyPalletDeliveryApi
-        .saveOrUpdate(data)
-        .then(res => {
-          notification.success({
-            message: '空托出库任务生成成功'
-          });
-          loadData(pageInfo.page, pageInfo.pageSize, searchValue);
-        })
-        .catch(err => {
-          notification.warning({
-            description: err.message
-          });
+    // if (record.location != "在库") {
+    //   notification.warning({ message: '托盘未完成上架' })
+    //   return
+    // }
+    // Modal.confirm({
+    //   title: `${getFormattedMsg('PalletManagement.title.pullOffPallet')}${record.code}?`,
+    //   onOk: async () => {
+    //     // { id: 6, name: '原料托盘出库', value: '原料托盘出库', },
+    //     // { id: 8, name: '半成品托盘出库', value: '半成品托盘出库', },
+    //     const data = {
+    //       inType: selectedType == 0 ? 6 : 8,
+    //       trayNumber: record.code,
+    //       state: 0,
+    //     }
+    //     console.log(data, 'data');
+    //     await EmptyPalletDeliveryApi
+    //       .saveOrUpdate(data)
+    //       .then(res => {
+    //         notification.success({
+    //           message: '空托出库任务生成成功'
+    //         });
+    //         loadData(pageInfo.page, pageInfo.pageSize, searchValue);
+    //       })
+    //       .catch(err => {
+    //         notification.warning({
+    //           description: err.message
+    //         });
+    //       });
+    //   }
+    // });
+    setPullFormVis(true)
+    setPullType(2)
+    setPullFormData(record)
+  }
+
+  const handleCancelPull = () => {
+    const { resetFields } = pullForm.current;
+    resetFields();
+    setPullFormVis(false)
+    setPullFormData({})
+  }
+
+  const modalPullFoot = () => [
+    <Button key="save" type="primary" onClick={HandleSavePull}>
+      {getFormattedMsg('EmptyPalletDelivery.button.save')}
+    </Button>,
+    <Button key="cancel" onClick={handleCancelPull}>
+      {getFormattedMsg('EmptyPalletDelivery.button.cancel')}
+    </Button>
+  ];
+
+  const HandleSavePull = () => {
+    const { getFieldsValue, validateFields, setFieldsValue } = pullForm.current;
+    validateFields(async (err, values) => {
+      if (err) return;
+      const params = getFieldsValue();
+      params.transferType = pullFormData.type
+      console.log('params', params);
+
+      //上架
+      if (pullType == 1) {
+        // { id: 5, name: '原料托盘回库', value: '原料托盘回库', },
+        // { id: 7, name: '半成品托盘回库', value: '半成品托盘回库', },
+        params.taskType = pullFormData.type ==1?5:7
+        Modal.confirm({
+          title: `确认上架托盘${pullFormData.code}?`,
+          onOk: async () => {
+            await EmptyPalletsWarehousingApi
+              .autoTransferIn(params)
+              .then(res => {
+                notification.success({
+                  message: '托盘上架成功'
+                });
+                // loadData(pageInfo.page, pageInfo.pageSize, searchValue);
+              })
+              .catch(err => {
+                notification.warning({
+                  description: err.message
+                });
+              });
+          }
         });
       }
+
+      //下架
+      if (pullType == 2) {
+        // { id: 6, name: '原料托盘出库', value: '原料托盘出库', },
+        // { id: 8, name: '半成品托盘出库', value: '半成品托盘出库', },
+        params.taskType = pullFormData.type ==1?6:8
+        Modal.confirm({
+          title: `确认下架托盘${pullFormData.code}?`,
+          onOk: async () => {
+            await EmptyPalletDeliveryApi
+              // .saveOrUpdate(data)
+              .autoTransferOut(params)
+              .then(res => {
+                notification.success({
+                  message: '托盘下架成功'
+                });
+                // loadData(pageInfo.page, pageInfo.pageSize, searchValue);
+              })
+              .catch(err => {
+                notification.warning({
+                  description: err.message
+                });
+              });
+          }
+        });
+      }
+      handleCancelPull();
     });
   };
 
@@ -300,12 +395,44 @@ const PalletManagement = () => {
 
   const printLabel = () => {
     console.log('selectedDatas', selectedDatas);
-    notification.warning({ message: '接口' })
-  }
+    if (isEmpty(selectedDatas)) {
+      notification.warning({ message: '请勾选需要打印标签的托盘' })
+      return
+    }
+    setModalVis(true)
+  };
 
-  const printBarcodes = () => {
-    console.log('selectedDatas', selectedDatas);
-    notification.warning({ message: '接口' })
+  const print = () => {
+    let datas = [];
+    selectedDatas.map(i => {
+      const data = {
+        value: i.code
+      };
+      datas = [...datas, data];
+    });
+
+    const printData = {
+      data: datas,
+      printTemplateCode: "TM-2",
+      printerCode: "printer-1"
+    };
+
+    console.log('printData', printData);
+
+    PrintService.print(printData)
+      .then(res => {
+        notification.success({
+          message: '打印成功'
+        });
+        setSelectedDatas([])
+        reFreshFunc()
+      })
+      .catch(error => {
+        notification.warning({
+          message: '打印失败',
+          description: error.message
+        });
+      });
   }
 
   const handleCreate = () => {
@@ -421,6 +548,69 @@ const PalletManagement = () => {
     });
   }
 
+
+
+  const modalPrintFoot = () => [
+    <Button key="save" type="primary" onClick={handleSavePrint}>
+      打印
+    </Button>,
+    <Button key="cancel" onClick={handleCancelPrint}>
+      {getFormattedMsg('PalletManagement.button.cancel')}
+    </Button>
+  ];
+
+  const handleSavePrint =()=>{
+    let datas = []
+    selectedDatas.map(i=>{
+      const data ={}
+      data.code = i.code
+      const div = document.getElementById(i.code)
+      // console.log('div', div);
+      const img = div.getElementsByTagName('img')
+      // console.log('img[0]', img[0]);
+      const res = imageToZ64(img[0]);
+      // console.log('res', res);
+      // console.log('res---------------------', res.z64.substring(5,res.z64.length));
+      const zpl_ = ` ^XA^LH0,0^FWN^PON^PMN^LRN ^FO10,10^GFA,${res.length},${res.length},${res.rowlen},${res.z64}^XZ`;
+      console.log(zpl_);
+      const zpl = res.z64
+      console.log(zpl);
+      data.value = zpl
+      datas =[...datas,data]
+    })
+    console.log(datas,'datas');
+
+    const printData = {
+      data: datas,
+      printTemplateCode: "TM-2",
+      printerCode: "printer-1"
+    };
+
+    console.log('printData', printData);
+
+    PrintService.print(printData)
+      .then(res => {
+        notification.success({
+          message: '打印成功'
+        });
+      })
+      .catch(error => {
+        notification.warning({
+          message: '打印失败',
+          description: error.message
+        });
+      });
+    handleCancelPrint()
+    reFreshFunc()
+  }
+
+  const handleCancelPrint =()=>{
+    setModalVis(false)
+     setSelectedRowKeys([]);
+     setSelectedDatas([]);
+  }
+
+  
   return (
     <>
       <HVLayout layout="horizontal">
@@ -457,14 +647,14 @@ const PalletManagement = () => {
               >
                 {getFormattedMsg('PalletManagement.button.printLabel')}
               </Button>,
-              <Button
-                key="printBarcodes"
-                // h-icon="add"
-                type="primary"
-                onClick={printBarcodes}
-              >
-                {getFormattedMsg('PalletManagement.button.printBarcodes')}
-              </Button>,
+              // <Button
+              //   key="printBarcodes"
+              //   // h-icon="add"
+              //   type="primary"
+              //   onClick={printBarcodes}
+              // >
+              //   {getFormattedMsg('PalletManagement.button.printBarcodes')}
+              // </Button>,
               <Button
                 key="add"
                 h-icon="add"
@@ -529,6 +719,29 @@ const PalletManagement = () => {
         <SelectForm
           ref={selectRef}
         />
+      </Modal>
+      <Modal
+        title={pullType ==1 ?'托盘上架':'托盘下架'}
+        visible={pullFormVis}
+        footer={modalPullFoot()}
+        onCancel={handleCancelPull}
+        destroyOnClose
+        width={800}
+      >
+        {pullType ==1 ?<PullOnForm ref={pullForm}/>:<PullOffForm ref={pullForm} />}
+      </Modal>
+
+
+
+      <Modal
+        title={'打印列表'}
+        visible={modalVis}
+        onCancel={handleCancelPrint}
+        destroyOnClose
+        footer={modalPrintFoot()}
+        // width={800}
+      >
+        <ModalQR value={selectedDatas}/>
       </Modal>
     </>
   );
