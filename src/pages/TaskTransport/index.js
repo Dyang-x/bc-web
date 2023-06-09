@@ -88,13 +88,17 @@ const Index = ({ taskKind }) => {
             <Divider key="divider1" type="vertical" />,
             <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)} >
               {getFormattedMsg('TaskTransport.button.delete')}
-            </a>
-          ],
-          nowTab == 2 && [
+            </a>,
+            <Divider key="divider2" type="vertical" />,
             <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
               {getFormattedMsg('TaskTransport.button.pause')}
             </a>,
-            <Divider key="divider2" type="vertical" />,
+          ],
+          nowTab == 2 && [
+            // <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
+            //   {getFormattedMsg('TaskTransport.button.pause')}
+            // </a>,
+            // <Divider key="divider2" type="vertical" />,
             <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskTransport.button.complete')}</a>
           ],
           nowTab == 3 && [

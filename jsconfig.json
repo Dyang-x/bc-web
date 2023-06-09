@@ -3,8 +3,14 @@
     "target": "ES6",
     "baseUrl": "./src",
     "paths": {
-      "~/*": ["*"]
+      "~/*": [
+        "*"
+      ]
     }
   },
-  "exclude": ["node_modules", "lib", "build"]
+  "exclude": [
+    "node_modules",
+    "lib",
+    "build"
+  ]
 }

@@ -3,7 +3,7 @@ import { HTable, Table, Button, HLayout, Modal, Pagination, notification, Form, 
 import moment from 'moment';
 import { tree } from '@hvisions/toolkit';
 import { i18n } from '@hvisions/toolkit';
-import { debounce } from 'lodash';
+import { emptyInMid } from '~/enum/enum';
 
 const { getFormattedMsg } = i18n;
 const { Option } = Select
@@ -89,6 +89,42 @@ const EmptyForm = ({
             ],
           })(
             <Input placeholder={getFormattedMsg('RawMaterialDeliveryOrderManagement.placeholder.trayNumber')} />
+          )
+        }
+      </Form.Item>
+      <Form.Item {...formItemLayout} label={'起点'}>
+        {
+          getFieldDecorator('origin', {
+            rules: [
+              {
+                required: true,
+                message: '请选择起点',
+              },
+            ],
+          })(<Input placeholder={'请选择起点'} style={{ width: '100%' }} />)
+        }
+      </Form.Item>
+      <Form.Item {...formItemLayout} label={'中间点'}>
+        {
+          getFieldDecorator('middle', {
+            rules: [
+              {
+                required: true,
+                message: '请选择中间点',
+              },
+            ],
+          })(
+            <Select
+              placeholder={'请选择中间点'}
+              showSearch
+              filterOption={false}
+            >
+              {
+                emptyInMid.length && emptyInMid.map(item => {
+                  return (<Option key={item.id} value={item.value}>{item.value}</Option>)
+                })
+              }
+            </Select>
           )
         }
       </Form.Item>

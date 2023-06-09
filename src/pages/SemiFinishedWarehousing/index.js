@@ -270,8 +270,11 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
     validateFields(async (err, values) => {
       if (err) return;
       const params = getFieldsValue();
-      if(!isEmpty(params.attributeOne)){
+
+      if(params.attributeOne.length != 0){
         params.attributeOne = params.attributeOne.toString()
+      }else{
+        delete params.attributeOne
       }
       console.log(params, 'params');
       await SemiFinishedWarehousingReceiptApi

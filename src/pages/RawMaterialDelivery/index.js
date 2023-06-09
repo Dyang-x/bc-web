@@ -9,6 +9,8 @@ import ManualTable from './ManualTable';
 import EmptyForm from './EmptyForm';
 import SurplusTable from './SurplusTable';
 import DetailTable from './DetailTable';
+import RawMaterialDeliveryServices from '~/api/RawMaterialDelivery';
+import EmptyPalletsWarehousing from '~/api/EmptyPalletsWarehousing';
 
 const getFormattedMsg = i18n.getFormattedMsg;
 const { RangePicker } = DatePicker;
@@ -43,145 +45,242 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
   const [detailVis, setDetailVis] = useState(false);
   const [detailData, setDetailData] = useState([]);
 
+  const [manualData ,setManualData] = useState({});
+  const manualRef = useRef();
 
   useEffect(() => {
     loadData(page, pageSize, { ...setSearchValue, state: selectedstatus });
   }, []);
 
-  const columns = [
+  // const columns = [
+  //   {
+  //     title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.orderNumber'),
+  //     dataIndex: 'orderNumber',
+  //     key: 'orderNumber',
+  //     align: 'center',
+  //   },
+  //   {
+  //     title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.orderCount'),
+  //     dataIndex: 'orderCountr',
+  //     key: 'orderCountr',
+  //     align: 'center',
+  //   },
+  //   {
+  //     title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.finishNumber'),
+  //     dataIndex: 'finishNumber',
+  //     key: 'finishNumber',
+  //     align: 'center',
+  //   },
+  //   {
+  //     title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.surplusNumber'),
+  //     dataIndex: 'surplusNumber',
+  //     key: 'surplusNumber',
+  //     align: 'center',
+  //   },
+  //   {
+  //     title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.orderPriority'),
+  //     dataIndex: 'orderPriority',
+  //     key: 'orderPriority',
+  //     align: 'center',
+  //   },
+  //   {
+  //     title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.cuttingMachine'),
+  //     dataIndex: 'cuttingMachine',
+  //     key: 'cuttingMachine',
+  //     align: 'center',
+  //   },
+  //   {
+  //     title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.materialCode'),
+  //     dataIndex: 'materialCode',
+  //     key: 'materialCode',
+  //     align: 'center',
+  //   },
+  //   {
+  //     title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.materialName'),
+  //     dataIndex: 'materialName',
+  //     key: 'materialName',
+  //     align: 'center',
+  //   },
+  //   {
+  //     title: '原料编码',
+  //     dataIndex: 'materialName',
+  //     key: 'materialName',
+  //     align: 'center',
+  //   },
+  //   {
+  //     title: '原料名称',
+  //     dataIndex: 'materialName',
+  //     key: 'materialName',
+  //     align: 'center',
+  //   },
+  //   {
+  //     title: '原料规格',
+  //     dataIndex: 'materialName',
+  //     key: 'materialName',
+  //     align: 'center',
+  //   },
+  //   {
+  //     title: '需求数量',
+  //     dataIndex: 'materialName',
+  //     key: 'materialName',
+  //     align: 'center',
+  //   },
+  //   {
+  //     title: '已发货数量',
+  //     dataIndex: 'materialName',
+  //     key: 'materialName',
+  //     align: 'center',
+  //   },
+  //   {
+  //     title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.operation'),
+  //     key: 'opt',
+  //     align: 'center',
+  //     render: (_, record) => [
+  //       <a key="update" onClick={() => handleUpdate(record)}>
+  //         {getFormattedMsg('RawMaterialDeliveryOrderManagement.button.update')}
+  //       </a>,
+  //       <Divider key="divider1" type="vertical" />,
+  //       <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)}>
+  //         {getFormattedMsg('RawMaterialDeliveryOrderManagement.button.delete')}
+  //       </a>,
+  //       <Divider key="divider2" type="vertical" />,
+  //       <a key="detail" onClick={() => handleOpenDetailModal(record)}>
+  //         详情
+  //       </a>,
+  //     ],
+  //     // width: 80,
+  //     // fixed: 'right'
+  //   }
+  // ];
+
+  //查询页面数据
+  const columns =[
     {
-      title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.orderNumber'),
-      dataIndex: 'orderNumber',
-      key: 'orderNumber',
-      align: 'center',
-    },
-    {
-      title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.orderCount'),
-      dataIndex: 'orderCountr',
-      key: 'orderCountr',
-      align: 'center',
-    },
-    {
-      title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.finishNumber'),
-      dataIndex: 'finishNumber',
-      key: 'finishNumber',
-      align: 'center',
-    },
-    {
-      title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.surplusNumber'),
-      dataIndex: 'surplusNumber',
-      key: 'surplusNumber',
-      align: 'center',
-    },
-    {
-      title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.orderPriority'),
-      dataIndex: 'orderPriority',
-      key: 'orderPriority',
-      align: 'center',
-    },
-    {
-      title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.cuttingMachine'),
+      title: '切割机',
       dataIndex: 'cuttingMachine',
       key: 'cuttingMachine',
       align: 'center',
-    },
-    {
-      title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.materialCode'),
+    },    {
+      title: '材料名称',
+      dataIndex: 'materialName',
+      key: 'materialName',
+      align: 'center',
+    },    {
+      title: '材料编码',
       dataIndex: 'materialCode',
       key: 'materialCode',
       align: 'center',
-    },
-    {
-      title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.materialName'),
-      dataIndex: 'materialName',
-      key: 'materialName',
+    },    {
+      title: '材料大小 X',
+      dataIndex: 'materialSizeX',
+      key: 'materialSizeX',
       align: 'center',
-    },
-    {
-      title: '原料编码',
-      dataIndex: 'materialName',
-      key: 'materialName',
+    },    {
+      title: '材料大小 Y',
+      dataIndex: 'materialSizeY',
+      key: 'materialSizeY',
       align: 'center',
-    },
-    {
-      title: '原料名称',
-      dataIndex: 'materialName',
-      key: 'materialName',
+    },    {
+      title: '材料规格',
+      dataIndex: 'materialSpecs',
+      key: 'materialSpecs',
       align: 'center',
-    },
-    {
-      title: '原料规格',
-      dataIndex: 'materialName',
-      key: 'materialName',
+    },    {
+      title: '材料厚度',
+      dataIndex: 'materialThickness',
+      key: 'materialThickness',
       align: 'center',
-    },
-    {
+    },    {
+      title: '订单名称',
+      dataIndex: 'name',
+      key: 'name',
+      align: 'center',
+    },    {
       title: '需求数量',
-      dataIndex: 'materialName',
-      key: 'materialName',
+      dataIndex: 'totalParts',
+      key: 'totalParts',
       align: 'center',
-    },
-    {
-      title: '已发货数量',
-      dataIndex: 'materialName',
-      key: 'materialName',
+    },    {
+      title: '发货数量',
+      dataIndex: 'sendParts',
+      key: 'sendParts',
       align: 'center',
-    },
-    {
+    },    {
+      title: '剩余运行数量',
+      dataIndex: 'remainRuns',
+      key: 'remainRuns',
+      align: 'center',
+    }, {
       title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.operation'),
       key: 'opt',
       align: 'center',
       render: (_, record) => [
-        <a key="update" onClick={() => handleUpdate(record)}>
-          {getFormattedMsg('RawMaterialDeliveryOrderManagement.button.update')}
-        </a>,
-        <Divider key="divider1" type="vertical" />,
-        <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)}>
-          {getFormattedMsg('RawMaterialDeliveryOrderManagement.button.delete')}
-        </a>,
-        <Divider key="divider2" type="vertical" />,
         <a key="detail" onClick={() => handleOpenDetailModal(record)}>
           详情
         </a>,
       ],
-      // width: 80,
-      // fixed: 'right'
     }
-  ];
+  ]
 
-  //查询页面数据
   const loadData = async (page, pageSize, searchValue) => {
     const data = [
       {
         id: 0,
-        orderNumber: 'D0001',
-        orderCountr: 100,
-        finishNumber: 50,
-        surplusNumber: 50,
-        orderPriority: 1,
         cuttingMachine: '切割机1',
-        materialCode: 'PR001',
-        materialName: '物料1',
-        detail: [
+        materialCode: '0402-0337',
+        materialName: 'ONBC-25',
+        materialSizeX: '600',
+        materialSizeY: '6000',
+        materialSpecs: '600*6000',
+        materialThickness: '25',
+        name: 'D0001',
+        planState: 0,
+        remainRuns: 20,
+        sendParts: 100,
+        totalParts: 100,
+        lineEdgeLibraryDTOS:[
           {
-            id: 0,
-            trayNumber: 'D0001',
-            count: 100,
-            uesd: 50,
-            surplus: 50,
-            station: 1,
-          }, {
+            cuttingMachine: '切割机1',
+            fromLocation: '111',
             id: 1,
-            trayNumber: 'D0002',
-            count: 100,
-            uesd: 0,
-            surplus: 100,
-            station: 2,
-          }
+            materialCode: '0402-0337',
+            materialName: 'ONBC-25',
+            materialSizeX: '600',
+            materialSizeY: '6000',
+            materialSpecs: '600*6000',
+            materialThickness: '25',
+            planName: '切割111111',
+            quantity: 1000,
+            remainderNum: 100,
+            taskCode: 'ce1111111',
+            toLocation: '222',
+            trayLocation: '1-5',
+            trayNumber: 'TP001',
+            useNum: 80,
+          },
+          {
+            cuttingMachine: '切割机1',
+            fromLocation: '333',
+            id: 2,
+            materialCode: '0402-0337',
+            materialName: 'ONBC-25',
+            materialSizeX: '600',
+            materialSizeY: '6000',
+            materialSpecs: '600*6000',
+            materialThickness: '25',
+            planName: '切割22222',
+            quantity: 1000,
+            remainderNum: 0,
+            taskCode: 'ce222222',
+            toLocation: '444',
+            trayLocation: '1-4',
+            trayNumber: 'TP002',
+            useNum: 20,
+          },
         ]
       },
       {
-        id: 1,
+        id: 13,
         orderNumber: 'D0002',
         orderCountr: 100,
         finishNumber: 0,
@@ -192,14 +291,14 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
         materialName: '物料1',
         detail: [
           {
-            id: 0,
+            id: 11,
             trayNumber: 'D0001',
             count: 100,
             uesd: 50,
             surplus: 50,
             station: 1,
           }, {
-            id: 1,
+            id: 12,
             trayNumber: 'D0002',
             count: 100,
             uesd: 0,
@@ -211,22 +310,24 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
     ]
     setTableData(data);
     // setLoading(true);
-    // RawMaterialWarehousingReceiptApi
+    // RawMaterialDeliveryServices
     //   .getByQuery({ ...searchValue, page: page - 1, pageSize })
     //   .then(res => {
-    //     setTableData(res.content);
-    //     setTotalPage(res.totalElements);
-    //     setPage(res.pageable.pageNumber + 1)
-    //     setPageSize(res.pageable.pageSize)
-    //     setLoading(false);
+    //     console.log('res.length != 0',res.length != 0 ,res);
+    //     if(res.length != 0){
+    //       setTableData(res.content);
+    //       setTotalPage(res.totalElements);
+    //       setPage(res.pageable.pageNumber + 1)
+    //       setPageSize(res.pageable.pageSize)
+    //     }
     //   })
     //   .catch(err => {
-    //     setLoading(false);
     //     notification.warning({
     //       message: getFormattedMsg('global.notify.fail'),
     //       description: err.message
     //     });
     //   });
+    //   setLoading(false);
   };
 
   //刷新按钮
@@ -270,50 +371,50 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
     []
   );
 
-  const handleUpdate = (record) => {
-    setUpdateVis(true)
-    setUpdateData(record)
-  }
+  // const handleUpdate = (record) => {
+  //   setUpdateVis(true)
+  //   setUpdateData(record)
+  // }
 
-  const handleCancelUpdate = () => {
-    const { resetFields } = updateForm.current;
-    resetFields();
-    setUpdateVis(false)
-    setUpdateData(null)
-  }
+  // const handleCancelUpdate = () => {
+  //   const { resetFields } = updateForm.current;
+  //   resetFields();
+  //   setUpdateVis(false)
+  //   setUpdateData(null)
+  // }
 
-  const modalUpdateFoot = () => [
-    <Button key="save" type="primary" onClick={HandleSaveUpdate}>
-      {getFormattedMsg('RawMaterialDeliveryOrderManagement.button.save')}
-    </Button>,
-    <Button key="cancel" onClick={handleCancelUpdate}>
-      {getFormattedMsg('RawMaterialDeliveryOrderManagement.button.cancel')}
-    </Button>
-  ];
+  // const modalUpdateFoot = () => [
+  //   <Button key="save" type="primary" onClick={HandleSaveUpdate}>
+  //     {getFormattedMsg('RawMaterialDeliveryOrderManagement.button.save')}
+  //   </Button>,
+  //   <Button key="cancel" onClick={handleCancelUpdate}>
+  //     {getFormattedMsg('RawMaterialDeliveryOrderManagement.button.cancel')}
+  //   </Button>
+  // ];
 
-  const HandleSaveUpdate = () => {
-    const { getFieldsValue, validateFields, setFieldsValue } = updateForm.current;
-    validateFields(async (err, values) => {
-      if (err) return;
-      const params = getFieldsValue();
-      Object.keys(params).map(i => {
-        updateData[i] = params[i]
-      })
+  // const HandleSaveUpdate = () => {
+  //   const { getFieldsValue, validateFields, setFieldsValue } = updateForm.current;
+  //   validateFields(async (err, values) => {
+  //     if (err) return;
+  //     const params = getFieldsValue();
+  //     Object.keys(params).map(i => {
+  //       updateData[i] = params[i]
+  //     })
 
-      handleCancelUpdate();
-    });
-  }
+  //     handleCancelUpdate();
+  //   });
+  // }
 
-  const handleDelete = (record) => {
-    Modal.confirm({
-      title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.delete'),
-      okType: 'danger',
-      onOk: async () => {
-        notification.warning({ message: '没有接口' })
-      },
-      onCancel() { },
-    })
-  }
+  // const handleDelete = (record) => {
+  //   Modal.confirm({
+  //     title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.delete'),
+  //     okType: 'danger',
+  //     onOk: async () => {
+  //       notification.warning({ message: '没有接口' })
+  //     },
+  //     onCancel() { },
+  //   })
+  // }
 
   const handleAutomatic = async () => {
     notification.warning({ message: '没有接口' })
@@ -325,6 +426,7 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
 
   const handleCancelManual = () => {
     setManualVis(false)
+    setManualData({})
   }
 
   const modalManualFoot = () => [
@@ -337,65 +439,97 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
   ];
 
   const handleSaveManual = () => {
-    notification.warning({ message: '没有接口' })
-  }
-
-  const handleEmpty = () => {
-    setEmptyVis(true)
-  }
-
-  const handleCancelEmpty = () => {
-    const { resetFields } = emptyRef.current;
-    resetFields();
-    setEmptyVis(false)
-  }
-
-  const modalEmptyFoot = () => [
-    <Button key="save" type="primary" onClick={HandleSaveEmpty}>
-      {getFormattedMsg('RawMaterialDeliveryOrderManagement.button.save')}
-    </Button>,
-    <Button key="cancel" onClick={handleCancelEmpty}>
-      {getFormattedMsg('RawMaterialDeliveryOrderManagement.button.cancel')}
-    </Button>
-  ];
-
-  const HandleSaveEmpty = () => {
-    const { getFieldsValue, validateFields } = emptyRef.current;
+    const { getFieldsValue, validateFields } = manualRef.current;
     validateFields(async (err, values) => {
       if (err) return;
       const params = getFieldsValue();
-
-      handleCancelEmpty();
+      params.materialCode = manualData.materialCode
+      params.materialName = manualData.materialName
+      await RawMaterialDeliveryServices.handout(params)
+        .then(res => {
+          notification.warning({
+            message: '出库单生成成功'
+          });
+        })
+        .catch(err => {
+          notification.warning({
+            description: err.message
+          });
+        })
+      handleCancelManual();
+      reFreshFunc();
     });
   }
 
-  const handleSurplus = () => {
-    setSurplusVis(true)
-  }
+  // const handleEmpty = () => {
+  //   setEmptyVis(true)
+  // }
 
-  const handleCancelSurplus = () => {
-    const { resetFields } = surplusRef.current;
-    resetFields();
-    setSurplusVis(false)
-  }
+  // const handleCancelEmpty = () => {
+  //   const { resetFields } = emptyRef.current;
+  //   resetFields();
+  //   setEmptyVis(false)
+  // }
 
-  const modalSurplusFoot = () => [
-    <Button key="return" type="primary" onClick={HandleSaveSurplus}>
-      {getFormattedMsg('RawMaterialDeliveryOrderManagement.button.return')}
-    </Button>,
-    <Button key="cancel" onClick={handleCancelSurplus}>
-      {getFormattedMsg('RawMaterialDeliveryOrderManagement.button.cancel')}
-    </Button>
-  ];
+  // const modalEmptyFoot = () => [
+  //   <Button key="save" type="primary" onClick={HandleSaveEmpty}>
+  //     {getFormattedMsg('RawMaterialDeliveryOrderManagement.button.save')}
+  //   </Button>,
+  //   <Button key="cancel" onClick={handleCancelEmpty}>
+  //     {getFormattedMsg('RawMaterialDeliveryOrderManagement.button.cancel')}
+  //   </Button>
+  // ];
 
-  const HandleSaveSurplus = () => {
-    const { getFieldsValue, validateFields } = surplusRef.current;
-    validateFields(async (err, values) => {
-      if (err) return;
-      const params = getFieldsValue();
-      handleCancelSurplus();
-    });
-  }
+  // const HandleSaveEmpty = () => {
+  //   const { getFieldsValue, validateFields } = emptyRef.current;
+  //   validateFields(async (err, values) => {
+  //     if (err) return;
+  //     const params = getFieldsValue();
+  //     params.state = 0
+  //     await EmptyPalletsWarehousing
+  //     .saveOrUpdate(params)
+  //     .then(res => {
+  //       notification.success({
+  //         message: getFormattedMsg('EmptyPalletsWarehousing.message.addSuccess')
+  //       });
+  //       reFreshFunc();
+  //     })
+  //     .catch(err => {
+  //       notification.warning({
+  //         description: err.message
+  //       });
+  //     });
+  //     handleCancelEmpty();
+  //   });
+  // }
+
+  // const handleSurplus = () => {
+  //   setSurplusVis(true)
+  // }
+
+  // const handleCancelSurplus = () => {
+  //   const { resetFields } = surplusRef.current;
+  //   resetFields();
+  //   setSurplusVis(false)
+  // }
+
+  // const modalSurplusFoot = () => [
+  //   <Button key="return" type="primary" onClick={HandleSaveSurplus}>
+  //     {getFormattedMsg('RawMaterialDeliveryOrderManagement.button.return')}
+  //   </Button>,
+  //   <Button key="cancel" onClick={handleCancelSurplus}>
+  //     {getFormattedMsg('RawMaterialDeliveryOrderManagement.button.cancel')}
+  //   </Button>
+  // ];
+
+  // const HandleSaveSurplus = () => {
+  //   const { getFieldsValue, validateFields } = surplusRef.current;
+  //   validateFields(async (err, values) => {
+  //     if (err) return;
+  //     const params = getFieldsValue();
+  //     handleCancelSurplus();
+  //   });
+  // }
 
   const onHandleTableSelect = e => {
     setSelectedRowKeys([e.id])
@@ -410,7 +544,7 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
 
   const handleOpenDetailModal = (record)=>{
     setDetailVis(true)
-    setDetailData(record.detail)
+    setDetailData(record.lineEdgeLibraryDTOS)
   }
 
   return (
@@ -454,12 +588,12 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
             <Button key="manual" type="primary" onClick={() => handleManual()} >
               {getFormattedMsg('RawMaterialDeliveryOrderManagement.button.manual')}
             </Button>,
-            <Button key="empty" type="primary" onClick={() => handleEmpty()} >
-              {getFormattedMsg('RawMaterialDeliveryOrderManagement.button.empty')}
-            </Button>,
-            <Button key="surplus" type="primary" onClick={() => handleSurplus()}>
-              {getFormattedMsg('RawMaterialDeliveryOrderManagement.button.surplus')}
-            </Button>
+            // <Button key="empty" type="primary" onClick={() => handleEmpty()} >
+            //   {getFormattedMsg('RawMaterialDeliveryOrderManagement.button.empty')}
+            // </Button>,
+            // <Button key="surplus" type="primary" onClick={() => handleSurplus()}>
+            //   {getFormattedMsg('RawMaterialDeliveryOrderManagement.button.surplus')}
+            // </Button>
           ]}
           settingButton={<SettingButton />}
           onRefresh={reFreshFunc()}
@@ -482,29 +616,30 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
 
               pagination={false}
               scroll={{ x: 'max-content' }}
-              dataSource={tableData.map((i, idx) => ({
-                ...i,
-                serialNumber: (page - 1) * pageSize + ++idx
-              }))}
+              // dataSource={tableData.map((i, idx) => ({
+              //   ...i,
+              //   serialNumber: (page - 1) * pageSize + ++idx
+              // }))}
+              dataSource={tableData}
               columns={columns}
               rowKey={record => record.id}
-              rowSelection={{
-                type: 'radio',
-                onSelect: onHandleTableSelect,
-                // onSelectAll: onHandleTableSelectAll,
-                selectedRowKeys: selectedRowKeys,
-                hideDefaultSelections: true,
-                // getCheckboxProps={record => ({ 
-                //   // 单行禁用
-                //     disabled: record.status === 1
-                //   })
-                // } 
-              }}
-              onRow={record => {
-                return {
-                  onClick: () => onHandleTableSelect(record)
-                };
-              }}
+              // rowSelection={{
+              //   type: 'radio',
+              //   onSelect: onHandleTableSelect,
+              //   // onSelectAll: onHandleTableSelectAll,
+              //   selectedRowKeys: selectedRowKeys,
+              //   hideDefaultSelections: true,
+              //   // getCheckboxProps={record => ({ 
+              //   //   // 单行禁用
+              //   //     disabled: record.status === 1
+              //   //   })
+              //   // } 
+              // }}
+              // onRow={record => {
+              //   return {
+              //     onClick: () => onHandleTableSelect(record)
+              //   };
+              // }}
             />
           </Spin>
           <HVLayout.Pane.BottomBar>
@@ -523,24 +658,35 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
           </HVLayout.Pane.BottomBar>
         </HVLayout.Pane>
       </HVLayout>
-      <Drawer title={getFormattedMsg('RawMaterialDeliveryOrderManagement.title.update')} visible={updateVis} onClose={handleCancelUpdate} width={500}>
+      {/* <Drawer title={getFormattedMsg('RawMaterialDeliveryOrderManagement.title.update')} visible={updateVis} onClose={handleCancelUpdate} width={500}>
         <Drawer.DrawerContent>
           <UpdateForm ref={updateForm} updateData={updateData} />
         </Drawer.DrawerContent>
         <Drawer.DrawerBottomBar>{modalUpdateFoot()}</Drawer.DrawerBottomBar>
-      </Drawer>
-      <Modal
+      </Drawer> */}
+      {/* <Modal
         title={getFormattedMsg('RawMaterialDeliveryOrderManagement.title.manual')}
         visible={manualVis}
-        // footer={modalManualFoot()}
-        footer={null}
+        // footer={null}
+        footer={modalManualFoot()}
         onCancel={handleCancelManual}
         destroyOnClose
         width={800}
       >
-        <ManualTable selectedRowKeys={selectedRowKeys} setSelectedRowKeys={setSelectedRowKeys} />
-      </Modal>
-      <Modal
+         <ManualTable selectedRowKeys={selectedRowKeys} setSelectedRowKeys={setSelectedRowKeys} setManualData={setManualData}/>
+      </Modal> */}
+      <Drawer
+        title={getFormattedMsg('RawMaterialDeliveryOrderManagement.title.manual')}
+        visible={manualVis}
+        onClose={handleCancelManual}
+        width={800}
+      >
+        <Drawer.DrawerContent>
+          <ManualTable ref={manualRef} setManualData={setManualData} />
+        </Drawer.DrawerContent>
+        <Drawer.DrawerBottomBar>{modalManualFoot()}</Drawer.DrawerBottomBar>
+      </Drawer>
+      {/* <Modal
         title={getFormattedMsg('RawMaterialDeliveryOrderManagement.title.empty')}
         visible={emptyVis}
         footer={modalEmptyFoot()}
@@ -549,8 +695,8 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
         width={800}
       >
         <EmptyForm ref={emptyRef} />
-      </Modal>
-      <Modal
+      </Modal> */}
+      {/* <Modal
         // title="余料托盘回库"
         visible={surplusVis}
         footer={modalSurplusFoot()}
@@ -565,13 +711,13 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
         }}
       >
         <SurplusTable ref={surplusRef} />
-      </Modal>
+      </Modal> */}
       <Modal
         title={'详情'}
         visible={detailVis}
         footer={null}
         onCancel={()=>{setDetailVis(false);setDetailData([])}}
-        width={800}
+        width={window.innerWidth - 300}
       >
         <DetailTable dataSource={detailData} />
       </Modal>

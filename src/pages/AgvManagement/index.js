@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { HVLayout, Button, Spin, Pagination, SearchForm, Select, Divider, Input, Modal } from '@hvisions/h-ui';
 import { i18n, page } from '@hvisions/toolkit';
 import { CacheTable } from '~/components';
-import { taskType,taskKind } from '~/enum/enum';
+import { taskType, taskKind } from '~/enum/enum';
 import AgvManagementServices from '~/api/AgvManagement';
 import { notification } from '~/../node_modules/antd/lib/index';
 import AdjustForm from './AdjustForm';
@@ -13,7 +13,7 @@ const { Pane } = HVLayout;
 const { showTotal } = page
 const { Option } = Select;
 
-const Index = ( ) => {
+const Index = () => {
   const [tableData, setTableData] = useState([]);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -89,13 +89,17 @@ const Index = ( ) => {
             <Divider key="divider1" type="vertical" />,
             <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)} >
               {getFormattedMsg('AgvManagement.button.delete')}
-            </a>
-          ],
-          nowTab == 2 && [
+            </a>,
+            <Divider key="divider2" type="vertical" />,
             <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
               {getFormattedMsg('AgvManagement.button.pause')}
-              </a>,
-            <Divider key="divider2" type="vertical" />,
+            </a>,
+          ],
+          nowTab == 2 && [
+            // <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
+            //   {getFormattedMsg('AgvManagement.button.pause')}
+            //   </a>,
+            // <Divider key="divider2" type="vertical" />,
             <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('AgvManagement.button.complete')}</a>
           ],
           nowTab == 3 && [
@@ -120,7 +124,7 @@ const Index = ( ) => {
     AgvManagementServices
       .findTaskView({ ...searchValue, page: page - 1, pageSize })
       .then(res => {
-        if(!isNull(res)){
+        if (!isNull(res)) {
           setTableData(res.content);
           setTotalPage(res.totalElements);
           setPage(res.pageable.pageNumber + 1)

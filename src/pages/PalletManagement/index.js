@@ -255,7 +255,7 @@ const PalletManagement = () => {
       if (pullType == 1) {
         // { id: 5, name: '原料托盘回库', value: '原料托盘回库', },
         // { id: 7, name: '半成品托盘回库', value: '半成品托盘回库', },
-        params.taskType = pullFormData.type ==1?5:7
+        params.taskType = pullFormData.type ==0?5:7
         Modal.confirm({
           title: `确认上架托盘${pullFormData.code}?`,
           onOk: async () => {

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { HVLayout, Table, Pagination, notification, Form, Input, Select,Checkbox, DatePicker, Divider, InputNumber, Cascader } from '@hvisions/h-ui'
 import {  page,i18n } from '@hvisions/toolkit';
 import TransferBoxServices from '~/api/TransferBox';
+import {sortPositions } from '~/enum/enum';
 
 const { getFormattedMsg } = i18n;
 const { showTotal } = page
@@ -43,9 +44,15 @@ const PickTrayTable = ({
     },
     {
       title: '原捡料点',
-      dataIndex: 'pickingPoint',
-      key: 'pickingPoint',
+      dataIndex: 'sortPosition',
+      key: 'sortPosition',
       align: 'center',
+      render: (text, record, index) => {
+        if(text == null){
+          return
+        }
+          return sortPositions[text - 1].name
+      }
     },
   ]
   

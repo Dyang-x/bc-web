@@ -44,10 +44,10 @@ const PullOffForm = ({
             rules: [
               {
                 required: true,
-                message: '请选择终点',
+                message: '请输入终点',
               },
             ],
-          })(<Input placeholder={'请选择终点'} style={{ width: '100%' }} />)
+          })(<Input placeholder={'请输入终点'} style={{ width: '100%' }} />)
         }
       </Form.Item>
     </Form>
