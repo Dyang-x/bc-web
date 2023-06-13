@@ -146,11 +146,15 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
             {getFormattedMsg('RawMaterialWarehousingReceipt.button.delete')}
           </a>,
           <Divider key="divider2" type="vertical" />,
-          <a key="weighing" type="primary" onClick={() => handleWeighing(record)} >
-            {getFormattedMsg('RawMaterialWarehousingReceipt.button.weighing')}
+          <a key="weighing" type="primary" onClick={() => handInStore(record)} >
+            小车进入
           </a>,
         ],
         record.state == 1 && [
+          <Divider key="divider4" type="vertical" />,
+          <a key="weighing" type="primary" onClick={() => handleWeighing(record)} >
+            {getFormattedMsg('RawMaterialWarehousingReceipt.button.weighing')}
+          </a>,
           <Divider key="divider3" type="vertical" />,
           <a key="warehousing" type="primary" onClick={() => handleWarehousing()} >
             {getFormattedMsg('RawMaterialWarehousingReceipt.button.warehousing')}
@@ -295,6 +299,28 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
           .then(res => {
             notification.success({
               message: getFormattedMsg('RawMaterialWarehousingReceipt.message.deleteSuccess')
+            });
+            loadData(page, pageSize, { ...searchValue, state: selectedstatus });
+          })
+          .catch(err => {
+            notification.warning({
+              description: err.message
+            });
+          });
+      },
+      onCancel() { },
+    })
+  }
+
+  const handInStore =(record)=>{
+    Modal.confirm({
+      title: '确认开始小车进入流程？',
+      onOk: async () => {
+        await RawMaterialWarehousingReceiptApi
+          .handInStore(record.id)
+          .then(res => {
+            notification.success({
+              message: '流程已开始'
             });
             loadData(page, pageSize, { ...searchValue, state: selectedstatus });
           })

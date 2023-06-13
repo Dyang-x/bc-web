@@ -47,7 +47,7 @@ const EmptyForm = ({
               placeholder={getFormattedMsg('RawMaterialDeliveryOrderManagement.placeholder.feedPort')}
             >
               {feedPorts.map((value, index) => (
-                <Option value={value.value} key={value.id}>
+                <Option value={value.value} key={value.key}>
                   {value.name}
                 </Option>
               ))}
@@ -64,17 +64,9 @@ const EmptyForm = ({
                 message: getFormattedMsg('RawMaterialDeliveryOrderManagement.message.cuttingMachine'),
               },
             ],
+            initialValue: modifyData ? modifyData['cuttingMachine'] : ''
           })(
-            <Select
-              showSearch
-              placeholder={getFormattedMsg('RawMaterialDeliveryOrderManagement.placeholder.cuttingMachine')}
-            >
-              {cuttingMachines.map((value, index) => (
-                <Option value={value.value} key={value.id}>
-                  {value.name}
-                </Option>
-              ))}
-            </Select>
+            <Input disabled placeholder={getFormattedMsg('RawMaterialDeliveryOrderManagement.placeholder.cuttingMachine')} />
           )
         }
       </Form.Item>

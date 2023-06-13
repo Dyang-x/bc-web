@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo, Fragment, useRef } from 'react';
 import { HVLayout, Button, Spin, Pagination, SearchForm, Select, DatePicker, Divider, Input, Modal } from '@hvisions/h-ui';
 import { i18n, page } from '@hvisions/toolkit';
 import { CacheTable } from '~/components';
-import { taskState, taskType, taskKind } from '~/enum/enum';
+// import { taskState, taskType, taskKind } from '~/enum/enum';
 import TaskTranSportServices from '~/api/TaskTranSport';
 import { notification } from '~/../node_modules/antd/lib/index';
 import AdjustForm from './AdjustForm';
@@ -12,7 +12,7 @@ const { Pane } = HVLayout;
 const { showTotal } = page
 const { Option } = Select;
 
-const Index = ({ taskKind }) => {
+const Index = ({ taskKind ,taskType}) => {
   const [tableData, setTableData] = useState([]);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
