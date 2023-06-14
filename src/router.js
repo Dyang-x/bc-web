@@ -41,7 +41,33 @@ import NewWaresLocation from '~/pages/NewWaresLocation';
 //余料入库
 import SurplusInStorage from '~/pages/SurplusInStorage';
 
+//看板总览
+import ProductOverView from './pages/FullScreen/ProductOverview/index';
+import J001OverView from './pages/FullScreen/J001/index';
+import J002OverView from './pages/FullScreen/J002/index';
+import J003OverView from './pages/FullScreen/J003/index';
+
+//线边库
+import WirelineStorage from './pages/WirelineStorage/index';
+
 export default [
+  {
+    path: '/product-fullScreen',
+    component: ProductOverView
+  },  {
+    path: '/J001-fullScreen',
+    component: J001OverView
+  },  {
+    path: '/J002-fullScreen',
+    component: J002OverView
+  },  {
+    path: '/J003-fullScreen',
+    component: J003OverView
+  },
+
+
+
+
 
   {
     path: '/pallet-management-stock-level',
@@ -111,6 +137,12 @@ export default [
     path: '/surplus_putInStorage',
     component: SurplusInStorage
   },
+  {
+    path: '/wireline_storage',
+    component: WirelineStorage
+  },
+
+  
   
   // 以下是示例功能代码， 正式开发时请删除
   // {

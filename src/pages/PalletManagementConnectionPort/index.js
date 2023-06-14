@@ -89,6 +89,7 @@ const PalletManagementConnectionPort = () => {
           {getFormattedMsg('PalletManagementConnectionPort.button.delete')}
         </a>,
       ],
+      width: 500,
     }
   ];
 
@@ -107,37 +108,61 @@ const PalletManagementConnectionPort = () => {
   };
 
   const HandleShelf = async record => {
-    await EmptyPalletsWarehousingApi.callTransferIn(record.joinCode)
-      .then(res => {
-        notification.success({
-          message: '托盘上架成功'
-        })
-        loadData();
-      })
-      .catch(err => {
-        notification.warning({
-          message: '托盘上架失败',
-          description: err.message
-        })
-        loadData();
-      })
+    const data = {
+      origin: record.joinCode,
+      middle: record.joinCode,
+      trayNumber: record.transferCode,
+      state: 0,
+      // { id: 5, name: '原料托盘回库', value: '原料托盘回库', },
+      // { id: 7, name: '半成品托盘回库', value: '半成品托盘回库', },
+      taskType:record.joinCode == 'J001' ? 5 : 7,
+      inType: record.joinCode == 'J001' ? 5 : 7,
+    }
+    Modal.confirm({
+      title: `${getFormattedMsg('PalletManagement.title.putOnPallet')}${record.transferCode}?`,
+      onOk: () => {
+        addAndUpShelves(data)
+      }
+    });
   };
 
-  const HandleTakedown = async record => {
-    await EmptyPalletDeliveryApi.callTransferOut(record.joinCode)
-    .then(res => {
-      notification.success({
-        message: '托盘下架成功'
-      })
-      loadData();
-    })
-    .catch(err => {
-      notification.warning({
-        message: '托盘下架失败',
-        description: err.message
-      })
-      loadData();
-    })
+    //托盘上架  新增并上架
+    const addAndUpShelves = async (data) => {
+      await EmptyPalletsWarehousingApi
+        .addAndupShelves(data)
+        .then(res => {
+          notification.success({
+            message: '托盘入库任务生成成功'
+          });
+          loadData();
+        })
+        .catch(err => {
+          notification.warning({
+            description: err.message
+          });
+        });
+    }
+
+  const HandleTakedown =  record => {
+    Modal.confirm({
+      title: `${getFormattedMsg('PalletManagement.title.pullOffPallet')}${record.transferCode}?`,
+      onOk: async() => {
+        await EmptyPalletDeliveryApi.callTransferOut({qrName:record.transferCode})
+        .then(res => {
+          notification.success({
+            message: '托盘下架成功'
+          })
+          loadData();
+        })
+        .catch(err => {
+          notification.warning({
+            message: '托盘下架失败',
+            description: err.message
+          })
+        })
+      }
+    });
+
   };
 
   const { Table, SettingButton } = useMemo(

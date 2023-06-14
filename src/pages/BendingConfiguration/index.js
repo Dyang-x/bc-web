@@ -6,12 +6,19 @@ import { isEmpty } from 'lodash';
 import bendingMachineServices from '~/api/bendingMachine';
 import TransferBoxServices from '~/api/TransferBox';
 import AddOrUpdateForm from './AddOrUpdateForm';
-import { attributeOne } from '~/enum/enum';
+import EmptyPalletsWarehousingApi from '~/api/EmptyPalletsWarehousing';
+import EmptyPalletDeliveryApi from '~/api/EmptyPalletDelivery';
+import SurplusForm from './SurplusForm';
+import { attributeOne,attributeTwo,dockingPoints,sortPositions } from '~/enum/enum';
 
 const getFormattedMsg = i18n.getFormattedMsg;
 const { showTotal } = page
 const { Pane } = HVLayout;
 const { Option } = Select;
+const middles =[
+  { id: 1, name: 'J002', value: 'J002', },
+  { id: 2, name: 'J003', value: 'J003', },
+]
 
 const BendingMachineConfiguration = () => {
   const [tableData, setTableData] = useState([]);
@@ -31,6 +38,16 @@ const BendingMachineConfiguration = () => {
   const [transferList, setTransferList] = useState([]);
   const [selectedTransfer,setSelectedTransfer] = useState()
 
+  const [pullVis, setPullVis] = useState(false);
+  const [pullData, setPullData] = useState({});
+  const [location, setLocation] = useState('J002');
+
+  const [surplusFormVis, setSurplusFormVis] = useState(false);
+  const [surplusData, setSurplusData] = useState({});
+  const surplusForm = useRef();
+
+  
+  
   useEffect(() => {
     loadData(page, pageSize, { ...setSearchValue });
   }, []);
@@ -113,6 +130,21 @@ const BendingMachineConfiguration = () => {
           {getFormattedMsg('PalletManagementConnectionPort.button.unbind')}
         </a>,
         <Divider key="divider2" type="vertical" />,
+
+        <a key="shelf" onClick={() => HandlePutOn(record)}>
+          托盘上架
+        </a>,
+        <Divider key="divider4" type="vertical" />,
+        <a key="takedown"  onClick={() => HandlePullOff(record)}>
+          托盘下架
+        </a>,
+        <Divider key="divider5" type="vertical" />,
+        <a key="surplus"  onClick={() => handleSurplus(record)}>
+          余料回库
+        </a>,
+        <Divider key="divider6" type="vertical" />,
+
+
         <a key="update" onClick={()=>handleUpdate(record)}>
           {getFormattedMsg('BendingMachineConfiguration.button.update')}
         </a>,
@@ -121,7 +153,7 @@ const BendingMachineConfiguration = () => {
          {getFormattedMsg('BendingMachineConfiguration.button.delete')}
         </a>,
       ],
-      width: 300,
+      width: 500,
       // fixed: 'right'
     }
   ];
@@ -132,6 +164,17 @@ const BendingMachineConfiguration = () => {
     bendingMachineServices
       .getByQuery({ ...searchValue, page: page - 1, pageSize })
       .then(res => {
+        res.content.map(i => {
+          const text = i.attribute
+          const arr = text.split(',');
+          let array = []
+          arr.map(j => {
+            const a = Number(j)
+            array = [...array, a]
+          })
+          console.log(array, 'array---');
+          i.attributeOne = array
+        })
         setTableData(res.content);
         setTotalPage(res.totalElements);
         setPage(res.pageable.pageNumber + 1)
@@ -324,6 +367,144 @@ const BendingMachineConfiguration = () => {
     });
   }
 
+  const HandlePutOn = (record) => {
+    setPullVis(true)
+    setPullData(record)
+    // const data = {
+    //   origin: record.readyMaterials,
+    //   middle: 'J001',
+    //   trayNumber: record.transferCode,
+    //   state: 0,
+    // }
+    // console.log(data,'托盘上架');
+    // Modal.confirm({
+    //   title: `${getFormattedMsg('PalletManagement.title.putOnPallet')}${record.transferCode}?`,
+    //   onOk: () => {
+    //     addAndUpShelves(data)
+    //   }
+    // });
+  }
+
+  const handleCancelPutOn =()=>{
+    setPullVis(false)
+    setPullData({})
+    setLocation('J002')
+  }
+
+  const modalPutOnFoot = () => [
+    <Button key="save" type="primary" onClick={handleSavePutOn}>
+      {getFormattedMsg('EmptyPalletDelivery.button.save')}
+    </Button>,
+    <Button key="cancel" onClick={handleCancelPutOn}>
+      {getFormattedMsg('EmptyPalletDelivery.button.cancel')}
+    </Button>
+  ];
+
+  const handleSavePutOn =()=>{
+    const data = {
+      origin: pullData.readyMaterials,
+      middle: location,
+      trayNumber: pullData.transferCode,
+      state: 0,
+    }
+    console.log(data,'上架');
+    Modal.confirm({
+      title: `${getFormattedMsg('PalletManagement.title.putOnPallet')}${pullData.transferCode}?`,
+      onOk: () => {
+        addAndUpShelves(data)
+      }
+    });
+  }
+
+  //托盘上架  新增并上架
+  const addAndUpShelves = async (data) => {
+    await EmptyPalletsWarehousingApi
+      .addAndupShelves(data)
+      .then(res => {
+        notification.success({
+          message: '托盘入库任务生成成功'
+        });
+        loadData(pageInfo.page, pageInfo.pageSize, searchValue);
+      })
+      .catch(err => {
+        notification.warning({
+          description: err.message
+        });
+      });
+  }
+
+  const HandlePullOff = (record) => {
+    Modal.confirm({
+      title: `${getFormattedMsg('PalletManagement.title.pullOffPallet')}${record.transferCode}?`,
+      onOk: async() => {
+        await EmptyPalletDeliveryApi.callTransferOut({qrName:record.transferCode})
+        .then(res => {
+          notification.success({
+            message: '托盘下架成功'
+          })
+          loadData();
+        })
+        .catch(err => {
+          notification.warning({
+            message: '托盘下架失败',
+            description: err.message
+          })
+        })
+      }
+    });
+  }
+  
+  const handleSurplus =(record)=>{
+    setSurplusFormVis(true)
+    setSurplusData(record)
+  }
+
+  const handleCancelSurplus = () => {
+    const { resetFields } = surplusForm.current;
+    resetFields();
+    setSurplusFormVis(false)
+    setSurplusData({})
+  }
+
+  const modalAddFoot = () => [
+    <Button key="save" type="primary" onClick={handleSaveSurplus}>
+      {getFormattedMsg('SemiFinishedWarehousingReceipt.button.save')}
+    </Button>,
+    <Button key="cancel" onClick={handleCancelSurplus}>
+      {getFormattedMsg('SemiFinishedWarehousingReceipt.button.cancel')}
+    </Button>
+  ];
+
+  const handleSaveSurplus = () => {
+    const { getFieldsValue, validateFields, setFieldsValue } = surplusForm.current;
+    validateFields(async (err, values) => {
+      if (err) return;
+      const params = getFieldsValue();
+      if(params.attributeOne.length != 0){
+        params.attributeOne = params.attributeOne.toString()
+      }else{
+        delete params.attributeOne
+      }
+      console.log(params, 'params');
+
+      await bendingMachineServices
+        .addSurplusMaterial(params)
+        .then(res => {
+          notification.success({
+            message: getFormattedMsg('SemiFinishedWarehousingReceipt.message.addSuccess')
+          });
+          reFreshFunc()
+        })
+        .catch(err => {
+          notification.warning({
+            message: getFormattedMsg('SemiFinishedWarehousingReceipt.message.addFailure'),
+            description: err.message
+          });
+        });
+      handleCancelSurplus();
+    });
+  }
+
   const formItemLayout = {
     labelCol: {
       xs: { span: 24 },
@@ -424,6 +605,57 @@ const BendingMachineConfiguration = () => {
           </Form.Item>
         </Form>
       </Modal>
+      <Modal
+        title={'托盘下架'}
+        visible={pullVis}
+        onCancel={handleCancelPutOn}
+        footer={modalPutOnFoot()}
+      >
+        <div style={{display:'flex'}}>
+          <div style={{
+            width:'15%',
+            display: 'flex',
+            justifyContent: 'middle',
+            alignItems: 'center',
+            textAlign:'center',
+            }}>
+             中间点：
+          </div>
+          <Select
+            placeholder={'请选择中间点'}
+            showSearch
+            filterOption={false}
+            onChange={(e) => {
+              setLocation(e)
+            }}
+            value={location}
+          >
+            {
+              middles.length && middles.map(item => {
+                return (<Option key={item.id} value={item.value}>{item.value}</Option>)
+              })
+            }
+          </Select>
+        </div>
+      </Modal>
+      <Drawer 
+      title={'余料回库'} 
+      visible={surplusFormVis} 
+      onClose={handleCancelSurplus} 
+      width={500}
+      >
+        <Drawer.DrawerContent>
+          <SurplusForm
+            ref={surplusForm}
+            modifyData={surplusData}
+            attributeOne={attributeOne}
+            attributeTwo={attributeTwo}
+            dockingPoints={dockingPoints}
+            sortPositions={sortPositions}
+          />
+        </Drawer.DrawerContent>
+        <Drawer.DrawerBottomBar>{modalAddFoot()}</Drawer.DrawerBottomBar>
+      </Drawer>
     </>
   );
 };

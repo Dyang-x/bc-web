@@ -96,8 +96,8 @@ const PalletManagementStockLevel = () => {
         <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)}>
           {getFormattedMsg('PalletManagementStockLevel.button.delete')}
         </a>,
-        <Divider key="divider4" type="vertical" />,
-        <Checkbox key="checkbox" defaultChecked={record.automaticState} onChange={(e) => CheckboxChange(e, record)}>{getFormattedMsg('PalletManagementStockLevel.button.checkbox')}</Checkbox>
+        // <Divider key="divider4" type="vertical" />,
+        // <Checkbox key="checkbox" defaultChecked={record.automaticState} onChange={(e) => CheckboxChange(e, record)}>{getFormattedMsg('PalletManagementStockLevel.button.checkbox')}</Checkbox>
       ],
       width: 500,
       // fixed: 'right'

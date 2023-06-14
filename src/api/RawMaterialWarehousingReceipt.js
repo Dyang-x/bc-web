@@ -51,14 +51,14 @@ class RawMaterialWarehousingReceipt extends Service {
     }
   }
 
-  // 手动上架(receiptNumber入库单号,trayNumber托盘号)
-  async handInStore(receiptNumber, trayNumber) {
-    try {
-      return await this.put(`${appName}/RawMaterialInWarehouse/handInStore?receiptNumber=${receiptNumber}&trayNumber=${trayNumber}`);
-    } catch (error) {
-      throw new Error(error);
-    }
-  }
+  // // 手动上架(receiptNumber入库单号,trayNumber托盘号)
+  // async handInStore(receiptNumber, trayNumber) {
+  //   try {
+  //     return await this.put(`${appName}/RawMaterialInWarehouse/handInStore?receiptNumber=${receiptNumber}&trayNumber=${trayNumber}`);
+  //   } catch (error) {
+  //     throw new Error(error);
+  //   }
+  // }
 
   // 入库
   async inStore(data) {
@@ -78,15 +78,24 @@ class RawMaterialWarehousingReceipt extends Service {
     }
   }
 
-    // 获取物料信息
-    async getMaterialByNameOrCode(data) {
-      return await this.post(`/materials-master-data/material/getMaterialByNameOrCode`, {
-        ...data,
-        direction: false,
-        sort: true,
-        sortCol: 'id'
-      });
+  // 获取物料信息
+  async getMaterialByNameOrCode(data) {
+    return await this.post(`/materials-master-data/material/getMaterialByNameOrCode`, {
+      ...data,
+      direction: false,
+      sort: true,
+      sortCol: 'id'
+    });
+  }
+
+  // 小车进入
+  async handInStore(id) {
+    try {
+      return await this.put(`${appName}/RawMaterialInWarehouse/handInStore?id=${id}`);
+    } catch (error) {
+      throw new Error(error);
     }
+  }
 }
 
 export default new RawMaterialWarehousingReceipt();

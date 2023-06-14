@@ -134,11 +134,11 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
       render: (_, record) => [
         (record.remainRuns == 0)
           ?
-          <a key="detail" onClick={() => handleEmpty(record)}>
+          <a key="detail1" onClick={() => handleEmpty(record)}>
             空托回库
           </a>
           :
-          <a key="detail" onClick={() => handleSurplus(record)}>
+          <a key="detail2" onClick={() => handleSurplus(record)}>
             余料回库
           </a>,
         // <Divider key="divider2" type="vertical" />,

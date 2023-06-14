@@ -1,0 +1,21 @@
+<svg  width="1210" height="87" viewBox="0 0 1210 87" fill="none"  xmlns="http://www.w3.org/2000/svg">
+<g id="Group 218">
+<path id="Polygon 1" d="M804.711 0.499999L829.423 43.3013L804.711 86.1025L399.289 86.1025L374.577 43.3013L399.289 0.500005L804.711 0.499999Z" fill="url(#paint0_linear_32_6)" stroke="#27A6FF"/>
+<g id="Group 196">
+<path id="Vector 76" d="M333 17H187L160 51M370 74H247L230 51H18L1 74" stroke="#27A6FF" stroke-width="2"/>
+<path id="Rectangle 43" d="M248 50H276L287 66H259L248 50Z" fill="#00D7FF"/>
+<path id="Rectangle 44" d="M295 50H323L334 66H306L295 50Z" fill="#00D7FF"/>
+</g>
+<g id="Group 197">
+<path id="Vector 76_2" d="M877 17H1023L1050 51M840 74H963L980 51H1192L1209 74" stroke="#27A6FF" stroke-width="2"/>
+<path id="Rectangle 43_2" d="M962 50H934L923 66H951L962 50Z" fill="#00D7FF"/>
+<path id="Rectangle 44_2" d="M915 50H887L876 66H904L915 50Z" fill="#00D7FF"/>
+</g>
+</g>
+<defs>
+<linearGradient id="paint0_linear_32_6" x1="647.6" y1="-8.5451e-06" x2="647.6" y2="85.4754" gradientUnits="userSpaceOnUse">
+<stop stop-color="#047BAE"/>
+<stop offset="1" stop-color="#167EAA" stop-opacity="0.26"/>
+</linearGradient>
+</defs>
+</svg>

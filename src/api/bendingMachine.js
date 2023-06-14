@@ -10,6 +10,15 @@ class bendingMachineServices extends Service {
     }
   }
 
+    //余料入库
+    async addSurplusMaterial(data) {
+      try {
+        return await this.post(`${appName}/BendingMachineController/addSurplusMaterial`, data);
+      } catch (error) {
+        throw new Error(error);
+      }
+    }
+
   //新增托盘
   async addTransfer(bendingNumber, transferCode) {
     try {

@@ -1,0 +1,23 @@
+<svg width="719" height="87" preserveAspectRatio='none' viewBox="0 0 719 87" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Group 200">
+<g id="Group 197">
+<path id="Vector 76" d="M526 17H642L669 51M489 74H612L629 51H701L718 74" stroke="#27A6FF" stroke-width="2"/>
+<path id="Rectangle 43" d="M601 50H573L562 66H590L601 50Z" fill="#00D7FF"/>
+<path id="Rectangle 44" d="M554 50H526L515 66H543L554 50Z" fill="#00D7FF"/>
+</g>
+<g id="Group 207">
+<path id="Vector 76_2" d="M193 17H77L50 51M230 74H107L90 51H18L1 74" stroke="#27A6FF" stroke-width="2"/>
+<path id="Rectangle 43_2" d="M118 50H146L157 66H129L118 50Z" fill="#00D7FF"/>
+<path id="Rectangle 44_2" d="M165 50H193L204 66H176L165 50Z" fill="#00D7FF"/>
+</g>
+<g id="Group 206">
+<path id="Polygon 1" d="M481.711 0.499999L506.423 43.3013L481.711 86.1025L236.289 86.1025L211.577 43.3013L236.289 0.500005L481.711 0.499999Z" fill="url(#paint0_linear_22_470)" stroke="#27A6FF"/>
+</g>
+</g>
+<defs>
+<linearGradient id="paint0_linear_22_470" x1="484.598" y1="-8.54519e-06" x2="484.598" y2="85.4754" gradientUnits="userSpaceOnUse">
+<stop stop-color="#047BAE"/>
+<stop offset="1" stop-color="#167EAA" stop-opacity="0.26"/>
+</linearGradient>
+</defs>
+</svg>
