@@ -1,7 +1,7 @@
 import React,{useEffect,useState} from 'react';
 import {Form, Select} from '@hvisions/h-ui'
 import { i18n } from '@hvisions/toolkit';
-import { prepareAreas,dockingPoints } from '~/enum/enum';
+import { dockingPoints } from '~/enum/enum';
 import bendingMachineServices from '~/api/bendingMachine';
 import { isEmpty } from 'lodash';
 

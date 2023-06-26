@@ -5,6 +5,8 @@ import { tree } from '@hvisions/toolkit';
 import { i18n } from '@hvisions/toolkit';
 import { debounce } from 'lodash';
 import TransferBoxServices from '~/api/TransferBox';
+import {  dockingPoints,sortPositions } from '~/enum/enum';
+
 
 const { formatTree } = tree;
 const { getFormattedMsg } = i18n;
@@ -25,8 +27,8 @@ const TrayForm = ({
   setAttributeTwoState,
   attributeOne,
   attributeTwo,
-  dockingPoints,
-  sortPositions,
+  // dockingPoints,
+  // sortPositions,
 }) => {
   const [pageInfo, setPageInfo] = useState({ page: 1, pageSize: 10 });
   const [transferList, setTransferList] = useState([])

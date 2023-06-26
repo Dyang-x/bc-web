@@ -9,7 +9,7 @@ import AddOrUpdateForm from './AddOrUpdateForm';
 import EmptyPalletsWarehousingApi from '~/api/EmptyPalletsWarehousing';
 import EmptyPalletDeliveryApi from '~/api/EmptyPalletDelivery';
 import SurplusForm from './SurplusForm';
-import { attributeOne,attributeTwo,dockingPoints,sortPositions } from '~/enum/enum';
+import { attributeOne,attributeTwo, } from '~/enum/enum';
 
 const getFormattedMsg = i18n.getFormattedMsg;
 const { showTotal } = page
@@ -650,8 +650,8 @@ const BendingMachineConfiguration = () => {
             modifyData={surplusData}
             attributeOne={attributeOne}
             attributeTwo={attributeTwo}
-            dockingPoints={dockingPoints}
-            sortPositions={sortPositions}
+            // dockingPoints={dockingPoints}
+            // sortPositions={sortPositions}
           />
         </Drawer.DrawerContent>
         <Drawer.DrawerBottomBar>{modalAddFoot()}</Drawer.DrawerBottomBar>

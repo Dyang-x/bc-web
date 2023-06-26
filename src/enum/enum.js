@@ -92,7 +92,10 @@ export const taskType = [
     { id: 6, name: '原料托盘出库', value: '原料托盘出库', },
     { id: 7, name: '半成品托盘回库', value: '半成品托盘回库', },
     { id: 8, name: '半成品托盘出库', value: '半成品托盘出库', },
-    { id: 9, name: '原材料运输小车', value: '原材料运输小车', },
+    { id: 9, name: '半成品余料回库', value: '半成品余料回库', },
+    { id: 10, name: '原料余料回库', value: '原料余料回库', },
+    { id: 11, name: '原料退料入库', value: '原料退料入库', },
+    { id: 12, name: '半成品退料入库', value: '半成品退料入库', },
     // { id: 10, name: '链条', value: '链条', },
     // { id: 11, name: '原料托盘上架', value: '原料托盘上架', },
     // { id: 12, name: '半成品托盘上架', value: '半成品托盘上架', },
@@ -116,20 +119,9 @@ export const sortPositions = [
     { id: 6, name: 'J009', value: 'J009', },
 ]
 
-
 //接驳口
 export const emptyInMid = [
     { id: 1, name: 'J001', value: 'J001', },
     { id: 2, name: 'J002', value: 'J002', },
     { id: 3, name: 'J003', value: 'J003', },
 ]
-
-
-/*
-
-J001    原料交接区
-
-
-*/
-
-

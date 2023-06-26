@@ -5,6 +5,7 @@ import { tree } from '@hvisions/toolkit';
 import { i18n } from '@hvisions/toolkit';
 import { debounce } from 'lodash';
 import TransferBoxServices from '~/api/TransferBox';
+import { dockingPoints } from '~/enum/enum';
 
 const { formatTree } = tree;
 const { getFormattedMsg } = i18n;
@@ -20,8 +21,8 @@ const SurplusForm = ({
   modifyData,
   attributeOne,
   attributeTwo,
-  dockingPoints,
-  sortPositions,
+  // dockingPoints,
+  // sortPositions,
 }) => {
   const [pageInfo, setPageInfo] = useState({ page: 1, pageSize: 10 });
   const [transferList, setTransferList] = useState([])
@@ -138,7 +139,7 @@ const SurplusForm = ({
             filterOption={false}
           >
             {dockingPoints.map((value, index) => (
-              <Option value={value.id} key={value.id}>
+              <Option value={value.value} key={value.id}>
                 {value.name}
               </Option>
             ))}

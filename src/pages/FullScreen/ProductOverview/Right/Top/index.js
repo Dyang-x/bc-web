@@ -67,10 +67,10 @@ const ContentThree = ({ usedHeight }) => {
                     position: 'fixed',
                 }}
                     >
-                    <Button>Default</Button>
-                    <Button>Default</Button>
-                    <Button>Default</Button>
-                    <Button>Default</Button>
+                    <Button>昨天</Button>
+                    <Button>今天</Button>
+                    <Button>本周</Button>
+                    <Button>本月</Button>
                 </div>
                 <RightTop usedHeight={usedHeight} />
                 <RightMiddle usedHeight={usedHeight} />

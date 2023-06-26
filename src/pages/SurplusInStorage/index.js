@@ -5,7 +5,6 @@ import { CacheTable } from '~/components';
 import moment from 'moment';
 import SurplusMaterialApi from '~/api/SurplusMaterial';
 import AddOrUpdateForm from './AddOrUpdateForm';
-import { dockingPoints, sortPositions } from '~/enum/enum';
 
 
 const getFormattedMsg = i18n.getFormattedMsg;
@@ -321,8 +320,6 @@ const SurplusInStorage = ({ history }) => {
         <Drawer.DrawerContent>
           <AddOrUpdateForm
             ref={addForm}
-            dockingPoints={dockingPoints}
-            sortPositions={sortPositions}
           />
         </Drawer.DrawerContent>
         <Drawer.DrawerBottomBar>{modalAddFoot()}</Drawer.DrawerBottomBar>

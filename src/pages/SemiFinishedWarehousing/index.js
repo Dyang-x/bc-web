@@ -139,24 +139,24 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
       dataIndex: 'dockingPoint',
       key: 'dockingPoint',
       align: 'center',
-      render:(text,record,index)=>{
-        if(text == null){
-          return
-        }
-        return dockingPoints[text - 1].name
-      }
+      // render:(text,record,index)=>{
+      //   if(text == null){
+      //     return
+      //   }
+      //   return dockingPoints[text - 1].name
+      // }
     },
     {
       title: getFormattedMsg('SemiFinishedWarehousingReceipt.title.sortPosition'),
       dataIndex: 'sortPosition',
       key: 'sortPosition',
       align: 'center',
-      render: (text, record, index) => {
-        if(text == null){
-          return
-        }
-          return sortPositions[text - 1].name
-      }
+      // render: (text, record, index) => {
+      //   if(text == null){
+      //     return
+      //   }
+      //     return sortPositions[text - 1].name
+      // }
     },
     {
       title: getFormattedMsg('SemiFinishedWarehousingReceipt.title.operation'),
@@ -607,8 +607,8 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
             setAttributeTwoState={setAttributeTwoState}
             attributeOne={attributeOne}
             attributeTwo={attributeTwo}
-            dockingPoints={dockingPoints}
-            sortPositions={sortPositions}
+            // dockingPoints={dockingPoints}
+            // sortPositions={sortPositions}
           />
         </Drawer.DrawerContent>
         <Drawer.DrawerBottomBar>{modalAddFoot()}</Drawer.DrawerBottomBar>
@@ -624,8 +624,8 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
             setAttributeTwoState={setAttributeTwoState}
             attributeOne={attributeOne}
             attributeTwo={attributeTwo}
-            dockingPoints={dockingPoints}
-            sortPositions={sortPositions}
+            // dockingPoints={dockingPoints}
+            // sortPositions={sortPositions}
           />
         </Drawer.DrawerContent>
         <Drawer.DrawerBottomBar>{modalUpdateFoot()}</Drawer.DrawerBottomBar>

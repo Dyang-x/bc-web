@@ -3,8 +3,7 @@ import {  HVLayout,  Button,  notification,  Modal,  Spin,  Pagination,  SearchF
 import { i18n, page } from '@hvisions/toolkit';
 import { CacheTable } from '~/components';
 import moment from 'moment';
-import SurplusMaterialApi from '~/api/SurplusMaterial';
-import { dockingPoints, sortPositions } from '~/enum/enum';
+import SurplusMaterialApi from '~/api/SurplusMaterial'; 
 
 import LineEdgeLibraryApi from '~/api/LineEdgeLibraryController';
 import EmptyPalletsWarehousingApi from '~/api/EmptyPalletsWarehousing';
