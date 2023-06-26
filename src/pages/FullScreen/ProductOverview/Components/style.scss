@@ -1,0 +1,11 @@
+.monthPicker {
+  :global {
+    .ant-input {
+      background-color: transparent;
+      color: aliceblue;
+    }
+    .ant-calendar-picker-icon{
+      color: aliceblue;
+    }
+  }
+}

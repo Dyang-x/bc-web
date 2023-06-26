@@ -155,22 +155,22 @@ const SemiFinisheDeliveryPalletSelection = ({ history }) => {
     SemiFinisheDeliveryPalletSelectionServices
       .getByQuery({ ...searchValue, page: page - 1, pageSize })
       .then(res => {
-        const data = [{
-          attributeOne: "1,2",
-          attributeTwo: "4",
-          createTime: "2023-06-01 10:46:21",
-          id: 16,
-          intime: "g",
-          locationNumber: "1-g",
-          orderCount: 10,
-          orderNumber: "1,2",
-          owNumber: '',
-          receiptNumber: null,
-          state: 2,
-          trayNumber: '1#TP-A-0044',
-        }]
-        setTableData(data)
-        // setTableData(res.content);
+        // const data = [{
+        //   attributeOne: "1,2",
+        //   attributeTwo: "4",
+        //   createTime: "2023-06-01 10:46:21",
+        //   id: 16,
+        //   intime: "g",
+        //   locationNumber: "1-g",
+        //   orderCount: 10,
+        //   orderNumber: "1,2",
+        //   owNumber: '',
+        //   receiptNumber: null,
+        //   state: 2,
+        //   trayNumber: '1#TP-A-0044',
+        // }]
+        // setTableData(data)
+        setTableData(res.content);
         setTotalPage(res.totalElements);
         setPage(res.pageable.pageNumber + 1)
         setPageSize(res.pageable.pageSize)

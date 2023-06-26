@@ -96,7 +96,6 @@ const SurplusForm = ({
             showSearch
             filterOption={false}
             mode="multiple"
-            disabled={true}
           >
             {attributeOne.map((value, index) => (
               <Option value={value.id} key={value.id}>
@@ -118,7 +117,7 @@ const SurplusForm = ({
             ],
             initialValue: modifyData ? modifyData['readyMaterials'] : undefined
           })(
-            <Input disabled={true} placeholder={getFormattedMsg('SemiFinishedWarehousingReceipt.placeholder.orderNumber')} style={{ width: '100%' }} />
+            <Input placeholder={getFormattedMsg('SemiFinishedWarehousingReceipt.placeholder.orderNumber')} style={{ width: '100%' }} />
           )
         }
       </Form.Item>

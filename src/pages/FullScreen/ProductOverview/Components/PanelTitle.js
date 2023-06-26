@@ -2,12 +2,17 @@ import React from 'react';
 import blockHeader from '../../assets/slices/blockHeader.svg';
 
 import { DatePicker } from '@hvisions/h-ui';
+import styles from './style.scss';
 
 const { MonthPicker } = DatePicker;
 
 const PanelTitle = ({ title }) => {
   return (
-    <div>
+    <div
+      style={{
+        display: 'flex',
+      }}
+    >
       <div
         style={{
           width: '61rem',
@@ -37,14 +42,16 @@ const PanelTitle = ({ title }) => {
         </div>
 
       </div>
-      <MonthPicker
+      {/* <MonthPicker
+        className={styles.monthPicker}
         style={{
-          marginLeft: 'auto',
-          justifyContent: 'flex-end',
-          background: 'transport'
+          marginLeft: '2rem',
+          marginTop: '2rem',
+          marginRight: '2rem',
         }}
         placeholder="请选择月份"
-      />
+        allowClear={false}
+      /> */}
     </div>
   );
 };

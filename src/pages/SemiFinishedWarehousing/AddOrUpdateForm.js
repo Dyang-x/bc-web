@@ -189,7 +189,7 @@ const TrayForm = ({
             // mode="multiple"
           >
             {sortPositions.map((value, index) => (
-              <Option value={value.id} key={value.id}>
+              <Option value={value.value} key={value.id}>
                 {value.name}
               </Option>
             ))}
@@ -216,7 +216,7 @@ const TrayForm = ({
             // mode="multiple"
           >
             {dockingPoints.map((value, index) => (
-              <Option value={value.id} key={value.id}>
+              <Option value={value.value} key={value.id}>
                 {value.name}
               </Option>
             ))}
@@ -224,7 +224,6 @@ const TrayForm = ({
           )
         }
       </Form.Item>
-     
     </Form>
   )
 }

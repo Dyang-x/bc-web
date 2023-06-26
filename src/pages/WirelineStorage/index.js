@@ -31,21 +31,9 @@ const WirelineStorage = ({ history }) => {
 
   const columns = [
     {
-      title: '任务编码',
-      dataIndex: 'taskCode',
-      key: 'taskCode',
-      align: 'center',
-    },
-    {
       title: '切割机',
       dataIndex: 'cuttingMachine',
       key: 'cuttingMachine',
-      align: 'center',
-    },
-    {
-      title: '计划名称',
-      dataIndex: 'planName',
-      key: 'planName',
       align: 'center',
     },
     {
@@ -88,12 +76,6 @@ const WirelineStorage = ({ history }) => {
       title: '剩余数量',
       dataIndex: 'remainderNum',
       key: 'remainderNum',
-      align: 'center',
-    },
-    {
-      title: '使用数量',
-      dataIndex: 'useNum',
-      key: 'useNum',
       align: 'center',
     },
     {

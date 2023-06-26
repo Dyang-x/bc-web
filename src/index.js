@@ -36,6 +36,7 @@ import boardModule from '@hvisions/module-board';
 import eamModule from '@hvisions/module-eam';
 import etrainingModule from '@hvisions/module-etraining';
 import messageModule from '@hvisions/module-message';
+
 import pmsModule from '@hvisions/module-pms';
 import qmsModule from '@hvisions/module-qms';
 import wmsModule from '@hvisions/module-wms';
@@ -79,11 +80,23 @@ const moduleConfig = {
   }
 };
 
+const wsConfig = { 
+  wsAddress: `ws://${process.env.__API_HOST__}:15674/ws`, 
+  needNotification: true 
+};
+
+const CoreConfig = {
+  username: 'admin',
+  password: 'admin',
+  wsAddress: `${process.env.MESSAGE_API_ADDRESS}`,
+  needNotification: true,
+}
 
 
 new Core({
   router, // 路由
   locales, // 国际化
   store, // redux store
-  moduleConfig // 已有模块插入自定义功能
+  moduleConfig, // 已有模块插入自定义功能
+  CoreConfig, //消息通知
 }).mount('#root');

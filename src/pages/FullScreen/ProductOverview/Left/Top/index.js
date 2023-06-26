@@ -3,6 +3,9 @@ import PanelTitle from '../../Components/PanelTitle';
 import ReactECharts from 'echarts-for-react';
 import { LargeRect } from '../../container';
 
+import { DatePicker } from '@hvisions/h-ui';
+import styles from './style.scss';
+const { MonthPicker } = DatePicker;
 
 const ContentOne = ({ usedHeight }) => {
     const [time, setTime] = useState([]);
@@ -125,15 +128,37 @@ const ContentOne = ({ usedHeight }) => {
                 bottom: '25%'
                 // containLabel: true
             },
-            legend: {
-                top: 0,
-                type: 'scroll',
-                // orient: 'vertical',  //纵向
-                orient: 'horizontal',  //横向
-                x: 'right',
-                data: ['产成品数量', 'A格品数量'],
+            title: {
+                text: '一次交检合格率',
                 textStyle: {
-                    fontSize: '2.5rem',
+                    // fontSize: '2.5rem',
+                    // fontFamily: 'Alibaba PuHuiTi-Regular, Alibaba PuHuiTi',
+                    // fontWeight: 400,
+                    color: '#FFFFFF',
+                    
+                },
+                top: '5%',
+                left: '4%',
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                  type: 'cross',
+                  crossStyle: {
+                    color: '#999'
+                  }
+                }
+              },
+            legend: {
+                top: '5%',
+                right: '5%',
+                // type: 'scroll',
+                // // orient: 'vertical',  //纵向
+                // orient: 'horizontal',  //横向
+                // x: 'right',
+                data: ['产品数量', '合格率', '合格数量'],
+                textStyle: {
+                    // fontSize: '2.5rem',
                     fontFamily: 'Alibaba PuHuiTi-Regular, Alibaba PuHuiTi',
                     fontWeight: 400,
                     color: '#FFFFFF',
@@ -181,78 +206,114 @@ const ContentOne = ({ usedHeight }) => {
             ],
             series: [
                 {
-                    name: '产成品数量',
+                    name: '产品数量',
                     type: 'bar',
                     barWidth: '10rem', //柱条宽度
                     data: dataValues1,
-                    label: {
-                        //文本标签的样式
-                        show: true,
-                        color: '#fff', //文字的颜色
-                        // position: 'top', //文字的位置
-                        position: 'insideRight', //文字的位置
-                        fontSize: 2.4 * window.rem + 'px'
-                    },
+                    // label: {
+                    //     //文本标签的样式
+                    //     show: true,
+                    //     color: '#fff', //文字的颜色
+                    //     // position: 'top', //文字的位置
+                    //     position: 'insideRight', //文字的位置
+                    //     fontSize: 2.4 * window.rem + 'px'
+                    // },
                     itemStyle: {
                         //图形的样式
                         borderRadius: [20, 20, 20, 20],
-                        color: dataItem => {
-                            if (dataItem.dataIndex % 2 == 1) {
-                                return {
-                                    //渐变色配置
-                                    type: 'linear',
-                                    x: 0,
-                                    y: 0,
-                                    x2: 0,
-                                    y2: 1,
-                                    colorStops: [
-                                        {
-                                            offset: 0,
-                                            color: 'rgba(46, 210, 245, 1)'
-                                        },
-                                        {
-                                            offset: 1,
-                                            color: 'rgba(106, 216, 223, 0.38)'
-                                        }
-                                    ],
-                                    global: false
-                                };
-                            } else {
-                                return {
-                                    //渐变色配置
-                                    type: 'linear',
-                                    x: 0,
-                                    y: 0,
-                                    x2: 0,
-                                    y2: 1,
-                                    colorStops: [
-                                        {
-                                            offset: 0,
-                                            color: 'rgba(46, 90, 245, 1)'
-                                        },
-                                        {
-                                            offset: 1,
-                                            color: 'rgba(82, 80, 184, 0.38)'
-                                        }
-                                    ],
-                                    global: false
-                                };
-                            }
+                        color: {
+                            //渐变色配置
+                            type: 'linear',
+                            x: 0,
+                            y: 0,
+                            x2: 0,
+                            y2: 1,
+                            colorStops: [
+                                {
+                                    offset: 0,
+                                    color: 'rgba(46, 90, 245, 1)'
+                                },
+                                {
+                                    offset: 1,
+                                    color: 'rgba(82, 80, 184, 0.38)'
+                                }
+                            ],
+                            global: false
                         }
                     }
                 },
                 {
-                    name: 'A格品数量',
+                    name: '合格数量',
+                    type: 'bar',
+                    barWidth: '10rem', //柱条宽度
+                    data: dataValues1,
+                    // label: {
+                    //     //文本标签的样式
+                    //     show: true,
+                    //     color: '#fff', //文字的颜色
+                    //     // position: 'top', //文字的位置
+                    //     position: 'insideRight', //文字的位置
+                    //     fontSize: 2.4 * window.rem + 'px'
+                    // },
+                    itemStyle: {
+                        //图形的样式
+                        borderRadius: [20, 20, 20, 20],
+                        color: {
+                            //渐变色配置
+                            type: 'linear',
+                            x: 0,
+                            y: 0,
+                            x2: 0,
+                            y2: 1,
+                            colorStops: [
+                                {
+                                    offset: 0,
+                                    color: 'rgba(46, 210, 245, 1)'
+                                },
+                                {
+                                    offset: 1,
+                                    color: 'rgba(106, 216, 223, 0.38)'
+                                }
+                            ],
+                            global: false
+                        }
+                    }
+
+                },
+                {
+                    name: '合格率',
                     yAxisIndex: '0',
                     type: 'line',
                     data: dataValues2,
-                    label: {
-                        //文本标签的样式
-                        show: true,
-                        color: '#fff', //文字的颜色
-                        position: 'insideBottomLeft', //文字的位置
-                        fontSize: 2.4 * window.rem + 'px'
-                    },
+                    smooth:true,
+                    // label: {
+                    //     //文本标签的样式
+                    //     show: true,
+                    //     color: '#fff', //文字的颜色
+                    //     position: 'insideBottomLeft', //文字的位置
+                    //     fontSize: 2.4 * window.rem + 'px'
+                    // },
+                    lineStyle: {
+                        color: {
+                            //渐变色配置
+                            type: 'linear',
+                            x: 0,
+                            y: 0,
+                            x2: 0,
+                            y2: 1,
+                            colorStops: [
+                                {
+                                    offset: 0,
+                                    color: 'rgba(46, 210, 245, 1)'
+                                },
+                                {
+                                    offset: 1,
+                                    color: 'rgba(106, 216, 223, 0.38)'
+                                }
+                            ],
+                            global: false
+                        }
+                    }
                 },
             ]
         };
@@ -262,16 +323,28 @@ const ContentOne = ({ usedHeight }) => {
     return (
         <div
             style={{
-                marginTop: '5.3rem',
+                marginTop: '4rem',
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 width: '100%',
-                height: usedHeight * 0.3
+                // height: usedHeight * 0.3
+                height: '60rem'
             }}
         >
             <LargeRect style={{ flex: '1', }}>
-                <PanelTitle title="当月产量"  style={{width: '100%',}} />
+                <PanelTitle title="质量数据" style={{ width: '100%', }} />
+                <MonthPicker
+                    className={styles.monthPicker}
+                    style={{
+                        marginLeft: '75rem',
+                        marginTop: '2rem',
+                        marginRight: '2rem',
+                        position: 'fixed',
+                    }}
+                    placeholder="请选择月份"
+                    allowClear={false}
+                />
                 <div style={{ flex: '1', width: '100%', overflow: 'hidden' }}>
                     <ReactECharts
                         option={getDailyProductionChart(time, passRate, acount)}

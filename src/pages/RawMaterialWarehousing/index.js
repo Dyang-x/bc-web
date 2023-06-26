@@ -65,36 +65,36 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
       key: 'createTime',
       align: 'center',
     },
-    {
-      title: getFormattedMsg('RawMaterialWarehousingReceipt.title.creator'),
-      dataIndex: 'creator',
-      key: 'creator',
-      align: 'center',
-    },
-    {
-      title: getFormattedMsg('RawMaterialWarehousingReceipt.title.associatedNumber'),
-      dataIndex: 'associatedNumber',
-      key: 'associatedNumber',
-      align: 'center',
-    },
-    {
-      title: getFormattedMsg('RawMaterialWarehousingReceipt.title.number'),
-      dataIndex: 'number',
-      key: 'number',
-      align: 'center',
-    },
-    {
-      title: getFormattedMsg('RawMaterialWarehousingReceipt.title.materialCode'),
-      dataIndex: 'materialCode',
-      key: 'materialCode',
-      align: 'center',
-    },
-    {
-      title: getFormattedMsg('RawMaterialWarehousingReceipt.title.materialName'),
-      dataIndex: 'materialName',
-      key: 'materialName',
-      align: 'center',
-    },
+    // {
+    //   title: getFormattedMsg('RawMaterialWarehousingReceipt.title.creator'),
+    //   dataIndex: 'creator',
+    //   key: 'creator',
+    //   align: 'center',
+    // },
+    // {
+    //   title: getFormattedMsg('RawMaterialWarehousingReceipt.title.associatedNumber'),
+    //   dataIndex: 'associatedNumber',
+    //   key: 'associatedNumber',
+    //   align: 'center',
+    // },
+    // {
+    //   title: getFormattedMsg('RawMaterialWarehousingReceipt.title.number'),
+    //   dataIndex: 'number',
+    //   key: 'number',
+    //   align: 'center',
+    // },
+    // {
+    //   title: getFormattedMsg('RawMaterialWarehousingReceipt.title.materialCode'),
+    //   dataIndex: 'materialCode',
+    //   key: 'materialCode',
+    //   align: 'center',
+    // },
+    // {
+    //   title: getFormattedMsg('RawMaterialWarehousingReceipt.title.materialName'),
+    //   dataIndex: 'materialName',
+    //   key: 'materialName',
+    //   align: 'center',
+    // },
     {
       title: getFormattedMsg('RawMaterialWarehousingReceipt.title.trayNumber'),
       dataIndex: 'trayNumber',
@@ -405,7 +405,7 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
       trayNumber: selectedDatas[0].code,
       inType: 6, //原料托盘出库
       state: 0,
-      destination: '原材料组托点',
+      destination: 'J001',
       middle: 'J001',
     }
     await EmptyPalletDeliveryApi.saveOrUpdate(data)

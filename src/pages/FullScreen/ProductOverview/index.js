@@ -7,11 +7,12 @@ import { useResizeDetector } from 'react-resize-detector';
 import TopTitle from './TopTitle/index';
 
 import ContentOne from './Left/Top/index';
+import ContentTwo from './Left/Down/index';
 
+import ContentThree from './Right/Top/index';
+import ContentFour from './Right/Down/index';
 
-const { Pane } = HVLayout;
-
-const ProductOverView = ({ cHeight }) => {
+const ProductOverView = () => {
     const [usedHeight, setUsedHeight] = useState();
 
     const handleFullScreen = useFullScreenHandle();
@@ -39,59 +40,27 @@ const ProductOverView = ({ cHeight }) => {
         <HVLayout  >
             <IndexPageStyle
                 ref={resizeRef}
-                style={{ backgroundColor: 'darkgrey' }}
+                className={styles.fullScreenContainer}
             >
                 <TopTitle />
                 <IndexPageContent
-                    style={{ backgroundColor: 'red' }}
                 >
                     <IndexPageLeft
-                        style={{ width: '25%', }}
+                        style={{ width: '30%', }}
                     >
-                        11111111111111111111
-                        <ContentOne
-                            usedHeight={usedHeight}
-
-                        />
+                        <ContentOne usedHeight={usedHeight} />
+                        <ContentTwo usedHeight={usedHeight} />
                     </IndexPageLeft>
                     <IndexPageRight
-                        style={{ width: '75%', }}
+                        style={{ width: '70%', }}
                     >
-                        22222222222222222222
+                        <ContentThree usedHeight={usedHeight} />
+                        <ContentFour usedHeight={usedHeight} />
                     </IndexPageRight>
 
                 </IndexPageContent>
             </IndexPageStyle>
         </HVLayout>
-        // <HVLayout autoScroll style={{  margin: 0, padding: 0, height: '100%', position: "fixed" }}>
-        //     <FullScreen handle={handleFullScreen} className='fullScreenContainer'  >
-        //         <IndexPageStyle
-        //             ref={resizeRef}
-        //             style={{ display: 'flex', flexDirection: 'column' }}
-        //         >
-        //             {/* <TopTitle /> */}
-        //             <IndexPageContent
-        //                       style={{
-        //                         display: 'flex',
-        //                         // flexDirection: 'column',
-        //                         // flex: '1',
-        //                         marginBottom: '4.6rem'
-        //                       }}
-        //             >
-        //                 <IndexPageLeft
-        //                     // style={{ width: '50%', }}
-        //                 >
-        //                     11111111111111111111
-        //                 </IndexPageLeft>
-        //                 <IndexPageRight
-        //                     // style={{ width: '50%', }}
-        //                 >
-        //                     22222222222222222222
-        //                 </IndexPageRight>
-        //             </IndexPageContent>
-        //         </IndexPageStyle>
-        //     </FullScreen>
-        // </HVLayout>
     );
 };
 

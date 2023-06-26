@@ -17,42 +17,6 @@ const TopTitle = () => {
   return (
     <TopTitleDiv>
       <div className={styles.topDiv}></div>
-      {/* <div
-        className={styles.topDiv}
-        style={{
-          display: 'flex',
-          justifyContent: 'flex-start',
-          alignItems: 'center',
-          color: '#FCFCFC',
-          marginLeft: '6rem',
-          height: '100%',
-          width: '100rem',
-        }}
-      >
-        <div
-          style={{
-            height: '8rem',
-            fontSize: '5rem',
-            lineHeight: '8rem',
-            marginLeft: '2rem'
-          }}
-        >
-          {'当前统计周期'}
-          <div
-            style={{
-              height: '8rem',
-              fontSize: '4rem',
-              fontFamily: 'DINPro-Bold, DINPro',
-              fontWeight: 'bold',
-              color: '#FFFFFF',
-              lineHeight: '4.2rem',
-              // marginLeft: '2.1rem'
-            }}
-          >
-            {time.format('YYYY/MM/DD ')}{"00:00:00"} -- {time.format('YYYY/MM/DD HH:mm:ss')}
-          </div>
-        </div>
-      </div> */}
       <div
         style={{
           display: 'flex',
@@ -73,7 +37,7 @@ const TopTitle = () => {
             marginLeft: '3rem'
           }}
         >
-          永威(天津)科技
+          {/* 永威(天津)科技 */}
         </div>
         <Divider
           type="vertical"

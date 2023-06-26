@@ -1,0 +1,47 @@
+.middle {
+  :global {
+    .HVLayout-HPane-Wrapper {
+      background-color: transparent;
+
+      // margin: 0px;
+      .HPane-Header {
+        margin-bottom: 0px;
+        background-color: transparent;
+
+        div {}
+
+        div {
+          width: 100%;
+        }
+      }
+
+      .HVLayout-HPane-Content-Wrapper .HPane-Content {
+        padding: 0px;
+      }
+    }
+  }
+}
+
+.over{
+  width: 100%;
+  display: flex;
+  height: 8rem;
+  // margin-bottom: 1rem;
+
+  .alert {
+    font-weight: 500;
+    font-size: 4.3rem;
+    color: #fff;
+    display: flex;
+  }
+
+  .top {
+    width: 6rem;
+    height: 6rem;
+    border-radius: 50%;
+    color:  #d15656;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

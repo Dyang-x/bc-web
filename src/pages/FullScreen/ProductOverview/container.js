@@ -20,16 +20,16 @@ export const IndexPageContent = styled.div`
 
 // 中间左容器样式
 export const IndexPageLeft = styled.div`
-color: #ffffff;
-background-color: #159F5D;
+// color: #ffffff;
+// background-color: #159F5D;
   display: inline;
   float: left
 `;
 
 // 中间右容器样式
 export const IndexPageRight = styled.div`
-color: #000000;
-background-color: #DC5347;
+// color: #000000;
+// background-color: #DC5347;
   display: inline;
   float: left
 `;
@@ -55,6 +55,14 @@ export const MeduimRect = styled.div`
 
 export const LargeRect = styled.div`
   width: 278.5rem;
+  height: 100%;
+  background: url(${rectLargeBorder}) center center no-repeat;
+  background-size: 100% 100%;
+  display: flex;
+  flex-direction: column;
+`;
+
+export const LargeRectRight = styled.div`
   height: 100%;
   background: url(${rectLargeBorder}) center center no-repeat;
   background-size: 100% 100%;
