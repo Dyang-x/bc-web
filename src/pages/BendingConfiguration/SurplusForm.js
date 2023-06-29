@@ -90,7 +90,8 @@ const SurplusForm = ({
                 message:getFormattedMsg('SemiFinishedWarehousingReceipt.placeholder.attributeOne'),
               },
             ], 
-            initialValue: modifyData ? modifyData['attributeOne'] : undefined
+            // initialValue: modifyData ? modifyData['attributeOne'] : undefined
+            initialValue: modifyData&&modifyData['attribute'] ? ((modifyData['attribute']).split(',')) : []
           })(
             <Select
             placeholder={getFormattedMsg('SemiFinishedWarehousingReceipt.placeholder.attributeOne')}
@@ -99,7 +100,7 @@ const SurplusForm = ({
             mode="multiple"
           >
             {attributeOne.map((value, index) => (
-              <Option value={value.id} key={value.id}>
+              <Option value={value.value} key={value.id}>
                 {value.name}
               </Option>
             ))}

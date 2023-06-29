@@ -80,7 +80,7 @@ const TrayForm = ({
           })(<Input disabled={type} placeholder={getFormattedMsg('PalletManagementStockLevel.placeholder.areaCode')} style={{ width: '100%' }} />)
         }
       </Form.Item>
-      {type && <Form.Item {...formItemLayout} label={getFormattedMsg('PalletManagementStockLevel.label.automaticState')}>
+      {/* {type && <Form.Item {...formItemLayout} label={getFormattedMsg('PalletManagementStockLevel.label.automaticState')}>
         {
           getFieldDecorator('automaticState', {
             valuePropName: 'checked',
@@ -89,7 +89,7 @@ const TrayForm = ({
           <Checkbox key="checkbox1" placeholder={getFormattedMsg('PalletManagementStockLevel.message.automaticState')}>{getFormattedMsg('PalletManagementStockLevel.label.automatic')}</Checkbox>
           )
         }
-      </Form.Item>}
+      </Form.Item>} */}
       <Form.Item {...formItemLayout} label={getFormattedMsg('PalletManagementStockLevel.label.equipmentName')}>
         {
           getFieldDecorator('equipmentName', {

@@ -68,20 +68,21 @@ const AddForm = ({
               },
             ],
           })(
-            <Select
-              placeholder={getFormattedMsg('SurplusInStorage.placeholder.trayNumber')}
-              showSearch
-              filterOption={false}
-            >
-              {transferList.map((value, index) => (
-                <Option value={value.id} key={value.id}>
-                  {value.name}
-                </Option>
-              ))}
-            </Select>
+            <Input placeholder={getFormattedMsg('SurplusInStorage.placeholder.trayNumber')} style={{ width: '100%' }} />
+            // <Select
+            //   placeholder={getFormattedMsg('SurplusInStorage.placeholder.trayNumber')}
+            //   showSearch
+            //   filterOption={false}
+            // >
+            //   {transferList.map((value, index) => (
+            //     <Option value={value.id} key={value.id}>
+            //       {value.name}
+            //     </Option>
+            //   ))}
+            // </Select>
           )}
       </Form.Item>
-      <Form.Item {...formItemLayout} label={"切割机"}>
+      {/* <Form.Item {...formItemLayout} label={"切割机"}>
         {
           getFieldDecorator('cuttingMachine', {
             rules: [
@@ -92,8 +93,8 @@ const AddForm = ({
             ],
           })(<Input placeholder={'请选择切割机'} style={{ width: '100%' }} />)
         }
-      </Form.Item>
-      <Form.Item {...formItemLayout} label={'材料编码'}>
+      </Form.Item> */}
+      {/* <Form.Item {...formItemLayout} label={'材料编码'}>
         {
           getFieldDecorator('materialCode', {
             rules: [
@@ -104,17 +105,17 @@ const AddForm = ({
             ],
           })(<Input placeholder={'请输入材料编码'} style={{ width: '100%' }} />)
         }
-      </Form.Item>
-      <Form.Item {...formItemLayout} label={'材料名称'}>
+      </Form.Item> */}
+      <Form.Item {...formItemLayout} label={'材质'}>
         {
           getFieldDecorator('materialName', {
             rules: [
               {
                 required: true,
-                message: '请输入材料名称',
+                message: '请输入材质',
               },
             ],
-          })(<Input placeholder={'请输入材料名称'} style={{ width: '100%' }} />)
+          })(<Input placeholder={'请输入材质'} style={{ width: '100%' }} />)
         }
       </Form.Item>
       <Form.Item {...formItemLayout} label={'材料大小 X'}>
@@ -141,7 +142,7 @@ const AddForm = ({
           })(<Input placeholder={'请输入材料大小 Y'} style={{ width: '100%' }} />)
         }
       </Form.Item>
-      <Form.Item {...formItemLayout} label={'材料规格'}>
+      {/* <Form.Item {...formItemLayout} label={'材料规格'}>
         {
           getFieldDecorator('materialSpecs', {
             rules: [
@@ -152,7 +153,7 @@ const AddForm = ({
             ],
           })(<Input placeholder={'请输入材料规格'} style={{ width: '100%' }} />)
         }
-      </Form.Item>
+      </Form.Item> */}
       <Form.Item {...formItemLayout} label={'材料厚度'}>
         {
           getFieldDecorator('materialThickness', {
@@ -165,19 +166,19 @@ const AddForm = ({
           })(<Input placeholder={'请输入材料厚度'} style={{ width: '100%' }} />)
         }
       </Form.Item>
-      <Form.Item {...formItemLayout} label={'出库总数量'}>
+      <Form.Item {...formItemLayout} label={'数量'}>
         {
           getFieldDecorator('quantity', {
             rules: [
               {
                 required: true,
-                message: '请输入出库总数量',
+                message: '请输入数量',
               },
             ],
-          })(<Input placeholder={'请输入出库总数量'} style={{ width: '100%' }} />)
+          })(<Input placeholder={'请输入数量'} style={{ width: '100%' }} />)
         }
       </Form.Item>
-      <Form.Item {...formItemLayout} label={'起始位置'}>
+      {/* <Form.Item {...formItemLayout} label={'起始位置'}>
         {
           getFieldDecorator('fromLocation', {
             rules: [
@@ -236,7 +237,7 @@ const AddForm = ({
             ],
           })(<Input placeholder={'请输入目标位置'} style={{ width: '100%' }} />)
         }
-      </Form.Item>
+      </Form.Item> */}
     </Form>
   )
 }

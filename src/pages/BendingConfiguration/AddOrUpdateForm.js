@@ -89,7 +89,8 @@ const AddOrUpdateForm = ({
                 message:getFormattedMsg('BendingMachineConfiguration.message.attribute'),
               },
             ],
-            initialValue: modifyData&&modifyData['attribute'] ? parseInt(modifyData['attribute']) : []
+            // initialValue: modifyData&&modifyData['attribute'] ? parseInt(modifyData['attribute']) : []
+            initialValue: modifyData&&modifyData['attribute'] ? ((modifyData['attribute']).split(',')) : []
           })(
             <Select
             placeholder={getFormattedMsg('BendingMachineConfiguration.placeholder.attribute')}
@@ -99,7 +100,7 @@ const AddOrUpdateForm = ({
             mode="multiple"
           >
             {attributeOne.map((value, index) => (
-              <Option value={value.id} key={value.id}>
+              <Option value={value.value} key={value.id}>
                 {value.name}
               </Option>
             ))}

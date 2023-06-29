@@ -78,29 +78,29 @@ const SemiFinisheDeliveryPalletSelection = ({ history }) => {
       dataIndex: 'attributeOne',
       key: 'attributeOne',
       align: 'center',
-      render: (text, record, index) => {
-        if (text == null) {
-          return
-        }
-        let array = []
-        const arr = text.split(',');
-        arr.map(i => {
-          array = [...array, attributeOne[i - 1].name]
-        })
-        return array.toString()
-      }
+      // render: (text, record, index) => {
+      //   if (text == null) {
+      //     return
+      //   }
+      //   let array = []
+      //   const arr = text.split(',');
+      //   arr.map(i => {
+      //     array = [...array, attributeOne[i - 1].name]
+      //   })
+      //   return array.toString()
+      // }
     },
     {
       title: getFormattedMsg('SemiFinisheDeliveryPalletSelection.title.attributeTwo'),
       dataIndex: 'attributeTwo',
       key: 'attributeTwo',
       align: 'center',
-      render: (text, record, index) => {
-        if (text == null) {
-          return
-        }
-        return attributeTwo[text - 1].name
-      }
+      // render: (text, record, index) => {
+      //   if (text == null) {
+      //     return
+      //   }
+      //   return attributeTwo[text - 1].name
+      // }
     },
     {
       title: getFormattedMsg('SemiFinisheDeliveryPalletSelection.title.intime'),
@@ -281,8 +281,8 @@ const SemiFinisheDeliveryPalletSelection = ({ history }) => {
       if (err) return;
       const params = getFieldsValue();
       console.log(params, 'params');
-      const data ={...params,selectedRowKeys}
-      console.log(data, 'data');
+      // const data ={...params,selectedRowKeys}
+      // console.log(data, 'data');
 
       SemiFinisheDeliveryPalletSelectionServices
       .outStore(params.readyMaterials,selectedRowKeys,params.dockingPoint)

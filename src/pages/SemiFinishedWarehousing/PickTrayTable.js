@@ -30,29 +30,41 @@ const PickTrayTable = ({
       key: 'code',
       align: 'center',
     },
+    // {
+    //   title: getFormattedMsg('SemiFinishedWarehousingReceipt.title.location'),
+    //   dataIndex: 'location',
+    //   key: 'location',
+    //   align: 'center',
+    // },
+    // {
+    //   title: getFormattedMsg('SemiFinishedWarehousingReceipt.title.attributeTwo'),
+    //   dataIndex: 'attributeTwo',
+    //   key: 'attributeTwo',
+    //   align: 'center',
+    // },
+    // {
+    //   title: '原捡料点',
+    //   dataIndex: 'sortPosition',
+    //   key: 'sortPosition',
+    //   align: 'center',
+    //   render: (text, record, index) => {
+    //     if(text == null){
+    //       return
+    //     }
+    //       return sortPositions[text - 1].name
+    //   }
+    // },
     {
-      title: getFormattedMsg('SemiFinishedWarehousingReceipt.title.location'),
+      title: getFormattedMsg('PalletManagement.title.location'),
       dataIndex: 'location',
       key: 'location',
       align: 'center',
     },
     {
-      title: getFormattedMsg('SemiFinishedWarehousingReceipt.title.attributeTwo'),
-      dataIndex: 'attributeTwo',
-      key: 'attributeTwo',
+      title: getFormattedMsg('PalletManagementStockLevel.title.palletStatus'),
+      dataIndex: 'state',
+      key: 'state',
       align: 'center',
-    },
-    {
-      title: '原捡料点',
-      dataIndex: 'sortPosition',
-      key: 'sortPosition',
-      align: 'center',
-      render: (text, record, index) => {
-        if(text == null){
-          return
-        }
-          return sortPositions[text - 1].name
-      }
     },
   ]
   

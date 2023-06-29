@@ -76,17 +76,17 @@ const BendingMachineConfiguration = () => {
       dataIndex: 'attribute',
       key: 'attribute',
       align: 'center',
-      render: (text, record, index) => {
-        if(text == null){
-          return
-        }
-        let array = []
-        const arr = text.split(',');
-        arr.map(i => {
-          array = [...array, attributeOne[i - 1].name]
-        })
-        return array.toString()
-      }
+      // render: (text, record, index) => {
+      //   if(text == null){
+      //     return
+      //   }
+      //   let array = []
+      //   const arr = text.split(',');
+      //   arr.map(i => {
+      //     array = [...array, attributeOne[i - 1].name]
+      //   })
+      //   return array.toString()
+      // }
     },
     {
       title: getFormattedMsg('BendingMachineConfiguration.title.ifout'),

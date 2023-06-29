@@ -135,7 +135,7 @@ const WirelineStorage = ({ history }) => {
   ]
 
   //查询页面数据
-  const loadData = async (page, pageSize, searchValue) => {
+  const loadData = async ( searchValue) => {
     setLoading(true);
     // LineEdgeLibraryApi.getByQuery({ ...searchValue, page: page - 1, pageSize })
     LineEdgeLibraryApi.getByQuery({ ...searchValue})

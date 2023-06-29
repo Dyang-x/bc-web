@@ -14,6 +14,7 @@ import RawMaterialDeliveryServices from '~/api/RawMaterialDelivery';
 import EmptyPalletsWarehousing from '~/api/EmptyPalletsWarehousing';
 import ReadIOTServices from '~/api/ReadIOT';
 import SurplusMaterialApi from '~/api/SurplusMaterial';
+import ManualDownTable from './ManualDownTable';
 
 const getFormattedMsg = i18n.getFormattedMsg;
 const { RangePicker } = DatePicker;
@@ -42,6 +43,11 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
   const [surplusVis, setSurplusVis] = useState(false);
   const [surplusData, setSurplusData] = useState([]);
   const surplusRef = useRef();
+
+  const [ManualDownVis, setManualDownVis] = useState(false);
+  const [ManualDownData, setManualDownData] = useState({});
+  const [ManualDownSelected, setManualDownSelected] = useState({});
+
 
   useEffect(() => {
     getStrategy()
@@ -162,7 +168,7 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
         (record.remainRuns == 0) && [
           <a key="detail1" onClick={() => handleEmpty(record)}>空托回库</a>,
         ],
-        (record.remainRuns == 0&&selectedstatus != 2) && [
+        (record.remainRuns == 0 && selectedstatus != 2) && [
           <Divider key="divider1" type="vertical" />
         ],
         (selectedstatus != 2) && [
@@ -180,7 +186,7 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
     ReadIOTServices.getStrategy()
       .then(res => {
         const strategy = res == true ? 1 : 0
-        console.log(strategy,'strategy');
+        console.log(strategy, 'strategy');
         setStrategy(strategy)
       })
   }
@@ -265,20 +271,72 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
       })
   }
 
-  const handleManualFinish=()=>{
+  const handleManualFinish = (record) => {
     Modal.confirm({
-      title:'确认完成订单？',
+      title: `确认完成订单${record.name}?`,
       onOk: async () => {
-        notification.warning({
-          message:'接口'
-        })
+        await ReadIOTServices
+          .manualFinish(record.id)
+          .then(res => {
+            notification.success({
+              message: '订单手动完成成功'
+            })
+            loadData(page, pageSize, { ...setSearchValue, state: selectedstatus });
+          })
+          .catch(err => {
+            notification.warning({
+              message: getFormattedMsg('global.notify.fail'),
+              description: err.message
+            });
+          });
       },
       onCancel() { },
     })
   }
 
-  const handleManualDown =()=>{
-    
+  const handleManualDown = (record) => {
+    setManualDownVis(true)
+    setManualDownData(record)
+  }
+
+  const modalManualDownFoot = () => [
+    <Button key="save" type="primary" onClick={HandleSaveManualDown}>
+      {getFormattedMsg('RawMaterialDeliveryOrderManagement.button.save')}
+    </Button>,
+    <Button key="cancel" onClick={handleCancelManualDown} style={{ marginRight: 30 }}>
+      {getFormattedMsg('RawMaterialDeliveryOrderManagement.button.cancel')}
+    </Button>
+  ];
+
+  const HandleSaveManualDown = () => {
+    console.log(ManualDownSelected.lineId, ManualDownData.id, ManualDownSelected.stockId, 'HandleSaveManualDown');
+    Modal.confirm({
+      title: `确认下架?`,
+      onOk: async () => {
+        await ReadIOTServices
+          .manualOut(ManualDownSelected.lineId, ManualDownData.id, ManualDownSelected.stockId)
+          .then(res => {
+            notification.success({
+              message: '手动下架成功'
+            })
+                loadData(page, pageSize, { ...setSearchValue, state: selectedstatus });
+            handleCancelManualDown()
+          })
+          .catch(err => {
+            notification.warning({
+              message: getFormattedMsg('global.notify.fail'),
+              description: err.message
+            });
+          });
+      },
+      onCancel() { },
+    })
+  }
+
+  const handleCancelManualDown = () => {
+    setManualDownVis(false)
+    setManualDownData({})
+    setManualDownSelected({})
   }
 
   const handleEmpty = (record) => {
@@ -486,6 +544,28 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
         </Drawer.DrawerContent>
         <Drawer.DrawerBottomBar>{modalSurplusFoot()}</Drawer.DrawerBottomBar>
       </Drawer>
+
+      <Modal
+        // title={'手动下架'}
+        visible={ManualDownVis}
+        // footer={modalManualFoot()}
+        footer={null}
+        onCancel={handleCancelManualDown}
+        width={1000}
+        bodyStyle={{
+          paddingTop: 0,
+          paddingLeft: 0,
+          paddingRight: 0,
+          paddingBottom: 0,
+        }}
+      >
+        <ManualDownTable
+          ManualDownData={ManualDownData}
+          ManualDownSelected={ManualDownSelected}
+          setManualDownSelected={setManualDownSelected}
+          modalManualDownFoot={modalManualDownFoot}
+        />
+      </Modal>
     </>
   );
 };

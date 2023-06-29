@@ -112,7 +112,8 @@ const TrayForm = ({
                 message:getFormattedMsg('SemiFinishedWarehousingReceipt.placeholder.attributeOne'),
               },
             ],
-            initialValue: modifyData&&modifyData['attributeOne'] ? ((modifyData['attributeOne']).split(',')).map(Number) : []
+            initialValue: modifyData&&modifyData['attributeOne'] ? ((modifyData['attributeOne']).split(',')) : []
+            // initialValue: modifyData&&modifyData['attributeOne'] ? ((modifyData['attributeOne']).split(',')).map(Number) : []
           })(
             <Select
             placeholder={getFormattedMsg('SemiFinishedWarehousingReceipt.placeholder.attributeOne')}
@@ -154,7 +155,8 @@ const TrayForm = ({
                 message:getFormattedMsg('SemiFinishedWarehousingReceipt.placeholder.attributeTwo'),
               },
             ],
-            initialValue: modifyData&&modifyData['attributeTwo'] ? parseInt(modifyData['attributeTwo']) : undefined
+            initialValue: modifyData&&modifyData['attributeTwo'] ? modifyData['attributeTwo'] : undefined
+            // initialValue: modifyData&&modifyData['attributeTwo'] ? parseInt(modifyData['attributeTwo']) : undefined
           })(
             <Select
             placeholder={getFormattedMsg('SemiFinishedWarehousingReceipt.placeholder.attributeTwo')}
@@ -181,7 +183,8 @@ const TrayForm = ({
                 message:getFormattedMsg('SemiFinishedWarehousingReceipt.placeholder.sortPosition'),
               },
             ],
-            initialValue: modifyData ? parseInt(modifyData['sortPosition']) : undefined
+            initialValue: modifyData ? modifyData['sortPosition'] : undefined
+            // initialValue: modifyData ? parseInt(modifyData['sortPosition']) : undefined
           })(
             <Select
             placeholder={getFormattedMsg('SemiFinishedWarehousingReceipt.placeholder.sortPosition')}
@@ -208,7 +211,8 @@ const TrayForm = ({
                 message:getFormattedMsg('SemiFinishedWarehousingReceipt.placeholder.dockingPoint'),
               },
             ],
-            initialValue: modifyData ? parseInt(modifyData['dockingPoint'])  : undefined
+            initialValue: modifyData ? modifyData['dockingPoint'] : undefined
+            // initialValue: modifyData ? parseInt(modifyData['dockingPoint'])  : undefined
           })(
             <Select
             placeholder={getFormattedMsg('SemiFinishedWarehousingReceipt.placeholder.dockingPoint')}

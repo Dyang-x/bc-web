@@ -19,6 +19,7 @@ class ReadIOT extends Service {
     }
   }
 
+  //查询计划
   async findPlan(data) {
     try {
       return await this.post(`${appName}/readiot/findPlan`, {
@@ -32,6 +33,23 @@ class ReadIOT extends Service {
     }
   }
 
+  //手动结束计划
+  async manualFinish(id) {
+    try {
+      return await this.put(`${appName}/readiot/manualFinish?id=${id}`);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  //手动下架
+  async manualOut(lineId, planId, stockId) {
+    try {
+      return await this.put(`${appName}/readiot/manualOut?lineId=${lineId}&planId=${planId}&stockId=${stockId}`);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default new ReadIOT();
