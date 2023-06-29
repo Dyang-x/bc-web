@@ -97,17 +97,20 @@ const EmptyPalletDeliveryPage = ({ history }) => {
           下架
         </a>,
         <Divider key="divider2" type="vertical" />],
+        record.state == 0 && [
+          <a key="update" onClick={() => handleUpdate(record)}>
+            {getFormattedMsg('EmptyPalletDelivery.button.update')}
+          </a>,
+          <Divider key="divider1" type="vertical" />,
+          <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)}>
+            {getFormattedMsg('EmptyPalletDelivery.button.delete')}
+          </a>
+        ],
         record.state == 1 && [<a key="finishOrder" onClick={() => handleFinishOrder(record)}>
-        完成
-      </a>,
-      <Divider key="divider3" type="vertical" />],
-        <a key="update" onClick={() => handleUpdate(record)}>
-          {getFormattedMsg('EmptyPalletDelivery.button.update')}
+          完成
         </a>,
-        <Divider key="divider1" type="vertical" />,
-        <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)}>
-          {getFormattedMsg('EmptyPalletDelivery.button.delete')}
-        </a>
+          // <Divider key="divider3" type="vertical" />
+        ],
       ],
       // width: 80,
       // fixed: 'right'

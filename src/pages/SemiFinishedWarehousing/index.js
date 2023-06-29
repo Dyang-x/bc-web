@@ -24,7 +24,7 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
   const [loading, setLoading] = useState(false);
   const [searchValue, setSearchValue] = useState(null);
   const state = {
-    0: '新建', 1: '转运中', 2: '已完成'
+    0: '新建', 2: '已完成'
   }
   const [selectedstatus, setSelectedstatus] = useState('0');
 
@@ -92,17 +92,17 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
       dataIndex: 'attributeOne',
       key: 'attributeOne',
       align: 'center',
-      render: (text, record, index) => {
-        if(text == null){
-          return
-        }
-        let array = []
-        const arr = text.split(',');
-        arr.map(i => {
-          array = [...array, attributeOne[i - 1].name]
-        })
-        return array.toString()
-      }
+      // render: (text, record, index) => {
+      //   if(text == null){
+      //     return
+      //   }
+      //   let array = []
+      //   const arr = text.split(',');
+      //   arr.map(i => {
+      //     array = [...array, attributeOne[i - 1].name]
+      //   })
+      //   return array.toString()
+      // }
     },
     {
       title: getFormattedMsg('SemiFinishedWarehousingReceipt.title.orderCount'),
@@ -127,12 +127,12 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
       dataIndex: 'attributeTwo',
       key: 'attributeTwo',
       align: 'center',
-      render:(text,record,index)=>{
-        if(text == null){
-          return
-        }
-        return attributeTwo[text - 1].name
-      }
+      // render:(text,record,index)=>{
+      //   if(text == null){
+      //     return
+      //   }
+      //   return attributeTwo[text - 1].name
+      // }
     },
     {
       title: getFormattedMsg('SemiFinishedWarehousingReceipt.title.dockingPoint'),

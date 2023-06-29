@@ -353,7 +353,7 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
 
   const handleAutomatic = async () => {
     const data = {
-      destination: '原材料组托点',
+      destination: 'J001',
       middle: 'J001',
       taskType: 6, //原料托盘出库
       transferType: 0 //原料托盘
@@ -401,6 +401,12 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
       })
       return
     }
+    if(selectedDatas[0].location != '在库'){
+      notification.warning({
+        message: '该托盘不在库内，请重新选择',
+      })
+      return
+    }
     const data = {
       trayNumber: selectedDatas[0].code,
       inType: 6, //原料托盘出库
@@ -408,19 +414,26 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
       destination: 'J001',
       middle: 'J001',
     }
-    await EmptyPalletDeliveryApi.saveOrUpdate(data)
-      .then(res => {
-        notification.success({
-          message: '托盘出库任务创建成功'
-        });
-        // loadData(page, pageSize, { ...searchValue, state: selectedstatus });
-        handleCancelManual();
-      })
-      .catch(err => {
-        notification.warning({
-          description: err.message
-        });
-      })
+    Modal.confirm({
+      title: '确认下架托盘？',
+      onOk: async () => {
+        await EmptyPalletDeliveryApi.saveOrUpdate(data)
+        .then(res => {
+          notification.success({
+            message: '托盘出库任务创建成功'
+          });
+          // loadData(page, pageSize, { ...searchValue, state: selectedstatus });
+          handleCancelManual();
+        })
+        .catch(err => {
+          notification.warning({
+            description: err.message
+          });
+        })
+      },
+      onCancel() { },
+    })
+
   }
 
   const handleBinding = () => {

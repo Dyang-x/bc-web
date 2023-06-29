@@ -6,6 +6,8 @@ import TrayForm from './TrayForm';
 import PrepareAreaServices from '~/api/PrepareArea';
 import { PrepareAreaState } from '~/enum/enum';
 import TransferBoxServices from '~/api/TransferBox';
+import EmptyPalletsWarehousingApi from '~/api/EmptyPalletsWarehousing';
+import EmptyPalletDeliveryApi from '~/api/EmptyPalletDelivery'
 
 const getFormattedMsg = i18n.getFormattedMsg;
 const { Option } = Select;
@@ -58,18 +60,18 @@ const PalletManagementStockLevel = () => {
       key: 'transferCode',
       align: 'center',
     },
-    {
-      title: getFormattedMsg('PalletManagementStockLevel.title.taskState'),
-      dataIndex: 'taskState',
-      key: 'taskState',
-      align: 'center',
-    },
-    {
-      title: getFormattedMsg('PalletManagementStockLevel.title.joinArea'),
-      dataIndex: 'joinArea',
-      key: 'joinArea',
-      align: 'center',
-    },
+    // {
+    //   title: getFormattedMsg('PalletManagementStockLevel.title.taskState'),
+    //   dataIndex: 'taskState',
+    //   key: 'taskState',
+    //   align: 'center',
+    // },
+    // {
+    //   title: getFormattedMsg('PalletManagementStockLevel.title.joinArea'),
+    //   dataIndex: 'joinArea',
+    //   key: 'joinArea',
+    //   align: 'center',
+    // },
     {
       title: getFormattedMsg('PalletManagementStockLevel.title.equipmentName'),
       dataIndex: 'equipmentName',
@@ -81,6 +83,15 @@ const PalletManagementStockLevel = () => {
       key: 'opt',
       align: 'center',
       render: (_, record) => [
+                <a key="shelf" onClick={() => HandleShelf(record)}>
+          {getFormattedMsg('PalletManagementConnectionPort.button.shelf')}
+        </a>,
+        <Divider key="divider4" type="vertical" />,
+        <a key="takedown" onClick={() => HandleTakedown(record)}>
+          {/* {getFormattedMsg('PalletManagementConnectionPort.button.Takedown')} */}
+          下架
+        </a>,
+        <Divider key="divider5" type="vertical" />,
         <a key="addTransfer" onClick={() => handleAddTransfer(record)}>
           {getFormattedMsg('PalletManagementStockLevel.button.addTransfer')}
         </a>,
@@ -148,6 +159,66 @@ const PalletManagementStockLevel = () => {
     () => CacheTable({ columns, scrollHeight: 'calc(100vh - 470px)', key: 'wms_quality' }),
     []
   );
+
+  const HandleShelf = async record => {
+    const data = {
+      origin: record.joinCode,
+      middle: record.joinCode,
+      trayNumber: record.transferCode,
+      state: 0,
+      // { id: 5, name: '原料托盘回库', value: '原料托盘回库', },
+      // { id: 7, name: '半成品托盘回库', value: '半成品托盘回库', },
+      taskType:record.joinCode == 'J001' ? 5 : 7,
+      inType: record.joinCode == 'J001' ? 5 : 7,
+    }
+    Modal.confirm({
+      title: `${getFormattedMsg('PalletManagement.title.putOnPallet')}${record.transferCode}?`,
+      onOk: () => {
+        addAndUpShelves(data)
+      }
+    });
+  };
+
+  
+    //托盘上架  新增并上架
+    const addAndUpShelves = async (data) => {
+      await EmptyPalletsWarehousingApi
+        .addAndupShelves(data)
+        .then(res => {
+          notification.success({
+            message: '托盘入库任务生成成功'
+          });
+          loadData();
+        })
+        .catch(err => {
+          notification.warning({
+            description: err.message
+          });
+        });
+    }
+
+    const HandleTakedown =  record => {
+      Modal.confirm({
+        // title: `${getFormattedMsg('PalletManagement.title.pullOffPallet')}${record.transferCode}?`,
+        title: `确认在备料区${record.areaCode}下架托盘?`,
+        onOk: async() => {
+          await EmptyPalletDeliveryApi.callTransferOut({qrName:record.areaCode})
+          .then(res => {
+            notification.success({
+              message: '托盘下架成功'
+            })
+            loadData(pageInfo.page, pageInfo.pageSize, { ...searchValue });
+          })
+          .catch(err => {
+            notification.warning({
+              message: '托盘下架失败',
+              description: err.message
+            })
+          })
+        }
+      });
+  
+    };
 
   const handleDelete = record => {
     Modal.confirm({

@@ -22,10 +22,16 @@ const ManualTable = ({
       key: 'code',
       align: 'center',
     },
+    // {
+    //   title: getFormattedMsg('PalletManagementStockLevel.title.taskStatus'),
+    //   dataIndex: 'taskStatus',
+    //   key: 'taskStatus',
+    //   align: 'center',
+    // },
     {
-      title: getFormattedMsg('PalletManagementStockLevel.title.taskStatus'),
-      dataIndex: 'taskStatus',
-      key: 'taskStatus',
+      title: getFormattedMsg('PalletManagement.title.location'),
+      dataIndex: 'location',
+      key: 'location',
       align: 'center',
     },
     {

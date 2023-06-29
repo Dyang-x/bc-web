@@ -4,7 +4,7 @@ class ReadIOT extends Service {
   //更新状态
   async updateStrategy(state) {
     try {
-      return await this.get(`${appName}/readiot//updateStrategy?state=${state}`);
+      return await this.get(`${appName}/readiot/updateStrategy?state=${state}`);
     } catch (error) {
       throw new Error(error);
     }

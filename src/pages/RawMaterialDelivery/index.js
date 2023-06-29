@@ -46,7 +46,7 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
   useEffect(() => {
     getStrategy()
     loadData(page, pageSize, { ...setSearchValue, state: selectedstatus });
-  }, [strategy]);
+  }, []);
 
   const columns = [
     {
@@ -78,6 +78,18 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
       dataIndex: 'planState',
       key: 'planState',
       align: 'center',
+      render: (text, record) => {
+        if (text == 0) {
+          return '未开始'
+        }
+        if (text == 1) {
+          return '运行中'
+        }
+        if (text == 2) {
+          return '已完成'
+        }
+        return null
+      }
     },
     {
       title: '切割机',
@@ -131,190 +143,49 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
       title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.operation'),
       key: 'opt',
       align: 'center',
+      // render: (_, record) => {
+      //   if (record.remainRuns == 0) {
+      //     return <a key="detail1" onClick={() => handleEmpty(record)}> 空托回库 </a>
+      //   }
+      //   return null
+      // }
       render: (_, record) => [
-        (record.remainRuns == 0)
-          ?
-          <a key="detail1" onClick={() => handleEmpty(record)}>
-            空托回库
-          </a>
-          :
-          <a key="detail2" onClick={() => handleSurplus(record)}>
-            余料回库
-          </a>,
-        // <Divider key="divider2" type="vertical" />,
-        // <a key="detail" onClick={() => handleOpenDetailModal(record)}>
-        //   详情
-        // </a>,
+        // (record.remainRuns == 0)
+        //   ?
+        //   <a key="detail1" onClick={() => handleEmpty(record)}>
+        //     空托回库
+        //   </a>
+        //   :
+        //   <a key="detail2" onClick={() => handleSurplus(record)}>
+        //     余料回库
+        //   </a>,
+        (record.remainRuns == 0) && [
+          <a key="detail1" onClick={() => handleEmpty(record)}>空托回库</a>,
+        ],
+        (record.remainRuns == 0&&selectedstatus != 2) && [
+          <Divider key="divider1" type="vertical" />
+        ],
+        (selectedstatus != 2) && [
+          <a key="detail2" onClick={() => handleManualFinish(record)}>手动完成</a>,
+          <Divider key="divider2" type="vertical" />,
+          <a key="detail3" onClick={() => handleManualDown(record)}>手动下架</a>,
+        ],
       ],
-      // width: 80,
+      width: 300,
       // fixed: 'right'
     }
   ];
-
-  //查询页面数据
-  // const columns =[
-  //   {
-  //     title: '切割机',
-  //     dataIndex: 'cuttingMachine',
-  //     key: 'cuttingMachine',
-  //     align: 'center',
-  //   },    {
-  //     title: '材料名称',
-  //     dataIndex: 'materialName',
-  //     key: 'materialName',
-  //     align: 'center',
-  //   },    {
-  //     title: '材料编码',
-  //     dataIndex: 'materialCode',
-  //     key: 'materialCode',
-  //     align: 'center',
-  //   },    {
-  //     title: '材料大小 X',
-  //     dataIndex: 'materialSizeX',
-  //     key: 'materialSizeX',
-  //     align: 'center',
-  //   },    {
-  //     title: '材料大小 Y',
-  //     dataIndex: 'materialSizeY',
-  //     key: 'materialSizeY',
-  //     align: 'center',
-  //   },    {
-  //     title: '材料规格',
-  //     dataIndex: 'materialSpecs',
-  //     key: 'materialSpecs',
-  //     align: 'center',
-  //   },    {
-  //     title: '材料厚度',
-  //     dataIndex: 'materialThickness',
-  //     key: 'materialThickness',
-  //     align: 'center',
-  //   },    {
-  //     title: '订单名称',
-  //     dataIndex: 'name',
-  //     key: 'name',
-  //     align: 'center',
-  //   },    {
-  //     title: '需求数量',
-  //     dataIndex: 'totalParts',
-  //     key: 'totalParts',
-  //     align: 'center',
-  //   },    {
-  //     title: '发货数量',
-  //     dataIndex: 'sendParts',
-  //     key: 'sendParts',
-  //     align: 'center',
-  //   },    {
-  //     title: '剩余运行数量',
-  //     dataIndex: 'remainRuns',
-  //     key: 'remainRuns',
-  //     align: 'center',
-  //   }, {
-  //     title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.operation'),
-  //     key: 'opt',
-  //     align: 'center',
-  //     render: (_, record) => [
-  //       <a key="detail" onClick={() => handleOpenDetailModal(record)}>
-  //         详情
-  //       </a>,
-  //     ],
-  //   }
-  // ]
 
   const getStrategy = () => {
     ReadIOTServices.getStrategy()
       .then(res => {
         const strategy = res == true ? 1 : 0
+        console.log(strategy,'strategy');
         setStrategy(strategy)
       })
   }
 
   const loadData = async (page, pageSize, searchValue) => {
-    // const data = [
-    //   {
-    //     id: 0,
-    //     cuttingMachine: '切割机1',
-    //     materialCode: '0402-0337',
-    //     materialName: 'ONBC-25',
-    //     materialSizeX: '600',
-    //     materialSizeY: '6000',
-    //     materialSpecs: '600*6000',
-    //     materialThickness: '25',
-    //     name: 'D0001',
-    //     planState: 0,
-    //     remainRuns: 20,
-    //     sendParts: 100,
-    //     totalParts: 100,
-    //     lineEdgeLibraryDTOS:[
-    //       {
-    //         cuttingMachine: '切割机1',
-    //         fromLocation: '111',
-    //         id: 1,
-    //         materialCode: '0402-0337',
-    //         materialName: 'ONBC-25',
-    //         materialSizeX: '600',
-    //         materialSizeY: '6000',
-    //         materialSpecs: '600*6000',
-    //         materialThickness: '25',
-    //         planName: '切割111111',
-    //         quantity: 1000,
-    //         remainderNum: 100,
-    //         taskCode: 'ce1111111',
-    //         toLocation: '222',
-    //         trayLocation: '1-5',
-    //         trayNumber: 'TP001',
-    //         useNum: 80,
-    //       },
-    //       {
-    //         cuttingMachine: '切割机1',
-    //         fromLocation: '333',
-    //         id: 2,
-    //         materialCode: '0402-0337',
-    //         materialName: 'ONBC-25',
-    //         materialSizeX: '600',
-    //         materialSizeY: '6000',
-    //         materialSpecs: '600*6000',
-    //         materialThickness: '25',
-    //         planName: '切割22222',
-    //         quantity: 1000,
-    //         remainderNum: 0,
-    //         taskCode: 'ce222222',
-    //         toLocation: '444',
-    //         trayLocation: '1-4',
-    //         trayNumber: 'TP002',
-    //         useNum: 20,
-    //       },
-    //     ]
-    //   },
-    //   {
-    //     id: 13,
-    //     orderNumber: 'D0002',
-    //     orderCountr: 100,
-    //     finishNumber: 0,
-    //     surplusNumber: 100,
-    //     orderPriority: 2,
-    //     cuttingMachine: '切割机2',
-    //     materialCode: 'PR001',
-    //     materialName: '物料1',
-    //     detail: [
-    //       {
-    //         id: 11,
-    //         trayNumber: 'D0001',
-    //         count: 100,
-    //         uesd: 50,
-    //         surplus: 50,
-    //         station: 1,
-    //       }, {
-    //         id: 12,
-    //         trayNumber: 'D0002',
-    //         count: 100,
-    //         uesd: 0,
-    //         surplus: 100,
-    //         station: 2,
-    //       }
-    //     ]
-    //   },
-    // ]
-    // setTableData(data);
     setLoading(true);
     ReadIOTServices
       .findPlan({ ...searchValue, page: page - 1, pageSize })
@@ -384,13 +255,30 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
         notification.success({
           message: getFormattedMsg('PalletManagementStockLevel.message.updateSuccess')
         })
-        setStrategy(state)
+        // setStrategy(state)
+        getStrategy()
       })
       .catch(err => {
         notification.warning({
           message: getFormattedMsg('PalletManagementStockLevel.message.updateFailure')
         })
       })
+  }
+
+  const handleManualFinish=()=>{
+    Modal.confirm({
+      title:'确认完成订单？',
+      onOk: async () => {
+        notification.warning({
+          message:'接口'
+        })
+      },
+      onCancel() { },
+    })
+  }
+
+  const handleManualDown =()=>{
+    
   }
 
   const handleEmpty = (record) => {

@@ -145,9 +145,10 @@ const PalletManagementConnectionPort = () => {
 
   const HandleTakedown =  record => {
     Modal.confirm({
-      title: `${getFormattedMsg('PalletManagement.title.pullOffPallet')}${record.transferCode}?`,
+      // title: `${getFormattedMsg('PalletManagement.title.pullOffPallet')}${record.transferCode}?`,
+      title: `确认在接驳口${record.joinCode}下架托盘?`,
       onOk: async() => {
-        await EmptyPalletDeliveryApi.callTransferOut({qrName:record.transferCode})
+        await EmptyPalletDeliveryApi.callTransferOut({qrName:record.joinCode})
         .then(res => {
           notification.success({
             message: '托盘下架成功'

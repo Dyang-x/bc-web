@@ -122,7 +122,7 @@ const TrayForm = ({
             mode="multiple"
           >
             {attributeOne.map((value, index) => (
-              <Option value={value.id} key={value.id}>
+              <Option value={value.value} key={value.id}>
                 {value.name}
               </Option>
             ))}
@@ -164,7 +164,7 @@ const TrayForm = ({
             // mode="multiple"
           >
             {attributeTwo.map((value, index) => (
-              <Option value={value.id} key={value.id}>
+              <Option value={value.value} key={value.id}>
                 {value.name}
               </Option>
             ))}

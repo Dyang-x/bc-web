@@ -80,11 +80,6 @@ const moduleConfig = {
   }
 };
 
-const wsConfig = { 
-  wsAddress: `ws://${process.env.__API_HOST__}:15674/ws`, 
-  needNotification: true 
-};
-
 const CoreConfig = {
   username: 'admin',
   password: 'admin',
