@@ -1,0 +1,44 @@
+.Title {
+    display: flex;
+    font-weight: 400;
+    font-size: 30px;
+    text-align: center;
+    color: #fff;
+    height: 9rem;
+    justify-content: space-between;
+    align-items: center;
+
+    .num {
+        width: 20%;
+    }
+
+    .status {
+        flex: 1;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+
+
+        .manual{
+            border:1px solid #9DC3E6;
+            background-color: #9DC3E6;
+            font-weight: 400;
+            font-size: 20px;
+            color: #fff;
+        }
+        .auto{
+            border:1px solid #00B050;
+            background-color: #00B050;
+            font-weight: 400;
+            font-size: 20px;
+            color: #fff;
+        }
+        .breakdown{
+            border:1px solid #FF0000;
+            background-color: #FF0000;
+            font-weight: 400;
+            font-size: 20px;
+            color: #fff;
+        }
+    }
+}

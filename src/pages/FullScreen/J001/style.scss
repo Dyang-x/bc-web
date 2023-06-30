@@ -8,3 +8,14 @@
   background: url('../assets/slices/pageBg.svg') center center no-repeat;
   background-size: cover;
 }
+
+.fullscreenButton {
+  position: fixed;
+  right: 20px;
+  bottom: 16px;
+  z-index: 999;
+}
+
+.HVLayout-HPane-Wrapper .HVLayout-HPane-Content-Wrapper .HPane-Content{
+  padding:unset;
+}

@@ -5,7 +5,7 @@ import styles from './style.scss';
 import { IndexPageStyle, IndexPageContent } from './container';
 import { useResizeDetector } from 'react-resize-detector';
  
- 
+ import OverView from './Overview/index';
 
 const { Pane } = HVLayout;
 
@@ -13,8 +13,8 @@ const J002OverView = ({cHeight}) => {
    
 
   return (
-      <HVLayout autoScroll style={{ backgroundColor: '#CCCCCC', margin: 0, padding: 0, height: '100%', position: "fixed" }}>
-           
+      <HVLayout >
+           <OverView/>
       </HVLayout>
   );
 };

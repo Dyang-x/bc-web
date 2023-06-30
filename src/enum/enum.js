@@ -125,3 +125,10 @@ export const emptyInMid = [
     { id: 2, name: 'J002', value: 'J002', },
     { id: 3, name: 'J003', value: 'J003', },
 ]
+
+//接驳口
+export const BendingStates = [
+    { id: 1, name: '空置', value: '空置', },
+    { id: 2, name: '使用中', value: '使用中', },
+    { id: 3, name: '运输中', value: '运输中', },
+]

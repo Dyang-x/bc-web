@@ -47,7 +47,8 @@ const AddOrUpdateForm = ({
           )
         }
       </Form.Item>
-      <Form.Item {...formItemLayout} label={getFormattedMsg('BendingMachineConfiguration.label.ifout')}>
+      {/* <Form.Item {...formItemLayout} label={getFormattedMsg('BendingMachineConfiguration.label.ifout')}> */}
+      <Form.Item {...formItemLayout} label={'允许切割未完成出库'}>
         {
           getFieldDecorator('ifout', {
             rules: [

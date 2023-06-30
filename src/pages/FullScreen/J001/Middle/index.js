@@ -24,12 +24,13 @@ const ContentTwo = ({newDataDetail}) => {
   const [isScrolle, setIsScrolle] = useState(true);
 
   // 滚动速度，值越小，滚动越快
-  const speed = 10;
+  const speed = 50;
   const warper = useRef();
   const childDom1 = useRef();
   const childDom2 = useRef();
 
   useEffect(() => {
+    console.log('newDataDetail.length',newDataDetail.length);
     // setList(data)
     setList(newDataDetail)    
     setIsScrolle(true)
@@ -71,7 +72,7 @@ const ContentTwo = ({newDataDetail}) => {
   return (
     <div
       style={{
-        height: '90rem'
+        height: '100rem'
       }}
     >
       <div className={styles.Title}>生产订单列表</div>
@@ -94,14 +95,14 @@ const ContentTwo = ({newDataDetail}) => {
             >
               <span className={styles.num}>{index + 1}</span>
               <span >{item.trayNumber}</span>
-              <span >{item.warehouse}</span>
-              <span >{item.time}</span>
+              <span >{item.toLocation}</span>
+              <span >{item.createTime}</span>
             </li>
           ))}
         </div>
         {/* <div className={styles.child} ref={childDom2}></div> */}
         {
-          data.length > 10 &&
+          newDataDetail.length > 11 &&
           <div className={styles.child} ref={childDom2}>
             {list.map((item, index) => (
               <li
@@ -111,10 +112,10 @@ const ContentTwo = ({newDataDetail}) => {
                 onMouseOver={() => hoverHandler(false)}
                 onMouseLeave={() => hoverHandler(true)}
               >
-                <span className={styles.num}>{index + 1}</span>
-                <span >{item.trayNumber}</span>
-                <span >{item.warehouse}</span>
-                <span >{item.time}</span>
+              <span className={styles.num}>{index + 1}</span>
+              <span >{item.trayNumber}</span>
+              <span >{item.toLocation}</span>
+              <span >{item.createTime}</span>
               </li>
             ))}
           </div>

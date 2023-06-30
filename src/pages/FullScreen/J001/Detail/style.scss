@@ -1,0 +1,43 @@
+.title {
+  display: flex;
+  font-weight: 400;
+  font-size: 8rem;
+  text-align: center;
+  color: #fff;
+  height: 9rem;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20rem;
+  margin-bottom: 20rem;
+}
+
+.body {
+  display: flex;
+  font-weight: 400;
+  font-size: 8rem;
+  text-align: center;
+  color: #fff;
+  height: 9rem;
+  justify-content: space-between;
+  align-items: center;
+
+  margin: 20rem 40rem 0 40rem;
+
+  div {
+    display: flex;
+    width: 50%;
+
+    .label {
+      width: 30%;
+      margin-left: auto;
+      justify-content: flex-end;
+    }
+
+    .value {
+      width: 70%;
+      background-color: #174097;
+      padding-left: 2rem;
+    }
+  }
+
+}

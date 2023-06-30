@@ -25,10 +25,10 @@ const ContentTwo = ({newData}) => {
             <li
               className={styles['other']}
             >
-              <span >{newData.number}</span>
-              <span >{newData.name}</span>
-              <span >{newData.type}</span>
-              <span >{newData.count}</span>
+              <span >{newData.planCode}</span>
+              <span >{newData.productName}</span>
+              <span >{newData.productNumber}</span>
+              <span >{newData.trayNumber}</span>
             </li>
   
         </div>

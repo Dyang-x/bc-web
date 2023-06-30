@@ -9,7 +9,7 @@ import AddOrUpdateForm from './AddOrUpdateForm';
 import EmptyPalletsWarehousingApi from '~/api/EmptyPalletsWarehousing';
 import EmptyPalletDeliveryApi from '~/api/EmptyPalletDelivery';
 import SurplusForm from './SurplusForm';
-import { attributeOne,attributeTwo, } from '~/enum/enum';
+import { attributeOne,attributeTwo, BendingStates} from '~/enum/enum';
 
 const getFormattedMsg = i18n.getFormattedMsg;
 const { showTotal } = page
@@ -70,6 +70,12 @@ const BendingMachineConfiguration = () => {
       dataIndex: 'bendingState',
       key: 'bendingState',
       align: 'center',
+      render: (text, record, index) => {
+        if(text == null){
+          return
+        }
+        return BendingStates[text-1].value
+      }
     },
     {
       title: getFormattedMsg('BendingMachineConfiguration.title.attribute'),
@@ -89,7 +95,8 @@ const BendingMachineConfiguration = () => {
       // }
     },
     {
-      title: getFormattedMsg('BendingMachineConfiguration.title.ifout'),
+      // title: getFormattedMsg('BendingMachineConfiguration.title.ifout'),
+      title: "是否允许切割未完成出库",
       dataIndex: 'ifout',
       key: 'ifout',
       align: 'center',
