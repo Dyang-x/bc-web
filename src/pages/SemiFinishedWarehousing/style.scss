@@ -1,5 +1,33 @@
-.table_ul{
+.table_ul {
   :global {
-  padding-left: 15px;
+    padding-left: 15px;
   }
+}
+
+.table-name {
+  background-color: #eff3fb;
+}
+
+.tableValue{
+  padding:0px !important
+}
+
+
+.search{
+  div{
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  // .hv-search-form .ant-form-item{
+  //   :global {
+  //   display: flex !important; 
+  //   align-items: center !important;
+  //   justify-content: center !important;
+  //   }
+  // }
+  // .hv-search-form-button{
+  //   display: flex !important; 
+  //   align-items: center !important;
+  //   justify-content: center !important;
+  // }
 }

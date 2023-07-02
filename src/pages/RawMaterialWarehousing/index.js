@@ -460,19 +460,21 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
     validateFields(async (err, values) => {
       if (err) return;
       const params = getFieldsValue();
-      await RawMaterialWarehousingReceiptApi
-        .bindRawMaterial(params)
-        .then(res => {
-          notification.success({
-            message: getFormattedMsg('RawMaterialWarehousingReceipt.message.bindingSuccess')
-          });
-          //    loadData(page, pageSize, { ...searchValue, state: selectedstatus });
-        })
-        .catch(err => {
-          notification.warning({
-            description: err.message
-          });
-        });
+      delete params.scan
+      console.log("params",params);
+      // await RawMaterialWarehousingReceiptApi
+      //   .bindRawMaterial(params)
+      //   .then(res => {
+      //     notification.success({
+      //       message: getFormattedMsg('RawMaterialWarehousingReceipt.message.bindingSuccess')
+      //     });
+      //     //    loadData(page, pageSize, { ...searchValue, state: selectedstatus });
+      //   })
+      //   .catch(err => {
+      //     notification.warning({
+      //       description: err.message
+      //     });
+      //   });
       handleCancelBinding();
     });
   }

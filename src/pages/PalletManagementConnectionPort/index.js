@@ -84,10 +84,10 @@ const PalletManagementConnectionPort = () => {
         <a key="updateState" onClick={() => handleUpdateState(record)}>
           {getFormattedMsg('PalletManagementConnectionPort.button.updateState')}
         </a>,
-        <Divider key="divider5" type="vertical" />,
-        <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)}>
-          {getFormattedMsg('PalletManagementConnectionPort.button.delete')}
-        </a>,
+        // <Divider key="divider5" type="vertical" />,
+        // <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)}>
+        //   {getFormattedMsg('PalletManagementConnectionPort.button.delete')}
+        // </a>,
       ],
       width: 500,
     }
@@ -359,16 +359,16 @@ const PalletManagementConnectionPort = () => {
           title={getFormattedMsg('PalletManagementConnectionPort.title.tableName')}
           settingButton={<SettingButton />}
           onRefresh={loadData}
-          buttons={[
-            <Button
-              key="add"
-              h-icon="add"
-              type="primary"
-              onClick={showAddJoinArea}
-            >
-              {getFormattedMsg('PalletManagementConnectionPort.button.add')}
-            </Button>
-          ]}
+          // buttons={[
+          //   <Button
+          //     key="add"
+          //     h-icon="add"
+          //     type="primary"
+          //     onClick={showAddJoinArea}
+          //   >
+          //     {getFormattedMsg('PalletManagementConnectionPort.button.add')}
+          //   </Button>
+          // ]}
         >
           <Table
             loading={loading}

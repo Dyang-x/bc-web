@@ -17,6 +17,7 @@ import RawMaterialDelivery from '~/pages/RawMaterialDelivery';
 
 //半成品入库收料单
 import SemiFinishedWarehousing from '~/pages/SemiFinishedWarehousing';
+import SemiFinishedWarehousing2 from '~/pages/SemiFinishedWarehousing2';
 //半成品出库托盘拣选
 import SemiFinisheDelivery from '~/pages/SemiFinisheDelivery';
 
@@ -100,6 +101,10 @@ export default [
   {
     path: '/semi-finished-warehousing-receipt',
     component: SemiFinishedWarehousing
+  },
+  {
+    path: '/semi-finished-warehousing-receipt2',
+    component: SemiFinishedWarehousing2
   },
   {
     path: '/semi-finishe-delivery-pallet-selection',

@@ -22,8 +22,7 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
   const [pageSize, setPageSize] = useState(10);
   const [totalPage, setTotalPage] = useState(0);
   const [loading, setLoading] = useState(false);
-  // const [searchValue, setSearchValue] = useState(null);
-  const [searchValue, setSearchValue] = useState({cuttingName:'切割机1'});
+  const [searchValue, setSearchValue] = useState(null);
   const state = {
     0: '新建', 2: '已完成'
   }
@@ -47,10 +46,8 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [selectedDatas, setSelectedDatas] = useState([]);
 
-  const [dataSource, setDataSource] = useState([])
-
   useEffect(() => {
-    loadData(page, pageSize, { ...searchValue, state: selectedstatus });
+    loadData(page, pageSize, { ...setSearchValue, state: selectedstatus });
   }, []);
 
   const columns = [
@@ -236,10 +233,10 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
     }
     delete params.creationTime
 
-    setSearchValue({ ...params,...searchValue });
+    setSearchValue({ ...params });
     setPage(1);
     setPageSize(10);
-    loadData(1, 10, { ...params,...searchValue , state: selectedstatus });
+    loadData(1, 10, { ...params, state: selectedstatus });
   };
 
   const { Table, SettingButton } = useMemo(
@@ -271,18 +268,14 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
   const handleSaveAdd = () => {
     const { getFieldsValue, validateFields, setFieldsValue } = addForm.current;
     validateFields(async (err, values) => {
-      console.log('dataSource',dataSource);
       if (err) return;
       const params = getFieldsValue();
 
-      if (params.attributeOne.length != 0) {
+      if(params.attributeOne.length != 0){
         params.attributeOne = params.attributeOne.toString()
-      } else {
+      }else{
         delete params.attributeOne
       }
-      params.cuttingName = '切割机1'
-      params.attributeoneState = true
-      params.attributetwoState = true
       console.log(params, 'params');
       await SemiFinishedWarehousingReceiptApi
         .bindSemiMaterial(params)
@@ -604,26 +597,7 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
           </HVLayout.Pane.BottomBar>
         </HVLayout.Pane>
       </HVLayout>
-      <Modal
-        title={getFormattedMsg('SemiFinishedWarehousingReceipt.title.addOrder')}
-        visible={addVis} 
-        footer={modalAddFoot()}
-        onCancel={handleCancelAdd}
-        width={1000}
-      >
-        <AddOrUpdateForm
-            ref={addForm}
-            attributeOneState={attributeOneState}
-            attributeTwoState={attributeTwoState}
-            setAttributeOneState={setAttributeOneState}
-            setAttributeTwoState={setAttributeTwoState}
-            attributeOne={attributeOne}
-            attributeTwo={attributeTwo}
-            setDataSource={setDataSource}
-            dataSource={dataSource}
-          />
-      </Modal>
-      {/* <Drawer title={getFormattedMsg('SemiFinishedWarehousingReceipt.title.addOrder')} visible={addVis} onClose={handleCancelAdd} width={500}>
+      <Drawer title={getFormattedMsg('SemiFinishedWarehousingReceipt.title.addOrder')} visible={addVis} onClose={handleCancelAdd} width={500}>
         <Drawer.DrawerContent>
           <AddOrUpdateForm
             ref={addForm}
@@ -638,7 +612,7 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
           />
         </Drawer.DrawerContent>
         <Drawer.DrawerBottomBar>{modalAddFoot()}</Drawer.DrawerBottomBar>
-      </Drawer> */}
+      </Drawer>
       <Drawer title={getFormattedMsg('SemiFinishedWarehousingReceipt.button.update')} visible={updateVis} onClose={handleCancelUpdate} width={500}>
         <Drawer.DrawerContent>
           <AddOrUpdateForm
@@ -668,7 +642,7 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
       </Modal>
       <Modal
         // key={Math.random()}
-        title={getFormattedMsg('SemiFinishedWarehousingReceipt.button.pickTray')}
+        // title={getFormattedMsg('SemiFinishedWarehousingReceipt.button.pickTray')}
         visible={pickTrayVis}
         // footer={modalPickTrayFoot()}
         footer={null}

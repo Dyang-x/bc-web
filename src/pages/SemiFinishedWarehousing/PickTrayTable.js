@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { HVLayout, Table, Pagination, notification, Form, Input, Select,Checkbox, DatePicker, Divider, InputNumber, Cascader } from '@hvisions/h-ui'
-import {  page,i18n } from '@hvisions/toolkit';
+import { HVLayout, Table, Pagination, notification, Form, Input, Select, Tooltip, SearchForm, Divider, InputNumber, Button } from '@hvisions/h-ui'
+import { page, i18n } from '@hvisions/toolkit';
 import TransferBoxServices from '~/api/TransferBox';
-import {sortPositions } from '~/enum/enum';
+import { sortPositions } from '~/enum/enum';
+import SemiFinisheDeliveryPalletSelectionServices from '~/api/SemiFinisheDeliveryPalletSelection';
+import style from './style.scss'
 
 const { getFormattedMsg } = i18n;
 const { showTotal } = page
@@ -12,91 +14,123 @@ const formItemLayout = {
 };
 
 const PickTrayTable = ({
-  selectedRowKeys, setSelectedRowKeys,setSelectedDatas,modalPickTrayFoot
+  selectedRowKeys, setSelectedRowKeys, setSelectedDatas, modalPickTrayFoot
 }) => {
 
-  const [materialList, setMaterialList] = useState([])
-
-  const [searchValue, setSearchValue] = useState({type: 0});
+  const [searchValue, setSearchValue] = useState({
+    cuttingName: "切割机1",
+    // attributeTwo: '切割未完工'
+  });
   const [dataSource, setDataSource] = useState([]);
-  const [pageInfo, setPageInfo] = useState({ page: 1, pageSize: 10 });
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
   const [loading, setLoading] = useState(false);
   const [total, setTotal] = useState(0);
 
+  const [orderNumber, setOrderNumber] = useState('');
+
+
   const columns = [
     {
-      title: getFormattedMsg('SemiFinishedWarehousingReceipt.title.trayNumber'),
-      dataIndex: 'code',
-      key: 'code',
-      align: 'center',
-    },
-    // {
-    //   title: getFormattedMsg('SemiFinishedWarehousingReceipt.title.location'),
-    //   dataIndex: 'location',
-    //   key: 'location',
-    //   align: 'center',
-    // },
-    // {
-    //   title: getFormattedMsg('SemiFinishedWarehousingReceipt.title.attributeTwo'),
-    //   dataIndex: 'attributeTwo',
-    //   key: 'attributeTwo',
-    //   align: 'center',
-    // },
-    // {
-    //   title: '原捡料点',
-    //   dataIndex: 'sortPosition',
-    //   key: 'sortPosition',
-    //   align: 'center',
-    //   render: (text, record, index) => {
-    //     if(text == null){
-    //       return
-    //     }
-    //       return sortPositions[text - 1].name
-    //   }
-    // },
-    {
-      title: getFormattedMsg('PalletManagement.title.location'),
-      dataIndex: 'location',
-      key: 'location',
+      title: getFormattedMsg('SemiFinisheDeliveryPalletSelection.title.trayNumber'),
+      dataIndex: 'trayNumber',
+      key: 'trayNumber',
       align: 'center',
     },
     {
-      title: getFormattedMsg('PalletManagementStockLevel.title.palletStatus'),
+      title: getFormattedMsg('SemiFinisheDeliveryPalletSelection.title.locationNumber'),
+      dataIndex: 'locationNumber',
+      key: 'locationNumber',
+      align: 'center',
+    },
+    {
+      title: getFormattedMsg('SemiFinisheDeliveryPalletSelection.title.state'),
       dataIndex: 'state',
       key: 'state',
       align: 'center',
+      render: (text, record, index) => {
+        const dataSource = [
+          { id: 1, trayNumber: 'J004004004004004004', location: 'J004', attributeTwo: 'J004', pickingPoint: 'J004', },
+        ]
+        const table = <div > <ul style={{ paddingLeft: 15, marginBottom: "0px" }}> {dataSource.map(item => <li key={item.id} >{item.trayNumber}</li>)} </ul> </div>
+        if (text == 1) {
+          return (
+            <Tooltip placement="rightTop" title={table} arrowPointAtCenter>
+              <span>{'已占用'}</span>
+            </Tooltip>
+          )
+        }
+        if (text == 2) {
+          return (
+            <Tooltip placement="rightTop" title={table} arrowPointAtCenter>
+              <span>{'未占用'}</span>
+            </Tooltip>
+          )
+        }
+      }
     },
   ]
-  
+
   useEffect(() => {
-    //查询  接口 在 托盘管理  半成品
-    loadData(pageInfo.page, pageInfo.pageSize, { type: 1 });
+    loadData(page, pageSize, searchValue);
   }, [])
 
   const loadData = async (page, pageSize, searchValue) => {
     setLoading(true);
-    console.log({ ...searchValue, page: page - 1, pageSize });
-    await TransferBoxServices.getPage({ ...searchValue, page: page - 1, pageSize })
+    SemiFinisheDeliveryPalletSelectionServices
+      .getByQuery({ ...searchValue, page: page - 1, pageSize })
       .then(res => {
         setDataSource(res.content);
         setTotal(res.totalElements);
-        const pageInfos = {
-          page: res.pageable.pageNumber + 1,
-          pageSize: res.pageable.pageSize
-        }
-        setPageInfo(pageInfos)
-      }).catch(err => {
+        setPage(res.pageable.pageNumber + 1)
+        setPageSize(res.pageable.pageSize)
+      })
+      .catch(err => {
+        setLoading(false);
         notification.warning({
           message: getFormattedMsg('global.notify.fail'),
           description: err.message
         });
       });
+    // console.log({ ...searchValue, page: page - 1, pageSize });
+    // await TransferBoxServices.getPage({ ...searchValue, page: page - 1, pageSize })
+    //   .then(res => {
+    //     setDataSource(res.content);
+    //     setTotal(res.totalElements);
+    //     const pageInfos = {
+    //       page: res.pageable.pageNumber + 1,
+    //       pageSize: res.pageable.pageSize
+    //     }
+    //     setPageInfo(pageInfos)
+    //   }).catch(err => {
+    //     notification.warning({
+    //       message: getFormattedMsg('global.notify.fail'),
+    //       description: err.message
+    //     });
+    //   });
     setLoading(false);
   };
 
+  //查询按钮
+  const handleSearch = () => {
+    const params = { ...searchValue }
+    if (params.orderNumber != null) {
+      delete params.orderNumber
+    }
+    if (orderNumber != '') {
+      params.orderNumber = orderNumber
+    }
+    console.log(params, 'params');
+
+    setSearchValue({ ...params});
+    // setPage(1);
+    setPageSize(10);
+    loadData(1, 10, { ...params});
+  };
+
   const onHandleChange = (page, pageSize) => {
-    setPageInfo({ page, pageSize });
-    loadData(page, pageSize, { type: 1 });
+    loadData(page, pageSize, { ...searchValue });
+    setPage(page);
   };
 
   const onHandleTableSelect = e => {
@@ -104,99 +138,57 @@ const PickTrayTable = ({
     setSelectedDatas([e])
   };
 
-  const PickTrayData = async (page, pageSize, searchValue) => {
-
-    console.log({ ...searchValue, page: page - 1, pageSize });
-    await TransferBoxServices.getPage({ ...searchValue, page: page - 1, pageSize })
-      .then(res => {
-        setDataSource(res.content);
-        // setTotal(res.totalElements);
-        // const pageInfos = {
-        //   page: res.pageable.pageNumber + 1,
-        //   pageSize: res.pageable.pageSize
-        // }
-        // setPageInfo(pageInfos)
-      }).catch(err => {
-        notification.warning({
-          message: getFormattedMsg('global.notify.fail'),
-          description: err.message
-        });
-      });
-  };
-
-  const rowSelection = {
-    hideDefaultSelections: false,
-    type: 'radio',
-    onSelect: (record, selected, selectedRows, nativeEvent) => {
-      setSelectedDatas([record])
-    },
-    selectedRowKeys,
-    onChange: selectedRowKeys => {
-      setSelectedRowKeys(selectedRowKeys);
-      
-    }
-  };
-
-  const onRowClick = record => {
-    setSelectedRowKeys([record.id]);
-    setSelectedDatas([record])
-  };
-
   return (
     <HVLayout >
-    <HVLayout.Pane
-    title={getFormattedMsg('SemiFinishedWarehousingReceipt.button.pickTray')}
-    buttons={modalPickTrayFoot()}
-    >
-      <Table
-        loading={loading}
-        pagination={false}
-        scroll={{ x: 'max-content' }}
-        dataSource={dataSource}
-        columns={columns}
-        rowKey={record => record.id}
-        rowSelection={{
-          type: 'radio',
-          onSelect: onHandleTableSelect,
-          selectedRowKeys: selectedRowKeys,
-          hideDefaultSelections: true,
-        }}
-        onRow={record => {
-          return {
-            onClick: () => onHandleTableSelect(record)
-          };
-        }}
-      />
-      <HVLayout.Pane.BottomBar>
-        <Pagination
-          current={pageInfo.page}
-          pageSize={pageInfo.pageSize}
-          showQuickJumper
-          size="small"
-          total={total}
-          showSizeChanger
-          onShowSizeChange={onHandleChange}
-          onChange={onHandleChange}
-          showTotal={(total, range) => showTotal(total, range)}
+      <HVLayout.Pane height={'auto'}>
+            <Input 
+            allowClear 
+            placeholder={getFormattedMsg('SemiFinisheDeliveryPalletSelection.placeholder.orderNumber')} 
+            onChange={e=>{setOrderNumber(e.target.value)}}
+            style={{width:'15rem'}}
+            />
+            <Button onClick={handleSearch} style={{margin:'0px 30px'}} type='primary'>查询</Button>
+      </HVLayout.Pane>
+      <HVLayout.Pane
+        title={getFormattedMsg('SemiFinishedWarehousingReceipt.button.pickTray')}
+        buttons={modalPickTrayFoot()}
+      >
+        <Table
+          loading={loading}
+          pagination={false}
+          scroll={{ x: 'max-content' }}
+          dataSource={dataSource}
+          columns={columns}
+          rowKey={record => record.id}
+          rowSelection={{
+            type: 'radio',
+            onSelect: onHandleTableSelect,
+            selectedRowKeys: selectedRowKeys,
+            hideDefaultSelections: true,
+          }}
+          onRow={record => {
+            return {
+              onClick: () => onHandleTableSelect(record)
+            };
+          }}
         />
-      </HVLayout.Pane.BottomBar>
-    </HVLayout.Pane>
-  </HVLayout>
-  //   <Table
-  //   pagination={false}
-  //   scroll={{ x: 'max-content' }}
-  //   dataSource={dataSource}
-  //   columns={columns}
-  //   rowKey={record => record.id}
-  //   rowSelection={rowSelection}
-  //   onRow={record => {
-  //     return {
-  //       onClick: () => {
-  //         onRowClick(record);
-  //       }
-  //     };
-  //   }}
-  // />
+        <HVLayout.Pane.BottomBar>
+          <Pagination
+            // current={pageInfo.page}
+            current={page}
+            // pageSize={pageInfo.pageSize}
+            pageSize={pageSize}
+            showQuickJumper
+            size="small"
+            total={total}
+            showSizeChanger
+            onShowSizeChange={onHandleChange}
+            onChange={onHandleChange}
+            showTotal={(total, range) => showTotal(total, range)}
+          />
+        </HVLayout.Pane.BottomBar>
+      </HVLayout.Pane>
+    </HVLayout>
   )
 }
 
