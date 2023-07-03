@@ -16,6 +16,18 @@ const formItemLayout = {
   wrapperCol: { span: 18 },
 };
 
+const middles=[
+  { id: 1, name: 'J002', value: 'J002', },
+  { id: 2, name: 'J003', value: 'J003', },
+]
+
+
+const toLocations = [
+  { id: 1, name: 'J007', value: 'J007', },
+  { id: 2, name: 'J008', value: 'J008', },
+  { id: 3, name: 'J009', value: 'J009', },
+]
+
 const CallTrayForm = ({
   form: { getFieldDecorator, validateFields, getFieldValue, setFieldsValue },
   modifyData,
@@ -31,21 +43,6 @@ const CallTrayForm = ({
 
   return (
     <Form >
-      {!isEmpty(selectedDatas) &&
-        <Form.Item {...formItemLayout} label={getFormattedMsg('SemiFinishedWarehousingReceipt.label.trayNumber')}>
-          {
-            getFieldDecorator('code', {
-              rules: [
-                {
-                  required: true,
-                  message: getFormattedMsg('SemiFinishedWarehousingReceipt.placeholder.trayNumber'),
-                },
-              ],
-              initialValue: selectedDatas[0].code
-            })(
-              <Input disabled={true} placeholder={getFormattedMsg('SemiFinishedWarehousingReceipt.placeholder.orderNumber')} style={{ width: '100%' }} />
-            )}
-        </Form.Item>}
       <Form.Item {...formItemLayout} label={getFormattedMsg('SemiFinishedWarehousingReceipt.label.sortPosition')}>
         {
           getFieldDecorator('sortPosition', {
@@ -55,14 +52,14 @@ const CallTrayForm = ({
                 message: getFormattedMsg('SemiFinishedWarehousingReceipt.placeholder.sortPosition'),
               },
             ],
-            initialValue: modifyData ? modifyData['sortPosition'] : undefined
+            initialValue: modifyData ? modifyData['sortPosition'] : 'J002'
           })(
             <Select
               placeholder={getFormattedMsg('SemiFinishedWarehousingReceipt.placeholder.sortPosition')}
               showSearch
               filterOption={false}
             >
-              {sortPositions.map((value, index) => (
+              {middles.map((value, index) => (
                 <Option value={value.value} key={value.id}>
                   {value.name}
                 </Option>
@@ -87,7 +84,7 @@ const CallTrayForm = ({
               showSearch
               filterOption={false}
             >
-              {dockingPoints.map((value, index) => (
+              {toLocations.map((value, index) => (
                 <Option value={value.value} key={value.id}>
                   {value.name}
                 </Option>

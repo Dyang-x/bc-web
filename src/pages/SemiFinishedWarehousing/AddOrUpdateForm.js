@@ -108,7 +108,7 @@ const TrayForm = ({
     // const materialName = arr[3]
 
     const addData = {
-      id:dataSource.length+1,
+      id:dataSource.length +1,
       name: '主订单号',
       value: arr[2],
       Detail: [
@@ -364,8 +364,8 @@ const TrayForm = ({
       </Form.Item>
       <Form.Item {...formItemLayout} label={'备注'}>
         {
-          getFieldDecorator('description', {
-            initialValue: modifyData ? modifyData['description'] : undefined
+          getFieldDecorator('desc', {
+            initialValue: modifyData ? modifyData['desc'] : undefined
           })(
             <Input disabled={type} placeholder={'请输入备注'} style={{ width: '100%' }} />
           )}

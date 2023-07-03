@@ -409,27 +409,29 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
     }
     const data = {
       trayNumber: selectedDatas[0].code,
-      inType: 6, //原料托盘出库
       state: 0,
-      destination: 'J001',
+      toLocation: 'J001',
       middle: 'J001',
+      // { id: 6, name: '原料托盘出库', value: '原料托盘出库', },
+      taskType: 6,
+      inType: 6,
     }
     Modal.confirm({
       title: '确认下架托盘？',
       onOk: async () => {
-        await EmptyPalletDeliveryApi.saveOrUpdate(data)
+        await EmptyPalletDeliveryApi
+        .addAnddownShelves(data)
         .then(res => {
           notification.success({
-            message: '托盘出库任务创建成功'
+            message: '托盘出库任务生成成功'
           });
-          // loadData(page, pageSize, { ...searchValue, state: selectedstatus });
           handleCancelManual();
         })
         .catch(err => {
           notification.warning({
             description: err.message
           });
-        })
+        });
       },
       onCancel() { },
     })
@@ -462,19 +464,19 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
       const params = getFieldsValue();
       delete params.scan
       console.log("params",params);
-      // await RawMaterialWarehousingReceiptApi
-      //   .bindRawMaterial(params)
-      //   .then(res => {
-      //     notification.success({
-      //       message: getFormattedMsg('RawMaterialWarehousingReceipt.message.bindingSuccess')
-      //     });
-      //     //    loadData(page, pageSize, { ...searchValue, state: selectedstatus });
-      //   })
-      //   .catch(err => {
-      //     notification.warning({
-      //       description: err.message
-      //     });
-      //   });
+      await RawMaterialWarehousingReceiptApi
+        .bindRawMaterial(params)
+        .then(res => {
+          notification.success({
+            message: getFormattedMsg('RawMaterialWarehousingReceipt.message.bindingSuccess')
+          });
+          //    loadData(page, pageSize, { ...searchValue, state: selectedstatus });
+        })
+        .catch(err => {
+          notification.warning({
+            description: err.message
+          });
+        });
       handleCancelBinding();
     });
   }

@@ -8,8 +8,11 @@ import TransferBoxServices from '~/api/TransferBox';
 import AddOrUpdateForm from './AddOrUpdateForm';
 import EmptyPalletsWarehousingApi from '~/api/EmptyPalletsWarehousing';
 import EmptyPalletDeliveryApi from '~/api/EmptyPalletDelivery';
-import SurplusForm from './SurplusForm';
 import { attributeOne,attributeTwo, BendingStates} from '~/enum/enum';
+
+import PickTray from './PickTray/index';
+import PullOff from './PullOff/index';
+import SurplusForm from './SurplusForm';
 
 const getFormattedMsg = i18n.getFormattedMsg;
 const { showTotal } = page
@@ -20,23 +23,24 @@ const middles =[
   { id: 2, name: 'J003', value: 'J003', },
 ]
 
-const BendingMachineConfiguration = () => {
+const BendingMachine = ({bendingNumber}) => {
   const [tableData, setTableData] = useState([]);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [totalPage, setTotalPage] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [searchValue, setSearchValue] = useState(null);
+  const [searchValue, setSearchValue] = useState({bendingNumber:bendingNumber});
+
+  const [pickVis,setPickVis] = useState(false)
+  const [pickData,setPickData] = useState({})
+  const [attributeOne, setAttributeOne] = useState([]);
+  const [attributeTwo, setAttributeTwo] = useState('');
+
+  const [pullOffVis, setPullOffVis] = useState(false);
 
   const [addOrUpdateModalVis, setAddOrUpdateModalVis] = useState(false);
   const addOrUpdateForm = useRef();
   const [updateFormData,setUpdateFormData] = useState({})
-
-  const [bindVis,setBindVis] = useState(false)
-  const [bindData,setBindData] = useState()
-  const [pageInfo, setPageInfo] = useState({ page: 1, pageSize: 10 });
-  const [transferList, setTransferList] = useState([]);
-  const [selectedTransfer,setSelectedTransfer] = useState()
 
   const [pullVis, setPullVis] = useState(false);
   const [pullData, setPullData] = useState({});
@@ -49,7 +53,7 @@ const BendingMachineConfiguration = () => {
   
   
   useEffect(() => {
-    loadData(page, pageSize, { ...setSearchValue });
+    loadData(page, pageSize, { ...searchValue });
   }, []);
 
   const columns = [
@@ -82,20 +86,8 @@ const BendingMachineConfiguration = () => {
       dataIndex: 'attribute',
       key: 'attribute',
       align: 'center',
-      // render: (text, record, index) => {
-      //   if(text == null){
-      //     return
-      //   }
-      //   let array = []
-      //   const arr = text.split(',');
-      //   arr.map(i => {
-      //     array = [...array, attributeOne[i - 1].name]
-      //   })
-      //   return array.toString()
-      // }
     },
     {
-      // title: getFormattedMsg('BendingMachineConfiguration.title.ifout'),
       title: "是否允许切割未完成出库",
       dataIndex: 'ifout',
       key: 'ifout',
@@ -124,40 +116,28 @@ const BendingMachineConfiguration = () => {
       align: 'center',
     },
     {
-      title:getFormattedMsg('BendingMachineConfiguration.title.operation'),
+      title: getFormattedMsg('BendingMachineConfiguration.title.operation'),
       key: 'opt',
       align: 'center',
       render: (_, record) => [
-        
-        <a key="addTransfer" onClick={() => handlebind(record)}>
-          {getFormattedMsg('PalletManagementConnectionPort.button.addTransfer')}
-        </a>,
-        <Divider key="divider3" type="vertical" />,
-        <a key="unbind" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleUnbind(record)}>
-          {getFormattedMsg('PalletManagementConnectionPort.button.unbind')}
-        </a>,
-        <Divider key="divider2" type="vertical" />,
-
-        <a key="shelf" onClick={() => HandlePutOn(record)}>
-          托盘上架
+        <a key="pick" onClick={() => handlePick(record)}>
+          托盘拣选
         </a>,
         <Divider key="divider4" type="vertical" />,
-        <a key="takedown"  onClick={() => HandlePullOff(record)}>
+        <a key="takedown" onClick={() => HandlePullOff(record)}>
           托盘下架
         </a>,
+        <Divider key="divider1" type="vertical" />,
+        <a key="shelf" onClick={() => HandlePutOn(record)}>
+          空托上架
+        </a>,
         <Divider key="divider5" type="vertical" />,
-        <a key="surplus"  onClick={() => handleSurplus(record)}>
+        <a key="surplus" onClick={() => handleSurplus(record)}>
           余料回库
         </a>,
         <Divider key="divider6" type="vertical" />,
-
-
-        <a key="update" onClick={()=>handleUpdate(record)}>
+        <a key="update" onClick={() => handleUpdate(record)}>
           {getFormattedMsg('BendingMachineConfiguration.button.update')}
-        </a>,
-        <Divider key="divider1" type="vertical" />,
-        <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={()=>handleDelete(record)}>
-         {getFormattedMsg('BendingMachineConfiguration.button.delete')}
         </a>,
       ],
       width: 500,
@@ -212,22 +192,56 @@ const BendingMachineConfiguration = () => {
     setPage(p);
   };
 
-  //查询按钮
-  const handleSearch = data => {
-    const params = { ...data }
-    setSearchValue({ ...params });
-    setPage(1);
-    setPageSize(10);
-    loadData(1, 10, { ...params });
-  };
+  // //查询按钮
+  // const handleSearch = data => {
+  //   const params = { ...data }
+  //   setSearchValue({ ...params });
+  //   setPage(1);
+  //   setPageSize(10);
+  //   loadData(1, 10, { ...params });
+  // };
 
   const { Table, SettingButton} = useMemo(
     () => CacheTable({ columns, scrollHeight: 'calc(100vh - 470px)', key: 'bendingMachine' }),
     []
   );
 
-  const handleAdd =()=>{
+  const handlePick =(record)=>{
+    setPickVis(true)
+    setPickData(record)
+    const attributeOne = record.attribute
+ 
+        let array = []
+        const arr = attributeOne.split(',');
+        arr.map(i => {
+          array = [...array, i]
+        })
+       console.log(array,'array');
+ 
+    setAttributeOne(array)
+    setAttributeTwo('切割完工')
+  }
+
+  const handleCancelPick =()=>{
+    setPickVis(false)
+    setPickData({})
+  }
+  
+  const HandlePullOff = (record) => {
+    setPullOffVis(true)
+  }
+
+  const handleCancelPullOffk =()=>{
+    setPullOffVis(false)
+  }
+
+
+  const handleUpdate =(record)=>{
     setAddOrUpdateModalVis(true)
+    if(record.ifout != null){
+      record.ifout = record.ifout.toString()
+    }
+    setUpdateFormData(record)
   }
 
   const handleCancelAddOrUpdate = () => {
@@ -278,118 +292,9 @@ const BendingMachineConfiguration = () => {
     })
   }
 
-  const handleUpdate =(record)=>{
-    setAddOrUpdateModalVis(true)
-    if(record.ifout != null){
-      record.ifout = record.ifout.toString()
-    }
-    setUpdateFormData(record)
-  }
-
-  const handleDelete =(record)=>{
-    Modal.confirm({
-      title: getFormattedMsg('BendingMachineConfiguration.title.delete'),
-      okType: 'danger',
-      onOk: async () => {
-        await bendingMachineServices
-          .deleteById(record.id)
-          .then(res => {
-            notification.success({
-              message: getFormattedMsg('BendingMachineConfiguration.message.deleteSuccess'),
-            });
-            loadData(page, pageSize, { ...searchValue});
-          })
-          .catch(err => {
-            notification.warning({
-              message: getFormattedMsg('BendingMachineConfiguration.message.deleteFailure'),
-              description: err.message
-            });
-          });
-      },
-      onCancel() { },
-    })
-  }
-
-
-  const handlebind=(record)=>{
-    setBindVis(true)
-    setBindData(record)
-    getTransfer();
-  }
-
-  const getTransfer = async (searchValue) => {
-    //折弯机 绑定 半成品托盘
-    await TransferBoxServices.getPage({ type: 1, page: pageInfo.page - 1, pageSize: pageInfo.pageSize })
-      .then(res => {
-        setTransferList(res.content);
-      }).catch(err => {
-        notification.warning({
-          message: getFormattedMsg('global.notify.fail'),
-          description: err.message
-        });
-      });
-  };
-  
-  const bindSave = async () => {
-    await bendingMachineServices.addTransfer(bindData.bendingNumber, selectedTransfer)
-    .then(res => {
-      notification.warning({
-        message: getFormattedMsg('PalletManagementConnectionPort.message.bindingSuccess'),
-      });
-      loadData(page, pageSize, { ...searchValue });
-    }).catch(err => {
-      notification.warning({
-        message: getFormattedMsg('PalletManagementConnectionPort.message.bindingFailure'),
-        description: err.message
-      });
-    });
-    bindCancel()
-  }
-
-  const bindCancel = () => {
-    setBindVis(false)
-    setSelectedTransfer()
-    setBindData()
-  }
-
-  const handleUnbind=(record)=>{
-    Modal.confirm({
-      title: getFormattedMsg('PalletManagementConnectionPort.title.unbind'),
-      okType: 'danger',
-      onOk: async () => {
-        await bendingMachineServices.deleteTransfer(record.bendingNumber)
-          .then(res => {
-            notification.success({
-              message: getFormattedMsg('PalletManagementConnectionPort.message.unbindingSuccess')
-            })
-            loadData(page, pageSize, { ...searchValue });
-          })
-          .catch(err => {
-            notification.warning({
-              message: getFormattedMsg('PalletManagementConnectionPort.message.unbindingFailure'),
-              description: err.message
-            })
-          })
-      }
-    });
-  }
-
   const HandlePutOn = (record) => {
     setPullVis(true)
     setPullData(record)
-    // const data = {
-    //   origin: record.readyMaterials,
-    //   middle: 'J001',
-    //   trayNumber: record.transferCode,
-    //   state: 0,
-    // }
-    // console.log(data,'托盘上架');
-    // Modal.confirm({
-    //   title: `${getFormattedMsg('PalletManagement.title.putOnPallet')}${record.transferCode}?`,
-    //   onOk: () => {
-    //     addAndUpShelves(data)
-    //   }
-    // });
   }
 
   const handleCancelPutOn =()=>{
@@ -431,7 +336,7 @@ const BendingMachineConfiguration = () => {
         notification.success({
           message: '托盘入库任务生成成功'
         });
-        loadData(pageInfo.page, pageInfo.pageSize, searchValue);
+        loadData(page, pageSize, { ...searchValue });
       })
       .catch(err => {
         notification.warning({
@@ -440,26 +345,6 @@ const BendingMachineConfiguration = () => {
       });
   }
 
-  const HandlePullOff = (record) => {
-    Modal.confirm({
-      title: `${getFormattedMsg('PalletManagement.title.pullOffPallet')}${record.transferCode}?`,
-      onOk: async() => {
-        await EmptyPalletDeliveryApi.callTransferOut({qrName:record.transferCode})
-        .then(res => {
-          notification.success({
-            message: '托盘下架成功'
-          })
-          loadData();
-        })
-        .catch(err => {
-          notification.warning({
-            message: '托盘下架失败',
-            description: err.message
-          })
-        })
-      }
-    });
-  }
   
   const handleSurplus =(record)=>{
     setSurplusFormVis(true)
@@ -512,21 +397,10 @@ const BendingMachineConfiguration = () => {
     });
   }
 
-  const formItemLayout = {
-    labelCol: {
-      xs: { span: 24 },
-      sm: { span: 8 },
-    },
-    wrapperCol: {
-      xs: { span: 24 },
-      sm: { span: 16 },
-    },
-  };
-
   return (
     <>
       <HVLayout>
-        <HVLayout.Pane height={'auto'}>
+        {/* <HVLayout.Pane height={'auto'}>
           <SearchForm onSearch={handleSearch}>
             <SearchForm.Item
               label={getFormattedMsg('BendingMachineConfiguration.label.bendingNumber')}
@@ -535,15 +409,10 @@ const BendingMachineConfiguration = () => {
               <Input  allowClear placeholder={getFormattedMsg('BendingMachineConfiguration.placeholder.bendingNumber')}/>
             </SearchForm.Item>
           </SearchForm>
-        </HVLayout.Pane>
+        </HVLayout.Pane> */}
         <Pane
             icon={<i className="h-visions hv-table" />}
             title={getFormattedMsg('BendingMachineConfiguration.title.information')}
-            buttons={[
-              <Button key="create" type="primary" onClick={() => handleAdd()}>
-                {getFormattedMsg('BendingMachineConfiguration.button.create')}
-              </Button>,
-            ]}
             settingButton={<SettingButton />}
             onRefresh={reFreshFunc()}
           >
@@ -575,43 +444,30 @@ const BendingMachineConfiguration = () => {
             </HVLayout.Pane.BottomBar>
           </Pane>
       </HVLayout>
-      <Drawer title={updateFormData.id == null?getFormattedMsg('BendingMachineConfiguration.title.create'):getFormattedMsg('BendingMachineConfiguration.title.update')} visible={addOrUpdateModalVis} onClose={handleCancelAddOrUpdate} width={500}>
-        <Drawer.DrawerContent>
-          <AddOrUpdateForm
-            ref={addOrUpdateForm} modifyData ={updateFormData}
-          />
-        </Drawer.DrawerContent>
-        <Drawer.DrawerBottomBar>{modalAddOrUpdateFoot()}</Drawer.DrawerBottomBar>
-      </Drawer>
-      <Modal
-        title={getFormattedMsg('PalletManagementConnectionPort.title.binding')}
-        visible={bindVis}
-        onOk={bindSave}
-        onCancel={bindCancel}
-        destroyOnClose
-        width={500}
+      <Drawer 
+      className='pickDrawer'
+      title={'托盘拣选'} 
+      visible={pickVis} 
+      onClose={handleCancelPick} 
+      width={window.innerWidth *0.8}
+      bodyStyle={{height:document.body.clientHeight-55}}
       >
-        <Form {...formItemLayout}>
-          <Form.Item label={getFormattedMsg('PalletManagementConnectionPort.title.trayNumber')}>
-            <Select
-              placeholder={getFormattedMsg('PalletManagementConnectionPort.placeholder.transferCode')}
-              onSearch={getTransfer}
-              showSearch
-              filterOption={false}
-              onChange={(value) => {
-                console.log(value);
-                setSelectedTransfer(value)
-              }}
-            >
-              {transferList.map((value, index) => (
-                <Option value={value.code} key={value.id}>
-                  {value.code} -- {value.name}
-                </Option>
-              ))}
-            </Select>
-          </Form.Item>
-        </Form>
-      </Modal>
+          <PickTray
+            modifyData ={pickData}
+            attribute1={attributeOne}
+            attribute2={attributeTwo}
+          />
+      </Drawer>
+      <Drawer 
+      className='pullOffDrawer'
+      title={'托盘下架'} 
+      visible={pullOffVis} 
+      onClose={handleCancelPullOffk} 
+      width={window.innerWidth *0.8}
+      bodyStyle={{height:document.body.clientHeight-55}}
+      >
+          <PullOff   />
+      </Drawer>
       <Modal
         title={'托盘上架'}
         visible={pullVis}
@@ -657,14 +513,21 @@ const BendingMachineConfiguration = () => {
             modifyData={surplusData}
             attributeOne={attributeOne}
             attributeTwo={attributeTwo}
-            // dockingPoints={dockingPoints}
-            // sortPositions={sortPositions}
           />
         </Drawer.DrawerContent>
         <Drawer.DrawerBottomBar>{modalAddFoot()}</Drawer.DrawerBottomBar>
       </Drawer>
+
+      <Drawer title={updateFormData.id == null?getFormattedMsg('BendingMachineConfiguration.title.create'):getFormattedMsg('BendingMachineConfiguration.title.update')} visible={addOrUpdateModalVis} onClose={handleCancelAddOrUpdate} width={500}>
+        <Drawer.DrawerContent>
+          <AddOrUpdateForm
+            ref={addOrUpdateForm} modifyData ={updateFormData}
+          />
+        </Drawer.DrawerContent>
+        <Drawer.DrawerBottomBar>{modalAddOrUpdateFoot()}</Drawer.DrawerBottomBar>
+      </Drawer>      
     </>
   );
 };
 
-export default BendingMachineConfiguration;
+export default BendingMachine;

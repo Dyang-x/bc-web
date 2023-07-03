@@ -24,10 +24,10 @@ const TrayForm = ({
 
     const orderNumber = arr[0]
     const lineNumber = arr[1]
-    const deliveryOrder = arr[2]
+    const associatedNumber = arr[2]
     const other = arr[3]
     const materialCode = arr[4]
-    const quantity = arr[5]
+    const number = arr[5]
     const unit = arr[6]
 
     setFieldsValue({
@@ -35,7 +35,10 @@ const TrayForm = ({
       orderNumber: orderNumber,
       lineNumber: lineNumber,
       materialCode: materialCode,
-      quantity: quantity,
+      number: number,
+
+      associatedNumber:associatedNumber,
+      unit:unit,
     })
   }
 
@@ -115,7 +118,7 @@ const TrayForm = ({
       </Form.Item>
       <Form.Item {...formItemLayout} label={'数量'}>
         {
-          getFieldDecorator('quantity', {
+          getFieldDecorator('number', {
             rules: [
               {
                 required: true,

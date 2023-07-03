@@ -23,6 +23,13 @@ import SemiFinisheDelivery from '~/pages/SemiFinisheDelivery';
 
 //折弯机配置
 import BendingConfiguration from '~/pages/BendingConfiguration';
+import BendingMachine from './pages/BendingMachines/BendingMachine/index';
+import BendingMachine1 from './pages/BendingMachines/BendingMachine1/index';
+import BendingMachine2 from './pages/BendingMachines/BendingMachine2/index';
+import BendingMachine3 from './pages/BendingMachines/BendingMachine3/index';
+import BendingMachine4 from './pages/BendingMachines/BendingMachine4/index';
+import BendingMachine5 from './pages/BendingMachines/BendingMachine5/index';
+
 
 //转运系统
 import TransportSystem from '~/pages/TransportSystem';
@@ -55,13 +62,13 @@ export default [
   {
     path: '/product-fullScreen',
     component: ProductOverView
-  },  {
+  }, {
     path: '/J001-fullScreen',
     component: J001OverView
-  },  {
+  }, {
     path: '/J002-fullScreen',
     component: J002OverView
-  },  {
+  }, {
     path: '/J003-fullScreen',
     component: J003OverView
   },
@@ -147,8 +154,33 @@ export default [
     component: WirelineStorage
   },
 
-  
-  
+
+  {
+    path: '/bending-machine',
+    component: BendingMachine
+  },
+  {
+    path: '/bending-machine1',
+    component: BendingMachine1
+  },
+  {
+    path: '/bending-machine2',
+    component: BendingMachine2
+  },
+  {
+    path: '/bending-machine3',
+    component: BendingMachine3
+  },
+  {
+    path: '/bending-machine4',
+    component: BendingMachine4
+  },
+  {
+    path: '/bending-machine5',
+    component: BendingMachine5
+  },
+
+
   // 以下是示例功能代码， 正式开发时请删除
   // {
   //   path: '/user',

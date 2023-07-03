@@ -42,6 +42,14 @@ class SemiFinisheDeliveryPalletSelection extends Service {
     }
   }
 
+  //出库
+  async returnStore(id, middle, toLocation) {
+    try {
+      return await this.put(`${appName}/SemiMaterialOutWarehouseController/returnStore?id=${id}&middle=${middle}&toLocation=${toLocation}`);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default new SemiFinisheDeliveryPalletSelection();

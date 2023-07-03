@@ -23,16 +23,13 @@ const middles=[
 
 
 const toLocations = [
-  { id: 1, name: 'J004', value: 'J004', },
-  { id: 2, name: 'J005', value: 'J005', },
-  { id: 3, name: 'J006', value: 'J006', },
+  { id: 1, name: 'J007', value: 'J007', },
+  { id: 2, name: 'J008', value: 'J008', },
+  { id: 3, name: 'J009', value: 'J009', },
 ]
 
-const CallTrayForm = ({
+const PickTrayOutForm = ({
   form: { getFieldDecorator, validateFields, getFieldValue, setFieldsValue },
-  modifyData,
-  inMaterialList,
-  treeData,
   selectedDatas
 }) => {
 
@@ -43,19 +40,33 @@ const CallTrayForm = ({
 
   return (
     <Form >
-      <Form.Item {...formItemLayout} label={getFormattedMsg('SemiFinishedWarehousingReceipt.label.sortPosition')}>
+        {/* <Form.Item {...formItemLayout} label={getFormattedMsg('SemiFinishedWarehousingReceipt.label.trayNumber')}>
+          {
+            getFieldDecorator('code', {
+              rules: [
+                {
+                  required: true,
+                  message: getFormattedMsg('SemiFinishedWarehousingReceipt.placeholder.trayNumber'),
+                },
+              ],
+              initialValue: selectedDatas[0].code
+            })(
+              <Input disabled={true} placeholder={getFormattedMsg('SemiFinishedWarehousingReceipt.placeholder.orderNumber')} style={{ width: '100%' }} />
+            )}
+        </Form.Item> */}
+      <Form.Item {...formItemLayout} label={"中间点"}>
         {
-          getFieldDecorator('sortPosition', {
+          getFieldDecorator('middle', {
             rules: [
               {
                 required: true,
-                message: getFormattedMsg('SemiFinishedWarehousingReceipt.placeholder.sortPosition'),
+                message: '请选择中间点',
               },
             ],
-            initialValue: modifyData ? modifyData['sortPosition'] : 'J002'
+            initialValue: 'J002'
           })(
             <Select
-              placeholder={getFormattedMsg('SemiFinishedWarehousingReceipt.placeholder.sortPosition')}
+              placeholder={'请选择中间点'}
               showSearch
               filterOption={false}
             >
@@ -68,19 +79,19 @@ const CallTrayForm = ({
           )
         }
       </Form.Item>
-      <Form.Item {...formItemLayout} label={getFormattedMsg('SemiFinishedWarehousingReceipt.label.dockingPoint')}>
+      <Form.Item {...formItemLayout} label={'目的地'}>
         {
-          getFieldDecorator('dockingPoint', {
+          getFieldDecorator('toLocation', {
             rules: [
               {
                 required: true,
-                message: getFormattedMsg('SemiFinishedWarehousingReceipt.placeholder.dockingPoint'),
+                message: '请选择目的地',
               },
             ],
-            initialValue: modifyData ? modifyData['dockingPoint'] : undefined
+            initialValue: undefined
           })(
             <Select
-              placeholder={getFormattedMsg('SemiFinishedWarehousingReceipt.placeholder.dockingPoint')}
+              placeholder={'请选择目的地'}
               showSearch
               filterOption={false}
             >
@@ -97,4 +108,4 @@ const CallTrayForm = ({
   )
 }
 
-export default Form.create()(CallTrayForm)
+export default Form.create()(PickTrayOutForm)

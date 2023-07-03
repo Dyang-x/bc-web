@@ -5,11 +5,13 @@ import { CacheTable } from '~/components';
 import moment from 'moment';
 import EmptyPalletDeliveryApi from '~/api/EmptyPalletDelivery';
 import SemiFinishedWarehousingReceiptApi from '~/api/SemiFinishedWarehousingReceipt';
+import SemiFinisheDeliveryPalletSelectionApi from '~/api/SemiFinisheDeliveryPalletSelection';
 import PickTrayTable from './PickTrayTable';
 import CallTrayForm from './CallTrayForm';
 import AddOrUpdateForm from './AddOrUpdateForm';
 import { isEmpty } from 'lodash';
 import { attributeOne,attributeTwo,dockingPoints,sortPositions } from '~/enum/enum';
+import PickTrayOut from './PickTrayOut';
 
 const getFormattedMsg = i18n.getFormattedMsg;
 const { RangePicker } = DatePicker;
@@ -22,7 +24,8 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
   const [pageSize, setPageSize] = useState(10);
   const [totalPage, setTotalPage] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [searchValue, setSearchValue] = useState(null);
+  // const [searchValue, setSearchValue] = useState(null);
+  const [searchValue, setSearchValue] = useState({cuttingName:'切割机2'});
   const state = {
     0: '新建', 2: '已完成'
   }
@@ -46,8 +49,13 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [selectedDatas, setSelectedDatas] = useState([]);
 
+  const [pickTrayOutVis, setPickTrayOutVis] = useState(false);
+  const pickTrayOutForm = useRef();
+
+  const [dataSource, setDataSource] = useState([])
+
   useEffect(() => {
-    loadData(page, pageSize, { ...setSearchValue, state: selectedstatus });
+    loadData(page, pageSize, { ...searchValue, state: selectedstatus });
   }, []);
 
   const columns = [
@@ -69,18 +77,18 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
       key: 'creator',
       align: 'center',
     },
-    {
-      title: getFormattedMsg('SemiFinishedWarehousingReceipt.title.updateTime'),
-      dataIndex: 'updateTime',
-      key: 'updateTime',
-      align: 'center',
-    },
-    {
-      title: getFormattedMsg('SemiFinishedWarehousingReceipt.title.updateCreator'),
-      dataIndex: 'updateCreator',
-      key: 'updateCreator',
-      align: 'center',
-    },
+    // {
+    //   title: getFormattedMsg('SemiFinishedWarehousingReceipt.title.updateTime'),
+    //   dataIndex: 'updateTime',
+    //   key: 'updateTime',
+    //   align: 'center',
+    // },
+    // {
+    //   title: getFormattedMsg('SemiFinishedWarehousingReceipt.title.updateCreator'),
+    //   dataIndex: 'updateCreator',
+    //   key: 'updateCreator',
+    //   align: 'center',
+    // },
     {
       title: getFormattedMsg('SemiFinishedWarehousingReceipt.title.trayNumber'),
       dataIndex: 'trayNumber',
@@ -164,10 +172,10 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
       align: 'center',
       width: 200,
       render: (_, record) => [
-        <a key="update" onClick={() => handleUpdate(record)}>
-          {getFormattedMsg('SemiFinishedWarehousingReceipt.button.update')}
-        </a>,
-        <Divider key="divider1" type="vertical" />,
+        // <a key="update" onClick={() => handleUpdate(record)}>
+        //   {getFormattedMsg('SemiFinishedWarehousingReceipt.button.update')}
+        // </a>,
+        // <Divider key="divider1" type="vertical" />,
         <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)}>
           {getFormattedMsg('SemiFinishedWarehousingReceipt.button.delete')}
         </a>,
@@ -227,16 +235,28 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
   const handleSearch = data => {
     const params = { ...data }
 
+    if (searchValue.receiptNumber != null) {
+      delete searchValue.receiptNumber
+    }
+    if (searchValue.trayNumber != null) {
+      delete searchValue.trayNumber
+    }
+    if (params.receiptNumber =='') {
+      delete params.receiptNumber
+    }
+    if (params.trayNumber =='') {
+      delete params.trayNumber
+    }
     if (params.creationTime && params.creationTime.length > 0) {
       params.startTime = moment(params.creationTime[0]).format(dateTime)
       params.endTime = moment(params.creationTime[1]).format(dateTime)
     }
     delete params.creationTime
 
-    setSearchValue({ ...params });
+    setSearchValue({ ...params,...searchValue });
     setPage(1);
     setPageSize(10);
-    loadData(1, 10, { ...params, state: selectedstatus });
+    loadData(1, 10, { ...params,...searchValue , state: selectedstatus });
   };
 
   const { Table, SettingButton } = useMemo(
@@ -268,15 +288,49 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
   const handleSaveAdd = () => {
     const { getFieldsValue, validateFields, setFieldsValue } = addForm.current;
     validateFields(async (err, values) => {
+      console.log('dataSource',dataSource);
       if (err) return;
       const params = getFieldsValue();
 
-      if(params.attributeOne.length != 0){
+      if (params.attributeOne.length != 0) {
         params.attributeOne = params.attributeOne.toString()
-      }else{
+      } else {
         delete params.attributeOne
       }
+      params.cuttingName = '切割机2'
+      params.attributeoneState = true
+      params.attributetwoState = true
+
+      let details =[]
+      let materialCode =''
+      let materialName =''
+      let orderNumber =''
+      let quantity =''
+      dataSource.map(i=>{
+        const data = {}
+        data.materialCode = i.Detail[1].value
+        data.materialName = i.Detail[2].value
+        data.orderCode = i.value
+        data.quantity = i.Detail[0].value
+        details = [...details, data]
+        materialCode= [...materialCode,i.Detail[1].value]
+        materialName= [...materialName,i.Detail[2].value]
+        orderNumber= [...orderNumber,i.value]
+        quantity= [...quantity,i.Detail[0].value]
+        // materialCode=materialCode+i.Detail[1].value+','
+        // materialName=materialName+i.Detail[2].value+','
+        // orderNumber=orderNumber+i.value+','
+        // quantity=quantity+i.Detail[0].value+','
+      })
+      params.orderDetails = details
+      params.materialCode = materialCode.toString()
+      params.materialName = materialName.toString()
+      params.orderNumber = orderNumber.toString()
+      params.quantity = quantity.toString()
+
+      delete params.scan
       console.log(params, 'params');
+
       await SemiFinishedWarehousingReceiptApi
         .bindSemiMaterial(params)
         .then(res => {
@@ -475,7 +529,52 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
       })
       return
     }
-    setCallTrayVis(true)
+    setPickTrayOutVis(true)
+  }
+
+  const handleCancelTrayOut = () => {
+    const { resetFields } = pickTrayOutForm.current;
+    resetFields();
+    setPickTrayOutVis(false)
+  }
+
+  const modalTrayOutFoot = () => [
+    <Button key="call" type="primary" onClick={handleSaveTrayOut}>
+      {getFormattedMsg('SemiFinishedWarehousingReceipt.button.save')}
+    </Button>,
+    <Button key="cancel" onClick={handleCancelTrayOut}>
+      {getFormattedMsg('SemiFinishedWarehousingReceipt.button.cancel')}
+    </Button>
+  ]
+
+  const handleSaveTrayOut = () => {
+    const { getFieldsValue, validateFields, setFieldsValue } = pickTrayOutForm.current;
+    validateFields(async (err, values) => {
+      if (err) return;
+      const params = getFieldsValue();
+      // console.log(params, 'params');
+      // console.log(selectedDatas,'selectedDatas');
+
+      const data = {
+        id: selectedDatas[0].id, ...params
+      }
+      console.log(data, 'data');
+
+      await SemiFinisheDeliveryPalletSelectionApi.returnStore(selectedDatas[0].id,params.middle,params.toLocation)
+        .then(res => {
+          notification.success({
+            message: '托盘下架成功'
+          });
+          loadData(page, pageSize, { ...searchValue, state: selectedstatus });
+        })
+        .catch(err => {
+          notification.warning({
+            description: err.message
+          });
+        })
+        handleCancelTrayOut();
+        handleCancelPickTray();
+    })
   }
 
   const handleWarehousing =(record)=>{
@@ -597,7 +696,26 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
           </HVLayout.Pane.BottomBar>
         </HVLayout.Pane>
       </HVLayout>
-      <Drawer title={getFormattedMsg('SemiFinishedWarehousingReceipt.title.addOrder')} visible={addVis} onClose={handleCancelAdd} width={500}>
+      <Modal
+        title={getFormattedMsg('SemiFinishedWarehousingReceipt.title.addOrder')}
+        visible={addVis} 
+        footer={modalAddFoot()}
+        onCancel={handleCancelAdd}
+        width={1000}
+      >
+        <AddOrUpdateForm
+            ref={addForm}
+            attributeOneState={attributeOneState}
+            attributeTwoState={attributeTwoState}
+            setAttributeOneState={setAttributeOneState}
+            setAttributeTwoState={setAttributeTwoState}
+            attributeOne={attributeOne}
+            attributeTwo={attributeTwo}
+            setDataSource={setDataSource}
+            dataSource={dataSource}
+          />
+      </Modal>
+      {/* <Drawer title={getFormattedMsg('SemiFinishedWarehousingReceipt.title.addOrder')} visible={addVis} onClose={handleCancelAdd} width={500}>
         <Drawer.DrawerContent>
           <AddOrUpdateForm
             ref={addForm}
@@ -612,7 +730,7 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
           />
         </Drawer.DrawerContent>
         <Drawer.DrawerBottomBar>{modalAddFoot()}</Drawer.DrawerBottomBar>
-      </Drawer>
+      </Drawer> */}
       <Drawer title={getFormattedMsg('SemiFinishedWarehousingReceipt.button.update')} visible={updateVis} onClose={handleCancelUpdate} width={500}>
         <Drawer.DrawerContent>
           <AddOrUpdateForm
@@ -642,12 +760,12 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
       </Modal>
       <Modal
         // key={Math.random()}
-        // title={getFormattedMsg('SemiFinishedWarehousingReceipt.button.pickTray')}
+        title={getFormattedMsg('SemiFinishedWarehousingReceipt.button.pickTray')}
         visible={pickTrayVis}
         // footer={modalPickTrayFoot()}
         footer={null}
         onCancel={handleCancelPickTray}
-        width={800}
+        width={window.innerWidth - 300}
         bodyStyle={{
           paddingTop:0,
           paddingLeft: 0,
@@ -656,6 +774,17 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
         }}
       >
         <PickTrayTable selectedRowKeys={selectedRowKeys} setSelectedRowKeys={setSelectedRowKeys} setSelectedDatas={setSelectedDatas} modalPickTrayFoot={modalPickTrayFoot}/>
+      </Modal>
+
+
+      <Modal
+        title={'托盘下架'}
+        visible={pickTrayOutVis}
+        footer={modalTrayOutFoot()}
+        onCancel={handleCancelTrayOut}
+        width={500}
+      >
+        <PickTrayOut ref={pickTrayOutForm} selectedDatas={selectedDatas} />
       </Modal>
 
 

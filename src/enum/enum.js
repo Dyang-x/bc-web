@@ -96,6 +96,7 @@ export const taskType = [
     { id: 10, name: '原料余料回库', value: '原料余料回库', },
     { id: 11, name: '原料退料入库', value: '原料退料入库', },
     { id: 12, name: '半成品退料入库', value: '半成品退料入库', },
+    { id: 13, name: '半成品退料出库', value: '半成品退料出库', },
     // { id: 10, name: '链条', value: '链条', },
     // { id: 11, name: '原料托盘上架', value: '原料托盘上架', },
     // { id: 12, name: '半成品托盘上架', value: '半成品托盘上架', },

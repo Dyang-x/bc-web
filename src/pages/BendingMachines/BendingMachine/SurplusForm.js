@@ -21,8 +21,6 @@ const SurplusForm = ({
   modifyData,
   attributeOne,
   attributeTwo,
-  // dockingPoints,
-  // sortPositions,
 }) => {
   const [pageInfo, setPageInfo] = useState({ page: 1, pageSize: 10 });
   const [transferList, setTransferList] = useState([])

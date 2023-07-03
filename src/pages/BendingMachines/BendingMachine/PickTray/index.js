@@ -7,6 +7,7 @@ import { isEmpty } from 'lodash';
 import { attributeOne, attributeTwo } from '~/enum/enum';
 import SemiFinisheDeliveryPalletSelectionServices from '~/api/SemiFinisheDeliveryPalletSelection';
 import OutForm from './OutForm';
+import style from './style.scss'
 
 const getFormattedMsg = i18n.getFormattedMsg;
 const { RangePicker } = DatePicker;
@@ -15,15 +16,15 @@ const { showTotal } = page
 const { Pane } = HVLayout;
 const dateTime = 'YYYY-MM-DD HH:mm:ss';
 
-const SemiFinisheDeliveryPalletSelection = ({ history }) => {
+const PickTray = ({ modifyData,attribute1,attribute2 }) => {
   const [tableData, setTableData] = useState([]);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [totalPage, setTotalPage] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [searchValue, setSearchValue] = useState({ attributeTwo: '切割完工' });
-  const [trayNumber, setTrayNumber] = useState([]);
-  const [orderDetailData, setOrderDetailData] = useState([]);
+  const [searchValue, setSearchValue] = useState({ attributeOne: attribute1.toString(), attributeTwo: attribute2 });
+  // const [trayNumber, setTrayNumber] = useState([]);
+  // const [orderDetailData, setOrderDetailData] = useState([]);
 
   const [outModalVis, setOutModalVis] = useState(false);
   const outForm = useRef();
@@ -161,8 +162,8 @@ const SemiFinisheDeliveryPalletSelection = ({ history }) => {
         setPageSize(res.pageable.pageSize)
         setSelectedRowKeys([])
         setSelectedDatas([])
-        setTrayNumber()
-        setOrderDetailData([])
+        // setTrayNumber()
+        // setOrderDetailData([])
         setLoading(false);
       })
       .catch(err => {
@@ -180,13 +181,11 @@ const SemiFinisheDeliveryPalletSelection = ({ history }) => {
   };
 
   const onShowSizeChange = (p, s) => {
-    // loadData(p, s, { ...setSearchValue });
     loadData(p, s, { ...searchValue });
     setPageSize(s);
   };
 
   const pageChange = (p, s) => {
-    // loadData(p, s, { ...setSearchValue });
     loadData(p, s, { ...searchValue });
     setPage(p);
   };
@@ -206,7 +205,6 @@ const SemiFinisheDeliveryPalletSelection = ({ history }) => {
     if( params.attributeOne == ""){
       delete params.attributeOne
     }
-    
     setSearchValue({ ...params });
     setPage(1);
     setPageSize(10);
@@ -222,13 +220,9 @@ const SemiFinisheDeliveryPalletSelection = ({ history }) => {
     if (selectedRowKeys.indexOf(e.id) === -1) {
       setSelectedRowKeys([...selectedRowKeys, e.id])
       setSelectedDatas([...selectedDatas, e])
-      setTrayNumber(e.trayNumber)
-      setOrderDetailData(e.orderNumber.split(','))
     } else {
       setSelectedRowKeys(selectedRowKeys.filter(i => i != e.id))
       setSelectedDatas(selectedDatas.filter(i => i.id != e.id))
-      setTrayNumber()
-      setOrderDetailData([])
     }
   };
 
@@ -243,12 +237,12 @@ const SemiFinisheDeliveryPalletSelection = ({ history }) => {
   };
 
   const handleOut = () => {
-    // if (isEmpty(selectedRowKeys)) {
-    //   notification.warning({
-    //     message: getFormattedMsg('SemiFinisheDeliveryPalletSelection.message.trayNumber')
-    //   })
-    //   return
-    // }
+    if (isEmpty(selectedRowKeys)) {
+      notification.warning({
+        message: getFormattedMsg('SemiFinisheDeliveryPalletSelection.message.trayNumber')
+      })
+      return
+    }
     setOutModalVis(true)
   }
 
@@ -273,9 +267,6 @@ const SemiFinisheDeliveryPalletSelection = ({ history }) => {
       if (err) return;
       const params = getFieldsValue();
       console.log(params, 'params');
-      // const data ={...params,selectedRowKeys}
-      // console.log(data, 'data');
-
       SemiFinisheDeliveryPalletSelectionServices
         .outStore(params.readyMaterials, selectedRowKeys, params.dockingPoint)
         .then(res => {
@@ -291,7 +282,6 @@ const SemiFinisheDeliveryPalletSelection = ({ history }) => {
             description: err.message
           });
         });
-
       handleCancelOut();
     })
   }
@@ -299,11 +289,12 @@ const SemiFinisheDeliveryPalletSelection = ({ history }) => {
   return (
     <>
       <HVLayout>
-        <HVLayout.Pane height={'auto'}>
-          <SearchForm onSearch={handleSearch}>
+        <HVLayout.Pane className='search1111111' height={'auto'}>
+          <SearchForm  onSearch={handleSearch}>
             <SearchForm.Item
               label={getFormattedMsg('SemiFinisheDeliveryPalletSelection.label.orderNumber')}
               name="orderNumber"
+              
             >
               <Input allowClear placeholder={getFormattedMsg('SemiFinisheDeliveryPalletSelection.placeholder.orderNumber')} />
             </SearchForm.Item>
@@ -316,6 +307,7 @@ const SemiFinisheDeliveryPalletSelection = ({ history }) => {
             <SearchForm.Item
               label={getFormattedMsg('SemiFinisheDeliveryPalletSelection.label.attributeOne')}
               name="attributeOne"
+              initialValue={attribute1}
             >
               <Select
                 placeholder={getFormattedMsg('SemiFinisheDeliveryPalletSelection.placeholder.attributeOne')}
@@ -331,7 +323,7 @@ const SemiFinisheDeliveryPalletSelection = ({ history }) => {
             <SearchForm.Item
               label={getFormattedMsg('SemiFinisheDeliveryPalletSelection.label.attributeTwo')}
               name="attributeTwo"
-              initialValue="切割完工"
+              initialValue={attribute2}
             >
               <Select
                 placeholder={getFormattedMsg('SemiFinisheDeliveryPalletSelection.placeholder.attributeTwo')}
@@ -365,11 +357,11 @@ const SemiFinisheDeliveryPalletSelection = ({ history }) => {
           <Pane
             icon={<i className="h-visions hv-table" />}
             title={getFormattedMsg('SemiFinisheDeliveryPalletSelection.title.information')}
-            // buttons={[
-            //   <Button key="out" type="primary" onClick={() => handleOut()}>
-            //     {getFormattedMsg('SemiFinisheDeliveryPalletSelection.button.out')}
-            //   </Button>,
-            // ]}
+            buttons={[
+              <Button key="out" type="primary" onClick={() => handleOut()}>
+                {getFormattedMsg('SemiFinisheDeliveryPalletSelection.button.out')}
+              </Button>,
+            ]}
             settingButton={<SettingButtonL />}
             onRefresh={reFreshFunc()}
           >
@@ -410,25 +402,6 @@ const SemiFinisheDeliveryPalletSelection = ({ history }) => {
               />
             </HVLayout.Pane.BottomBar>
           </Pane>
-          {/* <Pane
-            title={getFormattedMsg('SemiFinisheDeliveryPalletSelection.title.tray')+`${trayNumber == null ? '' : trayNumber}` +getFormattedMsg('SemiFinisheDeliveryPalletSelection.title.relatedOrder') }
-            // buttons={[
-            //   <Input key="input" placeholder ={'请输入订单号'} style={{marginRight:10}}></Input>,
-            //   <Button key="out" type="primary" onClick={() => handleSearchDetail()}>
-            //     查询
-            //   </Button>,
-            // ]}
-            width={'15%'}
-          >
-            <List
-              dataSource={orderDetailData}
-              renderItem={item => (
-                <List.Item>
-                  {item}
-                </List.Item>
-              )}
-            />
-          </Pane> */}
         </HVLayout>
       </HVLayout>
       <Modal
@@ -439,10 +412,10 @@ const SemiFinisheDeliveryPalletSelection = ({ history }) => {
         destroyOnClose
         width={500}
       >
-        <OutForm ref={outForm} selectedDatas={selectedDatas} />
+        <OutForm ref={outForm} modifyData={modifyData}/>
       </Modal>
     </>
   );
 };
 
-export default SemiFinisheDeliveryPalletSelection;
+export default PickTray;

@@ -48,6 +48,24 @@ class LineEdgeLibraryController extends Service {
     }
   }
 
+  //手动剩余物料退库
+  async handMaterialReturn(lineid) {
+    try {
+      return await this.put(`${appName}/LineEdgeLibraryController/handMaterialReturn?lineid=${lineid}`);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  //更新上下料数据
+  async updateHighLevel(lineid) {
+    try {
+      return await this.put(`${appName}/LineEdgeLibraryController/updateHighLevel?lineid=${lineid}`);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
   //手动更新使用数量/剩余数量
 
 

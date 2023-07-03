@@ -117,7 +117,7 @@ const WirelineStorage = ({ history }) => {
       title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.operation'),
       key: 'opt',
       align: 'center',
-      width: 200,
+      width: 500,
       render: (_, record) => [
         <a key="detail" onClick={() => handlePutOn(record)}>
           上架
@@ -129,6 +129,14 @@ const WirelineStorage = ({ history }) => {
         <Divider key="divider2" type="vertical" />,
         <a key="detail" onClick={() => handleDown(record)}>
           数量-1
+        </a>,
+        <Divider key="divider3" type="vertical" />,
+        <a key="detail" onClick={() => handMaterialReturn(record)}>
+          手动剩余物料退库
+        </a>,
+        <Divider key="divider4" type="vertical" />,
+        <a key="detail" onClick={() => updateHighLevel(record)}>
+          更新上下料数据
         </a>,
       ],
     }
@@ -276,6 +284,38 @@ const WirelineStorage = ({ history }) => {
         })
       }
     });
+  }
+
+  const handMaterialReturn =async(record)=>{
+    await LineEdgeLibraryApi.handMaterialReturn(record.id )
+        .then(res => {
+          notification.success({
+            message: '物料退库成功'
+          })
+          reFreshFunc()
+        })
+        .catch(err => {
+          notification.warning({
+            message: '物料退库失败',
+            description: err.message
+          })
+        })
+  }
+
+  const updateHighLevel =async(record)=>{
+    await LineEdgeLibraryApi.updateHighLevel(record.id )
+        .then(res => {
+          notification.success({
+            message: '数据更新成功'
+          })
+          reFreshFunc()
+        })
+        .catch(err => {
+          notification.warning({
+            message: '数据更新失败',
+            description: err.message
+          })
+        })
   }
 
   const handleAdd = () => {

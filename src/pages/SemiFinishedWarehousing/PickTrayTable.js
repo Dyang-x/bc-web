@@ -19,7 +19,7 @@ const PickTrayTable = ({
 
   const [searchValue, setSearchValue] = useState({
     cuttingName: "切割机1",
-    // attributeTwo: '切割未完工'
+    attributeTwo: '切割未完工'
   });
   const [dataSource, setDataSource] = useState([]);
   const [page, setPage] = useState(1);
@@ -32,42 +32,52 @@ const PickTrayTable = ({
 
   const columns = [
     {
+      title: '订单号',
+      dataIndex: 'orderNumber',
+      key: 'orderNumber',
+      align: 'center',
+    },
+    {
       title: getFormattedMsg('SemiFinisheDeliveryPalletSelection.title.trayNumber'),
       dataIndex: 'trayNumber',
       key: 'trayNumber',
       align: 'center',
     },
     {
-      title: getFormattedMsg('SemiFinisheDeliveryPalletSelection.title.locationNumber'),
-      dataIndex: 'locationNumber',
-      key: 'locationNumber',
+      title: '产品名称',
+      dataIndex: 'materialName',
+      key: 'materialName',
       align: 'center',
     },
     {
-      title: getFormattedMsg('SemiFinisheDeliveryPalletSelection.title.state'),
-      dataIndex: 'state',
-      key: 'state',
+      title: '产品代码',
+      dataIndex: 'materialCode',
+      key: 'materialCode',
       align: 'center',
-      render: (text, record, index) => {
-        const dataSource = [
-          { id: 1, trayNumber: 'J004004004004004004', location: 'J004', attributeTwo: 'J004', pickingPoint: 'J004', },
-        ]
-        const table = <div > <ul style={{ paddingLeft: 15, marginBottom: "0px" }}> {dataSource.map(item => <li key={item.id} >{item.trayNumber}</li>)} </ul> </div>
-        if (text == 1) {
-          return (
-            <Tooltip placement="rightTop" title={table} arrowPointAtCenter>
-              <span>{'已占用'}</span>
-            </Tooltip>
-          )
-        }
-        if (text == 2) {
-          return (
-            <Tooltip placement="rightTop" title={table} arrowPointAtCenter>
-              <span>{'未占用'}</span>
-            </Tooltip>
-          )
-        }
-      }
+    },
+    {
+      title: '产品数量',
+      dataIndex: 'quantity',
+      key: 'quantity',
+      align: 'center',
+    },
+    {
+      title: getFormattedMsg('SemiFinisheDeliveryPalletSelection.title.attributeOne'),
+      dataIndex: 'attributeOne',
+      key: 'attributeOne',
+      align: 'center',
+    },
+    {
+      title: getFormattedMsg('SemiFinisheDeliveryPalletSelection.title.attributeTwo'),
+      dataIndex: 'attributeTwo',
+      key: 'attributeTwo',
+      align: 'center',
+    },
+    {
+      title: '备注',
+      dataIndex: 'desc',
+      key: 'desc',
+      align: 'center',
     },
   ]
 
