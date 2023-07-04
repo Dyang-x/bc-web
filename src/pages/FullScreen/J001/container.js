@@ -27,14 +27,14 @@ height: 165rem;
 // 中间容器样式
 export const PageTop = styled.div`
   width: 100%;
-  height: 30rem;
-  margin-top: 4rem;
+  height: 80rem;
+  // margin-top: 4rem;
 `;
 
 // 中间容器样式
 export const PageMid = styled.div`
 width: 100%;
-height: 130rem;
+height: 80rem;
 margin-top: 4rem;
 `;
 

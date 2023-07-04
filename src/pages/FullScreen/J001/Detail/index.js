@@ -5,7 +5,7 @@ import styles from './style.scss';
 
 const { Pane } = HVLayout;
 
-const Detail = ({ cHeight }) => {
+const Detail = ({ detailData }) => {
 
 
     return (
@@ -17,35 +17,57 @@ const Detail = ({ cHeight }) => {
             <div className={styles.title}>当前库位信息</div>
             <div className={styles.body}>
                 <div >
-                    <div className={styles.label} >生产单号：</div>
-                    <div className={styles.value} >M10000000044</div>
+                    <div className={styles.label} >采购单号：</div>
+                    <div className={styles.value} >{detailData!={}&&detailData.purchaseOrderNumber}</div>
                 </div>
                 <div style={{ width:'5rem'}}></div>
+                <div >
+                    <div className={styles.label} >采购批号：</div>
+                    <div className={styles.value} >{detailData!={}&&detailData.purchaseBatchNumber}</div>
+                </div>
+            </div>
+            <div className={styles.body}>
+                <div >
+                    <div className={styles.label} >物料编码：</div>
+                    <div className={styles.value} >{detailData!={}&&detailData.materialCode}</div>
+                </div>
+                <div style={{ width:'5rem'}}></div>
+                <div >
+                    <div className={styles.label} >物料名称：</div>
+                    <div className={styles.value} >{detailData!={}&&detailData.materialName}</div>
+                </div>
+            </div>
+            <div className={styles.body}>
+                <div >
+                    <div className={styles.label} >材质：</div>
+                    <div className={styles.value} >{detailData!={}&&detailData.materialType}</div>
+                </div>
+                <div style={{ width:'5rem'}}></div>
+                <div >
+                    <div className={styles.label} >规格：</div>
+                    <div className={styles.value} >{detailData!={}&&detailData.specification}</div>
+                </div>
+            </div>
+            <div className={styles.body}>
+                <div >
+                    <div className={styles.label} >重量(kg)：</div>
+                    <div className={styles.value} >{detailData!={}&&detailData.weight}</div>
+                </div>
+                <div style={{ width:'5rem'}}></div>
+                <div >
+                    <div className={styles.label} >数量(张)：</div>
+                    <div className={styles.value} >{detailData!={}&&detailData.number}</div>
+                </div>
+            </div>
+            <div className={styles.body}>
                 <div >
                     <div className={styles.label} >托盘号：</div>
-                    <div className={styles.value} >1TPB0001</div>
-                </div>
-            </div>
-            <div className={styles.body}>
-                <div >
-                    <div className={styles.label} >品号：</div>
-                    <div className={styles.value} >040100200001</div>
+                    <div className={styles.value} >{detailData!={}&&detailData.trayNumber}</div>
                 </div>
                 <div style={{ width:'5rem'}}></div>
                 <div >
-                    <div className={styles.label} >品名：</div>
-                    <div className={styles.value} >链板排屑器</div>
-                </div>
-            </div>
-            <div className={styles.body}>
-                <div >
-                    <div className={styles.label} >原始库位：</div>
-                    <div className={styles.value} >7-1</div>
-                </div>
-                <div style={{ width:'5rem'}}></div>
-                <div >
-                    <div className={styles.label} >目标库位：</div>
-                    <div className={styles.value} >C001</div>
+                    <div className={styles.label} >料库位置：</div>
+                    <div className={styles.value} >{detailData!={}&&detailData.location}</div>
                 </div>
             </div>
         </div>

@@ -36,7 +36,7 @@ class SemiFinisheDeliveryPalletSelection extends Service {
   // 出库
   async outStore(dockingPoint, ids, readyMaterials) {
     try {
-      return await this.put(`${appName}/SemiMaterialOutWarehouseController/outStore?dockingPoint=${dockingPoint}&ids=${ids}&readyMaterials=${readyMaterials}`);
+      return await this.put(`${appName}/SemiMaterialOutWarehouseController/outStore?dockingPoint=${dockingPoint}&readyMaterials=${readyMaterials}`,ids);
     } catch (error) {
       throw new Error(error);
     }

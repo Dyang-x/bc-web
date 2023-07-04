@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { HTable, Table, Button, HLayout, Modal, Pagination, notification, Form, Input, Select, Checkbox, DatePicker, Divider, InputNumber, Cascader } from '@hvisions/h-ui'
+import { HTable, Table, Button, HLayout, Modal, Pagination, notification, Form, Input, Select, DatePicker, Divider, InputNumber, Cascader } from '@hvisions/h-ui'
 import moment from 'moment';
 import { tree } from '@hvisions/toolkit';
 import { i18n } from '@hvisions/toolkit';
@@ -33,49 +33,16 @@ const TrayForm = ({
   form: { getFieldDecorator, validateFields, getFieldValue, setFieldsValue },
   modifyData,
   type,
-  attributeOneState,
-  attributeTwoState,
-  setAttributeOneState,
-  setAttributeTwoState,
   attributeOne,
-  attributeTwo,
-  // dockingPoints,
-  // sortPositions,
   setDataSource,
   dataSource, 
 }) => {
-  const [pageInfo, setPageInfo] = useState({ page: 1, pageSize: 10 });
-  const [transferList, setTransferList] = useState([])
-
-  // const [dataSource, setDataSource] = useState([])
-  const [height, setHeight] = useState(0)
+  const [expandedRowKey, setExpandedRowKey] = useState([])
 
 
   useEffect(() => {
     // getTransfer()
-  }, [])
-
-  // const getTransfer = async (searchValue) => {
-  //   const params = {
-  //     code:searchValue,
-  //     page: pageInfo.page - 1,
-  //     pageSize: pageInfo.pageSize
-  //   }
-  //   await TransferBoxServices.getPage(params)
-  //     .then(res => {
-  //       setTransferList(res.content);
-  //     }).catch(err => {
-  //       notification.warning({
-  //         message: getFormattedMsg('global.notify.fail'),
-  //         description: err.message
-  //       });
-  //     });
-  // };
-
-  // const CheckboxChange = async (e) => {
-  //   const automaticState = e.target.checked
-
-  // }
+  }, [expandedRowKey])
 
   const sortPositionChange = async (e) => {
     const sortPosition = e
@@ -93,8 +60,6 @@ const TrayForm = ({
         });
       });
   }
-
-
 
   const onKeyDowm = (e) => {
 
@@ -123,6 +88,7 @@ const TrayForm = ({
     setFieldsValue({
       scan: '',
     })
+    setExpandedRowKey([])
   }
 
   const columns = [
@@ -202,6 +168,24 @@ const TrayForm = ({
     record.value = e.target.value
   }
 
+  const manualAdd = () => {
+    console.log(dataSource.length, 'dataSource.length');
+    const addData = {
+      id: dataSource.length + 1,
+      name: '主订单号',
+      value: '',
+      Detail: [
+        { id: 1, name: '数量', value: '', },
+        { id: 2, name: '产品代码', value: '', },
+        { id: 3, name: '产品名称', value: '', },
+      ]
+    }
+    console.log([...dataSource, addData], '[...dataSource,addData]');
+    setDataSource([...dataSource, addData])
+    console.log(dataSource.length, 'dataSource.length');
+    setExpandedRowKey([dataSource.length+1])
+  }
+
   return (
     <Form >
       <Form.Item {...formItemLayout} label={getFormattedMsg('SemiFinishedWarehousingReceipt.label.sortPosition')}>
@@ -260,22 +244,38 @@ const TrayForm = ({
         }
       </Form.Item>
       <Form.Item   >
-        <div className='div-Table' style={{ marginLeft: '10rem' }}>
-          <Table
-            className='Form-Table'
-            rowKey={record => record.id}
-            columns={columns}
-            dataSource={dataSource}
-            expandedRowRender={record => <Table
-              columns={detailColumns}
-              dataSource={record.Detail}
+        <div className='div-Table' style={{ display: 'flex' }}>
+          <div style={{ marginLeft: '5rem' }}>
+            <Button type="link" onClick={()=>manualAdd()}>手动新增</Button>
+          </div>
+          <div style={{ marginLeft: '1rem', flex: 1 }}>
+            <Table
+              className='Form-Table'
+              rowKey={record => record.id}
+              columns={columns}
+              dataSource={dataSource}
+              expandedRowKeys={expandedRowKey}
+              onExpand={(expanded, record)=>{
+                if(expanded){
+                  const expandedRowKeys = [...expandedRowKey,record.id]
+                  setExpandedRowKey(expandedRowKeys)
+                }else{
+                  const expandedRowKeys = expandedRowKey.filter(i=>i != record.id)
+                  console.log(expandedRowKeys,'expandedRowKeys');
+                  setExpandedRowKey(expandedRowKeys)
+                }
+              }}
+              expandedRowRender={record => <Table
+                columns={detailColumns}
+                dataSource={record.Detail}
+                showHeader={false}
+                pagination={false}
+                rowKey={record => record.id}
+              />}
               showHeader={false}
               pagination={false}
-              rowKey={record => record.id}
-            />}
-            showHeader={false}
-            pagination={false}
-          />
+            />
+          </div>
         </div>
       </Form.Item>
 

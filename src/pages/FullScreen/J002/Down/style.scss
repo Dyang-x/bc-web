@@ -1,7 +1,7 @@
 .Title {
     display: flex;
     font-weight: 400;
-    font-size: 30px;
+    font-size: 8rem;
     text-align: center;
     color: #fff;
     height: 9rem;
@@ -9,36 +9,40 @@
     align-items: center;
 
     .num {
-        width: 20%;
+        width: 15%;
     }
 
     .status {
         flex: 1;
-        display:flex;
-        justify-content:center;
-        align-items:center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
-
-        .manual{
-            border:1px solid #9DC3E6;
+        .manual {
+            border: 1px solid #9DC3E6;
             background-color: #9DC3E6;
             font-weight: 400;
-            font-size: 20px;
+            font-size: 8rem;
             color: #fff;
+            height: 13rem;
         }
-        .auto{
-            border:1px solid #00B050;
+
+        .auto {
+            border: 1px solid #00B050;
             background-color: #00B050;
             font-weight: 400;
-            font-size: 20px;
+            font-size: 8rem;
             color: #fff;
+            height: 13rem;
         }
-        .breakdown{
-            border:1px solid #FF0000;
+
+        .breakdown {
+            border: 1px solid #FF0000;
             background-color: #FF0000;
             font-weight: 400;
-            font-size: 20px;
+            font-size: 8rem;
             color: #fff;
+            height: 13rem;
         }
     }
 }

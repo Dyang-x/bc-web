@@ -37,6 +37,7 @@ const BendingMachine = ({bendingNumber}) => {
   const [attributeTwo, setAttributeTwo] = useState('');
 
   const [pullOffVis, setPullOffVis] = useState(false);
+  const [pullOffData, setPullOffData] = useState({});
 
   const [addOrUpdateModalVis, setAddOrUpdateModalVis] = useState(false);
   const addOrUpdateForm = useRef();
@@ -229,10 +230,12 @@ const BendingMachine = ({bendingNumber}) => {
   
   const HandlePullOff = (record) => {
     setPullOffVis(true)
+    setPullOffData(record)
   }
 
   const handleCancelPullOffk =()=>{
     setPullOffVis(false)
+    setPullOffData({})
   }
 
 
@@ -466,7 +469,7 @@ const BendingMachine = ({bendingNumber}) => {
       width={window.innerWidth *0.8}
       bodyStyle={{height:document.body.clientHeight-55}}
       >
-          <PullOff   />
+          <PullOff  pullOffData={pullOffData} />
       </Drawer>
       <Modal
         title={'托盘上架'}

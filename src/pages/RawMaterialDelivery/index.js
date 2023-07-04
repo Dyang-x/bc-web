@@ -165,12 +165,13 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
         //   <a key="detail2" onClick={() => handleSurplus(record)}>
         //     余料回库
         //   </a>,
-        (record.remainRuns == 0) && [
-          <a key="detail1" onClick={() => handleEmpty(record)}>空托回库</a>,
-        ],
-        (record.remainRuns == 0 && selectedstatus != 2) && [
-          <Divider key="divider1" type="vertical" />
-        ],
+        
+        // (record.remainRuns == 0) && [
+        //   <a key="detail1" onClick={() => handleEmpty(record)}>空托回库</a>,
+        // ],
+        // (record.remainRuns == 0 && selectedstatus != 2) && [
+        //   <Divider key="divider1" type="vertical" />
+        // ],
         (selectedstatus != 2) && [
           <a key="detail2" onClick={() => handleManualFinish(record)}>手动完成</a>,
           <Divider key="divider2" type="vertical" />,

@@ -267,8 +267,9 @@ const PickTray = ({ modifyData,attribute1,attribute2 }) => {
       if (err) return;
       const params = getFieldsValue();
       console.log(params, 'params');
+      const ids = selectedRowKeys
       SemiFinisheDeliveryPalletSelectionServices
-        .outStore(params.readyMaterials, selectedRowKeys, params.dockingPoint)
+        .outStore(params.readyMaterials, ids, params.dockingPoint)
         .then(res => {
           notification.success({
             message: '出库成功',

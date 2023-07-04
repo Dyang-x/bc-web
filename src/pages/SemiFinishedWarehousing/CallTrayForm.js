@@ -52,14 +52,14 @@ const CallTrayForm = ({
                 message: getFormattedMsg('SemiFinishedWarehousingReceipt.placeholder.sortPosition'),
               },
             ],
-            initialValue: modifyData ? modifyData['sortPosition'] : 'J002'
+            initialValue: modifyData ? modifyData['sortPosition'] : undefined
           })(
             <Select
               placeholder={getFormattedMsg('SemiFinishedWarehousingReceipt.placeholder.sortPosition')}
               showSearch
               filterOption={false}
             >
-              {middles.map((value, index) => (
+              {toLocations.map((value, index) => (
                 <Option value={value.value} key={value.id}>
                   {value.name}
                 </Option>
@@ -77,14 +77,14 @@ const CallTrayForm = ({
                 message: getFormattedMsg('SemiFinishedWarehousingReceipt.placeholder.dockingPoint'),
               },
             ],
-            initialValue: modifyData ? modifyData['dockingPoint'] : undefined
+            initialValue: modifyData ? modifyData['dockingPoint'] : 'J002'
           })(
             <Select
               placeholder={getFormattedMsg('SemiFinishedWarehousingReceipt.placeholder.dockingPoint')}
               showSearch
               filterOption={false}
             >
-              {toLocations.map((value, index) => (
+              {middles.map((value, index) => (
                 <Option value={value.value} key={value.id}>
                   {value.name}
                 </Option>

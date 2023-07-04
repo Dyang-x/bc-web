@@ -266,6 +266,7 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
 
   const handleAdd = () => {
     setAddVis(true)
+    setDataSource([])
   }
 
   const handleCancelAdd = () => {
@@ -454,30 +455,30 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
       console.log(params, 'params');
       //  接口  空托盘出库
 
-      if (!isEmpty(selectedRowKeys)) {
-        //托盘出库   托盘下架  新增
-        const data = {
-          trayNumber: selectedDatas[0].code,
-          inType: 8, //半成品托盘出库
-          state: 0,
-          destination: params.sortPosition,
-          middle: params.dockingPoint,
-        }
-        await EmptyPalletDeliveryApi.saveOrUpdate(data)
-          .then(res => {
-            notification.success({
-              message: '托盘出库任务创建成功'
-            });
-            // loadData(page, pageSize, { ...searchValue, state: selectedstatus });
-            handleCancelCallTray();
-          })
-          .catch(err => {
-            notification.warning({
-              description: err.message
-            });
-          })
-        return
-      }
+      // if (!isEmpty(selectedRowKeys)) {
+      //   //托盘出库   托盘下架  新增
+      //   const data = {
+      //     trayNumber: selectedDatas[0].code,
+      //     inType: 8, //半成品托盘出库
+      //     state: 0,
+      //     destination: params.sortPosition,
+      //     middle: params.dockingPoint,
+      //   }
+      //   await EmptyPalletDeliveryApi.saveOrUpdate(data)
+      //     .then(res => {
+      //       notification.success({
+      //         message: '托盘出库任务创建成功'
+      //       });
+      //       // loadData(page, pageSize, { ...searchValue, state: selectedstatus });
+      //       handleCancelCallTray();
+      //     })
+      //     .catch(err => {
+      //       notification.warning({
+      //         description: err.message
+      //       });
+      //     })
+      //   return
+      // }
       const data = {
         destination: params.sortPosition,
         middle: params.dockingPoint,

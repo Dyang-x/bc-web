@@ -74,9 +74,6 @@ export default [
   },
 
 
-
-
-
   {
     path: '/pallet-management-stock-level',
     component: PalletManagementStockLevel

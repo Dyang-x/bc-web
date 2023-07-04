@@ -23,17 +23,17 @@ const dateTime = 'YYYY-MM-DD HH:mm:ss';
 const { Pane } = HVLayout;
 const { showTotal } = page;
 
-const PullOff = ({ history }) => {
+const PullOff = ({ pullOffData }) => {
     const [tableData, setTableData] = useState([]);
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [totalPage, setTotalPage] = useState(0);
     const [loading, setLoading] = useState(false);
     const [selectedstatus, setSelectedstatus] = useState('0');
-    const [searchValue, setSearchValue] = useState(null);
+    const [searchValue, setSearchValue] = useState({toLocation:pullOffData.readyMaterials});
 
     useEffect(() => {
-        loadTableData(page, pageSize, { ...setSearchValue, status: selectedstatus });
+        loadTableData(page, pageSize, { ...searchValue, status: selectedstatus });
     }, []);
 
     const columns = [
@@ -217,10 +217,10 @@ const PullOff = ({ history }) => {
             params.startTime = moment(params.outStockTime[0]).format(dateTime)
             params.endTime = moment(params.outStockTime[1]).format(dateTime)
         }
-        setSearchValue({ ...params, status: selectedstatus });
+        setSearchValue({ ...params, status: selectedstatus,toLocation:pullOffData.readyMaterials });
         setPage(1);
         setPageSize(10);
-        loadTableData(1, 10, { ...params, status: selectedstatus == 2 ? '' : selectedstatus });
+        loadTableData(1, 10, { ...params, status: selectedstatus == 2 ? '' : selectedstatus, toLocation : pullOffData.readyMaterials });
     };
 
     const loadTableData = (page, pageSize, searchValue) => {
@@ -246,11 +246,11 @@ const PullOff = ({ history }) => {
             });
     };
     const onShowSizeChange = (p, s) => {
-        loadTableData(p, s, { ...setSearchValue, status: selectedstatus == 2 ? '' : selectedstatus });
+        loadTableData(p, s, { ...searchValue, status: selectedstatus == 2 ? '' : selectedstatus });
         setPageSize(s);
     };
     const pageChange = (p, s) => {
-        loadTableData(p, s, { ...setSearchValue, status: selectedstatus == 2 ? '' : selectedstatus });
+        loadTableData(p, s, { ...searchValue, status: selectedstatus == 2 ? '' : selectedstatus });
         setPage(p);
     };
 

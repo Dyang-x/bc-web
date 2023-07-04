@@ -12,7 +12,7 @@
 //   background-size: cover;
 // `;
 import styled from 'styled-components';
-import titleBg from '../../../assets/slices/titleBg.svg';
+import titleBg from '../../assets/slices/titleBg.svg';
 
 // 顶部容器
 export const TopTitleDiv = styled.div`
