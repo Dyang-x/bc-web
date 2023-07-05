@@ -83,7 +83,8 @@ const moduleConfig = {
 const CoreConfig = {
   username: 'admin',
   password: 'admin',
-  wsAddress: `${process.env.MESSAGE_API_ADDRESS}`,
+  // wsAddress: `${process.env.MESSAGE_API_ADDRESS_}`,
+  wsAddress: `ws://192.168.1.34:15672/ws`,
   needNotification: true,
 }
 

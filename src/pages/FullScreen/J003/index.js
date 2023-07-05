@@ -12,6 +12,7 @@ import ContentThree from './Down/index';
 import Detail from './Detail/index';
 import full from '../assets/slices/yw/fullscreen.png';
 import LargeScreenApi from '~/api/LargeScreen';
+import { isEmpty } from 'lodash';
 
 const { Pane } = HVLayout;
 
@@ -105,6 +106,7 @@ const J003OverView = () => {
         const getData = () => {
             LargeScreenApi.semiOrder()
                 .then(res => {
+                    console.log(res,'semiOrder');
                     if(res != null){
                         // setDataSource(res);
                         datas = res
@@ -129,12 +131,16 @@ const J003OverView = () => {
 
             let number = 0
             const setData = (datas) => {
-                const data = datas[number]
-                setNewData(data)
-                const detail = data.semiOrderListDTO
-                setNewDataDetail(detail)
-                number = number == datas.length - 1 ? 0 : number + 1
-                console.log('11111111111111');
+                if(!isEmpty(datas)){
+                    const data = datas[number]
+                    setNewData(data)
+                    if(data.semiOrderListDTO != null){
+                        const detail = data.semiOrderListDTO
+                        setNewDataDetail(detail)
+                    }
+                    number = number == datas.length - 1 ? 0 : number + 1
+                    console.log('11111111111111');
+                }
             }
 
             const refreshData = setInterval(() => {
@@ -321,7 +327,7 @@ const J003OverView = () => {
                         <TopTitle />
                         <IndexPageContent
                         >
-                            <Carousel ref={carouselRef}>
+                            <Carousel ref={carouselRef} dots={false}>
                                 <PageContent>
                                     <PageTop  >
                                         <ContentOne newData={newData} />

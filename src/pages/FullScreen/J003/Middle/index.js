@@ -96,7 +96,7 @@ const ContentTwo = ({newDataDetail}) => {
             >
               <span className={styles.num}>{index + 1}</span>
               <span >{item.trayNumber}</span>
-              <span >{item.toLocation}</span>
+              <span >{item.fromLocation}</span>
               <span >{item.createTime}</span>
             </li>
           ))}
@@ -115,7 +115,7 @@ const ContentTwo = ({newDataDetail}) => {
               >
               <span className={styles.num}>{index + 1}</span>
               <span >{item.trayNumber}</span>
-              <span >{item.toLocation}</span>
+              <span >{item.fromLocation}</span>
               <span >{item.createTime}</span>
               </li>
             ))}

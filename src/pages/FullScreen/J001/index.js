@@ -201,7 +201,7 @@ const J001OverView = () => {
                         <TopTitle />
                         <IndexPageContent
                         >
-                            <Carousel ref={carouselRef}>
+                            <Carousel ref={carouselRef} dots={false}>
                                 <PageContent>
                                     <PageTop  >
                                         <ContentOne newData={newData} />

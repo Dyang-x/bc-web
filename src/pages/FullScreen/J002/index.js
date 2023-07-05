@@ -12,6 +12,7 @@ import ContentThree from './Down/index';
 import Detail from './Detail/index';
 import full from '../assets/slices/yw/fullscreen.png';
 import LargeScreenApi from '~/api/LargeScreen';
+import { isEmpty } from 'lodash';
 
 const { Pane } = HVLayout;
 
@@ -105,6 +106,7 @@ const J002OverView = () => {
         const getData = () => {
             LargeScreenApi.semiOrder()
                 .then(res => {
+                    console.log(res,'semiOrder');
                     if(res != null){
                         // setDataSource(res);
                         datas = res
@@ -129,12 +131,16 @@ const J002OverView = () => {
 
             let number = 0
             const setData = (datas) => {
-                const data = datas[number]
-                setNewData(data)
-                const detail = data.semiOrderListDTO
-                setNewDataDetail(detail)
-                number = number == datas.length - 1 ? 0 : number + 1
-                console.log('11111111111111');
+                if(!isEmpty(datas)){
+                    const data = datas[number]
+                    setNewData(data)
+                    if(data.semiOrderListDTO != null){
+                        const detail = data.semiOrderListDTO
+                        setNewDataDetail(detail)
+                    }
+                    number = number == datas.length - 1 ? 0 : number + 1
+                    console.log('11111111111111');
+                }
             }
 
             const refreshData = setInterval(() => {
@@ -179,131 +185,6 @@ const J002OverView = () => {
         };
     }, []);
 
-    // useEffect(() => {
-    //     let tableKey = 1
-    //     const getDetails = () =>{
-    //         LargeScreenApi.semiMterialDetails('J002')
-    //         .then(res => {
-    //             // console.log('getDetailData', res);
-    //             // console.log('getDetailData------', res!= null);
-    //             if(res != null){
-    //             setDetailData(res);
-    //             }
-    //             //在主页 + 子页有数据  = 跳
-    //             if (tableKey == 1 && res != null) {
-    //                 // console.log('111');
-    //                 tableKey = 2
-    //                 carouselRef.current.next()
-    //                 return
-    //             }
-    //             //在主页 + 子页没数据  = 不跳
-    //             if (tableKey == 1 && res == null) {
-    //                 // console.log('222');
-    //                 tableKey = 1
-    //                 return
-    //             }
-    //             //在子页 + 子页有数据  = 不跳
-    //             if (tableKey == 2 && res != null) {
-    //                 // console.log('333');
-    //                 tableKey == 2
-    //                 return
-    //             }
-    //             //在子页 + 子页没数据  = 跳
-    //             if (tableKey == 2 && res == null) {
-    //                 // console.log('444');
-    //                 tableKey == 1
-    //                 carouselRef.current.next()
-    //                 return
-    //             }
-    //         })
-    //         .catch(err => {
-    //             notification.warning({
-    //                 description: err.message
-    //             });
-    //         });
-    //     }
-    //     getDetails()
-    //     const refreshDetailData = setInterval(() => {
-    //         getDetails();
-    //     }, 1000 * 10);
-
-
-
-    //     let datas = []
-    //     const getData = () => {
-    //         LargeScreenApi.semiOrder()
-    //             .then(res => {
-    //                 if(res != null){
-    //                     setDataSource(res);
-    //                     datas = res
-    //                     setData(res);
-    //                 }
-    //             })
-    //             .catch(err => {
-    //                 notification.warning({
-    //                     description: err.message
-    //                 });
-    //             });
-
-    //         LargeScreenApi.getTrayNumberCount()
-    //             .then(res => {
-    //                     setTrayCount(res);
-    //             })
-    //             .catch(err => {
-    //                 notification.warning({
-    //                     description: err.message
-    //                 });
-    //             });
-
-    //         let number = 0
-    //         const setData = (datas) => {
-    //             const data = datas[number]
-    //             setNewData(data)
-    //             const detail = data.semiOrderListDTO
-    //             setNewDataDetail(detail)
-    //             number = number == datas.length - 1 ? 0 : number + 1
-    //         }
-
-    //         const refreshData = setInterval(() => {
-    //             setData(datas);
-    //         }, 1000 * 30);
-
-    //         return () => {
-    //             clearInterval(refreshData);
-    //         };
-    //     };
-    //     getData()
-    //     const refreshData = setInterval(() => {
-    //         getData();
-    //     }, 1000 * 5);
-
-
-    //     const getRbgStatus = () => {
-    //         LargeScreenApi.getRbgStatus()
-    //             .then(res => {
-    //                 console.log('RbgStatus', res);
-    //                 if(rbgStatus != res ){
-    //                     setRbgStatus(res);
-    //                 }
-    //             })
-    //             .catch(err => {
-    //                 notification.warning({
-    //                     description: err.message
-    //                 });
-    //             });
-    //     };
-    //     getRbgStatus()
-    //     const getRbgData = setInterval(() => {
-    //         getRbgStatus()
-    //     }, 1000 );
-
-    //     return () => {
-    //         clearInterval(refreshData);
-    //         clearInterval(refreshDetailData);
-    //         clearInterval(getRbgData);
-    //     };
-    // }, []);
-
     return (
         <div>
             <img
@@ -321,7 +202,7 @@ const J002OverView = () => {
                         <TopTitle />
                         <IndexPageContent
                         >
-                            <Carousel ref={carouselRef}>
+                            <Carousel ref={carouselRef} dots={false}>
                                 <PageContent>
                                     <PageTop  >
                                         <ContentOne newData={newData} />

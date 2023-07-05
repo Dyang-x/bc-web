@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./style.scss";
+import { isEmpty } from "lodash";
 
 const ContentTwo = ({ newData }) => {
 
@@ -20,16 +21,16 @@ const ContentTwo = ({ newData }) => {
         <div >品名</div>
         <div >托盘数量</div>
       </div>
-      {newData != {} && <div className={styles.child} >
+      <div className={styles.child} >
         <li
           className={styles['other']}
         >
-          <span >{newData.planCode}</span>
-          <span >{newData.productName}</span>
-          <span >{newData.productNumber}</span>
-          <span >{newData.trayNumber}</span>
+          <span >{newData != {} && !isEmpty(newData)&&newData.planCode}</span>
+          <span >{newData != {} && !isEmpty(newData)&&newData.productName}</span>
+          <span >{newData != {} && !isEmpty(newData)&&newData.productNumber}</span>
+          <span >{newData != {} && !isEmpty(newData)&&newData.trayNumber}</span>
         </li>
-      </div>}
+      </div>
     </div>
   );
 };

@@ -37,7 +37,7 @@ const TopTitle = () => {
             marginLeft: '3rem'
           }}
         >
-          原材料管理看板
+          半成品管理看板
         </div>
       </div>
       <div
