@@ -287,6 +287,22 @@ const Index = ({ taskKind ,taskType}) => {
     Modal.confirm({
       title: getFormattedMsg('TaskTransport.title.complete'),
       onOk: async () => {
+        if(taskKind ==1){
+          await TaskTranSportServices.finishRBG(record.taskCode)
+          .then(res => {
+            notification.success({
+              message: getFormattedMsg('TaskTransport.message.completeSuccess'),
+            })
+            loadData(page, pageSize, { ...searchValue, taskState: nowTab });
+          })
+          .catch(err => {
+            notification.warning({
+              message: getFormattedMsg('TaskTransport.message.completeFailure'),
+              description: err.message
+            })
+          })
+          return
+        }
         await TaskTranSportServices.finishTask(record.id)
           .then(res => {
             notification.success({
@@ -411,7 +427,7 @@ const Index = ({ taskKind ,taskType}) => {
           >
             {renderTable}
           </Pane.Tab>
-          <Pane.Tab
+          {/* <Pane.Tab
             title={getFormattedMsg('TaskTransport.title.anomalyTab')}
             name={5}
             settingButton={<SettingButton />}
@@ -419,7 +435,7 @@ const Index = ({ taskKind ,taskType}) => {
             isComponent
           >
             {renderTable}
-          </Pane.Tab>
+          </Pane.Tab> */}
         </Pane>
       </HVLayout>
       <Modal

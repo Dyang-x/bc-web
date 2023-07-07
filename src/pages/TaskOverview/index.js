@@ -452,7 +452,7 @@ const Index = ({ history }) => {
           >
             {renderTable}
           </Pane.Tab>
-          <Pane.Tab
+          {/* <Pane.Tab
             title={getFormattedMsg('TaskOverview.title.anomalyTab')}
             name={5}
             settingButton={<SettingButton />}
@@ -460,7 +460,7 @@ const Index = ({ history }) => {
             isComponent
           >
             {renderTable}
-          </Pane.Tab>
+          </Pane.Tab> */}
         </Pane>
       </HVLayout>
       <Modal

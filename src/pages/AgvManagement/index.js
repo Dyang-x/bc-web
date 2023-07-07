@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { HVLayout, Button, Spin, Pagination, SearchForm, Select, Divider, Input, Modal } from '@hvisions/h-ui';
 import { i18n, page } from '@hvisions/toolkit';
 import { CacheTable } from '~/components';
-import { taskType, taskKind } from '~/enum/enum';
+import { taskType, taskKind,TransportTaskType } from '~/enum/enum';
 import AgvManagementServices from '~/api/AgvManagement';
 import { notification } from '~/../node_modules/antd/lib/index';
 import AdjustForm from './AdjustForm';
@@ -20,7 +20,7 @@ const Index = () => {
   const [totalPage, setTotalPage] = useState(0);
   const [loading, setLoading] = useState(false);
   const [searchValue, setSearchValue] = useState(null);
-  const [nowTab, setNowTab] = useState(1);
+  const [nowTab, setNowTab] = useState(6);
   const [adjustModalVis, setAdjustModalVis] = useState(false);
   const [adjustModalData, setAdjustModalData] = useState({});
   const adjustRef = useRef();
@@ -46,7 +46,7 @@ const Index = () => {
           if (text == null) {
             return
           }
-          return taskType[text - 1].name
+          return TransportTaskType[text - 1].name
         }
       },
       {
@@ -362,7 +362,7 @@ const Index = () => {
               <Select
                 placeholder={getFormattedMsg('AgvManagement.placeholder.taskType')}
               >
-                {taskType.map((value, index) => (
+                {TransportTaskType.map((value, index) => (
                   <Option value={value.id} key={value.id}>
                     {value.name}
                   </Option>
@@ -403,8 +403,17 @@ const Index = () => {
           }}
         >
           <Pane.Tab
+            title={'就绪'}
+            name='6'
+            isComponent
+            settingButton={<SettingButton />}
+            onRefresh={reFreshFunc()}
+          >
+            {renderTable}
+          </Pane.Tab>
+          <Pane.Tab
             title={getFormattedMsg('AgvManagement.title.lineTab')}
-            name='1'
+            name={1}
             isComponent
             settingButton={<SettingButton />}
             onRefresh={reFreshFunc()}
@@ -430,6 +439,15 @@ const Index = () => {
             {renderTable}
           </Pane.Tab>
           <Pane.Tab
+            title={'准备进入'}
+            name={7}
+            settingButton={<SettingButton />}
+            onRefresh={reFreshFunc()}
+            isComponent
+          >
+            {renderTable}
+          </Pane.Tab>
+          <Pane.Tab
             title={getFormattedMsg('AgvManagement.title.completeTab')}
             name={4}
             settingButton={<SettingButton />}
@@ -438,7 +456,7 @@ const Index = () => {
           >
             {renderTable}
           </Pane.Tab>
-          <Pane.Tab
+          {/* <Pane.Tab
             title={getFormattedMsg('AgvManagement.title.anomalyTab')}
             name={5}
             settingButton={<SettingButton />}
@@ -446,7 +464,7 @@ const Index = () => {
             isComponent
           >
             {renderTable}
-          </Pane.Tab>
+          </Pane.Tab> */}
         </Pane>
       </HVLayout>
       <Modal

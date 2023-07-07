@@ -53,34 +53,34 @@ const J003OverView = () => {
         const getDetails = () =>{
             LargeScreenApi.semiMterialDetails('J003')
             .then(res => {
-                // console.log('getDetailData', res);
+                console.log('getDetailData', res);
                 // console.log('getDetailData------', res!= null);
                 if(res != null){
                 setDetailData(res);
                 }
                 //在主页 + 子页有数据  = 跳
                 if (tableKey == 1 && res != null) {
-                    // console.log('111');
+                    console.log('111');
                     tableKey = 2
                     carouselRef.current.next()
                     return
                 }
                 //在主页 + 子页没数据  = 不跳
                 if (tableKey == 1 && res == null) {
-                    // console.log('222');
+                    console.log('222');
                     tableKey = 1
                     return
                 }
                 //在子页 + 子页有数据  = 不跳
                 if (tableKey == 2 && res != null) {
-                    // console.log('333');
-                    tableKey == 2
+                    console.log('333');
+                    tableKey = 2
                     return
                 }
                 //在子页 + 子页没数据  = 跳
                 if (tableKey == 2 && res == null) {
-                    // console.log('444');
-                    tableKey == 1
+                    console.log('444');
+                    tableKey = 1
                     carouselRef.current.next()
                     return
                 }

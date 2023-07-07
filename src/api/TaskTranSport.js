@@ -70,6 +70,15 @@ class TaskTranSportServices extends Service {
     }
   }
 
+    // 完成任务
+    async finishRBG(taskCode) {
+      try {
+        return await this.put(`${appName}/tasktransport/finishRBG?taskCode=${taskCode}`);
+      } catch (error) {
+        throw new Error(error);
+      }
+    }
+
   // 暂停任务
   async suspendTask(id) {
     try {

@@ -73,13 +73,13 @@ const J001OverView = () => {
                 //在子页 + 子页有数据  = 不跳
                 if (tableKey == 2 && res != null) {
                     // console.log('333');
-                    tableKey == 2
+                    tableKey = 2
                     return
                 }
                 //在子页 + 子页没数据  = 跳
                 if (tableKey == 2 && res == null) {
                     // console.log('444');
-                    tableKey == 1
+                    tableKey = 1
                     carouselRef.current.next()
                     return
                 }
