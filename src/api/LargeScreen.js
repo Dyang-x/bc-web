@@ -28,10 +28,19 @@ class LargeScreenApi extends Service {
         }
     }
 
-    // 原料入库分组
+    // 原料入库厚度分组
     async rawMterialInGroup() {
         try {
             return await this.get(`${appName}/largeScreen/rawMterialInGroup`);
+        } catch (error) {
+            throw new Error(error);
+        }
+    }
+
+    // 原料入库材质分组
+    async rawMterialInMaterialTypeGroup() {
+        try {
+            return await this.get(`${appName}/largeScreen/rawMterialInMaterialTypeGroup`);
         } catch (error) {
             throw new Error(error);
         }
@@ -63,6 +72,8 @@ class LargeScreenApi extends Service {
             throw new Error(error);
         }
     }
+
+
 }
 
 export default new LargeScreenApi();

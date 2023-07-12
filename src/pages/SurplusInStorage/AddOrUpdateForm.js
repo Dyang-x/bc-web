@@ -5,41 +5,43 @@ import { tree } from '@hvisions/toolkit';
 import { i18n } from '@hvisions/toolkit';
 import { debounce } from 'lodash';
 import TransferBoxServices from '~/api/TransferBox';
+import joinAreaServices from '~/api/joinArea';
 
 const { formatTree } = tree;
 const { getFormattedMsg } = i18n;
 const dateFormat = 'YYYY-MM-DD HH:mm:ss';
 const { Option } = Select
 const formItemLayout = {
-  labelCol: { span: 10 },
-  wrapperCol: { span: 14 },
+  labelCol: { span: 6 },
+  wrapperCol: { span: 18 },
 };
 
 const AddForm = ({
   form: { getFieldDecorator, validateFields, getFieldValue, setFieldsValue },
 }) => {
-  const [pageInfo, setPageInfo] = useState({ page: 1, pageSize: 10 });
-  const [transferList, setTransferList] = useState([])
 
   useEffect(() => {
     getTransfer()
   }, [])
 
   const getTransfer = async (searchValue) => {
-    const params = {
-      type: 0,
-      page: pageInfo.page - 1,
-      pageSize: pageInfo.pageSize
-    }
-    await TransferBoxServices.getPage(params)
-      .then(res => {
-        setTransferList(res.content);
-      }).catch(err => {
-        notification.warning({
-          message: getFormattedMsg('global.notify.fail'),
-          description: err.message
-        });
+    await joinAreaServices.findJoin()
+    .then(res => {
+      res.map(i => {
+        if (i.joinCode == 'J002' && i.transferCode != null) {
+          const transferCode = i.transferCode
+          if(transferCode.includes('A')){
+            setFieldsValue({ trayNumber: transferCode })
+          }
+        }
+      })
+
+    }).catch(err => {
+      notification.warning({
+        message: getFormattedMsg('global.notify.fail'),
+        description: err.message
       });
+    });
   };
 
   const fromLocation = [

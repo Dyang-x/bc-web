@@ -17,10 +17,9 @@ const { Pane } = HVLayout;
 
 const J001OverView = () => {
 
-    const [dataSource, setDataSource] = useState([]);
+    const [LeftData, setLeftData] = useState([]);
+    const [RightData, setRightData] = useState([]);
 
-
-    const [newData, setNewData] = useState({});
     const [newDataDetail, setNewDataDetail] = useState([]);
 
     const [trayCount, setTrayCount] = useState({});
@@ -106,7 +105,22 @@ const J001OverView = () => {
             LargeScreenApi.rawMterialInGroup()
                 .then(res => {
                     if(res != null){
-                        setNewData(res)
+                        // setNewData(res)
+                        setLeftData(res)
+                    }
+                })
+                .catch(err => {
+                    notification.warning({
+                        description: err.message
+                    });
+                });
+        };
+        const rawMterialInMaterialTypeGroup = () => {
+            LargeScreenApi.rawMterialInMaterialTypeGroup()
+                .then(res => {
+                    if(res != null){
+                        // setNewData(res)
+                        setRightData(res)
                     }
                 })
                 .catch(err => {
@@ -116,8 +130,10 @@ const J001OverView = () => {
                 });
         };
         rawMterialInGroup()
+        rawMterialInMaterialTypeGroup()
         const refreshData = setInterval(() => {
             rawMterialInGroup();
+            rawMterialInMaterialTypeGroup();
         }, 1000 * 60);
 
         return () => {
@@ -204,7 +220,7 @@ const J001OverView = () => {
                             <Carousel ref={carouselRef} dots={false}>
                                 <PageContent>
                                     <PageTop  >
-                                        <ContentOne newData={newData} />
+                                        <ContentOne LeftData={LeftData} RightData={RightData}/>
                                     </PageTop>
                                     <PageMid  >
                                         <ContentTwo newDataDetail={newDataDetail} />

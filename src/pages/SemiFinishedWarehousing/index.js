@@ -112,23 +112,35 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
       //   return array.toString()
       // }
     },
+    // {
+    //   title: getFormattedMsg('SemiFinishedWarehousingReceipt.title.orderCount'),
+    //   dataIndex: 'orderCount',
+    //   key: 'orderCount',
+    //   align: 'center',
+    //   render: (text, record, index) => {
+    //     if(text == null){
+    //       return
+    //     }
+    //     const arr = record.orderNumber.split(',');
+    //     const table = <div > <ul style={{paddingLeft:15,marginBottom:"0px"}}> {arr.map(item => <li key={item} >{item}</li>)} </ul> </div>
+    //     return (
+    //       <Tooltip placement="rightTop" title={table} arrowPointAtCenter>
+    //         <span>{text}</span>
+    //       </Tooltip>
+    //     )
+    //   }
+    // },
     {
-      title: getFormattedMsg('SemiFinishedWarehousingReceipt.title.orderCount'),
-      dataIndex: 'orderCount',
-      key: 'orderCount',
+      title: '主订单号',
+      dataIndex: 'orderNumber',
+      key: 'orderNumber',
       align: 'center',
-      render: (text, record, index) => {
-        if(text == null){
-          return
-        }
-        const arr = record.orderNumber.split(',');
-        const table = <div > <ul style={{paddingLeft:15,marginBottom:"0px"}}> {arr.map(item => <li key={item} >{item}</li>)} </ul> </div>
-        return (
-          <Tooltip placement="rightTop" title={table} arrowPointAtCenter>
-            <span>{text}</span>
-          </Tooltip>
-        )
-      }
+    },
+    {
+      title: '子订单号',
+      dataIndex: 'suborderNumber',
+      key: 'suborderNumber',
+      align: 'center',
     },
     {
       title: getFormattedMsg('SemiFinishedWarehousingReceipt.title.attributeTwo'),
@@ -298,54 +310,94 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
       } else {
         delete params.attributeOne
       }
+
       params.cuttingName = '切割机1'
       params.attributeoneState = true
       params.attributetwoState = true
 
-      let details =[]
-      let materialCode =''
-      let materialName =''
-      let orderNumber =''
-      let quantity =''
-      dataSource.map(i=>{
-        const data = {}
-        data.materialCode = i.Detail[1].value
-        data.materialName = i.Detail[2].value
-        data.orderCode = i.value
-        data.quantity = i.Detail[0].value
-        details = [...details, data]
-        materialCode= [...materialCode,i.Detail[1].value]
-        materialName= [...materialName,i.Detail[2].value]
-        orderNumber= [...orderNumber,i.value]
-        quantity= [...quantity,i.Detail[0].value]
-        // materialCode=materialCode+i.Detail[1].value+','
-        // materialName=materialName+i.Detail[2].value+','
-        // orderNumber=orderNumber+i.value+','
-        // quantity=quantity+i.Detail[0].value+','
+
+let figureNumber = ''
+let materialCode =''
+let materialName =''
+let orderNumber =''
+let quantity =''
+let suborderNumber = ''
+let orderDetails = []
+
+      dataSource.map(i => {
+        const orderDetail = {}
+
+        materialCode =i.Detail[1].value!='' ?[...materialCode, i.Detail[1].value]:materialCode
+        materialName = i.Detail[2].value!='' ?[...materialName, i.Detail[2].value]:materialName
+        orderNumber = i.value!='' ?[...orderNumber, i.value]:orderNumber
+        quantity = i.Detail[0].value!='' ?[...quantity, i.Detail[0].value]:quantity
+
+        let materialCodeD = ''
+        let materialNameD = ''
+        let quantityD = ''
+        let orderCodeD = ''
+        // let masterCodeD = ''
+        let figureNumberD =''
+        let suborderNumberDetails = []
+
+        i.suborder.map(j => {
+          materialCodeD = j.Detail[0].value != '' ?[...materialCodeD, j.Detail[0].value]:materialCodeD
+          materialNameD = j.Detail[4].value != '' ?[...materialNameD, j.Detail[4].value]:materialNameD
+          quantityD = j.Detail[1].value != '' ?[...quantityD, j.Detail[1].value]:quantityD
+          orderCodeD = j.value != '' ?[...orderCodeD, j.value]:orderCodeD
+          figureNumberD = j.Detail[3].value != '' ?[...figureNumberD,j.Detail[3].value]:figureNumberD
+
+          const detail = {
+            materialCode: j.Detail[0].value != null?j.Detail[0].value:'',
+            quantity: j.Detail[1].value != null?Number(j.Detail[1].value):0,
+            orderCode: j.Detail[2].value != null?j.Detail[2].value:'',
+            figureNumber: j.Detail[3].value != null?j.Detail[3].value:'',
+            materialName: j.Detail[4].value != null?j.Detail[4].value:'',
+            suborderNumber: j.Detail[5].value != null?j.Detail[5].value:'',
+          }
+          suborderNumberDetails = [...suborderNumberDetails, detail]
+        })
+
+        figureNumber = [...figureNumber,figureNumberD]
+        suborderNumber =[...suborderNumber,orderCodeD]
+
+        // orderDetail.materialCode = materialCodeD.toString()
+        // orderDetail.materialName = materialNameD.toString()
+        // orderDetail.orderNumber = orderCodeD.toString()
+        // orderDetail.quantity = quantityD.toString()
+        orderDetail.materialCode = i.Detail[1].value!='' ? i.Detail[1].value:''
+        orderDetail.materialName =  i.Detail[2].value!='' ? i.Detail[2].value:''
+        orderDetail.orderCode =  i.value!='' ? i.value:''
+        orderDetail.quantity =  i.Detail[0].value!='' ? Number(i.Detail[0].value):0
+        orderDetail.suborderNumberDetails = suborderNumberDetails
+        orderDetails = [...orderDetails,orderDetail]
       })
-      params.orderDetails = details
+
+      params.orderDetails = orderDetails
       params.materialCode = materialCode.toString()
       params.materialName = materialName.toString()
       params.orderNumber = orderNumber.toString()
       params.quantity = quantity.toString()
+      params.figureNumber = figureNumber.toString()
+      params.suborderNumber = suborderNumber.toString()
 
-      delete params.scan
+      // delete params.scan
       console.log(params, 'params');
 
-      await SemiFinishedWarehousingReceiptApi
-        .bindSemiMaterial(params)
-        .then(res => {
-          notification.success({
-            message: getFormattedMsg('SemiFinishedWarehousingReceipt.message.addSuccess')
-          });
-          loadData(page, pageSize, { ...searchValue, state: selectedstatus });
-        })
-        .catch(err => {
-          notification.warning({
-            message: getFormattedMsg('SemiFinishedWarehousingReceipt.message.addFailure'),
-            description: err.message
-          });
-        });
+      // await SemiFinishedWarehousingReceiptApi
+      //   .bindSemiMaterial(params)
+      //   .then(res => {
+      //     notification.success({
+      //       message: getFormattedMsg('SemiFinishedWarehousingReceipt.message.addSuccess')
+      //     });
+      //     loadData(page, pageSize, { ...searchValue, state: selectedstatus });
+      //   })
+      //   .catch(err => {
+      //     notification.warning({
+      //       message: getFormattedMsg('SemiFinishedWarehousingReceipt.message.addFailure'),
+      //       description: err.message
+      //     });
+      //   });
       handleCancelAdd();
     });
   }
@@ -639,7 +691,7 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
         </HVLayout.Pane>
         <HVLayout.Pane
           icon={<i className="h-visions hv-table" />}
-          title={getFormattedMsg('SemiFinishedWarehousingReceipt.title.tableName')}
+          title={'切割机1收料'}
           buttons={[
             <Button key="add" type="primary" onClick={() => handleAdd()}>
               {getFormattedMsg('SemiFinishedWarehousingReceipt.button.add')}
@@ -702,7 +754,9 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
         visible={addVis} 
         footer={modalAddFoot()}
         onCancel={handleCancelAdd}
-        width={1000}
+        // width={1000}
+        width={window.innerWidth - 100}
+        destroyOnClose
       >
         <AddOrUpdateForm
             ref={addForm}
@@ -732,7 +786,7 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
         </Drawer.DrawerContent>
         <Drawer.DrawerBottomBar>{modalAddFoot()}</Drawer.DrawerBottomBar>
       </Drawer> */}
-      <Drawer title={getFormattedMsg('SemiFinishedWarehousingReceipt.button.update')} visible={updateVis} onClose={handleCancelUpdate} width={500}>
+      <Drawer title={getFormattedMsg('SemiFinishedWarehousingReceipt.button.update')} visible={updateVis} onClose={handleCancelUpdate} width={500} destroyOnClose>
         <Drawer.DrawerContent>
           <AddOrUpdateForm
             ref={updateForm}
@@ -756,6 +810,7 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
         footer={modalCallTrayFoot()}
         onCancel={handleCancelCallTray}
         width={500}
+        destroyOnClose
       >
         <CallTrayForm ref={callTrayForm} selectedDatas={selectedDatas} />
       </Modal>
@@ -773,6 +828,7 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
           paddingRight: 0,
           paddingBottom: 0,
         }}
+        destroyOnClose
       >
         <PickTrayTable selectedRowKeys={selectedRowKeys} setSelectedRowKeys={setSelectedRowKeys} setSelectedDatas={setSelectedDatas} modalPickTrayFoot={modalPickTrayFoot}/>
       </Modal>
@@ -784,6 +840,7 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
         footer={modalTrayOutFoot()}
         onCancel={handleCancelTrayOut}
         width={500}
+        destroyOnClose
       >
         <PickTrayOut ref={pickTrayOutForm} selectedDatas={selectedDatas} />
       </Modal>

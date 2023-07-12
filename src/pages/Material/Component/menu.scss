@@ -1,0 +1,47 @@
+.Menu {
+  :global {
+    .ant-menu-inline {
+      border: 0 !important;
+    }
+  }
+
+  :global(.ant-tree li .ant-tree-node-content-wrapper) {
+    background-color: #f0fdff;
+    height: 100% !important;
+    line-height: 40px;
+    width: 90%;
+    border-right: 4px solid #2fb6e6;
+    font-size: 13px;
+  }
+
+
+:global(.ant-tree-treenode-switcher-close) {
+   span:nth-child(1) {
+    margin-top: 7px;
+   }
+   span:nth-child(2)  {
+     height: 40px;
+     width: calc(100% - 30px);
+     line-height: 40px;
+    }
+}
+
+:global(.ant-tree-treenode-switcher-open) {
+  span:nth-child(1) {
+    margin-top: 7px;
+   }
+   span:nth-child(2)  {
+     height: 40px;
+     width: calc(100% - 30px);
+     line-height: 40px;
+    }
+}
+
+:global(.ant-tree-node-selected) {
+  background: #f1fdff !important;
+  color: #2fb6e6 !important;
+  border-right: 3px solid #2fb6e6;
+}
+
+}
+

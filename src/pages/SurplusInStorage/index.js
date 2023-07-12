@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import {  HVLayout,  Button,  notification,  Modal,  Spin,  Pagination,  SearchForm,  DatePicker,  Input,  Drawer} from '@hvisions/h-ui';
+import { HVLayout, Button, notification, Modal, Spin, Pagination, SearchForm, DatePicker, Input, Drawer } from '@hvisions/h-ui';
 import { i18n, page } from '@hvisions/toolkit';
 import { CacheTable } from '~/components';
 import moment from 'moment';
 import SurplusMaterialApi from '~/api/SurplusMaterial';
 import AddOrUpdateForm from './AddOrUpdateForm';
-
+import EmptyPalletDeliveryApi from '~/api/EmptyPalletDelivery';
 
 const getFormattedMsg = i18n.getFormattedMsg;
 const { RangePicker } = DatePicker;
@@ -58,7 +58,7 @@ const SurplusInStorage = ({ history }) => {
       align: 'center'
     },
     {
-      title:getFormattedMsg('SurplusInStorage.title.materialSizeY'),
+      title: getFormattedMsg('SurplusInStorage.title.materialSizeY'),
       dataIndex: 'materialSizeY',
       key: 'materialSizeY',
       align: 'center'
@@ -99,21 +99,21 @@ const SurplusInStorage = ({ history }) => {
       key: 'toLocation',
       align: 'center'
     },
-    {
-      title: getFormattedMsg('SurplusInStorage.title.operation'),
-      key: 'opt',
-      align: 'center',
-      width: 200,
-      render: (_, record) => [
-        <a
-          key="delete"
-          style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }}
-          onClick={() => handleDelete(record)}
-        >
-          {getFormattedMsg('SurplusInStorage.button.delete')}
-        </a>,
-      ]
-    }
+    // {
+    //   title: getFormattedMsg('SurplusInStorage.title.operation'),
+    //   key: 'opt',
+    //   align: 'center',
+    //   width: 200,
+    //   render: (_, record) => [
+    //     <a
+    //       key="delete"
+    //       style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }}
+    //       onClick={() => handleDelete(record)}
+    //     >
+    //       {getFormattedMsg('SurplusInStorage.button.delete')}
+    //     </a>,
+    //   ]
+    // }
   ];
 
   //查询页面数据
@@ -182,7 +182,7 @@ const SurplusInStorage = ({ history }) => {
 
   const modalAddFoot = () => [
     <Button key="save" type="primary" onClick={handleSaveAdd}>
-      {getFormattedMsg('SurplusInStorage.button.save')}
+      保存并上架
     </Button>,
     <Button key="cancel" onClick={handleCancelAdd}>
       {getFormattedMsg('SurplusInStorage.button.cancel')}
@@ -200,7 +200,7 @@ const SurplusInStorage = ({ history }) => {
           notification.success({
             message: getFormattedMsg('SurplusInStorage.message.addSuccess')
           });
-          loadData(page, pageSize, { ...searchValue});
+          loadData(page, pageSize, { ...searchValue });
         })
         .catch(err => {
           notification.warning({
@@ -211,6 +211,29 @@ const SurplusInStorage = ({ history }) => {
       handleCancelAdd();
     });
   };
+
+  const handleCallTray = () => {
+    const params = {
+      qrName: 'J002'
+    }
+    Modal.confirm({
+      title: '确认呼叫托盘至J002？',
+      onOk: async () => {
+        await EmptyPalletDeliveryApi.callTransferOut(params)
+          .then(res => {
+            notification.success({
+              message: '呼叫成功'
+            })
+          })
+          .catch(err => {
+            notification.success({
+              message: err.message
+            })
+          })
+      },
+      onCancel() { }
+    })
+  }
 
   const handleDelete = record => {
     Modal.confirm({
@@ -223,7 +246,7 @@ const SurplusInStorage = ({ history }) => {
             notification.success({
               message: getFormattedMsg('SurplusInStorage.message.deleteSuccess'),
             });
-            loadData(page, pageSize, { ...searchValue});
+            loadData(page, pageSize, { ...searchValue });
           })
           .catch(err => {
             notification.warning({
@@ -232,7 +255,7 @@ const SurplusInStorage = ({ history }) => {
             });
           });
       },
-      onCancel() {}
+      onCancel() { }
     });
   };
 
@@ -276,6 +299,9 @@ const SurplusInStorage = ({ history }) => {
           icon={<i className="h-visions hv-table" />}
           title={getFormattedMsg('SurplusInStorage.title.tableName')}
           buttons={[
+            <Button key="call" type="primary" onClick={() => handleCallTray()}>
+              呼叫托盘
+            </Button>,
             <Button key="add" type="primary" onClick={() => handleAdd()}>
               {getFormattedMsg('SurplusInStorage.button.add')}
             </Button>
@@ -311,7 +337,7 @@ const SurplusInStorage = ({ history }) => {
           </HVLayout.Pane.BottomBar>
         </HVLayout.Pane>
       </HVLayout>
-      <Drawer
+      {/* <Drawer
         title={getFormattedMsg('SurplusInStorage.title.addOrder')}
         visible={addVis}
         onClose={handleCancelAdd}
@@ -323,7 +349,19 @@ const SurplusInStorage = ({ history }) => {
           />
         </Drawer.DrawerContent>
         <Drawer.DrawerBottomBar>{modalAddFoot()}</Drawer.DrawerBottomBar>
-      </Drawer>
+      </Drawer> */}
+      <Modal
+        title={getFormattedMsg('SurplusInStorage.title.addOrder')}
+        visible={addVis}
+        onCancel={handleCancelAdd}
+        width={600}
+        footer={modalAddFoot()}
+        destroyOnClose
+      >
+        <AddOrUpdateForm
+          ref={addForm}
+        />
+      </Modal>
     </>
   );
 };

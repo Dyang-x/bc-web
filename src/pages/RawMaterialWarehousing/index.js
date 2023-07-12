@@ -95,6 +95,13 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
     //   key: 'materialName',
     //   align: 'center',
     // },
+
+    {
+      title: '采购订单号',
+      dataIndex: 'associatedNumber',
+      key: 'associatedNumber',
+      align: 'center',
+    },
     {
       title: getFormattedMsg('RawMaterialWarehousingReceipt.title.trayNumber'),
       dataIndex: 'trayNumber',
@@ -312,7 +319,7 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
     })
   }
 
-  const handInStore =(record)=>{
+  const handInStore = (record) => {
     Modal.confirm({
       title: '确认开始小车进入流程？',
       onOk: async () => {
@@ -401,7 +408,7 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
       })
       return
     }
-    if(selectedDatas[0].location != '在库'){
+    if (selectedDatas[0].location != '在库') {
       notification.warning({
         message: '该托盘不在库内，请重新选择',
       })
@@ -420,18 +427,18 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
       title: '确认下架托盘？',
       onOk: async () => {
         await EmptyPalletDeliveryApi
-        .addAnddownShelves(data)
-        .then(res => {
-          notification.success({
-            message: '托盘出库任务生成成功'
+          .addAnddownShelves(data)
+          .then(res => {
+            notification.success({
+              message: '托盘出库任务生成成功'
+            });
+            handleCancelManual();
+          })
+          .catch(err => {
+            notification.warning({
+              description: err.message
+            });
           });
-          handleCancelManual();
-        })
-        .catch(err => {
-          notification.warning({
-            description: err.message
-          });
-        });
       },
       onCancel() { },
     })
@@ -463,7 +470,8 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
       if (err) return;
       const params = getFieldsValue();
       delete params.scan
-      console.log("params",params);
+      console.log("params", params);
+      params.associatedNumber = params.orderNumber
       await RawMaterialWarehousingReceiptApi
         .bindRawMaterial(params)
         .then(res => {
@@ -623,7 +631,13 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
           </HVLayout.Pane.BottomBar>
         </HVLayout.Pane>
       </HVLayout>
-      <Drawer title={getFormattedMsg('RawMaterialWarehousingReceipt.title.update')} visible={updateVis} onClose={handleCancelUpdate} width={500}>
+      <Drawer
+        title={getFormattedMsg('RawMaterialWarehousingReceipt.title.update')}
+        visible={updateVis}
+        onClose={handleCancelUpdate}
+        width={500}
+        destroyOnClose
+      >
         <Drawer.DrawerContent>
           <UpdateForm ref={updateRef} updateData={updateData} />
         </Drawer.DrawerContent>
@@ -642,6 +656,7 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
           paddingRight: 0,
           paddingBottom: 0,
         }}
+        destroyOnClose
       >
         <ManualTable selectedRowKeys={selectedRowKeys} setSelectedRowKeys={setSelectedRowKeys} setSelectedDatas={setSelectedDatas} modalManualFoot={modalManualFoot} />
       </Modal>
@@ -651,6 +666,7 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
         footer={modalBindingFoot()}
         onCancel={handleCancelBinding}
         width={800}
+        destroyOnClose
       >
         <BindingForm ref={bindingForm} />
       </Modal>

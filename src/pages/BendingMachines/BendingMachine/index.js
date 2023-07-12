@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { HVLayout, Button, notification, Modal,  Spin,  Pagination, SearchForm,  Input, Divider ,Drawer,Form,Select} from '@hvisions/h-ui';
+import { HVLayout, Button, notification, Modal, Spin, Pagination, SearchForm, Input, Divider, Drawer, Form, Select } from '@hvisions/h-ui';
 import { i18n, page } from '@hvisions/toolkit';
 import { CacheTable } from '~/components';
 import { isEmpty } from 'lodash';
@@ -8,7 +8,7 @@ import TransferBoxServices from '~/api/TransferBox';
 import AddOrUpdateForm from './AddOrUpdateForm';
 import EmptyPalletsWarehousingApi from '~/api/EmptyPalletsWarehousing';
 import EmptyPalletDeliveryApi from '~/api/EmptyPalletDelivery';
-import { attributeOne,attributeTwo, BendingStates} from '~/enum/enum';
+import { attributeOne, attributeTwo, BendingStates } from '~/enum/enum';
 
 import PickTray from './PickTray/index';
 import PullOff from './PullOff/index';
@@ -18,21 +18,21 @@ const getFormattedMsg = i18n.getFormattedMsg;
 const { showTotal } = page
 const { Pane } = HVLayout;
 const { Option } = Select;
-const middles =[
+const middles = [
   { id: 1, name: 'J002', value: 'J002', },
   { id: 2, name: 'J003', value: 'J003', },
 ]
 
-const BendingMachine = ({bendingNumber}) => {
+const BendingMachine = ({ bendingNumber, tableName }) => {
   const [tableData, setTableData] = useState([]);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [totalPage, setTotalPage] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [searchValue, setSearchValue] = useState({bendingNumber:bendingNumber});
+  const [searchValue, setSearchValue] = useState({ bendingNumber: bendingNumber });
 
-  const [pickVis,setPickVis] = useState(false)
-  const [pickData,setPickData] = useState({})
+  const [pickVis, setPickVis] = useState(false)
+  const [pickData, setPickData] = useState({})
   const [attributeOne, setAttributeOne] = useState([]);
   const [attributeTwo, setAttributeTwo] = useState('');
 
@@ -41,18 +41,18 @@ const BendingMachine = ({bendingNumber}) => {
 
   const [addOrUpdateModalVis, setAddOrUpdateModalVis] = useState(false);
   const addOrUpdateForm = useRef();
-  const [updateFormData,setUpdateFormData] = useState({})
+  const [updateFormData, setUpdateFormData] = useState({})
 
   const [pullVis, setPullVis] = useState(false);
   const [pullData, setPullData] = useState({});
-  const [location, setLocation] = useState('J002');
+  const [location, setLocation] = useState('J003');
 
   const [surplusFormVis, setSurplusFormVis] = useState(false);
   const [surplusData, setSurplusData] = useState({});
   const surplusForm = useRef();
 
-  
-  
+
+
   useEffect(() => {
     loadData(page, pageSize, { ...searchValue });
   }, []);
@@ -76,10 +76,10 @@ const BendingMachine = ({bendingNumber}) => {
       key: 'bendingState',
       align: 'center',
       render: (text, record, index) => {
-        if(text == null){
+        if (text == null) {
           return
         }
-        return BendingStates[text-1].value
+        return BendingStates[text - 1].value
       }
     },
     {
@@ -94,8 +94,8 @@ const BendingMachine = ({bendingNumber}) => {
       key: 'ifout',
       align: 'center',
       render: (text, record, index) => {
-        if (text == true) { return '是'}
-        if (text == false) { return '否'}
+        if (text == true) { return '是' }
+        if (text == false) { return '否' }
       }
     },
     {
@@ -134,7 +134,7 @@ const BendingMachine = ({bendingNumber}) => {
         </a>,
         <Divider key="divider5" type="vertical" />,
         <a key="surplus" onClick={() => handleSurplus(record)}>
-          余料回库
+          未完工回库
         </a>,
         <Divider key="divider6" type="vertical" />,
         <a key="update" onClick={() => handleUpdate(record)}>
@@ -184,12 +184,12 @@ const BendingMachine = ({bendingNumber}) => {
   };
 
   const onShowSizeChange = (p, s) => {
-    loadData(p, s,{ ...searchValue});
+    loadData(p, s, { ...searchValue });
     setPageSize(s);
   };
 
   const pageChange = (p, s) => {
-    loadData(p, s,{ ...searchValue});
+    loadData(p, s, { ...searchValue });
     setPage(p);
   };
 
@@ -202,46 +202,48 @@ const BendingMachine = ({bendingNumber}) => {
   //   loadData(1, 10, { ...params });
   // };
 
-  const { Table, SettingButton} = useMemo(
+  const { Table, SettingButton } = useMemo(
     () => CacheTable({ columns, scrollHeight: 'calc(100vh - 470px)', key: 'bendingMachine' }),
     []
   );
 
-  const handlePick =(record)=>{
+  const handlePick = (record) => {
     setPickVis(true)
     setPickData(record)
     const attributeOne = record.attribute
- 
-        let array = []
-        const arr = attributeOne.split(',');
-        arr.map(i => {
-          array = [...array, i]
-        })
-       console.log(array,'array');
- 
+
+    let array = []
+    const arr = attributeOne.split(',');
+    arr.map(i => {
+      array = [...array, i]
+    })
+    console.log(array, 'array');
+
     setAttributeOne(array)
     setAttributeTwo('切割完工')
   }
 
-  const handleCancelPick =()=>{
+  const handleCancelPick = () => {
     setPickVis(false)
     setPickData({})
+    setAttributeOne([])
+    setAttributeTwo('')
   }
-  
+
   const HandlePullOff = (record) => {
     setPullOffVis(true)
     setPullOffData(record)
   }
 
-  const handleCancelPullOffk =()=>{
+  const handleCancelPullOffk = () => {
     setPullOffVis(false)
     setPullOffData({})
   }
 
 
-  const handleUpdate =(record)=>{
+  const handleUpdate = (record) => {
     setAddOrUpdateModalVis(true)
-    if(record.ifout != null){
+    if (record.ifout != null) {
       record.ifout = record.ifout.toString()
     }
     setUpdateFormData(record)
@@ -269,28 +271,28 @@ const BendingMachine = ({bendingNumber}) => {
       if (err) return;
       const params = getFieldsValue();
 
-      if(!isEmpty(params.attribute)){
+      if (!isEmpty(params.attribute)) {
         params.attribute = params.attribute.toString()
       }
-      if(updateFormData !={}){
-        Object.keys(updateFormData).map(i=>{
-          if(params[i] == null){params[i] = updateFormData[i]}
+      if (updateFormData != {}) {
+        Object.keys(updateFormData).map(i => {
+          if (params[i] == null) { params[i] = updateFormData[i] }
         })
       }
       await bendingMachineServices
-      .addOrUpdate(params)
-      .then(res => {
-        notification.success({
-          message: params.id == null?getFormattedMsg('BendingMachineConfiguration.message.addSuccess'):getFormattedMsg('BendingMachineConfiguration.message.updateSuccess')
+        .addOrUpdate(params)
+        .then(res => {
+          notification.success({
+            message: params.id == null ? getFormattedMsg('BendingMachineConfiguration.message.addSuccess') : getFormattedMsg('BendingMachineConfiguration.message.updateSuccess')
+          });
+          loadData(page, pageSize, { ...searchValue })
+        })
+        .catch(err => {
+          notification.warning({
+            message: params.id == null ? getFormattedMsg('BendingMachineConfiguration.message.addFailure') : getFormattedMsg('BendingMachineConfiguration.message.updateFailure'),
+            description: err.message
+          });
         });
-        loadData(page, pageSize, { ...searchValue })
-      })
-      .catch(err => {
-        notification.warning({
-          message: params.id == null?getFormattedMsg('BendingMachineConfiguration.message.addFailure'):getFormattedMsg('BendingMachineConfiguration.message.updateFailure'),
-          description: err.message
-        });
-      });
       handleCancelAddOrUpdate();
     })
   }
@@ -300,7 +302,7 @@ const BendingMachine = ({bendingNumber}) => {
     setPullData(record)
   }
 
-  const handleCancelPutOn =()=>{
+  const handleCancelPutOn = () => {
     setPullVis(false)
     setPullData({})
     setLocation('J002')
@@ -315,14 +317,14 @@ const BendingMachine = ({bendingNumber}) => {
     </Button>
   ];
 
-  const handleSavePutOn =()=>{
+  const handleSavePutOn = () => {
     const data = {
       origin: pullData.readyMaterials,
       middle: location,
       trayNumber: pullData.transferCode,
       state: 0,
     }
-    console.log(data,'上架');
+    console.log(data, '上架');
     Modal.confirm({
       title: `${getFormattedMsg('PalletManagement.title.putOnPallet')}${pullData.transferCode}?`,
       onOk: () => {
@@ -348,8 +350,8 @@ const BendingMachine = ({bendingNumber}) => {
       });
   }
 
-  
-  const handleSurplus =(record)=>{
+
+  const handleSurplus = (record) => {
     setSurplusFormVis(true)
     setSurplusData(record)
   }
@@ -375,9 +377,9 @@ const BendingMachine = ({bendingNumber}) => {
     validateFields(async (err, values) => {
       if (err) return;
       const params = getFieldsValue();
-      if(params.attributeOne.length != 0){
+      if (params.attributeOne.length != 0) {
         params.attributeOne = params.attributeOne.toString()
-      }else{
+      } else {
         delete params.attributeOne
       }
       console.log(params, 'params');
@@ -414,78 +416,81 @@ const BendingMachine = ({bendingNumber}) => {
           </SearchForm>
         </HVLayout.Pane> */}
         <Pane
-            icon={<i className="h-visions hv-table" />}
-            title={getFormattedMsg('BendingMachineConfiguration.title.information')}
-            settingButton={<SettingButton />}
-            onRefresh={reFreshFunc()}
-          >
-            <Spin spinning={loading}>
-              <Table
-                pagination={false}
-                scroll={{ x: 'max-content' }}
-                dataSource={tableData.map((i, idx) => ({
-                  ...i,
-                  serialNumber: (page - 1) * pageSize + ++idx
-                }))}
-                columns={columns}
-                rowKey={record => record.id}
-              />
-            </Spin>
-            <HVLayout.Pane.BottomBar>
-              <Pagination
-                onShowSizeChange={onShowSizeChange}
-                current={page}
-                onChange={pageChange}
-                defaultCurrent={page}
-                total={totalPage}
-                size="small"
-                showSizeChanger
-                showQuickJumper
-                showTotal={showTotal}
-                pageSize={pageSize}
-              />
-            </HVLayout.Pane.BottomBar>
-          </Pane>
+          icon={<i className="h-visions hv-table" />}
+          title={tableName}
+          settingButton={<SettingButton />}
+          onRefresh={reFreshFunc()}
+        >
+          <Spin spinning={loading}>
+            <Table
+              pagination={false}
+              scroll={{ x: 'max-content' }}
+              dataSource={tableData.map((i, idx) => ({
+                ...i,
+                serialNumber: (page - 1) * pageSize + ++idx
+              }))}
+              columns={columns}
+              rowKey={record => record.id}
+            />
+          </Spin>
+          <HVLayout.Pane.BottomBar>
+            <Pagination
+              onShowSizeChange={onShowSizeChange}
+              current={page}
+              onChange={pageChange}
+              defaultCurrent={page}
+              total={totalPage}
+              size="small"
+              showSizeChanger
+              showQuickJumper
+              showTotal={showTotal}
+              pageSize={pageSize}
+            />
+          </HVLayout.Pane.BottomBar>
+        </Pane>
       </HVLayout>
-      <Drawer 
-      className='pickDrawer'
-      title={'托盘拣选'} 
-      visible={pickVis} 
-      onClose={handleCancelPick} 
-      width={window.innerWidth *0.8}
-      bodyStyle={{height:document.body.clientHeight-55}}
+      <Drawer
+        className='pickDrawer'
+        title={'托盘拣选'}
+        visible={pickVis}
+        onClose={handleCancelPick}
+        width={window.innerWidth * 0.8}
+        bodyStyle={{ height: document.body.clientHeight - 55 }}
+        destroyOnClose
       >
-          <PickTray
-            modifyData ={pickData}
-            attribute1={attributeOne}
-            attribute2={attributeTwo}
-          />
+        <PickTray
+          modifyData={pickData}
+          attribute1={attributeOne}
+          attribute2={attributeTwo}
+        />
       </Drawer>
-      <Drawer 
-      className='pullOffDrawer'
-      title={'托盘下架'} 
-      visible={pullOffVis} 
-      onClose={handleCancelPullOffk} 
-      width={window.innerWidth *0.8}
-      bodyStyle={{height:document.body.clientHeight-55}}
+      <Drawer
+        className='pullOffDrawer'
+        title={'托盘下架'}
+        visible={pullOffVis}
+        onClose={handleCancelPullOffk}
+        width={window.innerWidth * 0.8}
+        bodyStyle={{ height: document.body.clientHeight - 55 }}
+        destroyOnClose
       >
-          <PullOff  pullOffData={pullOffData} />
+        <PullOff pullOffData={pullOffData} />
       </Drawer>
       <Modal
         title={'托盘上架'}
         visible={pullVis}
         onCancel={handleCancelPutOn}
         footer={modalPutOnFoot()}
+        destroyOnClose
       >
-        <div style={{display:'flex'}}>
+        <div style={{ display: 'flex' }}>
           <div style={{
-            width:'15%',
+            width: '15%',
             display: 'flex',
             justifyContent: 'middle',
             alignItems: 'center',
-            textAlign:'center',
-            }}>
-             中间点：
+            textAlign: 'center',
+          }}>
+            中间点：
           </div>
           <Select
             placeholder={'请选择中间点'}
@@ -504,8 +509,8 @@ const BendingMachine = ({bendingNumber}) => {
           </Select>
         </div>
       </Modal>
-      <Drawer 
-      title={'余料回库'} 
+      {/* <Drawer 
+      title={'未完工回库'} 
       visible={surplusFormVis} 
       onClose={handleCancelSurplus} 
       width={500}
@@ -519,16 +524,37 @@ const BendingMachine = ({bendingNumber}) => {
           />
         </Drawer.DrawerContent>
         <Drawer.DrawerBottomBar>{modalAddFoot()}</Drawer.DrawerBottomBar>
-      </Drawer>
+      </Drawer> */}
+      <Modal
+        title={'未完工回库'}
+        visible={surplusFormVis}
+        onCancel={handleCancelSurplus}
+        footer={modalAddFoot()}
+        destroyOnClose
+        width={800}
+      >
+        <SurplusForm
+          ref={surplusForm}
+          modifyData={surplusData}
+          attributeOne={attributeOne}
+          attributeTwo={attributeTwo}
+        />
+      </Modal>
 
-      <Drawer title={updateFormData.id == null?getFormattedMsg('BendingMachineConfiguration.title.create'):getFormattedMsg('BendingMachineConfiguration.title.update')} visible={addOrUpdateModalVis} onClose={handleCancelAddOrUpdate} width={500}>
+      <Drawer
+        title={updateFormData.id == null ? getFormattedMsg('BendingMachineConfiguration.title.create') : getFormattedMsg('BendingMachineConfiguration.title.update')}
+        visible={addOrUpdateModalVis}
+        onClose={handleCancelAddOrUpdate}
+        width={500}
+        destroyOnClose
+      >
         <Drawer.DrawerContent>
           <AddOrUpdateForm
-            ref={addOrUpdateForm} modifyData ={updateFormData}
+            ref={addOrUpdateForm} modifyData={updateFormData}
           />
         </Drawer.DrawerContent>
         <Drawer.DrawerBottomBar>{modalAddOrUpdateFoot()}</Drawer.DrawerBottomBar>
-      </Drawer>      
+      </Drawer>
     </>
   );
 };

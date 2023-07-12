@@ -66,13 +66,13 @@ const WirelineStorage = ({ history }) => {
       align: 'center',
     },
     {
-      title: '出库总数',
+      title: '出库总数(张)',
       dataIndex: 'quantity',
       key: 'quantity',
       align: 'center',
     },
     {
-      title: '剩余数量',
+      title: '剩余数量(张)',
       dataIndex: 'remainderNum',
       key: 'remainderNum',
       align: 'center',
@@ -431,7 +431,7 @@ const WirelineStorage = ({ history }) => {
         </HVLayout.Pane>
         <HVLayout.Pane
           icon={<i className="h-visions hv-table" />}
-          title={getFormattedMsg('SurplusInStorage.title.tableName')}
+          title={'原料暂存库'}
           buttons={[ ]}
           settingButton={<SettingButton />}
           onRefresh={reFreshFunc()}

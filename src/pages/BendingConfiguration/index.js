@@ -617,6 +617,7 @@ const BendingMachineConfiguration = () => {
         visible={pullVis}
         onCancel={handleCancelPutOn}
         footer={modalPutOnFoot()}
+        destroyOnClose
       >
         <div style={{display:'flex'}}>
           <div style={{
@@ -650,6 +651,7 @@ const BendingMachineConfiguration = () => {
       visible={surplusFormVis} 
       onClose={handleCancelSurplus} 
       width={500}
+      destroyOnClose
       >
         <Drawer.DrawerContent>
           <SurplusForm

@@ -58,6 +58,11 @@ import J003OverView from './pages/FullScreen/J003/index';
 //线边库
 import WirelineStorage from './pages/WirelineStorage/index';
 
+import StockStatistics from '~/pages/StockStatistics';
+
+// import Material from '~/pages/MaterialBlock';
+// import MaterialDetail from '~/pages/Material/Component/Detail';
+
 export default [
   {
     path: '/product-fullScreen',
@@ -177,6 +182,20 @@ export default [
     component: BendingMachine5
   },
 
+  {
+    path: '/stock-statistics',
+    component: StockStatistics
+  },
+
+
+  // {
+  //   path: '/material',
+  //   component: Material,
+  //   children: {
+  //     path: '/detail',
+  //     component: MaterialDetail
+  //   }
+  // },
 
   // 以下是示例功能代码， 正式开发时请删除
   // {

@@ -18,7 +18,7 @@ const PickTrayTable = ({
 }) => {
 
   const [searchValue, setSearchValue] = useState({
-    cuttingName: "切割机2",
+    // cuttingName: "切割机2",
     attributeTwo: '切割未完工'
   });
   const [dataSource, setDataSource] = useState([]);
@@ -56,7 +56,7 @@ const PickTrayTable = ({
       align: 'center',
     },
     {
-      title: '产品数量',
+      title: '产品数量(张)',
       dataIndex: 'quantity',
       key: 'quantity',
       align: 'center',

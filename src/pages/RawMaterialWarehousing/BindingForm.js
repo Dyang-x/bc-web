@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
-import { Form, Input } from '@hvisions/h-ui'
+import { Form, Input,notification } from '@hvisions/h-ui'
 import { i18n } from '@hvisions/toolkit';
+import joinAreaServices from '~/api/joinArea';
 
 const { getFormattedMsg } = i18n;
 const formItemLayout = {
@@ -13,8 +14,26 @@ const TrayForm = ({
 }) => {
 
   useEffect(() => {
-
+    sortPositionChange()
   }, [])
+
+  const sortPositionChange = async (e) => {
+    await joinAreaServices.findJoin()
+      .then(res => {
+        res.map(i => {
+          if (i.joinCode == 'J001' && i.transferCode != null) {
+            const transferCode = i.transferCode
+            setFieldsValue({ trayNumber: transferCode })
+          }
+        })
+      }).catch(err => {
+        notification.warning({
+          message: getFormattedMsg('global.notify.fail'),
+          description: err.message
+        });
+      });
+  }
+
 
   const onKeyDowm = (e) => {
 
@@ -37,8 +56,8 @@ const TrayForm = ({
       materialCode: materialCode,
       number: number,
 
-      associatedNumber:associatedNumber,
-      unit:unit,
+      associatedNumber: associatedNumber,
+      unit: unit,
     })
   }
 
@@ -46,7 +65,7 @@ const TrayForm = ({
     <Form >
       <Form.Item {...formItemLayout} label={getFormattedMsg('RawMaterialWarehousingReceipt.label.trayNumber')}>
         {
-          getFieldDecorator('tyayNumber', {
+          getFieldDecorator('trayNumber', {
             rules: [
               {
                 required: true,

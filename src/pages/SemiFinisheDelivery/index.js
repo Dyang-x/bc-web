@@ -54,29 +54,51 @@ const SemiFinisheDeliveryPalletSelection = ({ history }) => {
       key: 'locationNumber',
       align: 'center',
     },
+    // {
+    //   title: getFormattedMsg('SemiFinisheDeliveryPalletSelection.title.orderCount'),
+    //   dataIndex: 'orderCount',
+    //   key: 'orderCount',
+    //   align: 'center',
+    //   render: (text, record, index) => {
+    //     if (text == null) {
+    //       return
+    //     }
+    //     const arr = record.orderNumber.split(',');
+    //     const table = <div > <ul style={{ paddingLeft: 15, marginBottom: "0px" }}> {arr.map(item => <li key={item} >{item}</li>)} </ul> </div>
+    //     return (
+    //       <Tooltip placement="rightTop" title={table} arrowPointAtCenter>
+    //         <span>{text}</span>
+    //       </Tooltip>
+    //     )
+    //   }
+    // },
+    // {
+    //   title: '生产订单号',
+    //   dataIndex: 'orderNumber',
+    //   key: 'orderNumber',
+    //   align: 'center',
+    // },
     {
-      title: getFormattedMsg('SemiFinisheDeliveryPalletSelection.title.orderCount'),
-      dataIndex: 'orderCount',
-      key: 'orderCount',
-      align: 'center',
-      render: (text, record, index) => {
-        if (text == null) {
-          return
-        }
-        const arr = record.orderNumber.split(',');
-        const table = <div > <ul style={{ paddingLeft: 15, marginBottom: "0px" }}> {arr.map(item => <li key={item} >{item}</li>)} </ul> </div>
-        return (
-          <Tooltip placement="rightTop" title={table} arrowPointAtCenter>
-            <span>{text}</span>
-          </Tooltip>
-        )
-      }
-    },
-    {
-      title: '生产订单号',
+      title: '订单号',
       dataIndex: 'orderNumber',
       key: 'orderNumber',
       align: 'center',
+      render: (text, record, index) => {
+        <Tooltip placement="rightTop" arrowPointAtCenter>
+          {text}
+        </Tooltip>
+      }
+    },
+    {
+      title: '子订单号',
+      dataIndex: 'suborderNumber',
+      key: 'suborderNumber',
+      align: 'center',
+      render: (text, record, index) => {
+        <Tooltip placement="rightTop" arrowPointAtCenter>
+          {text}
+        </Tooltip>
+      }
     },
     {
       title: '产品名称',
@@ -120,21 +142,23 @@ const SemiFinisheDeliveryPalletSelection = ({ history }) => {
       key: 'state',
       align: 'center',
       render: (text, record, index) => {
-        const dataSource = [
-          { id: 1, trayNumber: 'J004004004004004004', location: 'J004', attributeTwo: 'J004', pickingPoint: 'J004', },
-        ]
-        const table = <div > <ul style={{ paddingLeft: 15, marginBottom: "0px" }}> {dataSource.map(item => <li key={item.id} >{item.trayNumber}</li>)} </ul> </div>
+        // const dataSource = [
+        //   { id: 1, trayNumber: 'J004004004004004004', location: 'J004', attributeTwo: 'J004', pickingPoint: 'J004', },
+        // ]
+        // const table = <div > <ul style={{ paddingLeft: 15, marginBottom: "0px" }}> {dataSource.map(item => <li key={item.id} >{item.trayNumber}</li>)} </ul> </div>
 
         if (text == 1) {
           return (
-            <Tooltip placement="rightTop" title={table} arrowPointAtCenter>
+            // <Tooltip placement="rightTop" title={table} arrowPointAtCenter>
+            <Tooltip placement="rightTop" arrowPointAtCenter>
               <span>{'已占用'}</span>
             </Tooltip>
           )
         }
         if (text == 2) {
           return (
-            <Tooltip placement="rightTop" title={table} arrowPointAtCenter>
+            // <Tooltip placement="rightTop" title={table} arrowPointAtCenter>
+            <Tooltip placement="rightTop" arrowPointAtCenter>
               <span>{'未占用'}</span>
             </Tooltip>
           )
@@ -308,6 +332,12 @@ const SemiFinisheDeliveryPalletSelection = ({ history }) => {
               <Input allowClear placeholder={getFormattedMsg('SemiFinisheDeliveryPalletSelection.placeholder.orderNumber')} />
             </SearchForm.Item>
             <SearchForm.Item
+              label={'子订单号'}
+              name="suborderNumber"
+            >
+              <Input allowClear placeholder={'请输入子订单号'} />
+            </SearchForm.Item>
+            <SearchForm.Item
               label={getFormattedMsg('SemiFinisheDeliveryPalletSelection.label.trayNumber')}
               name="trayNumber"
             >
@@ -355,7 +385,7 @@ const SemiFinisheDeliveryPalletSelection = ({ history }) => {
             </SearchForm.Item>
             <SearchForm.Item
               label={'备注'}
-              name="desc"
+              name="description"
             >
               <Input allowClear placeholder={'请输入备注信息'} />
             </SearchForm.Item>
@@ -364,7 +394,7 @@ const SemiFinisheDeliveryPalletSelection = ({ history }) => {
         <HVLayout layout="horizontal">
           <Pane
             icon={<i className="h-visions hv-table" />}
-            title={getFormattedMsg('SemiFinisheDeliveryPalletSelection.title.information')}
+            title={'半成品库存'}
             // buttons={[
             //   <Button key="out" type="primary" onClick={() => handleOut()}>
             //     {getFormattedMsg('SemiFinisheDeliveryPalletSelection.button.out')}

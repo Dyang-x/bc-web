@@ -127,7 +127,12 @@ const SurplusTable = ({
           />
         </HVLayout.Pane>
       </HVLayout>
-      <Drawer title={getFormattedMsg('RawMaterialDeliveryOrderManagement.title.add')} visible={addVis} onClose={handleCancelAdd} width={500}>
+      <Drawer
+        title={getFormattedMsg('RawMaterialDeliveryOrderManagement.title.add')}
+        visible={addVis}
+        onClose={handleCancelAdd}
+        width={500}
+        destroyOnClose>
         <Drawer.DrawerContent >
           <AddSurplusForm ref={addFormRef} />
         </Drawer.DrawerContent>

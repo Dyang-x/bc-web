@@ -1,0 +1,17 @@
+.ant-page {
+  background:rgba(255,255,255,0);
+  padding: 0 2px;
+  :global(.ant-page-header-heading-title) {
+    color: #2fb6e6;
+  }
+  :global(.ant-page-header-heading-extra) {
+    top: 0px;
+  }
+  :global(.ant-page-header-content) {
+    margin-top: 20px;
+  }
+  :global(.ant-descriptions-row>td) {
+    padding-bottom: 0 !important;
+  }
+  
+}

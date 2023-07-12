@@ -15,7 +15,7 @@ const DetailTable = ({
   const [emptyVis, setEmptyVis] = useState(false);
   const [emptyData, setEmptyData] = useState([]);
   const [feedPort, setFeedPort] = useState();
-  
+
 
   const feedPorts = [
     { key: 1, name: '上料口', value: '上料口', },
@@ -158,7 +158,7 @@ const DetailTable = ({
     }
   ]
 
-  
+
   const handleEmpty = (record) => {
     setEmptyVis(true)
     setEmptyData(record)
@@ -179,18 +179,18 @@ const DetailTable = ({
     </Button>
   ];
 
-  const HandleSaveEmpty = async() => {
- 
-      const params = {
-        feedPort:feedPort,
-        cuttingMachine:emptyData.cuttingMachine,
-        trayNumber:emptyData.trayNumber,
-        origin:emptyData.toLocation,
-        middle:emptyData.fromLocation,
-      }
-      params.state = 0
-      console.log('params',params);
-      await EmptyPalletsWarehousing
+  const HandleSaveEmpty = async () => {
+
+    const params = {
+      feedPort: feedPort,
+      cuttingMachine: emptyData.cuttingMachine,
+      trayNumber: emptyData.trayNumber,
+      origin: emptyData.toLocation,
+      middle: emptyData.fromLocation,
+    }
+    params.state = 0
+    console.log('params', params);
+    await EmptyPalletsWarehousing
       .saveOrUpdate(params)
       .then(res => {
         notification.success({
@@ -202,52 +202,52 @@ const DetailTable = ({
           description: err.message
         });
       });
-      handleCancelEmpty();
- 
+    handleCancelEmpty();
+
   }
 
-const handleSurplus =async (record)=>{
-  const params ={
-    trayNumber:record.trayNumber,
-    cuttingMachine:record.cuttingMachine,
-    materialCode:record.materialCode,
-    materialName:record.materialName,
-    materialSizeX:record.materialSizeX,
-    materialSizeY:record.materialSizeY,
-    materialSpecs:record.materialSpecs,
-    materialThickness:record.materialThickness,
-    quantity:record.remainderNum,
-    fromLocation:record.toLocation,
-    middle:record.fromLocation,
-    // toLocation:record.   ,
-  }
+  const handleSurplus = async (record) => {
+    const params = {
+      trayNumber: record.trayNumber,
+      cuttingMachine: record.cuttingMachine,
+      materialCode: record.materialCode,
+      materialName: record.materialName,
+      materialSizeX: record.materialSizeX,
+      materialSizeY: record.materialSizeY,
+      materialSpecs: record.materialSpecs,
+      materialThickness: record.materialThickness,
+      quantity: record.remainderNum,
+      fromLocation: record.toLocation,
+      middle: record.fromLocation,
+      // toLocation:record.   ,
+    }
 
-  await SurplusMaterialApi
-        .addSurplus(params)
-        .then(res => {
-          notification.success({
-            message: getFormattedMsg('SurplusInStorage.message.addSuccess')
-          });
-          // loadData(page, pageSize, { ...searchValue});
-        })
-        .catch(err => {
-          notification.warning({
-            message: getFormattedMsg('SurplusInStorage.message.addFailure'),
-            description: err.message
-          });
+    await SurplusMaterialApi
+      .addSurplus(params)
+      .then(res => {
+        notification.success({
+          message: getFormattedMsg('SurplusInStorage.message.addSuccess')
         });
-}
+        // loadData(page, pageSize, { ...searchValue});
+      })
+      .catch(err => {
+        notification.warning({
+          message: getFormattedMsg('SurplusInStorage.message.addFailure'),
+          description: err.message
+        });
+      });
+  }
 
   return (
     <>
-        <Table
-      pagination={false}
-      scroll={{ x: 'max-content' }}
-      dataSource={dataSource}
-      columns={columns}
-      rowKey={record => record.id}
-    />
-          <Modal
+      <Table
+        pagination={false}
+        scroll={{ x: 'max-content' }}
+        dataSource={dataSource}
+        columns={columns}
+        rowKey={record => record.id}
+      />
+      <Modal
         title={getFormattedMsg('RawMaterialDeliveryOrderManagement.title.empty')}
         visible={emptyVis}
         footer={modalEmptyFoot()}
@@ -257,19 +257,19 @@ const handleSurplus =async (record)=>{
       >
         {/* <EmptyForm ref={emptyRef} /> */}
         <Select
-              showSearch
-              placeholder={getFormattedMsg('RawMaterialDeliveryOrderManagement.placeholder.feedPort')}
-              onChange ={(e)=>{
-                
-                setFeedPort(e)
-              }}
-            >
-              {feedPorts.map((value, index) => (
-                <Option value={value.value} key={value.id}>
-                  {value.name}
-                </Option>
-              ))}
-            </Select>
+          showSearch
+          placeholder={getFormattedMsg('RawMaterialDeliveryOrderManagement.placeholder.feedPort')}
+          onChange={(e) => {
+
+            setFeedPort(e)
+          }}
+        >
+          {feedPorts.map((value, index) => (
+            <Option value={value.value} key={value.id}>
+              {value.name}
+            </Option>
+          ))}
+        </Select>
       </Modal></>
 
   )

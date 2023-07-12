@@ -70,9 +70,9 @@ const EmptyPalletDeliveryPage = ({ history }) => {
       dataIndex: 'inType',
       key: 'inType',
       align: 'center',
-      render:(text)=>{
-        if(text != undefined){
-          return taskType[text-1].name
+      render: (text) => {
+        if (text != undefined) {
+          return taskType[text - 1].name
         }
       }
     },
@@ -180,7 +180,7 @@ const EmptyPalletDeliveryPage = ({ history }) => {
 
   const handleCreate = () => {
     setAddOrUpdateVis(true)
-    console.log('addOrUpdateData',addOrUpdateData);
+    console.log('addOrUpdateData', addOrUpdateData);
     setAddOrUpdateData({})
   }
 
@@ -212,7 +212,7 @@ const EmptyPalletDeliveryPage = ({ history }) => {
         }
         addOrUpdateData[i] = params[i]
       })
-      if(!Object.keys(addOrUpdateData).includes('id')){
+      if (!Object.keys(addOrUpdateData).includes('id')) {
         addOrUpdateData.state = 0
       }
 
@@ -234,12 +234,12 @@ const EmptyPalletDeliveryPage = ({ history }) => {
   }
 
   const handleUpdate = (record) => {
-    console.log('record',record);
+    console.log('record', record);
     setAddOrUpdateVis(true)
     setAddOrUpdateData(record)
   }
 
-  const handleDownShelves =(record)=>{
+  const handleDownShelves = (record) => {
     Modal.confirm({
       title: '确认下架？',
       onOk: async () => {
@@ -262,7 +262,7 @@ const EmptyPalletDeliveryPage = ({ history }) => {
     })
   }
 
-  const handleFinishOrder =(record)=>{
+  const handleFinishOrder = (record) => {
     Modal.confirm({
       title: '确认完成任务？',
       onOk: async () => {
@@ -394,7 +394,7 @@ const EmptyPalletDeliveryPage = ({ history }) => {
         </Drawer.DrawerContent>
         <Drawer.DrawerBottomBar>{modalAddOrUpdateFoot()}</Drawer.DrawerBottomBar>
       </Drawer> */}
-            <Modal
+      <Modal
         title={isEmpty(addOrUpdateData) ? getFormattedMsg('EmptyPalletDelivery.title.create') : getFormattedMsg('EmptyPalletDelivery.title.update')}
         visible={addOrUpdateVis}
         footer={modalAddOrUpdateFoot()}

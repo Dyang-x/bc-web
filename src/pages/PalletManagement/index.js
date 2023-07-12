@@ -148,7 +148,10 @@ const PalletManagement = () => {
     validateFields(async (err, values) => {
       if (err) return;
       const params = getFieldsValue();
-      const searchValues = { ...searchValue, ...params }
+      console.log(params, 'params');
+      const searchValues = { ...searchValue, ...params, }
+      if (searchValues.code == '' || searchValues.code == undefined) { delete searchValues.code }
+      if (searchValues.locationCode == '' || searchValues.locationCode == undefined) { delete searchValues.locationCode }
       console.log(searchValues, 'searchValues');
       if (selectedType == null) {
         return
@@ -167,10 +170,6 @@ const PalletManagement = () => {
     setPageInfo(pageInfos)
     loadData(pageInfos.page, pageInfos.pageSize, searchValue);
   };
-
-
-
-
 
   const handleCancelPull = () => {
     const { resetFields } = pullForm.current;
@@ -727,6 +726,16 @@ const PalletManagement = () => {
                   disabled={selectedType == null}
                 />
               </SearchForm.Item>
+              <SearchForm.Item
+                label={'库位号'}
+                name="locationCode"
+              >
+                <Input
+                  placeholder={'请输入库位号'}
+                  allowClear
+                  disabled={selectedType == null}
+                />
+              </SearchForm.Item>
             </SearchForm>
           </HVLayout.Pane>
           <HVLayout.Pane
@@ -795,7 +804,7 @@ const PalletManagement = () => {
           </HVLayout.Pane>
         </HVLayout>
       </HVLayout>
-      <Drawer title={getFormattedMsg('PalletManagement.title.add')} visible={addFormVis} onClose={handleCancelCreate} width={500}>
+      <Drawer title={getFormattedMsg('PalletManagement.title.add')} visible={addFormVis} onClose={handleCancelCreate} width={500} destroyOnClose>
         <Drawer.DrawerContent>
           <AddForm
             ref={addRef}
@@ -809,6 +818,7 @@ const PalletManagement = () => {
         visible={bindingVisible}
         onCancel={handleCancelBinding}
         footer={modalBindingFoot()}
+        destroyOnClose
       >
         <SelectForm
           ref={selectRef}
@@ -841,6 +851,7 @@ const PalletManagement = () => {
         visible={simVis}
         onCancel={handleCancelSim}
         footer={modalSimFoot()}
+        destroyOnClose
       >
         <div style={{display:'flex'}}>
           <div style={{

@@ -22,7 +22,7 @@ const Detail = ({ detailData }) => {
                 </div>
                 <div style={{ width:'5rem'}}></div>
                 <div >
-                    <div className={styles.label} >采购批号：</div>
+                    <div className={styles.label} >行号：</div>
                     <div className={styles.value} >{detailData!={}&&detailData.purchaseBatchNumber}</div>
                 </div>
             </div>

@@ -96,7 +96,6 @@ const ContentTwo = ({newDataDetail}) => {
             </li>
           ))}
         </div>
-        {/* <div className={styles.child} ref={childDom2}></div> */}
         {
           newDataDetail.length > 8 &&
           <div className={styles.child} ref={childDom2}>
@@ -119,17 +118,6 @@ const ContentTwo = ({newDataDetail}) => {
               <span >{item.trayNumber}</span>
               <span >{item.location}</span>
               <span className={styles.createTime}>{item.createTime}</span>
-              {/* <span className={styles.num}>{index + 8}</span>
-              <span style={{width:'10%'}}>{item.materialCode}</span>
-              <span style={{width:'10%'}}>{item.materialName}</span>
-              <span style={{width:'10%'}}>{item.purchaseOrderNumber}</span>
-              <span style={{width:'10%'}}>{item.materialType}</span>
-              <span style={{width:'10%'}}>{item.specification}</span>
-              <span style={{width:'10%'}}>{item.number}</span>
-              <span style={{width:'10%'}}>{item.weight}</span>
-              <span style={{width:'10%'}}>{item.trayNumber}</span>
-              <span style={{width:'10%'}}>{item.location}</span>
-              <span style={{width:'10%'}}>{item.createTime}</span> */}
             </li>
           ))}
         </div>

@@ -55,29 +55,51 @@ const PickTray = ({ modifyData,attribute1,attribute2 }) => {
       key: 'locationNumber',
       align: 'center',
     },
+    // {
+    //   title: getFormattedMsg('SemiFinisheDeliveryPalletSelection.title.orderCount'),
+    //   dataIndex: 'orderCount',
+    //   key: 'orderCount',
+    //   align: 'center',
+    //   render: (text, record, index) => {
+    //     if (text == null) {
+    //       return
+    //     }
+    //     const arr = record.orderNumber.split(',');
+    //     const table = <div > <ul style={{ paddingLeft: 15, marginBottom: "0px" }}> {arr.map(item => <li key={item} >{item}</li>)} </ul> </div>
+    //     return (
+    //       <Tooltip placement="rightTop" title={table} arrowPointAtCenter>
+    //         <span>{text}</span>
+    //       </Tooltip>
+    //     )
+    //   }
+    // },
+    // {
+    //   title: '生产订单号',
+    //   dataIndex: 'orderNumber',
+    //   key: 'orderNumber',
+    //   align: 'center',
+    // },
     {
-      title: getFormattedMsg('SemiFinisheDeliveryPalletSelection.title.orderCount'),
-      dataIndex: 'orderCount',
-      key: 'orderCount',
-      align: 'center',
-      render: (text, record, index) => {
-        if (text == null) {
-          return
-        }
-        const arr = record.orderNumber.split(',');
-        const table = <div > <ul style={{ paddingLeft: 15, marginBottom: "0px" }}> {arr.map(item => <li key={item} >{item}</li>)} </ul> </div>
-        return (
-          <Tooltip placement="rightTop" title={table} arrowPointAtCenter>
-            <span>{text}</span>
-          </Tooltip>
-        )
-      }
-    },
-    {
-      title: '生产订单号',
+      title: '订单号',
       dataIndex: 'orderNumber',
       key: 'orderNumber',
       align: 'center',
+      render: (text, record, index) => {
+        <Tooltip placement="rightTop" arrowPointAtCenter>
+          {text}
+        </Tooltip>
+      }
+    },
+    {
+      title: '子订单号',
+      dataIndex: 'suborderNumber',
+      key: 'suborderNumber',
+      align: 'center',
+      render: (text, record, index) => {
+        <Tooltip placement="rightTop" arrowPointAtCenter>
+          {text}
+        </Tooltip>
+      }
     },
     {
       title: '产品名称',
@@ -92,9 +114,15 @@ const PickTray = ({ modifyData,attribute1,attribute2 }) => {
       align: 'center',
     },
     {
-      title: '产品数量',
+      title: '产品数量(张)',
       dataIndex: 'quantity',
       key: 'quantity',
+      align: 'center',
+    },
+    {
+      title: '子订单号',
+      dataIndex: 'suborderNumber',
+      key: 'suborderNumber',
       align: 'center',
     },
     {
@@ -121,21 +149,23 @@ const PickTray = ({ modifyData,attribute1,attribute2 }) => {
       key: 'state',
       align: 'center',
       render: (text, record, index) => {
-        const dataSource = [
-          { id: 1, trayNumber: 'J004004004004004004', location: 'J004', attributeTwo: 'J004', pickingPoint: 'J004', },
-        ]
-        const table = <div > <ul style={{ paddingLeft: 15, marginBottom: "0px" }}> {dataSource.map(item => <li key={item.id} >{item.trayNumber}</li>)} </ul> </div>
+        // const dataSource = [
+        //   { id: 1, trayNumber: 'J004004004004004004', location: 'J004', attributeTwo: 'J004', pickingPoint: 'J004', },
+        // ]
+        // const table = <div > <ul style={{ paddingLeft: 15, marginBottom: "0px" }}> {dataSource.map(item => <li key={item.id} >{item.trayNumber}</li>)} </ul> </div>
 
         if (text == 1) {
           return (
-            <Tooltip placement="rightTop" title={table} arrowPointAtCenter>
+            // <Tooltip placement="rightTop" title={table} arrowPointAtCenter>
+            <Tooltip placement="rightTop" arrowPointAtCenter>
               <span>{'已占用'}</span>
             </Tooltip>
           )
         }
         if (text == 2) {
           return (
-            <Tooltip placement="rightTop" title={table} arrowPointAtCenter>
+            // <Tooltip placement="rightTop" title={table} arrowPointAtCenter>
+            <Tooltip placement="rightTop" arrowPointAtCenter>
               <span>{'未占用'}</span>
             </Tooltip>
           )
@@ -205,6 +235,11 @@ const PickTray = ({ modifyData,attribute1,attribute2 }) => {
     if( params.attributeOne == ""){
       delete params.attributeOne
     }
+    if( params.suborderNumber == ""){
+      delete params.suborderNumber
+    }
+
+    
     setSearchValue({ ...params });
     setPage(1);
     setPageSize(10);
@@ -346,9 +381,16 @@ const PickTray = ({ modifyData,attribute1,attribute2 }) => {
                 style={{ width: '100%' }}
               />
             </SearchForm.Item>
+            
+            <SearchForm.Item
+              label={'子订单号'}
+              name="suborderNumber"
+            >
+              <Input allowClear placeholder={'请输入子订单号'} />
+            </SearchForm.Item>
             <SearchForm.Item
               label={'备注'}
-              name="desc"
+              name="description"
             >
               <Input allowClear placeholder={'请输入备注信息'} />
             </SearchForm.Item>

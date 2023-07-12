@@ -24,7 +24,8 @@ module.exports = {
       trayNumber:'trayNumber',
       count:'count',
       specification:'specification',
-      tableName:'Raw material delivery sheet',
+      // tableName:'Raw material delivery sheet',
+      tableName:'Cutting machine order management',
       add:'add',
     },
     button:{
@@ -105,7 +106,8 @@ module.exports = {
       trayNumber:'托盘号',
       count:'数量',
       specification:'规格',
-      tableName:'原材料出库单',
+      // tableName:'原材料出库单',
+      tableName:'切割机订单管理',
       add:'新增',
     },
     button:{

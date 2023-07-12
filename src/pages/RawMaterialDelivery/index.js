@@ -128,19 +128,19 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
       align: 'center',
     },
     {
-      title: '总数',
+      title: '总数(张)',
       dataIndex: 'totalRuns',
       key: 'totalRuns',
       align: 'center',
     },
     {
-      title: '出库数量',
+      title: '出库数量(张)',
       dataIndex: 'outNum',
       key: 'outNum',
       align: 'center',
     },
     {
-      title: '剩余数量',
+      title: '剩余数量(张)',
       dataIndex: 'remainRuns',
       key: 'remainRuns',
       align: 'center',
@@ -310,7 +310,6 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
   ];
 
   const HandleSaveManualDown = () => {
-    console.log(ManualDownSelected.lineId, ManualDownData.id, ManualDownSelected.stockId, 'HandleSaveManualDown');
     Modal.confirm({
       title: `确认下架?`,
       onOk: async () => {
@@ -527,6 +526,7 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
         visible={emptyVis}
         onClose={handleCancelEmpty}
         width={400}
+        destroyOnClose
       >
         <Drawer.DrawerContent>
           <EmptyForm ref={emptyRef} modifyData={emptyData} />
@@ -539,6 +539,7 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
         visible={surplusVis}
         onClose={handleCancelSurplus}
         width={400}
+        destroyOnClose
       >
         <Drawer.DrawerContent>
           <SurplusForm ref={surplusRef} modifyData={surplusData} />
@@ -559,6 +560,7 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
           paddingRight: 0,
           paddingBottom: 0,
         }}
+        destroyOnClose
       >
         <ManualDownTable
           ManualDownData={ManualDownData}

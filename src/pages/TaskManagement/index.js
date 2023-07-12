@@ -358,6 +358,7 @@ class Material extends Component {
           visible={visible}
           title={drawerTitle}
           onClose={() => this.setState({ visible: false })}
+          destroyOnClose
         >
           <Drawer.DrawerContent>
             <MaterialForm

@@ -169,6 +169,47 @@ class Material extends Service {
       throw new Error(err);
     }
   }
+
+  async findByQuery(data) {
+    try {
+      return await this.post(`${appName}/material/findByQuery`, {
+        ...data,
+        direction: false,
+        sort: true,
+        sortCol: 'id'
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async getAllByCodeOrName(data) {
+    try {
+      return await this.post(`${appName}/material/getAllByCodeOrName`, {
+        ...data,
+        direction: false,
+        sort: true,
+        sortCol: 'id'
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async getMaterialOld(value, hasBom) {
+    try {
+      return await this.post(`${appName}/material/getMaterial`, {
+        keyWord: value,
+        hasBom,
+        direction: false,
+        sort: true,
+        sortCol: 'id',
+        // pageSize: 1000000
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default new Material();

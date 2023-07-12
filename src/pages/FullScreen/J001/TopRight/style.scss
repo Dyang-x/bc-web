@@ -1,0 +1,98 @@
+.Table{
+  background: url(../../assets/slices/rectLargeBorder.svg) center center no-repeat;
+  background-size: 100% 100%;
+}
+
+.Title{
+  display: flex;
+  font-weight: 400;
+  font-size: 6rem;
+  text-align: center;
+  color: #fff;
+  height: 9rem;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+.Theader {
+  display: flex;
+  font-weight: 400;
+  font-size: 6rem;
+  text-align: center;
+  color: #fff;
+  height: 9rem;
+  background-color:#0945B3;
+
+  justify-content: space-between;
+  align-items: center;
+
+  div {
+    width: 25%;
+  }
+
+  .tNum {
+    width: 10%;
+  }
+
+  .tcreateTime{
+    width: 50% ;
+  }
+
+}
+
+.parent {
+  width: 100%;
+  height: 100%;/* 此处因父组件给了其固定宽度，所以设置为100%*/
+  // height: 150px;
+  // margin-top: 10px;
+  overflow-y: hidden;
+  /* 必须 */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.parent::-webkit-scrollbar {
+  display: none;
+}
+
+/*设置的子盒子高度大于父盒子，产生溢出效果*/
+.child {
+  height: auto;
+}
+
+.child li {
+  height: 9rem;
+  display: flex;
+  justify-content: space-between;
+  list-style-type: none;
+  font-weight: 300;
+  font-size: 6rem;
+  border-bottom: 1px solid #fff;
+}
+
+//待开工/已完工
+.other {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #fff;
+  /* 必须 */
+  background-size: 100% 100%;
+
+  span {
+    width: 25%;
+    text-align: center;
+    font-family: Source Han Sans CN;
+    font-size: 6rem;
+    font-weight: 500;
+  }
+
+  .num {
+    width: 10%;
+  }
+
+  .createTime{
+    width: 50% ;
+  }
+}

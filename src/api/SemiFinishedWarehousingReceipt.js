@@ -19,6 +19,15 @@ class SemiFinishedWarehousingReceipt extends Service {
     }
   }
 
+  //根据订单号查询主订单和子订单详情
+  async getAllOderByQuery(data) {
+    try {
+      return await this.post(`${appName}/SemiMaterialInWarehouseController/getAllOderByQuery`, data);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
   // 根据id查询单据
   async getById(id) {
     try {
@@ -40,7 +49,7 @@ class SemiFinishedWarehousingReceipt extends Service {
   // 入库
   async inStore(id) {
     try {
-      return await this.put(`${appName}/SemiMaterialInWarehouseController/inStore/${id}` );
+      return await this.put(`${appName}/SemiMaterialInWarehouseController/inStore/${id}`);
     } catch (error) {
       throw new Error(error);
     }

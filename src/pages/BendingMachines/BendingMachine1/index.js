@@ -4,7 +4,7 @@ import BendingMachine from '../BendingMachine/index';
 const BendingMachine1 = () => {
 
   return (
-    <BendingMachine bendingNumber={'C001'}/>
+    <BendingMachine bendingNumber={'C001'} tableName={'折弯机工位1'}/>
   );
 };
 
