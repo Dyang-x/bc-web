@@ -26,7 +26,7 @@ const Index = () => {
   const [searchValue, setSearchValue] = useState({}); 
   const [taskKind, setTaskKind] = useState(7); 
 
-  const [nowTab, setNowTab] = useState(1);
+  const [nowTab, setNowTab] = useState(6);
   const [adjustModalVis, setAdjustModalVis] = useState(false);
   const [adjustModalData, setAdjustModalData] = useState({});
   const adjustRef = useRef();
@@ -67,12 +67,12 @@ const Index = () => {
         key: 'fromLocation',
         align: 'center',
       },
-      {
-        title: getFormattedMsg('TaskTransport.title.middle'),
-        dataIndex: 'middle',
-        key: 'middle',
-        align: 'center',
-      },
+      // {
+      //   title: getFormattedMsg('TaskTransport.title.middle'),
+      //   dataIndex: 'middle',
+      //   key: 'middle',
+      //   align: 'center',
+      // },
       {
         title: getFormattedMsg('TaskTransport.title.toLocation'),
         dataIndex: 'toLocation',
@@ -90,6 +90,9 @@ const Index = () => {
         key: 'opt',
         align: 'center',
         render: (_, record) => [
+          nowTab == 6 && [
+            <a key="start" onClick={() => handleStartTask(record)} >手动排队</a>
+          ],
           nowTab == 1 && [
             <a key="adjust" onClick={() => handleAdjust(record)}>{getFormattedMsg('TaskTransport.button.adjust')}</a>,
             <Divider key="divider1" type="vertical" />,
@@ -174,6 +177,24 @@ const Index = () => {
     setPageSize(10);
     loadData(1, 10, { ...params, taskKind: kind, taskState: nowTab });
   };
+
+  const handleStartTask =(record)=>{
+    Modal.confirm({
+      title: '确认任务开始排队？',
+      onOk: async () => {
+        await TaskTranSportServices.startTask(record.id)
+          .then(res => {
+            loadData(page, pageSize, { ...searchValue, taskState: nowTab });
+          })
+          .catch(err => {
+            notification.warning({
+              description: err.message
+            })
+          })
+      },
+      onCancel(){}
+    })
+  }
 
   const handleAdjust = (record) => {
     setAdjustModalVis(true)
@@ -402,8 +423,17 @@ const Index = () => {
           }}
         >
           <Pane.Tab
+            title={'就绪'}
+            name='6'
+            isComponent
+            settingButton={<SettingButton />}
+            onRefresh={reFreshFunc()}
+          >
+            {renderTable}
+          </Pane.Tab>
+          <Pane.Tab
             title={getFormattedMsg('TaskTransport.title.lineTab')}
-            name='1'
+            name={1}
             isComponent
             settingButton={<SettingButton />}
             onRefresh={reFreshFunc()}

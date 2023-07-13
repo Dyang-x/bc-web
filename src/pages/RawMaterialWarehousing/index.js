@@ -365,19 +365,25 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
       taskType: 6, //原料托盘出库
       transferType: 0 //原料托盘
     }
-    await EmptyPalletDeliveryApi.autoTransferOut(data)
-      .then(res => {
-        notification.success({
-          message: '托盘自动出库成功'
-        });
-        loadData(page, pageSize, { ...searchValue, state: selectedstatus });
-      })
-      .catch(err => {
-        notification.warning({
-          description: err.message
-        });
-      })
-    //托盘出库   托盘自动出库
+    Modal.confirm({
+      title: '确认托盘自动下架？',
+      onOk: async () => {
+        await EmptyPalletDeliveryApi.autoTransferOut(data)
+          .then(res => {
+            notification.success({
+              message: '托盘自动出库成功'
+            });
+            loadData(page, pageSize, { ...searchValue, state: selectedstatus });
+          })
+          .catch(err => {
+            notification.warning({
+              description: err.message
+            });
+          })
+        //托盘出库   托盘自动出库
+      },
+      onCancel() { },
+    })
   }
 
   const handleManual = () => {

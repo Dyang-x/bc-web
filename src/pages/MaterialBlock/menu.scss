@@ -1,0 +1,32 @@
+.Menu {
+  :global {
+    .Pane-Header {
+      font-size: 12px;
+    }
+    .ant-tree-title {
+      display: inline-block;
+    }
+    .ant-tree li {
+      position: relative;
+      text-align: left;
+    }
+  }
+  .tree-node {
+    width: 180px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+
+    .options {
+      display: none;
+      position: absolute;
+      left: 5px;
+
+      a {
+        margin: 0 2px;
+      }
+    }
+
+  }
+}
+
+

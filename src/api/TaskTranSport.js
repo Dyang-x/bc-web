@@ -88,6 +88,22 @@ class TaskTranSportServices extends Service {
     }
   }
 
+
+    async manualSt2(taskCode) {
+      try {
+        return await this.put(`${appName}/task-management/manualSt2?taskCode=${taskCode}`);
+      } catch (error) {
+        throw new Error(error);
+      }
+    }
+
+    async startTask(id) {
+      try {
+        return await this.put(`${appName}/tasktransport/startTask?id=${id}`);
+      } catch (error) {
+        throw new Error(error);
+      }
+    }
 }
 
 export default new TaskTranSportServices();

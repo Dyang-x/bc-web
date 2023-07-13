@@ -210,6 +210,83 @@ class Material extends Service {
       throw new Error(error);
     }
   }
+
+
+  async getMaterialSearch(value, hasBom = null) {
+    try {
+      return await this.post(`${appName}/material/getMaterial`, {
+        keyWord: value,
+        hasBom,
+        direction: false,
+        sort: true,
+        sortCol: 'id'
+        // pageSize: 1000000
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async getMaterialByNameOrCode(data) {
+    try {
+      return await this.post(`${appName}/material/getMaterialByNameOrCode`, {
+        ...data,
+        direction: false,
+        sort: true,
+        sortCol: 'id'
+      });
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+
+  exportMaterial = async () => this.get(`${appName}/material/exportMaterials`);
+
+  importMaterial = async file => {
+    try {
+      const data = new window.FormData();
+      data.append('file', file);
+      const res = await this.post(`${appName}/material/importMaterial`, data, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      return res;
+    } catch (err) {
+      throw new Error(err);
+    }
+  };
+
+  getMaterialsImportTemplate = async () =>
+    await this.get(`${appName}/material/getMaterialsImportTemplate`);
+
+  async getMaterialsByIdList(data) {
+    return await this.post(`${appName}/material/getMaterialsByIdList`, data);
+  }
+
+  createMaterialExtend(data) {
+    return this.post(`${appName}/material/createMaterialExtend`, data);
+  }
+
+  async deleteMaterialExtend(name) {
+    return await this.delete(`${appName}/material/deleteMaterialExtend/${name}`);
+  }
+
+  async getMaterialByKeyWord(value, hasBom) {
+    try {
+      return await this.post(`${appName}/material/getMaterial`, {
+        keyWord: value,
+        hasBom,
+        direction: false,
+        sort: true,
+        sortCol: 'id'
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+
 }
 
 export default new Material();

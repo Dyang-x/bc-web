@@ -1,0 +1,11 @@
+export const GET_MATERIAL = 'material/GET_MATERIAL';
+export const ADD_MATERIAL = 'material/ADD_MATERIAL';
+export const GET_UNIT = 'unit/GET_UNIT';
+export const GET_TYPE = 'type/GET_TYPE';
+export const GET_EXTENDS_COLUMNS = 'material/GET_EXTENDS_COLUMNS';
+export const GET_BOMCODE = 'bom/GET_BOMCODE';
+export const GET_BOMVERSIONS = 'bom/GET_BOMVERSIONS';
+export const GET_MATERIAL_BY_BARCH = 'material/GET_MATERIAL_BY_BARCH';
+export const GET_MATERIALBYPRODUCT = 'material/GET_MATERIALBYPRODUCT';
+export const GET_MATERIALBYCODEORVALUE = 'material/GET_MATERIALBYCODEORVALUE';
+export const GET_MATERIAL_SETTING = 'material/GET_MATERIAL_SETTING';

@@ -61,12 +61,12 @@ const Index = () => {
         key: 'transferCode',
         align: 'center',
       },
-      {
-        title: getFormattedMsg('AgvManagement.title.overviewCode'),
-        dataIndex: 'overviewCode',
-        key: 'overviewCode',
-        align: 'center',
-      },
+      // {
+      //   title: getFormattedMsg('AgvManagement.title.overviewCode'),
+      //   dataIndex: 'overviewCode',
+      //   key: 'overviewCode',
+      //   align: 'center',
+      // },
       {
         title: getFormattedMsg('AgvManagement.title.fromLocation'),
         dataIndex: 'fromLocation',
@@ -85,6 +85,11 @@ const Index = () => {
         align: 'center',
         render: (_, record) => [
           nowTab == 1 && [
+            <a key="carIn" onClick={() => handleCarIn(record)}>
+              agv请求进入
+            </a>,
+            <Divider key="divider4" type="vertical" />,
+
             <a key="adjust" onClick={() => handleAdjust(record)}>{getFormattedMsg('AgvManagement.button.adjust')}</a>,
             <Divider key="divider1" type="vertical" />,
             <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)} >
@@ -111,6 +116,9 @@ const Index = () => {
             </a>,
             <Divider key="divider3" type="vertical" />,
             <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('AgvManagement.button.complete')}</a>
+          ],
+          nowTab == 7 && [
+            <a key="agvRequestIn" onClick={() => agvRequestIn(record)} >agv请求进入</a>
           ],
         ],
         width: 300,
@@ -224,6 +232,44 @@ const Index = () => {
           description: err.message
         })
       })
+  }
+
+  const handleCarIn = (record)=>{
+    const data ={
+      orderId:record.taskCode,
+      status:10
+    }
+    Modal.confirm({
+      title: '确认AGV进入',
+      onOk: async () => {
+        await AgvManagementServices.agvStatus(data)
+          .then(res => {
+            loadData(page, pageSize, { ...searchValue, taskState: nowTab });
+          })
+          .catch(err => {
+            notification.warning({
+              description: err.message
+            })
+          })
+      }
+    })
+  }
+
+  const agvRequestIn = (record)=>{
+    Modal.confirm({
+      title: 'AGV请求进入',
+      onOk: async () => {
+        await AgvManagementServices.agvRequestIn(record.taskCode)
+          .then(res => {
+            loadData(page, pageSize, { ...searchValue, taskState: nowTab });
+          })
+          .catch(err => {
+            notification.warning({
+              description: err.message
+            })
+          })
+      }
+    })
   }
 
   const handleDelete = (record) => {

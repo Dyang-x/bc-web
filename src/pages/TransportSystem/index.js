@@ -1,5 +1,5 @@
 import React from 'react';
-import TaskTranSport from '~/pages/TaskTransport/index';
+import TaskTranSport from '~/pages/TransportSystem/TaskTransport/index';
 import { taskType,TransportTaskType } from '~/enum/enum';
 
 const Index = () => {

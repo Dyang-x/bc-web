@@ -498,7 +498,7 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
             <Table
               // className={styles.mainTable}
               pagination={false}
-              scroll={{ x: 'max-content' }}
+              scroll={{ x: 100 }}
               dataSource={tableData}
               columns={columns}
               rowKey={record => record.id}

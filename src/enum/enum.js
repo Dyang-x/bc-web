@@ -82,6 +82,27 @@ export const taskState = [
     { id: 5, name: '异常', value: '异常', },
 ]
 
+//agv状态
+export const agvState = [
+    { id: 1, name: '排队中', value: '排队中', },
+    { id: 2, name: '执行中', value: '执行中', },
+    { id: 3, name: '暂停', value: '暂停', },
+    { id: 4, name: '完成', value: '完成', },
+    // { id: 5, name: '异常', value: '异常', },
+    { id: 6, name: '就绪', value: '就绪', },
+    { id: 7, name: '准备进入', value: '准备进入', },
+
+]
+
+//提升机状态
+export const transportState = [
+    { id: 1, name: '排队中', value: '排队中', },
+    { id: 2, name: '执行中', value: '执行中', },
+    { id: 3, name: '暂停', value: '暂停', },
+    { id: 4, name: '完成', value: '完成', },
+    // { id: 5, name: '异常', value: '异常', },
+]
+
 // 全部 任务类型
 export const taskType = [
     { id: 1, name: '原料采购入库', value: '原料采购入库', },

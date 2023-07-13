@@ -59,7 +59,7 @@ const TopRight = ({RightData}) => {
     >
       <div className={styles.Theader}>
       <div className={styles.tNum}>序号</div>
-            <div >分组项</div>
+            <div >特殊规格分组</div>
             <div >托盘数量</div>
             <div >总重量(kg)</div>
             <div >总数量(张)</div>
@@ -84,7 +84,7 @@ const TopRight = ({RightData}) => {
           ))}
         </div>
         {
-          RightData.length > 8 &&
+          RightData.length > 7 &&
           <div className={styles.child} ref={childDom2}>
              {!isEmpty(list) &&list.map((item, index) => (
             <li

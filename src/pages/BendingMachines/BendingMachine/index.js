@@ -342,6 +342,7 @@ const BendingMachine = ({ bendingNumber, tableName }) => {
           message: '托盘入库任务生成成功'
         });
         loadData(page, pageSize, { ...searchValue });
+        handleCancelPutOn()
       })
       .catch(err => {
         notification.warning({

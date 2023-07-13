@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { HVLayout, Button, Spin, Pagination, SearchForm, Select, Divider, Input, Modal } from '@hvisions/h-ui';
 import { i18n, page } from '@hvisions/toolkit';
 import { CacheTable } from '~/components';
-import { taskState, taskType } from '~/enum/enum';
+import { taskState, taskType,agvState,transportState } from '~/enum/enum';
 import TaskOverviewServices from '~/api/TaskOverview';
 import { notification } from '~/../node_modules/antd/lib/index';
 import AdjustForm from './AdjustForm';
@@ -94,11 +94,12 @@ const Index = ({ history }) => {
           if (text == null) {
             return
           }
-          return taskState[text - 1].name
+          return agvState[text - 1].name
         }
       },
       {
-        title: getFormattedMsg('TaskOverview.title.transportState'),
+        // title: getFormattedMsg('TaskOverview.title.transportState'),
+        title: 'RBG状态',
         dataIndex: 'transportState',
         key: 'transportState',
         align: 'center',
@@ -106,7 +107,7 @@ const Index = ({ history }) => {
           if (text == null) {
             return
           }
-          return taskState[text - 1].name
+          return transportState[text - 1].name
         }
       },
       {

@@ -12,14 +12,14 @@ const { Pane } = HVLayout;
 const { showTotal } = page
 const { Option } = Select;
 
-const Index = ({ taskKind ,taskType}) => {
+const Index = ({ taskKind, taskType }) => {
   const [tableData, setTableData] = useState([]);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [totalPage, setTotalPage] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [searchValue, setSearchValue] = useState({ taskKind: taskKind }); 
-  const [nowTab, setNowTab] = useState(1);
+  const [searchValue, setSearchValue] = useState({ taskKind: taskKind });
+  const [nowTab, setNowTab] = useState(6);
   const [adjustModalVis, setAdjustModalVis] = useState(false);
   const [adjustModalData, setAdjustModalData] = useState({});
   const adjustRef = useRef();
@@ -83,6 +83,9 @@ const Index = ({ taskKind ,taskType}) => {
         key: 'opt',
         align: 'center',
         render: (_, record) => [
+          nowTab == 6 && [
+            <a key="start" onClick={() => handleStart(record)} >手动开始</a>
+          ],
           nowTab == 1 && [
             <a key="adjust" onClick={() => handleAdjust(record)}>{getFormattedMsg('TaskTransport.button.adjust')}</a>,
             <Divider key="divider1" type="vertical" />,
@@ -164,6 +167,23 @@ const Index = ({ taskKind ,taskType}) => {
     setPageSize(10);
     loadData(1, 10, { ...params, taskKind: taskKind, taskState: nowTab });
   };
+
+  const handleStart =(record)=>{
+    Modal.confirm({
+      title: '确认任务开始？',
+      onOk: async () => {
+        await TaskTranSportServices.manualSt2(record.taskCode)
+          .then(res => {
+            loadData(page, pageSize, { ...searchValue, taskState: nowTab });
+          })
+          .catch(err => {
+            notification.warning({
+              description: err.message
+            })
+          })
+      }
+    })
+  }
 
   const handleAdjust = (record) => {
     setAdjustModalVis(true)
@@ -287,20 +307,20 @@ const Index = ({ taskKind ,taskType}) => {
     Modal.confirm({
       title: getFormattedMsg('TaskTransport.title.complete'),
       onOk: async () => {
-        if(taskKind ==1){
+        if (taskKind == 1) {
           await TaskTranSportServices.finishRBG(record.taskCode)
-          .then(res => {
-            notification.success({
-              message: getFormattedMsg('TaskTransport.message.completeSuccess'),
+            .then(res => {
+              notification.success({
+                message: getFormattedMsg('TaskTransport.message.completeSuccess'),
+              })
+              loadData(page, pageSize, { ...searchValue, taskState: nowTab });
             })
-            loadData(page, pageSize, { ...searchValue, taskState: nowTab });
-          })
-          .catch(err => {
-            notification.warning({
-              message: getFormattedMsg('TaskTransport.message.completeFailure'),
-              description: err.message
+            .catch(err => {
+              notification.warning({
+                message: getFormattedMsg('TaskTransport.message.completeFailure'),
+                description: err.message
+              })
             })
-          })
           return
         }
         await TaskTranSportServices.finishTask(record.id)
@@ -392,8 +412,17 @@ const Index = ({ taskKind ,taskType}) => {
           }}
         >
           <Pane.Tab
+            title={'就绪'}
+            name='6'
+            isComponent
+            settingButton={<SettingButton />}
+            onRefresh={reFreshFunc()}
+          >
+            {renderTable}
+          </Pane.Tab>
+          <Pane.Tab
             title={getFormattedMsg('TaskTransport.title.lineTab')}
-            name='1'
+            name={1}
             isComponent
             settingButton={<SettingButton />}
             onRefresh={reFreshFunc()}

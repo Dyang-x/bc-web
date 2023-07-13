@@ -60,8 +60,14 @@ import WirelineStorage from './pages/WirelineStorage/index';
 
 import StockStatistics from '~/pages/StockStatistics';
 
-// import Material from '~/pages/MaterialBlock';
-// import MaterialDetail from '~/pages/Material/Component/Detail';
+import Material from '~/pages/MaterialBlock';
+import MaterialDetail from '~/pages/Material/Component/Detail';
+
+import ManualPutInStorage from '~/pages/ManualPutInStorage'
+import ManualInStorageOperate from '~/pages/ManualInStorageOperate'
+
+import RetrievalManagerment from '~/pages/RetrievalManagerment'
+import RetrievalOperate from '~/pages/RetrievalOperate'
 
 export default [
   {
@@ -187,15 +193,33 @@ export default [
     component: StockStatistics
   },
 
+  {
+    path: '/manual-putInStorage',
+    component: ManualPutInStorage,
+    children: {
+      path: '/manual-inStorage-operate',
+      component: ManualInStorageOperate
+    }
+  },
 
-  // {
-  //   path: '/material',
-  //   component: Material,
-  //   children: {
-  //     path: '/detail',
-  //     component: MaterialDetail
-  //   }
-  // },
+  {
+    path: '/retrieval-managerment',
+    component: RetrievalManagerment,
+    children: {
+      path: '/retrieval-operate',
+      component: RetrievalOperate
+    }
+  },
+
+
+  {
+    path: '/material',
+    component: Material,
+    children: {
+      path: '/detail',
+      component: MaterialDetail
+    }
+  },
 
   // 以下是示例功能代码， 正式开发时请删除
   // {

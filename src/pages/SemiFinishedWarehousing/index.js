@@ -384,20 +384,20 @@ let orderDetails = []
       // delete params.scan
       console.log(params, 'params');
 
-      // await SemiFinishedWarehousingReceiptApi
-      //   .bindSemiMaterial(params)
-      //   .then(res => {
-      //     notification.success({
-      //       message: getFormattedMsg('SemiFinishedWarehousingReceipt.message.addSuccess')
-      //     });
-      //     loadData(page, pageSize, { ...searchValue, state: selectedstatus });
-      //   })
-      //   .catch(err => {
-      //     notification.warning({
-      //       message: getFormattedMsg('SemiFinishedWarehousingReceipt.message.addFailure'),
-      //       description: err.message
-      //     });
-      //   });
+      await SemiFinishedWarehousingReceiptApi
+        .bindSemiMaterial(params)
+        .then(res => {
+          notification.success({
+            message: getFormattedMsg('SemiFinishedWarehousingReceipt.message.addSuccess')
+          });
+          loadData(page, pageSize, { ...searchValue, state: selectedstatus });
+        })
+        .catch(err => {
+          notification.warning({
+            message: getFormattedMsg('SemiFinishedWarehousingReceipt.message.addFailure'),
+            description: err.message
+          });
+        });
       handleCancelAdd();
     });
   }

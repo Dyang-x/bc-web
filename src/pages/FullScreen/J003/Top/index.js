@@ -26,8 +26,8 @@ const ContentTwo = ({ newData }) => {
           className={styles['other']}
         >
           <span >{newData != {} && !isEmpty(newData)&&newData.planCode}</span>
-          <span >{newData != {} && !isEmpty(newData)&&newData.productName}</span>
           <span >{newData != {} && !isEmpty(newData)&&newData.productNumber}</span>
+          <span >{newData != {} && !isEmpty(newData)&&newData.productName}</span>
           <span >{newData != {} && !isEmpty(newData)&&newData.trayNumber}</span>
         </li>
       </div>
