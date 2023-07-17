@@ -37,12 +37,12 @@ const PickTray = ({ modifyData,attribute1,attribute2 }) => {
   }, []);
 
   const columns = [
-    {
-      title: getFormattedMsg('SemiFinisheDeliveryPalletSelection.title.outOrderNumber'),
-      dataIndex: 'owNumber',
-      key: 'owNumber',
-      align: 'center',
-    },
+    // {
+    //   title: getFormattedMsg('SemiFinisheDeliveryPalletSelection.title.outOrderNumber'),
+    //   dataIndex: 'owNumber',
+    //   key: 'owNumber',
+    //   align: 'center',
+    // },
     {
       title: getFormattedMsg('SemiFinisheDeliveryPalletSelection.title.trayNumber'),
       dataIndex: 'trayNumber',
@@ -84,45 +84,29 @@ const PickTray = ({ modifyData,attribute1,attribute2 }) => {
       dataIndex: 'orderNumber',
       key: 'orderNumber',
       align: 'center',
-      render: (text, record, index) => {
-        <Tooltip placement="rightTop" arrowPointAtCenter>
-          {text}
-        </Tooltip>
-      }
     },
     {
       title: '子订单号',
       dataIndex: 'suborderNumber',
       key: 'suborderNumber',
       align: 'center',
-      render: (text, record, index) => {
-        <Tooltip placement="rightTop" arrowPointAtCenter>
-          {text}
-        </Tooltip>
-      }
     },
     {
       title: '产品名称',
-      dataIndex: 'materialName',
-      key: 'materialName',
+      dataIndex: 'productName',
+      key: 'productName',
       align: 'center',
     },
     {
       title: '产品代码',
-      dataIndex: 'materialCode',
-      key: 'materialCode',
+      dataIndex: 'productCode',
+      key: 'productCode',
       align: 'center',
     },
     {
       title: '产品数量(张)',
-      dataIndex: 'quantity',
-      key: 'quantity',
-      align: 'center',
-    },
-    {
-      title: '子订单号',
-      dataIndex: 'suborderNumber',
-      key: 'suborderNumber',
+      dataIndex: 'productNum',
+      key: 'productNum',
       align: 'center',
     },
     {
@@ -174,8 +158,8 @@ const PickTray = ({ modifyData,attribute1,attribute2 }) => {
     },
     {
       title: '备注',
-      dataIndex: 'desc',
-      key: 'desc',
+      dataIndex: 'description',
+      key: 'description',
       align: 'center',
     },
   ];

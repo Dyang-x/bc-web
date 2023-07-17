@@ -235,7 +235,7 @@ const BendingMachine = ({ bendingNumber, tableName }) => {
     setPullOffData(record)
   }
 
-  const handleCancelPullOffk = () => {
+  const handleCancelPullOff = () => {
     setPullOffVis(false)
     setPullOffData({})
   }
@@ -469,12 +469,12 @@ const BendingMachine = ({ bendingNumber, tableName }) => {
         className='pullOffDrawer'
         title={'托盘下架'}
         visible={pullOffVis}
-        onClose={handleCancelPullOffk}
+        onClose={handleCancelPullOff}
         width={window.innerWidth * 0.8}
         bodyStyle={{ height: document.body.clientHeight - 55 }}
         destroyOnClose
       >
-        <PullOff pullOffData={pullOffData} />
+        <PullOff pullOffData={pullOffData} handleCancelPullOff={handleCancelPullOff}/>
       </Drawer>
       <Modal
         title={'托盘上架'}

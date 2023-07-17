@@ -23,14 +23,14 @@ const dateTime = 'YYYY-MM-DD HH:mm:ss';
 const { Pane } = HVLayout;
 const { showTotal } = page;
 
-const PullOff = ({ pullOffData }) => {
+const PullOff = ({ pullOffData,handleCancelPullOff }) => {
     const [tableData, setTableData] = useState([]);
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [totalPage, setTotalPage] = useState(0);
     const [loading, setLoading] = useState(false);
     const [selectedstatus, setSelectedstatus] = useState('0');
-    const [searchValue, setSearchValue] = useState({toLocation:pullOffData.readyMaterials});
+    const [searchValue, setSearchValue] = useState({toLocation:pullOffData.readyMaterials,shelfState:0});
 
     useEffect(() => {
         loadTableData(page, pageSize, { ...searchValue, status: selectedstatus });
@@ -198,6 +198,7 @@ const PullOff = ({ pullOffData }) => {
                         notification.warning({
                             message: '托盘下架成功',
                         });
+                        handleCancelPullOff()
                     })
                     .catch(err => {
                         setLoading(false);
@@ -217,10 +218,10 @@ const PullOff = ({ pullOffData }) => {
             params.startTime = moment(params.outStockTime[0]).format(dateTime)
             params.endTime = moment(params.outStockTime[1]).format(dateTime)
         }
-        setSearchValue({ ...params, status: selectedstatus,toLocation:pullOffData.readyMaterials });
+        setSearchValue({ ...params, status: selectedstatus, toLocation: pullOffData.readyMaterials, shelfState: 0 });
         setPage(1);
         setPageSize(10);
-        loadTableData(1, 10, { ...params, status: selectedstatus == 2 ? '' : selectedstatus, toLocation : pullOffData.readyMaterials });
+        loadTableData(1, 10, { ...params, status: selectedstatus == 2 ? '' : selectedstatus, toLocation: pullOffData.readyMaterials, shelfState: 0 });
     };
 
     const loadTableData = (page, pageSize, searchValue) => {

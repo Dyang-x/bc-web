@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { HVLayout, Button, Spin, Pagination, SearchForm, Select, Divider, Input, Modal } from '@hvisions/h-ui';
 import { i18n, page } from '@hvisions/toolkit';
 import { CacheTable } from '~/components';
-import { taskType, taskKind,TransportTaskType } from '~/enum/enum';
+import { taskType, taskKind, TransportTaskType } from '~/enum/enum';
 import AgvManagementServices from '~/api/AgvManagement';
 import { notification } from '~/../node_modules/antd/lib/index';
 import AdjustForm from './AdjustForm';
@@ -30,100 +30,316 @@ const Index = () => {
   }, []);
 
   const columns = useMemo(() => {
-    return [
-      {
-        title: getFormattedMsg('AgvManagement.title.taskCode'),
-        dataIndex: 'taskCode',
-        key: 'taskCode',
-        align: 'center',
-      },
-      {
-        title: getFormattedMsg('AgvManagement.title.taskType'),
-        dataIndex: 'taskType',
-        key: 'taskType',
-        align: 'center',
-        render: (text) => {
-          if (text == null) {
-            return
+    if (nowTab == 4) {
+      return [
+        {
+          title: getFormattedMsg('AgvManagement.title.taskCode'),
+          dataIndex: 'taskCode',
+          key: 'taskCode',
+          align: 'center',
+        },
+        {
+          title: getFormattedMsg('AgvManagement.title.taskType'),
+          dataIndex: 'taskType',
+          key: 'taskType',
+          align: 'center',
+          render: (text) => {
+            if (text == null) {
+              return
+            }
+            return TransportTaskType[text - 1].name
           }
-          return TransportTaskType[text - 1].name
-        }
-      },
-      {
-        title: getFormattedMsg('AgvManagement.title.priority'),
-        dataIndex: 'priority',
-        key: 'priority',
-        align: 'center',
-      },
-      {
-        title: getFormattedMsg('AgvManagement.title.transferCode'),
-        dataIndex: 'transferCode',
-        key: 'transferCode',
-        align: 'center',
-      },
-      // {
-      //   title: getFormattedMsg('AgvManagement.title.overviewCode'),
-      //   dataIndex: 'overviewCode',
-      //   key: 'overviewCode',
-      //   align: 'center',
-      // },
-      {
-        title: getFormattedMsg('AgvManagement.title.fromLocation'),
-        dataIndex: 'fromLocation',
-        key: 'fromLocation',
-        align: 'center',
-      },
-      {
-        title: getFormattedMsg('AgvManagement.title.toLocation'),
-        dataIndex: 'toLocation',
-        key: 'toLocation',
-        align: 'center',
-      },
-      {
-        title: getFormattedMsg('AgvManagement.title.operation'),
-        key: 'opt',
-        align: 'center',
-        render: (_, record) => [
-          nowTab == 1 && [
-            <a key="carIn" onClick={() => handleCarIn(record)}>
-              agv请求进入
-            </a>,
-            <Divider key="divider4" type="vertical" />,
+        },
+        {
+          title: getFormattedMsg('AgvManagement.title.priority'),
+          dataIndex: 'priority',
+          key: 'priority',
+          align: 'center',
+        },
+        {
+          title: '任务完成时间',
+          dataIndex: 'updateTime',
+          key: 'updateTime',
+          align: 'center',
+        },
+        {
+          title: getFormattedMsg('AgvManagement.title.transferCode'),
+          dataIndex: 'transferCode',
+          key: 'transferCode',
+          align: 'center',
+        },
+        // {
+        //   title: getFormattedMsg('AgvManagement.title.overviewCode'),
+        //   dataIndex: 'overviewCode',
+        //   key: 'overviewCode',
+        //   align: 'center',
+        // },
+        {
+          title: getFormattedMsg('AgvManagement.title.fromLocation'),
+          dataIndex: 'fromLocation',
+          key: 'fromLocation',
+          align: 'center',
+        },
+        {
+          title: getFormattedMsg('AgvManagement.title.toLocation'),
+          dataIndex: 'toLocation',
+          key: 'toLocation',
+          align: 'center',
+        },
+        {
+          title: getFormattedMsg('AgvManagement.title.operation'),
+          key: 'opt',
+          align: 'center',
+          render: (_, record) => [
+            nowTab == 1 && [
+              // <a key="carIn" onClick={() => handleCarIn(record)}>
+              //   agv请求进入
+              // </a>,
+              // <Divider key="divider4" type="vertical" />,
 
-            <a key="adjust" onClick={() => handleAdjust(record)}>{getFormattedMsg('AgvManagement.button.adjust')}</a>,
-            <Divider key="divider1" type="vertical" />,
-            <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)} >
-              {getFormattedMsg('AgvManagement.button.delete')}
-            </a>,
-            <Divider key="divider2" type="vertical" />,
-            <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
-              {getFormattedMsg('AgvManagement.button.pause')}
-            </a>,
+              <a key="adjust" onClick={() => handleAdjust(record)}>{getFormattedMsg('AgvManagement.button.adjust')}</a>,
+              <Divider key="divider1" type="vertical" />,
+              <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)} >
+                {getFormattedMsg('AgvManagement.button.delete')}
+              </a>,
+              <Divider key="divider2" type="vertical" />,
+              <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
+                {getFormattedMsg('AgvManagement.button.pause')}
+              </a>,
+            ],
+            nowTab == 2 && [
+              <a key="carIn" onClick={() => handleCarIn(record)}>
+                agv请求进入
+              </a>,
+              <Divider key="divider4" type="vertical" />,
+              // <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
+              //   {getFormattedMsg('AgvManagement.button.pause')}
+              //   </a>,
+              // <Divider key="divider2" type="vertical" />,
+              <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('AgvManagement.button.complete')}</a>
+            ],
+            nowTab == 3 && [
+              <a key="continue" onClick={() => handleContinue(record)} >{getFormattedMsg('AgvManagement.button.continue')}</a>
+            ],
+            nowTab == 5 && [
+              <a key="rollback" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleRollback(record)} >
+                {getFormattedMsg('AgvManagement.button.rollback')}
+              </a>,
+              <Divider key="divider3" type="vertical" />,
+              <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('AgvManagement.button.complete')}</a>
+            ],
+            nowTab == 7 && [
+              <a key="agvRequestIn" onClick={() => agvRequestIn(record)} >agv请求进入</a>
+            ],
           ],
-          nowTab == 2 && [
-            // <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
-            //   {getFormattedMsg('AgvManagement.button.pause')}
-            //   </a>,
-            // <Divider key="divider2" type="vertical" />,
-            <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('AgvManagement.button.complete')}</a>
+          width: 300,
+        }
+      ];
+    }
+    if (nowTab != 4) {
+      return [
+        {
+          title: getFormattedMsg('AgvManagement.title.taskCode'),
+          dataIndex: 'taskCode',
+          key: 'taskCode',
+          align: 'center',
+        },
+        {
+          title: getFormattedMsg('AgvManagement.title.taskType'),
+          dataIndex: 'taskType',
+          key: 'taskType',
+          align: 'center',
+          render: (text) => {
+            if (text == null) {
+              return
+            }
+            return TransportTaskType[text - 1].name
+          }
+        },
+        {
+          title: getFormattedMsg('AgvManagement.title.priority'),
+          dataIndex: 'priority',
+          key: 'priority',
+          align: 'center',
+        },
+        {
+          title: '任务启动时间',
+          dataIndex: 'updateTime',
+          key: 'updateTime',
+          align: 'center',
+        },
+        {
+          title: getFormattedMsg('AgvManagement.title.transferCode'),
+          dataIndex: 'transferCode',
+          key: 'transferCode',
+          align: 'center',
+        },
+        // {
+        //   title: getFormattedMsg('AgvManagement.title.overviewCode'),
+        //   dataIndex: 'overviewCode',
+        //   key: 'overviewCode',
+        //   align: 'center',
+        // },
+        {
+          title: getFormattedMsg('AgvManagement.title.fromLocation'),
+          dataIndex: 'fromLocation',
+          key: 'fromLocation',
+          align: 'center',
+        },
+        {
+          title: getFormattedMsg('AgvManagement.title.toLocation'),
+          dataIndex: 'toLocation',
+          key: 'toLocation',
+          align: 'center',
+        },
+        {
+          title: getFormattedMsg('AgvManagement.title.operation'),
+          key: 'opt',
+          align: 'center',
+          render: (_, record) => [
+            nowTab == 1 && [
+              // <a key="carIn" onClick={() => handleCarIn(record)}>
+              //   agv请求进入
+              // </a>,
+              // <Divider key="divider4" type="vertical" />,
+
+              <a key="adjust" onClick={() => handleAdjust(record)}>{getFormattedMsg('AgvManagement.button.adjust')}</a>,
+              <Divider key="divider1" type="vertical" />,
+              <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)} >
+                {getFormattedMsg('AgvManagement.button.delete')}
+              </a>,
+              <Divider key="divider2" type="vertical" />,
+              <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
+                {getFormattedMsg('AgvManagement.button.pause')}
+              </a>,
+            ],
+            nowTab == 2 && [
+              <a key="carIn" onClick={() => handleCarIn(record)}>
+                agv请求进入
+              </a>,
+              <Divider key="divider4" type="vertical" />,
+              // <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
+              //   {getFormattedMsg('AgvManagement.button.pause')}
+              //   </a>,
+              // <Divider key="divider2" type="vertical" />,
+              <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('AgvManagement.button.complete')}</a>
+            ],
+            nowTab == 3 && [
+              <a key="continue" onClick={() => handleContinue(record)} >{getFormattedMsg('AgvManagement.button.continue')}</a>
+            ],
+            nowTab == 5 && [
+              <a key="rollback" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleRollback(record)} >
+                {getFormattedMsg('AgvManagement.button.rollback')}
+              </a>,
+              <Divider key="divider3" type="vertical" />,
+              <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('AgvManagement.button.complete')}</a>
+            ],
+            nowTab == 7 && [
+              <a key="agvRequestIn" onClick={() => agvRequestIn(record)} >agv请求进入</a>
+            ],
           ],
-          nowTab == 3 && [
-            <a key="continue" onClick={() => handleContinue(record)} >{getFormattedMsg('AgvManagement.button.continue')}</a>
-          ],
-          nowTab == 5 && [
-            <a key="rollback" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleRollback(record)} >
-              {getFormattedMsg('AgvManagement.button.rollback')}
-            </a>,
-            <Divider key="divider3" type="vertical" />,
-            <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('AgvManagement.button.complete')}</a>
-          ],
-          nowTab == 7 && [
-            <a key="agvRequestIn" onClick={() => agvRequestIn(record)} >agv请求进入</a>
-          ],
-        ],
-        width: 300,
-      }
-    ];
+          width: 300,
+        }
+      ];
+    }
+    // return [
+    //   {
+    //     title: getFormattedMsg('AgvManagement.title.taskCode'),
+    //     dataIndex: 'taskCode',
+    //     key: 'taskCode',
+    //     align: 'center',
+    //   },
+    //   {
+    //     title: getFormattedMsg('AgvManagement.title.taskType'),
+    //     dataIndex: 'taskType',
+    //     key: 'taskType',
+    //     align: 'center',
+    //     render: (text) => {
+    //       if (text == null) {
+    //         return
+    //       }
+    //       return TransportTaskType[text - 1].name
+    //     }
+    //   },
+    //   {
+    //     title: getFormattedMsg('AgvManagement.title.priority'),
+    //     dataIndex: 'priority',
+    //     key: 'priority',
+    //     align: 'center',
+    //   },
+    //   {
+    //     title: getFormattedMsg('AgvManagement.title.transferCode'),
+    //     dataIndex: 'transferCode',
+    //     key: 'transferCode',
+    //     align: 'center',
+    //   },
+    //   // {
+    //   //   title: getFormattedMsg('AgvManagement.title.overviewCode'),
+    //   //   dataIndex: 'overviewCode',
+    //   //   key: 'overviewCode',
+    //   //   align: 'center',
+    //   // },
+    //   {
+    //     title: getFormattedMsg('AgvManagement.title.fromLocation'),
+    //     dataIndex: 'fromLocation',
+    //     key: 'fromLocation',
+    //     align: 'center',
+    //   },
+    //   {
+    //     title: getFormattedMsg('AgvManagement.title.toLocation'),
+    //     dataIndex: 'toLocation',
+    //     key: 'toLocation',
+    //     align: 'center',
+    //   },
+    //   {
+    //     title: getFormattedMsg('AgvManagement.title.operation'),
+    //     key: 'opt',
+    //     align: 'center',
+    //     render: (_, record) => [
+    //       nowTab == 1 && [
+    //         // <a key="carIn" onClick={() => handleCarIn(record)}>
+    //         //   agv请求进入
+    //         // </a>,
+    //         // <Divider key="divider4" type="vertical" />,
+
+    //         <a key="adjust" onClick={() => handleAdjust(record)}>{getFormattedMsg('AgvManagement.button.adjust')}</a>,
+    //         <Divider key="divider1" type="vertical" />,
+    //         <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)} >
+    //           {getFormattedMsg('AgvManagement.button.delete')}
+    //         </a>,
+    //         <Divider key="divider2" type="vertical" />,
+    //         <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
+    //           {getFormattedMsg('AgvManagement.button.pause')}
+    //         </a>,
+    //       ],
+    //       nowTab == 2 && [
+    //         <a key="carIn" onClick={() => handleCarIn(record)}>
+    //           agv请求进入
+    //         </a>,
+    //         <Divider key="divider4" type="vertical" />,
+    //         // <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
+    //         //   {getFormattedMsg('AgvManagement.button.pause')}
+    //         //   </a>,
+    //         // <Divider key="divider2" type="vertical" />,
+    //         <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('AgvManagement.button.complete')}</a>
+    //       ],
+    //       nowTab == 3 && [
+    //         <a key="continue" onClick={() => handleContinue(record)} >{getFormattedMsg('AgvManagement.button.continue')}</a>
+    //       ],
+    //       nowTab == 5 && [
+    //         <a key="rollback" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleRollback(record)} >
+    //           {getFormattedMsg('AgvManagement.button.rollback')}
+    //         </a>,
+    //         <Divider key="divider3" type="vertical" />,
+    //         <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('AgvManagement.button.complete')}</a>
+    //       ],
+    //       nowTab == 7 && [
+    //         <a key="agvRequestIn" onClick={() => agvRequestIn(record)} >agv请求进入</a>
+    //       ],
+    //     ],
+    //     width: 300,
+    //   }
+    // ];
   }, [nowTab]);
 
   //查询页面数据
@@ -234,10 +450,10 @@ const Index = () => {
       })
   }
 
-  const handleCarIn = (record)=>{
-    const data ={
-      orderId:record.taskCode,
-      status:10
+  const handleCarIn = (record) => {
+    const data = {
+      orderId: record.taskCode,
+      status: 10
     }
     Modal.confirm({
       title: '确认AGV进入',
@@ -255,7 +471,7 @@ const Index = () => {
     })
   }
 
-  const agvRequestIn = (record)=>{
+  const agvRequestIn = (record) => {
     Modal.confirm({
       title: 'AGV请求进入',
       onOk: async () => {

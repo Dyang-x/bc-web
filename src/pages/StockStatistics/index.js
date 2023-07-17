@@ -193,6 +193,13 @@ const StockStatistics = () => {
       key: 'receiptNumber',
       width: 200,
       align: 'center'
+    },    
+    {
+      title: '托盘号',
+      dataIndex: 'trayNumber',
+      key: 'trayNumber',
+      width: 200,
+      align: 'center'
     },
     
     // {

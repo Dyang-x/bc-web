@@ -36,12 +36,12 @@ const SemiFinisheDeliveryPalletSelection = ({ history }) => {
   }, []);
 
   const columns = [
-    {
-      title: getFormattedMsg('SemiFinisheDeliveryPalletSelection.title.outOrderNumber'),
-      dataIndex: 'owNumber',
-      key: 'owNumber',
-      align: 'center',
-    },
+    // {
+    //   title: getFormattedMsg('SemiFinisheDeliveryPalletSelection.title.outOrderNumber'),
+    //   dataIndex: 'owNumber',
+    //   key: 'owNumber',
+    //   align: 'center',
+    // },
     {
       title: getFormattedMsg('SemiFinisheDeliveryPalletSelection.title.trayNumber'),
       dataIndex: 'trayNumber',
@@ -83,39 +83,29 @@ const SemiFinisheDeliveryPalletSelection = ({ history }) => {
       dataIndex: 'orderNumber',
       key: 'orderNumber',
       align: 'center',
-      render: (text, record, index) => {
-        <Tooltip placement="rightTop" arrowPointAtCenter>
-          {text}
-        </Tooltip>
-      }
     },
     {
       title: '子订单号',
       dataIndex: 'suborderNumber',
       key: 'suborderNumber',
       align: 'center',
-      render: (text, record, index) => {
-        <Tooltip placement="rightTop" arrowPointAtCenter>
-          {text}
-        </Tooltip>
-      }
     },
     {
       title: '产品名称',
-      dataIndex: 'materialName',
-      key: 'materialName',
+      dataIndex: 'productName',
+      key: 'productName',
       align: 'center',
     },
     {
       title: '产品代码',
-      dataIndex: 'materialCode',
-      key: 'materialCode',
+      dataIndex: 'productCode',
+      key: 'productCode',
       align: 'center',
     },
     {
-      title: '产品数量',
-      dataIndex: 'quantity',
-      key: 'quantity',
+      title: '产品数量(张)',
+      dataIndex: 'productNum',
+      key: 'productNum',
       align: 'center',
     },
     {

@@ -53,6 +53,7 @@ const ManualPutInStorage = ({ history }) => {
     { key: 3, value: '半成品生产入库' },
     { key: 9, value: '半成品余料回库' },
     { key: 10, value: '原料余料回库' },
+    { key: 11, value: '原料退料入库' },
   ]
 
   useEffect(() => {
@@ -120,7 +121,13 @@ const ManualPutInStorage = ({ history }) => {
             </Tooltip>
           )
         }
-
+        if (record.type == 11) {
+          return (
+            <Tooltip placement="left" title={record.type}>
+              原料退料入库
+            </Tooltip>
+          )
+        }
       },
       width: 150
     },

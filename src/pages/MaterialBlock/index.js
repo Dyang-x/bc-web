@@ -173,12 +173,6 @@ export default class Material extends Page {
         width: 150
       },
       {
-        title: '11111',
-        dataIndex: 'materialCode',
-        key: 'materialCode',
-        width: 150
-      },
-      {
         title: getFormattedMsg('material.label.materialName'),
         dataIndex: 'materialName',
         key: 'materialName',

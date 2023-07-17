@@ -35,11 +35,12 @@ const ManualInStorageOperate = props => {
   const formRef = useRef();
 
   const type = [
-    { key: 1, value: '原料采购入库' },
     { key: 2, value: '手动入库' },
+    { key: 1, value: '原料采购入库' },
     { key: 3, value: '半成品生产入库' },
     { key: 9, value: '半成品余料回库' },
     { key: 10, value: '原料余料回库' },
+    { key: 11, value: '原料退料入库' },
   ]
   const [selectedType, setSelectedType] = useState(null);
 

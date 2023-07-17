@@ -319,7 +319,7 @@ const BendingMachineConfiguration = () => {
 
   const getTransfer = async (searchValue) => {
     //折弯机 绑定 半成品托盘
-    await TransferBoxServices.getPage({ type: 1, page: pageInfo.page - 1, pageSize: pageInfo.pageSize })
+    await TransferBoxServices.getPage({ code: searchValue, type: 1, page: pageInfo.page - 1, pageSize: pageInfo.pageSize })
       .then(res => {
         setTransferList(res.content);
       }).catch(err => {
