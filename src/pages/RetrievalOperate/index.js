@@ -9,7 +9,7 @@ import {
   Drawer,
   HIcon,
   Icon,
-  Tooltip
+  Tooltip,Select
 } from '@hvisions/h-ui';
 import { i18n } from '@hvisions/toolkit';
 import { DetailComponent } from '@hvisions/core';
@@ -21,6 +21,11 @@ import { CacheTable } from '~/components';
 import waresLocationService from '~/api/waresLocation';
 import retrievalApi from '~/api/retrieval';
 import StockOutForm from './StockOutForm';
+
+import StockStatisticsService from '~/api/stockStatistics';
+import { v1 } from 'uuid';
+import { isEmpty } from 'lodash';
+const { Option } = Select;
 
 const getFormattedMsg = i18n.getFormattedMsg;
 const RetrievalOperate = ({ history, ...props }) => {
@@ -46,6 +51,11 @@ const RetrievalOperate = ({ history, ...props }) => {
   const addForm = useRef();
   const formRef = useRef();
   const stockOutForm = useRef();
+
+  const [outModalVisible, setOutModalVisible] = useState(false);
+  const [pageInfo, setPageInfo] = useState({ page: 1, pageSize: 1000000000 });
+  const [trayList,setTrayList] = useState([]);
+  const [rightData,setRightData] = useState({});
 
   const type = [
     { key: 1, value: '手动出库' },
@@ -98,7 +108,7 @@ const RetrievalOperate = ({ history, ...props }) => {
       setSelectedRowKeys(selectedRowKeys);
     }
   };
-  const onHandlStockOut = record => {
+  const onHandlStockOut = async record => {
     setAddVisible(true);
     setFormData(record);
   };
@@ -183,7 +193,9 @@ const RetrievalOperate = ({ history, ...props }) => {
       align: 'center',
       fixed: 'right',
       render: (_, record) => [
-        state != 1 && <a key="out" onClick={() => onHandlStockOut(record)}>
+        // state != 1 && <a key="out" onClick={() => onHandlStockOut(record)}>
+        state != 1 && <a key="out" onClick={() => chooseTray(record)}>
+          
           出库
         </a>,
         state != 1 && <Divider type="vertical" key="divider1" />,
@@ -200,9 +212,73 @@ const RetrievalOperate = ({ history, ...props }) => {
     }
   ];
 
+  // const columns2 = [
+  //   {
+  //     title: '批次号',
+  //     dataIndex: 'batchNumber',
+  //     key: 'batchNumber',
+  //     render: (_, record) => {
+  //       if (!record.batchNumber) {
+  //         return '暂无';
+  //       }
+  //       return (<Tooltip placement="left" title={record.batchNumber}>
+  //       {record.batchNumber}
+  //     </Tooltip>);
+  //     }
+  //     // width:100
+  //   },
+  //   {
+  //     title: '数量',
+  //     dataIndex: 'num',
+  //     align: 'center',
+  //     key: 'num',
+  //     render: (_, record) => {
+  //       if (!record.num) {
+  //         return 0;
+  //       }
+  //       return (<Tooltip placement="left" title={record.num}>
+  //       {record.num}
+  //     </Tooltip>);
+  //     }
+  //     // width:100
+  //   },
+  //   {
+  //     title: '库位',
+  //     dataIndex: 'locationName',
+  //     key: 'locationName',
+  //     render: (_, record) => {
+  //       if (!record.locationName) {
+  //         return '暂无';
+  //       }
+  //       return (<Tooltip placement="left" title={record.locationName}>
+  //       {record.locationName}
+  //     </Tooltip>);
+  //     }
+  //     // width:100
+  //   },
+
+  //   {
+  //     title: getFormattedMsg('global.label.operation'),
+  //     key: 'opt',
+  //     width: 100,
+  //     align: 'center',
+  //     render: (_, record) => [
+  //       state != 1 && (
+  //         <a
+  //           key="edit"
+  //           onClick={() => onHandleDeletePatch(record)}
+  //           style={{ color: 'var(--ne-delete-button-font)' }}
+  //         >
+  //           删除
+  //         </a>
+  //       )
+  //     ]
+  //   }
+  // ];
+
   const columns2 = [
     {
-      title: '批次号',
+      title: '托盘号',
       dataIndex: 'batchNumber',
       key: 'batchNumber',
       render: (_, record) => {
@@ -623,6 +699,69 @@ const RetrievalOperate = ({ history, ...props }) => {
       setTableData2([]);
     }
   };
+
+
+
+  const chooseTray = async (record)=>{
+    setOutModalVisible(true)
+
+    const searchTerm = {}
+    searchTerm.materialId = record.materialId
+    searchTerm.warehouseId = 195
+
+    await StockStatisticsService.getMaterialStock({
+      ...searchTerm,
+      ...pageInfo,
+      page: pageInfo.page - 1
+    })
+    .then(res=>{
+      console.log('res',res);
+      // const arrayList = res.content.map(i=>{
+      //   return i.trayNumber
+      // })
+      // console.log('arrayList',arrayList);
+      setTrayList(res.content)
+    })
+  }
+
+  const chooseTrayCancel =()=>{
+    setOutModalVisible(false)
+    setTrayList([])
+  }
+
+  const chooseTrayModalFoot = () => [
+    <Button key="save" type="primary" onClick={chooseTraySave}>
+      保存
+    </Button>,
+    <Button key="cancel" onClick={chooseTrayCancel}>
+      取消
+    </Button>
+  ];
+
+  const chooseTraySave = () => {
+    const data = tableData2.filter(i => i.batchNumber == rightData.trayNumber)
+    console.log(data, 'data');
+    if (!isEmpty(data)) {
+      notification.warning({
+        message: '请勿重复添加！'
+      })
+      return
+    }
+
+    const params = {}
+    params.batchNumber = rightData.trayNumber
+    params.description = ""
+    params.locationId = rightData.locationId
+    params.materialId = rightData.materialId
+    params.num = rightData.quantity
+    params.owId = purchaseOrderDetail.id;
+    params.owNumber = purchaseOrderDetail.owNumber;
+    params.stockType = selectedType
+    console.log(params, 'params');
+    confirmSave(params);
+    chooseTrayCancel();
+  }
+
   const { Table: Table1, SettingButton: SettingButton1 } = useMemo(
     () => CacheTable({ columns: columns1, key: 'wms_in_storage_operate_left' }),
     []
@@ -736,6 +875,33 @@ const RetrievalOperate = ({ history, ...props }) => {
       >
         <StockOutForm ref={stockOutForm} modifyData={formData} />
       </Modal>
+      <Modal
+        title="选择托盘"
+        visible={outModalVisible}
+        onCancel={chooseTrayCancel}
+        footer={chooseTrayModalFoot()}
+        destroyOnClose
+      >
+        <Select
+          showSearch
+          allowClear
+          filterOption={false}
+          placeholder={'请选择托盘'}
+          onChange={(value, option) => {
+            const data = option.props.detail
+            setRightData(data)
+          }}
+        >
+          {trayList.map(m => (
+            <Option value={m.trayNumber} key ={m.stockId} detail = {m}>
+              {m.trayNumber}
+            </Option>
+          ))}
+
+        </Select>
+      </Modal>
+
+      
     </>
   );
 };

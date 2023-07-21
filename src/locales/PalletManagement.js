@@ -25,10 +25,10 @@ module.exports = {
       deletePallet:'delete Pallet',
     },
     placeholder:{
-      location:'Please select a library location'
+      location:'Please select a library status'
     },
     message:{
-      location:'Please enter the Pallet position',
+      location:'Please enter the Pallet status',
       code:'Please enter the tray number',
       type:'Please select a tray type',
       weight:'Please enter tray weight',
@@ -53,7 +53,7 @@ module.exports = {
       code: 'code',
       type: 'type',
       weight: 'weight',
-      location:'location',
+      location:'status',
       name:'name',
     },
     button:{
@@ -89,10 +89,10 @@ module.exports = {
       deletePallet:'确认删除托盘',
     },
     placeholder:{
-      location:'请选择库位'
+      location:'请选择托盘状态'
     },
     message:{
-      location:'请输入托盘位置',
+      location:'请输入托盘状态',
       code:'请输入托盘号',
       type:'请选择托盘类型',
       weight:'请输入托盘重量',
@@ -115,7 +115,7 @@ module.exports = {
       code: '托盘号',
       type: '托盘类型',
       weight: '托盘重量',
-      location: '托盘位置',
+      location: '托盘状态',
       name:'托盘名称',
     },
     button:{
