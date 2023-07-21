@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { HVLayout, Button, Spin, Pagination, SearchForm, Select, Divider, Input, Modal } from '@hvisions/h-ui';
 import { i18n, page } from '@hvisions/toolkit';
 import { CacheTable } from '~/components';
-import { taskState, taskType,agvState,transportState } from '~/enum/enum';
+import { taskState, taskType, agvState, transportState } from '~/enum/enum';
 import TaskOverviewServices from '~/api/TaskOverview';
 import { notification } from '~/../node_modules/antd/lib/index';
 import AdjustForm from './AdjustForm';
@@ -30,7 +30,7 @@ const Index = ({ history }) => {
   }, []);
 
   const columns = useMemo(() => {
-    if(nowTab==4){
+    if (nowTab == 4) {
       return [
         {
           title: getFormattedMsg('TaskOverview.title.taskCode'),
@@ -131,13 +131,16 @@ const Index = ({ history }) => {
               <Divider key="divider2" type="vertical" />,
               <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
                 {getFormattedMsg('TaskOverview.button.pause')}
-                </a>,
+              </a>,
             ],
             nowTab == 2 && [
               // <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
               //   {getFormattedMsg('TaskOverview.button.pause')}
               //   </a>,
-              // <Divider key="divider2" type="vertical" />,
+              <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)} >
+                {getFormattedMsg('TaskOverview.button.delete')}
+              </a>,
+              <Divider key="divider4" type="vertical" />,
               <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskOverview.button.complete')}</a>
             ],
             nowTab == 3 && [
@@ -155,7 +158,7 @@ const Index = ({ history }) => {
         }
       ];
     }
-    if(nowTab!=4){
+    if (nowTab != 4) {
       return [
         {
           title: getFormattedMsg('TaskOverview.title.taskCode'),
@@ -256,13 +259,16 @@ const Index = ({ history }) => {
               <Divider key="divider2" type="vertical" />,
               <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
                 {getFormattedMsg('TaskOverview.button.pause')}
-                </a>,
+              </a>,
             ],
             nowTab == 2 && [
               // <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
               //   {getFormattedMsg('TaskOverview.button.pause')}
               //   </a>,
-              // <Divider key="divider2" type="vertical" />,
+              <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)} >
+                {getFormattedMsg('TaskOverview.button.delete')}
+              </a>,
+              <Divider key="divider4" type="vertical" />,
               <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskOverview.button.complete')}</a>
             ],
             nowTab == 3 && [
@@ -661,8 +667,6 @@ const Index = ({ history }) => {
         <Pane
           tab
           onTabChange={e => {
-            console.log(e, 'e');
-
             setNowTab(+e);
             loadData(page, pageSize, { ...searchValue, taskState: e });
           }}

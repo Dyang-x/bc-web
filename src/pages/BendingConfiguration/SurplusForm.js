@@ -21,8 +21,6 @@ const SurplusForm = ({
   modifyData,
   attributeOne,
   attributeTwo,
-  // dockingPoints,
-  // sortPositions,
 }) => {
   const [pageInfo, setPageInfo] = useState({ page: 1, pageSize: 10 });
   const [transferList, setTransferList] = useState([])
@@ -47,11 +45,6 @@ const SurplusForm = ({
         });
       });
   };
-
-  const CheckboxChange = async (e) => {
-    const automaticState = e.target.checked
-
-  }
 
   return (
     <Form >

@@ -49,9 +49,9 @@ const StockStatistics = () => {
         ...pageInfo,
         page: pageInfo.page - 1
       });
-      console.log(res,'getMaterialStock');
+      //console.log(res,'getMaterialStock');
       const _cell = page.mergeCell(res.content, 'materialId');
-      console.log(_cell,'_cell');
+      //console.log(_cell,'_cell');
       const _ds = _cell
         .map(__c => {
           const count = __c.reduce((_p, _c) => _p + _c.quantity, 0);
@@ -62,7 +62,7 @@ const StockStatistics = () => {
           }));
         })
         .flat(1);
-        console.log(_ds,'_ds');
+        //console.log(_ds,'_ds');
       setDataSource(_ds);
       setTotal(res.totalElements);
     } catch (err) {
@@ -156,7 +156,7 @@ const StockStatistics = () => {
       title: '材质',
       dataIndex: 'materialType',
       key: 'materialType',
-      width: 120,
+      width: 200,
       align: 'center'
     },
     {

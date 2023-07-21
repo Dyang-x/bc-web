@@ -160,7 +160,6 @@ const BendingMachine = ({ bendingNumber, tableName }) => {
             const a = Number(j)
             array = [...array, a]
           })
-          console.log(array, 'array---');
           i.attributeOne = array
         })
         setTableData(res.content);
@@ -217,8 +216,6 @@ const BendingMachine = ({ bendingNumber, tableName }) => {
     arr.map(i => {
       array = [...array, i]
     })
-    console.log(array, 'array');
-
     setAttributeOne(array)
     setAttributeTwo('切割完工')
   }
@@ -324,7 +321,6 @@ const BendingMachine = ({ bendingNumber, tableName }) => {
       trayNumber: pullData.transferCode,
       state: 0,
     }
-    console.log(data, '上架');
     Modal.confirm({
       title: `${getFormattedMsg('PalletManagement.title.putOnPallet')}${pullData.transferCode}?`,
       onOk: () => {
@@ -383,15 +379,14 @@ const BendingMachine = ({ bendingNumber, tableName }) => {
       } else {
         delete params.attributeOne
       }
-      console.log(params, 'params');
-
+      
       await bendingMachineServices
         .addSurplusMaterial(params)
         .then(res => {
           notification.success({
             message: getFormattedMsg('SemiFinishedWarehousingReceipt.message.addSuccess')
           });
-          reFreshFunc()
+          loadData(page, pageSize, { ...searchValue });
         })
         .catch(err => {
           notification.warning({

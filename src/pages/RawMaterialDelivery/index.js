@@ -187,7 +187,7 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
     ReadIOTServices.getStrategy()
       .then(res => {
         const strategy = res == true ? 1 : 0
-        console.log(strategy, 'strategy');
+        //console.log(strategy, 'strategy');
         setStrategy(strategy)
       })
   }
@@ -256,7 +256,7 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
 
   const CheckboxChange = async (e) => {
     const state = e.target.value
-    console.log(state, 'state');
+    //console.log(state, 'state');
     await ReadIOTServices.updateStrategy(state)
       .then(res => {
         notification.success({
@@ -310,6 +310,7 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
   ];
 
   const HandleSaveManualDown = () => {
+    //console.log('---',ManualDownSelected.lineId, ManualDownData.id, ManualDownSelected.stockId);
     Modal.confirm({
       title: `确认下架?`,
       onOk: async () => {
@@ -366,7 +367,7 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
       if (err) return;
       const params = getFieldsValue();
       params.state = 0
-      console.log('params', params);
+      //console.log('params', params);
       await EmptyPalletsWarehousing
         .saveOrUpdate(params)
         .then(res => {
@@ -410,7 +411,7 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
     validateFields(async (err, values) => {
       if (err) return;
       const params = getFieldsValue();
-      console.log('params', params);
+      //console.log('params', params);
 
       await SurplusMaterialApi
         .addSurplus(params)
@@ -471,7 +472,7 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
               style={{ marginRight: 16, marginLeft: 'auto' }}
               size='small'
               onChange={(e) => {
-                console.log(e, 'e');
+                //console.log(e, 'e');
                 CheckboxChange(e)
               }}
             >
@@ -553,7 +554,7 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
         // footer={modalManualFoot()}
         footer={null}
         onCancel={handleCancelManualDown}
-        width={1000}
+        width={window.innerWidth - 300}
         bodyStyle={{
           paddingTop: 0,
           paddingLeft: 0,

@@ -23,8 +23,8 @@ export default function ModalQR({value,setPrintDatas}) {
 	// 		// colorLight: '#ffffff',
 	// 		// correctLevel: QRCode.CorrectLevel.H,
 	// 	});
-    // console.log('qrcode11111111111111',qrcode);
-    // console.log('qrcode',qrcode._el.outerHTML);
+    // //console.log('qrcode11111111111111',qrcode);
+    // //console.log('qrcode',qrcode._el.outerHTML);
 
 	mapList(value)
 	}, [])
@@ -346,11 +346,11 @@ export default function ModalQR({value,setPrintDatas}) {
 // }
 
 const mapList = (value)=>{
-	console.log('value',value);
+	//console.log('value',value);
 	// let datas = []
 	// qrcodeRef.current.innerHTML = '';
 	value.map(i=>{
-		console.log('i',i);
+		//console.log('i',i);
 		const text = i.code
 	document.getElementById(i.code).innerHTML = '';
 
@@ -359,9 +359,9 @@ const mapList = (value)=>{
 			width: 380,
 			height: 380,
 		});
-    	// console.log('qrcode',qrcode);
-		// console.log('_el',qrcode._el);
-		// console.log('.img',qrcode._el.getElementsByTagName('img'));
+    	// //console.log('qrcode',qrcode);
+		// //console.log('_el',qrcode._el);
+		// //console.log('.img',qrcode._el.getElementsByTagName('img'));
 	})
 }
 
@@ -374,13 +374,13 @@ const mapList = (value)=>{
 						  <div key={i.code} id={i.code} ref={qrcodeRef}
 							  onClick={() => {
 								  const div = document.getElementById(i.code)
-								  console.log('div', div);
+								  //console.log('div', div);
 								  const img = div.getElementsByTagName('img')
-								  console.log('img[0]', img[0]);
+								  //console.log('img[0]', img[0]);
 								  const res = imageToZ64(img[0]);
-								  console.log('res', res);
+								  //console.log('res', res);
 								  const zpl = ` ^XA^LH0,0^FWN^PON^PMN^LRN ^FO10,10^GFA,${res.length},${res.length},${res.rowlen},${res.z64}^XZ`;
-								  console.log(zpl);
+								  //console.log(zpl);
 							  }}
 							  style={{
 								  height: 15,
@@ -397,14 +397,14 @@ const mapList = (value)=>{
 			  })}
 			  {/* <div id={value[0].code} ref={qrcodeRef} onClick={() => {
 				  const div = document.getElementById(value[0].code)
-				  console.log('div', div);
+				  //console.log('div', div);
 				  const img = div.getElementsByTagName('img')
-				  console.log('img[0]', img[0]);
-				  console.log(img[0].width );
+				  //console.log('img[0]', img[0]);
+				  //console.log(img[0].width );
 				  const res = imageToZ64(img[0]);
-				  console.log('res', res);
+				  //console.log('res', res);
 				  const zpl = ` ^XA^LH0,0^FWN^PON^PMN^LRN ^FO10,10^GFA,${res.length},${res.length},${res.rowlen},${res.z64}^XZ`;
-				  console.log(zpl);
+				  //console.log(zpl);
 			  }}></div> */}
 		  </div>
     </>

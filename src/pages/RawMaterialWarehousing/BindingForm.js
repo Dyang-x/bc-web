@@ -39,7 +39,7 @@ const TrayForm = ({
 
     const dataString = e.target.value
     const arr = dataString.split('|');
-    console.log('arr', arr);
+    //console.log('arr', arr);
 
     const orderNumber = arr[0]
     const lineNumber = arr[1]
@@ -92,7 +92,7 @@ const TrayForm = ({
           getFieldDecorator('scan', {
           })(
             <Input
-              placeholder={'请扫描搜料单条码'}
+              placeholder={'请扫描收料单条码'}
               style={{ width: '100%' }}
               onPressEnter={(e) => { onKeyDowm(e) }}
             />

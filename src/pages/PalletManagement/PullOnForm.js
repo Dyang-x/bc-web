@@ -18,9 +18,9 @@ const PullOnForm = ({
 
   const onChangeSelect = (value, index) => {
 
-    console.log('===============点击的value', value)
+    //console.log('===============点击的value', value)
     record[index] = value || '';
-    console.log('===============record', record,record.length,typeof record[0],record[0]);
+    //console.log('===============record', record,record.length,typeof record[0],record[0]);
     this.setState({ record });
   }
 
@@ -35,7 +35,7 @@ const PullOnForm = ({
   const onBlurSelect = (index) => {
     const { newValue } = this.state;
     const value = newValue[index];
-    console.log('===============输入的value', value)
+    //console.log('===============输入的value', value)
     if (!value) {
       this.onChangeSelect(value, index);
       delete newValue[index]; // 在onBlur后将对应的key删除，防止当从下拉框中选择后再次触发onBlur时经过此处恢复成原来的值

@@ -69,6 +69,11 @@ import ManualInStorageOperate from '~/pages/ManualInStorageOperate'
 import RetrievalManagerment from '~/pages/RetrievalManagerment'
 import RetrievalOperate from '~/pages/RetrievalOperate'
 
+import Adjust from '~/pages/Adjust';
+import AdjustDetails from '~/pages/Adjust/Details';
+
+import StockLog from '~/pages/StockLog';
+
 export default [
   {
     path: '/product-fullScreen',
@@ -221,6 +226,19 @@ export default [
     }
   },
 
+    {
+    path: '/adjust-order',
+    component: Adjust,
+    children:  {
+      path: '/detail',
+      component: AdjustDetails
+    }
+  },
+
+  {
+    path: '/stock-log',
+    component: StockLog
+  },
   // 以下是示例功能代码， 正式开发时请删除
   // {
   //   path: '/user',

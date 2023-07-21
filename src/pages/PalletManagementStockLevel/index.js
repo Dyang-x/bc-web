@@ -149,28 +149,30 @@ const PalletManagementStockLevel = () => {
   //查询按钮
   const handleSearch = data => {
     const params = { ...data }
-    console.log('params', params);
+    //console.log('params', params);
     setSearchValue({ ...params });
     setPageInfo({ page: 1, pageSize: 10 });
     loadData(1, 10, { ...params });
   };
 
   const { Table, SettingButton } = useMemo(
-    () => CacheTable({ columns, scrollHeight: 'calc(100vh - 470px)', key: 'wms_quality' }),
+    () => CacheTable({ columns, scrollHeight: 'calc(100vh - 470px)', key: 'wms_quality1' }),
     []
   );
 
-  const HandleShelf = async record => {
+  const HandleShelf = record => {
+    //console.log('record', record);
     const data = {
-      origin: record.joinCode,
-      middle: record.joinCode,
+      origin: record.areaCode,
+      middle: record.areaCode,
       trayNumber: record.transferCode,
       state: 0,
       // { id: 5, name: '原料托盘回库', value: '原料托盘回库', },
       // { id: 7, name: '半成品托盘回库', value: '半成品托盘回库', },
-      taskType:record.joinCode == 'J001' ? 5 : 7,
-      inType: record.joinCode == 'J001' ? 5 : 7,
+      taskType: record.areaCode == 'J001' ? 5 : 7,
+      inType: record.areaCode == 'J001' ? 5 : 7,
     }
+    //console.log('data', data);
     Modal.confirm({
       title: `${getFormattedMsg('PalletManagement.title.putOnPallet')}${record.transferCode}?`,
       onOk: () => {
@@ -364,7 +366,7 @@ const PalletManagementStockLevel = () => {
   }
 
   const getTransfer = async (searchValue) => {
-    console.log(searchValue, 'searchValue');
+    //console.log(searchValue, 'searchValue');
     await TransferBoxServices.getPage({ code: searchValue, page: pageInfo.page - 1, pageSize: pageInfo.pageSize })
       .then(res => {
         setTransferList(res.content);

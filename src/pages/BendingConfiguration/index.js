@@ -138,29 +138,29 @@ const BendingMachineConfiguration = () => {
         </a>,
         <Divider key="divider2" type="vertical" />,
 
-        <a key="shelf" onClick={() => HandlePutOn(record)}>
-          托盘上架
-        </a>,
-        <Divider key="divider4" type="vertical" />,
-        <a key="takedown"  onClick={() => HandlePullOff(record)}>
-          托盘下架
-        </a>,
-        <Divider key="divider5" type="vertical" />,
-        <a key="surplus"  onClick={() => handleSurplus(record)}>
-          余料回库
-        </a>,
-        <Divider key="divider6" type="vertical" />,
+        // <a key="shelf" onClick={() => HandlePutOn(record)}>
+        //   托盘上架
+        // </a>,
+        // <Divider key="divider4" type="vertical" />,
+        // <a key="takedown"  onClick={() => HandlePullOff(record)}>
+        //   托盘下架
+        // </a>,
+        // <Divider key="divider5" type="vertical" />,
+        // <a key="surplus"  onClick={() => handleSurplus(record)}>
+        //   余料回库
+        // </a>,
+        // <Divider key="divider6" type="vertical" />,
 
 
         <a key="update" onClick={()=>handleUpdate(record)}>
           {getFormattedMsg('BendingMachineConfiguration.button.update')}
         </a>,
-        <Divider key="divider1" type="vertical" />,
-        <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={()=>handleDelete(record)}>
-         {getFormattedMsg('BendingMachineConfiguration.button.delete')}
-        </a>,
+        // <Divider key="divider1" type="vertical" />,
+        // <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={()=>handleDelete(record)}>
+        //  {getFormattedMsg('BendingMachineConfiguration.button.delete')}
+        // </a>,
       ],
-      width: 500,
+      width: 220,
       // fixed: 'right'
     }
   ];
@@ -179,7 +179,6 @@ const BendingMachineConfiguration = () => {
             const a = Number(j)
             array = [...array, a]
           })
-          console.log(array, 'array---');
           i.attributeOne = array
         })
         setTableData(res.content);
@@ -383,7 +382,6 @@ const BendingMachineConfiguration = () => {
     //   trayNumber: record.transferCode,
     //   state: 0,
     // }
-    // console.log(data,'托盘上架');
     // Modal.confirm({
     //   title: `${getFormattedMsg('PalletManagement.title.putOnPallet')}${record.transferCode}?`,
     //   onOk: () => {
@@ -414,7 +412,6 @@ const BendingMachineConfiguration = () => {
       trayNumber: pullData.transferCode,
       state: 0,
     }
-    console.log(data,'上架');
     Modal.confirm({
       title: `${getFormattedMsg('PalletManagement.title.putOnPallet')}${pullData.transferCode}?`,
       onOk: () => {
@@ -492,7 +489,6 @@ const BendingMachineConfiguration = () => {
       }else{
         delete params.attributeOne
       }
-      console.log(params, 'params');
 
       await bendingMachineServices
         .addSurplusMaterial(params)
@@ -500,7 +496,7 @@ const BendingMachineConfiguration = () => {
           notification.success({
             message: getFormattedMsg('SemiFinishedWarehousingReceipt.message.addSuccess')
           });
-          reFreshFunc()
+          loadData(page, pageSize, { ...searchValue });
         })
         .catch(err => {
           notification.warning({
@@ -599,7 +595,6 @@ const BendingMachineConfiguration = () => {
               showSearch
               filterOption={false}
               onChange={(value) => {
-                console.log(value);
                 setSelectedTransfer(value)
               }}
             >

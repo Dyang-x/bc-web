@@ -106,7 +106,7 @@ const J002OverView = () => {
         const getData = () => {
             LargeScreenApi.semiOrder()
                 .then(res => {
-                    console.log(res,'semiOrder');
+                    //console.log(res,'semiOrder');
                     if(res != null){
                         // setDataSource(res);
                         datas = res
@@ -139,7 +139,7 @@ const J002OverView = () => {
                         setNewDataDetail(detail)
                     }
                     number = number == datas.length - 1 ? 0 : number + 1
-                    console.log('11111111111111');
+                    //console.log('11111111111111');
                 }
             }
 

@@ -301,7 +301,7 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
   const handleSaveAdd = () => {
     const { getFieldsValue, validateFields, setFieldsValue } = addForm.current;
     validateFields(async (err, values) => {
-      console.log('dataSource',dataSource);
+      //console.log('dataSource',dataSource);
       if (err) return;
       const params = getFieldsValue();
 
@@ -382,7 +382,7 @@ let orderDetails = []
       params.suborderNumber = suborderNumber.toString()
 
       // delete params.scan
-      console.log(params, 'params');
+      //console.log(params, 'params');
 
       await SemiFinishedWarehousingReceiptApi
         .bindSemiMaterial(params)
@@ -403,7 +403,7 @@ let orderDetails = []
   }
 
   const handleUpdate = (record) => {
-    console.log(record,'handleUpdate  record');
+    //console.log(record,'handleUpdate  record');
     setAttributeOneState(record.attributeoneState)
     setAttributeTwoState(record.attributetwoState)
     setUpdateVis(true)
@@ -504,7 +504,7 @@ let orderDetails = []
     validateFields(async (err, values) => {
       if (err) return;
       const params = getFieldsValue();
-      console.log(params, 'params');
+      //console.log(params, 'params');
       //  接口  空托盘出库
 
       // if (!isEmpty(selectedRowKeys)) {
@@ -572,8 +572,8 @@ let orderDetails = []
   ]
 
   const handleSavePickTray = () => {
-    console.log(selectedRowKeys);
-    console.log(selectedDatas);
+    //console.log(selectedRowKeys);
+    //console.log(selectedDatas);
 
     //调用托盘出库  下架
     if (isEmpty(selectedRowKeys)) {
@@ -605,13 +605,13 @@ let orderDetails = []
     validateFields(async (err, values) => {
       if (err) return;
       const params = getFieldsValue();
-      // console.log(params, 'params');
-      // console.log(selectedDatas,'selectedDatas');
+      // //console.log(params, 'params');
+      // //console.log(selectedDatas,'selectedDatas');
 
       const data = {
         id: selectedDatas[0].id, ...params
       }
-      console.log(data, 'data');
+      //console.log(data, 'data');
 
       await SemiFinisheDeliveryPalletSelectionApi.returnStore(selectedDatas[0].id,params.middle,params.toLocation)
         .then(res => {
@@ -750,7 +750,8 @@ let orderDetails = []
         </HVLayout.Pane>
       </HVLayout>
       <Modal
-        title={getFormattedMsg('SemiFinishedWarehousingReceipt.title.addOrder')}
+        // title={getFormattedMsg('SemiFinishedWarehousingReceipt.title.addOrder')}
+        title={'半成品绑定'}
         visible={addVis} 
         footer={modalAddFoot()}
         onCancel={handleCancelAdd}

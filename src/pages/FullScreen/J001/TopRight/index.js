@@ -27,7 +27,6 @@ const TopRight = ({RightData}) => {
     // }
 
     let timerMid;
-    // console.log(isScrolle, 'isScrolle');
 
     if (isScrolle) {
       timerMid = setInterval(

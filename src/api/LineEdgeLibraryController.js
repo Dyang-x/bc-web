@@ -78,6 +78,14 @@ class LineEdgeLibraryController extends Service {
     }
   }
 
+  //解除占用
+  async relieveOccupation(fromLocation,useState) {
+    try {
+      return await this.put(`${appName}/LineEdgeLibraryController/relieveOccupation?fromLocation=${fromLocation}&useState=${useState}`);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default new LineEdgeLibraryController();

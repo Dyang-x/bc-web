@@ -163,7 +163,7 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
             {getFormattedMsg('RawMaterialWarehousingReceipt.button.weighing')}
           </a>,
           <Divider key="divider3" type="vertical" />,
-          <a key="warehousing" type="primary" onClick={() => handleWarehousing()} >
+          <a key="warehousing" type="primary" onClick={() => handleWarehousing(record)} >
             {getFormattedMsg('RawMaterialWarehousingReceipt.button.warehousing')}
           </a>
         ],
@@ -186,11 +186,11 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
           if (res.content[0].state == 1) {
             setWeighingId(res.content[0].id)
           }
-          setTableData(res.content);
-          setTotalPage(res.totalElements);
-          setPage(res.pageable.pageNumber + 1)
-          setPageSize(res.pageable.pageSize)
         }
+        setTableData(res.content);
+        setTotalPage(res.totalElements);
+        setPage(res.pageable.pageNumber + 1)
+        setPageSize(res.pageable.pageSize)
         setLoading(false);
       })
       .catch(err => {
@@ -371,7 +371,7 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
         await EmptyPalletDeliveryApi.autoTransferOut(data)
           .then(res => {
             notification.success({
-              message: '托盘自动出库成功'
+              message: '托盘自动下架成功'
             });
             loadData(page, pageSize, { ...searchValue, state: selectedstatus });
           })
@@ -407,21 +407,22 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
 
   const handleSaveManual = async () => {
     //托盘出库   托盘下架  新增
-    console.log('selectedDatas', selectedDatas);
+    //console.log('selectedDatas', selectedDatas);
     if (isEmpty(selectedRowKeys)) {
       notification.warning({
         message: getFormattedMsg('SemiFinishedWarehousingReceipt.message.pickTray'),
       })
       return
     }
-    if (selectedDatas[0].location != '在库') {
-      notification.warning({
-        message: '该托盘不在库内，请重新选择',
-      })
-      return
-    }
+    // if (selectedDatas[0].location != '在库') {
+    //   notification.warning({
+    //     message: '该托盘不在库内，请重新选择',
+    //   })
+    //   return
+    // }
     const data = {
-      trayNumber: selectedDatas[0].code,
+      // trayNumber: selectedDatas[0].code,
+      trayNumber: selectedDatas[0].trayNumber,
       state: 0,
       toLocation: 'J001',
       middle: 'J001',
@@ -429,6 +430,7 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
       taskType: 6,
       inType: 6,
     }
+    //console.log('data',data);
     Modal.confirm({
       title: '确认下架托盘？',
       onOk: async () => {
@@ -439,6 +441,7 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
               message: '托盘出库任务生成成功'
             });
             handleCancelManual();
+            loadData(page, pageSize, { ...searchValue, state: selectedstatus });
           })
           .catch(err => {
             notification.warning({
@@ -476,7 +479,7 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
       if (err) return;
       const params = getFieldsValue();
       delete params.scan
-      console.log("params", params);
+      //console.log("params", params);
       params.associatedNumber = params.orderNumber
       await RawMaterialWarehousingReceiptApi
         .bindRawMaterial(params)
@@ -484,7 +487,7 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
           notification.success({
             message: getFormattedMsg('RawMaterialWarehousingReceipt.message.bindingSuccess')
           });
-          //    loadData(page, pageSize, { ...searchValue, state: selectedstatus });
+             loadData(page, pageSize, { ...searchValue, state: selectedstatus });
         })
         .catch(err => {
           notification.warning({
@@ -495,9 +498,9 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
     });
   }
 
-  const handleWarehousing = async () => {
+  const handleWarehousing = async (record) => {
     await RawMaterialWarehousingReceiptApi
-      .inStore(selectedInstoreRowKeys)
+      .inStore(record.id)
       .then(res => {
         notification.success({
           message: '入库成功'
@@ -511,21 +514,21 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
       });
   }
 
-  const onHandleTableSelect = e => {
-    if (selectedInstoreRowKeys.indexOf(e.id) === -1) {
-      setSelectedInstoreRowKeys([...selectedInstoreRowKeys, e.id])
-    } else {
-      setSelectedInstoreRowKeys(selectedInstoreRowKeys.filter(i => i != e.id))
-    }
-  };
+  // const onHandleTableSelect = e => {
+  //   if (selectedInstoreRowKeys.indexOf(e.id) === -1) {
+  //     setSelectedInstoreRowKeys([...selectedInstoreRowKeys, e.id])
+  //   } else {
+  //     setSelectedInstoreRowKeys(selectedInstoreRowKeys.filter(i => i != e.id))
+  //   }
+  // };
 
-  const onHandleTableSelectAll = (e, a) => {
-    if (e) {
-      setSelectedInstoreRowKeys(a.map(i => i.id))
-    } else {
-      setSelectedInstoreRowKeys([])
-    }
-  };
+  // const onHandleTableSelectAll = (e, a) => {
+  //   if (e) {
+  //     setSelectedInstoreRowKeys(a.map(i => i.id))
+  //   } else {
+  //     setSelectedInstoreRowKeys([])
+  //   }
+  // };
 
   return (
     <>
@@ -608,17 +611,17 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
               }))}
               columns={columns}
               rowKey={record => record.id}
-              rowSelection={{
-                onSelect: onHandleTableSelect,
-                onSelectAll: onHandleTableSelectAll,
-                selectedRowKeys: selectedInstoreRowKeys,
-                hideDefaultSelections: true,
-              }}
-              onRow={record => {
-                return {
-                  onClick: () => onHandleTableSelect(record)
-                };
-              }}
+              // rowSelection={{
+              //   onSelect: onHandleTableSelect,
+              //   onSelectAll: onHandleTableSelectAll,
+              //   selectedRowKeys: selectedInstoreRowKeys,
+              //   hideDefaultSelections: true,
+              // }}
+              // onRow={record => {
+              //   return {
+              //     onClick: () => onHandleTableSelect(record)
+              //   };
+              // }}
             />
           </Spin>
           <HVLayout.Pane.BottomBar>
@@ -655,7 +658,7 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
         // footer={modalManualFoot()}
         footer={null}
         onCancel={handleCancelManual}
-        width={800}
+        width={window.innerWidth - 300}
         bodyStyle={{
           paddingTop: 0,
           paddingLeft: 0,

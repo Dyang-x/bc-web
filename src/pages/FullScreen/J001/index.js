@@ -34,11 +34,9 @@ const J001OverView = () => {
     const onResize = width => {
         const doc = window.document;
         const docEl = doc.documentElement;
-        //console.log(width, 'width');
         const rem = (10 * width) / 3854;
         docEl.style.fontSize = rem + 'px';
         window.rem = rem;
-        //console.log(rem, 'rem');
     };
     const { width, height, ref: resizeRef } = useResizeDetector({
         handleHeight: false,
@@ -58,26 +56,22 @@ const J001OverView = () => {
                 }
                 //在主页 + 子页有数据  = 跳
                 if (tableKey == 1 && res != null) {
-                    // console.log('111');
                     tableKey = 2
                     carouselRef.current.next()
                     return
                 }
                 //在主页 + 子页没数据  = 不跳
                 if (tableKey == 1 && res == null) {
-                    // console.log('222');
                     tableKey = 1
                     return
                 }
                 //在子页 + 子页有数据  = 不跳
                 if (tableKey == 2 && res != null) {
-                    // console.log('333');
                     tableKey = 2
                     return
                 }
                 //在子页 + 子页没数据  = 跳
                 if (tableKey == 2 && res == null) {
-                    // console.log('444');
                     tableKey = 1
                     carouselRef.current.next()
                     return

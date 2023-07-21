@@ -102,7 +102,7 @@ const PickTrayTable = ({
           description: err.message
         });
       });
-    // console.log({ ...searchValue, page: page - 1, pageSize });
+    // //console.log({ ...searchValue, page: page - 1, pageSize });
     // await TransferBoxServices.getPage({ ...searchValue, page: page - 1, pageSize })
     //   .then(res => {
     //     setDataSource(res.content);
@@ -130,7 +130,7 @@ const PickTrayTable = ({
     if (orderNumber != '') {
       params.orderNumber = orderNumber
     }
-    console.log(params, 'params');
+    //console.log(params, 'params');
 
     setSearchValue({ ...params});
     // setPage(1);

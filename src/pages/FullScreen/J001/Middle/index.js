@@ -27,7 +27,6 @@ const ContentTwo = ({newDataDetail}) => {
     // }
 
     let timerMid;
-    // console.log(isScrolle, 'isScrolle');
 
     if (isScrolle) {
       timerMid = setInterval(

@@ -41,7 +41,7 @@ const ManualTable = ({
         })
 
 
-        console.log(data, 'materialList');
+        //console.log(data, 'materialList');
 
         setMaterialList(data)
       }).catch(err => {

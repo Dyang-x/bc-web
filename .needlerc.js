@@ -9,6 +9,6 @@ module.exports = {
     message: {
         username: 'admin',
         password: 'admin',
-        wsAddress: `ws://192.168.100.248.34:15674/ws`,
+        wsAddress: `ws://192.168.248.13:15674/ws`,
     }
 };

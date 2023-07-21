@@ -286,9 +286,9 @@ const SemiFinisheDeliveryPalletSelection = ({ history }) => {
     validateFields(async (err, values) => {
       if (err) return;
       const params = getFieldsValue();
-      console.log(params, 'params');
+      //console.log(params, 'params');
       // const data ={...params,selectedRowKeys}
-      // console.log(data, 'data');
+      // //console.log(data, 'data');
 
       SemiFinisheDeliveryPalletSelectionServices
         .outStore(params.readyMaterials, selectedRowKeys, params.dockingPoint)

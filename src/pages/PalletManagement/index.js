@@ -124,7 +124,7 @@ const PalletManagement = () => {
 
   const loadData = async (page, pageSize, searchValue) => {
     setLoading(true);
-    console.log({ ...searchValue, page: page - 1, pageSize });
+    //console.log({ ...searchValue, page: page - 1, pageSize });
     await TransferBoxServices.getPage({ ...searchValue, page: page - 1, pageSize })
       .then(res => {
         setDataSource(res.content);
@@ -148,11 +148,11 @@ const PalletManagement = () => {
     validateFields(async (err, values) => {
       if (err) return;
       const params = getFieldsValue();
-      console.log(params, 'params');
+      //console.log(params, 'params');
       const searchValues = { ...searchValue, ...params, }
       if (searchValues.code == '' || searchValues.code == undefined) { delete searchValues.code }
       if (searchValues.locationCode == '' || searchValues.locationCode == undefined) { delete searchValues.locationCode }
-      console.log(searchValues, 'searchValues');
+      //console.log(searchValues, 'searchValues');
       if (selectedType == null) {
         return
       }
@@ -193,7 +193,7 @@ const PalletManagement = () => {
       if (err) return;
       const params = getFieldsValue();
       params.transferType = pullFormData.type
-      console.log('params', params);
+      //console.log('params', params);
 
       //上架
       if (pullType == 1) {
@@ -296,7 +296,7 @@ const PalletManagement = () => {
         taskType: 5,
         inType: 5,
       }
-      console.log(data,'原材料托盘上架');
+      //console.log(data,'原材料托盘上架');
       Modal.confirm({
         title: `${getFormattedMsg('PalletManagement.title.putOnPallet')}${record.code}?`,
         onOk: () => {
@@ -325,7 +325,7 @@ const PalletManagement = () => {
         taskType: 6,
         inType: 6,
       }
-      console.log(data,'原材料托盘下架');
+      //console.log(data,'原材料托盘下架');
       Modal.confirm({
         title: `${getFormattedMsg('PalletManagement.title.pullOffPallet')}${record.code}?`,
         onOk: () => {
@@ -370,7 +370,7 @@ const PalletManagement = () => {
         taskType: 7,
         inType: 7,
       }
-      console.log(data,'半成品托盘上架');
+      //console.log(data,'半成品托盘上架');
       Modal.confirm({
         title: `${getFormattedMsg('PalletManagement.title.putOnPallet')}${simData.code}?`,
         onOk: () => {
@@ -390,7 +390,7 @@ const PalletManagement = () => {
             taskType: 8,
             inType: 8,
           }
-          console.log(data,'半成品托盘上架');
+          //console.log(data,'半成品托盘上架');
           Modal.confirm({
             title: `${getFormattedMsg('PalletManagement.title.pullOffPallet')}${simData.code}?`,
             onOk: () => {
@@ -477,7 +477,7 @@ const PalletManagement = () => {
   };
 
   const handleChoosePalletType = record => {
-    console.log('record', record);
+    //console.log('record', record);
     const type = record.id;
     setSelectedType(type)
 
@@ -489,7 +489,7 @@ const PalletManagement = () => {
   }
 
   const printLabel = () => {
-    console.log('selectedDatas', selectedDatas);
+    //console.log('selectedDatas', selectedDatas);
     if (isEmpty(selectedDatas)) {
       notification.warning({ message: '请勾选需要打印标签的托盘' })
       return
@@ -512,7 +512,7 @@ const PalletManagement = () => {
       printerCode: "printer-1"
     };
 
-    console.log('printData', printData);
+    //console.log('printData', printData);
 
     PrintService.print(printData)
       .then(res => {
@@ -552,7 +552,7 @@ const PalletManagement = () => {
     validateFields(async (err, values) => {
       if (err) return;
       const params = getFieldsValue();
-      console.log(params, 'HandleSaveCreate');
+      //console.log(params, 'HandleSaveCreate');
       await TransferBoxServices.createBox(params)
         .then(res => {
           notification.success({
@@ -582,7 +582,7 @@ const PalletManagement = () => {
     validateFields(async (err, values) => {
       if (err) return;
       const params = getFieldsValue();
-      console.log(params, 'HandleSaveAndHandlePutOn');
+      //console.log(params, 'HandleSaveAndHandlePutOn');
 
       resetFields()
       handleCancelCreate()
@@ -636,7 +636,7 @@ const PalletManagement = () => {
     validateFields(async (err, values) => {
       if (err) return;
       const params = getFieldsValue();
-      console.log(params, 'HandleSaveAndHandlePutOn');
+      //console.log(params, 'HandleSaveAndHandlePutOn');
 
       resetFields()
       handleCancelCreate()
@@ -658,20 +658,20 @@ const PalletManagement = () => {
       const data = {}
       data.code = i.code
       const div = document.getElementById(i.code)
-      // console.log('div', div);
+      // //console.log('div', div);
       const img = div.getElementsByTagName('img')
-      // console.log('img[0]', img[0]);
+      // //console.log('img[0]', img[0]);
       const res = imageToZ64(img[0]);
-      // console.log('res', res);
-      // console.log('res---------------------', res.z64.substring(5,res.z64.length));
+      // //console.log('res', res);
+      // //console.log('res---------------------', res.z64.substring(5,res.z64.length));
       const zpl_ = ` ^XA^LH0,0^FWN^PON^PMN^LRN ^FO10,10^GFA,${res.length},${res.length},${res.rowlen},${res.z64}^XZ`;
-      console.log(zpl_);
+      //console.log(zpl_);
       const zpl = res.z64
-      console.log(zpl);
+      //console.log(zpl);
       data.value = zpl
       datas = [...datas, data]
     })
-    console.log(datas, 'datas');
+    //console.log(datas, 'datas');
 
     const printData = {
       data: datas,
@@ -679,7 +679,7 @@ const PalletManagement = () => {
       printerCode: "printer-1"
     };
 
-    console.log('printData', printData);
+    //console.log('printData', printData);
 
     PrintService.print(printData)
       .then(res => {

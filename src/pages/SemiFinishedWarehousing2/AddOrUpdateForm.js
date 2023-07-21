@@ -58,10 +58,10 @@ const TrayForm = ({
 
   const sortPositionChange = async (e) => {
     const sortPosition = e
-    console.log('sortPosition', sortPosition);
+    //console.log('sortPosition', sortPosition);
     await PrepareAreaServices.findByArea({ areaCode: sortPosition })
       .then(res => {
-        console.log(res, 'res');
+        //console.log(res, 'res');
         if (res.content.length > 0) {
           const transferCode = res.content[0].transferCode
           setFieldsValue({ trayNumber: transferCode })
@@ -204,9 +204,9 @@ const TrayForm = ({
   }
 
   const handleDelete = (record) => {
-    console.log(record, 'record');
+    //console.log(record, 'record');
     const newD = dataSource.filter(i => i.id != record.id)
-    console.log(newD, 'newD');
+    //console.log(newD, 'newD');
     setDataSource(newD)
 
     setFieldsValue({ scan: newD.length == 0 ? '' : newD.length })
@@ -217,7 +217,7 @@ const TrayForm = ({
   }
 
   const onInputChange = (e, record) => {
-    console.log('edasdad', e.target.value);
+    //console.log('edasdad', e.target.value);
     record.value = e.target.value
   }
 
@@ -248,7 +248,7 @@ const TrayForm = ({
   }
 
   const onHandleTableSelect = e => {
-    console.log('e.suborder', e.suborder);
+    //console.log('e.suborder', e.suborder);
     if (selectedRowKeys.indexOf(e.id) === -1) {
       setSelectedRowKeys([e.id])
       setSelectedDatas(e)
@@ -293,7 +293,7 @@ const TrayForm = ({
     const detail = dataSource.map(t => {
       return t.id === selectedDatas.id ? selectedDatas : t;
     });
-    console.log(detail, 'detail');
+    //console.log(detail, 'detail');
     setDataSource(detail)
   }
 
@@ -305,7 +305,7 @@ const TrayForm = ({
     const detail = dataSource.map(t => {
       return t.id === selectedDatas.id ? selectedDatas : t;
     });
-    console.log(detail, 'detail');
+    //console.log(detail, 'detail');
     setDataSource(detail)
   }
 
@@ -320,7 +320,7 @@ const TrayForm = ({
       })
       return
     }
-    console.log(detailDataSource.length, 'detailDataSource.length');
+    //console.log(detailDataSource.length, 'detailDataSource.length');
     const a = detailKeyV + 1
     const addData = {
       // id: detailDataSource.length + 1,
@@ -346,7 +346,7 @@ const TrayForm = ({
     const detail = dataSource.map(t => {
       return t.id === selectedDatas.id ? selectedDatas : t;
     });
-    console.log(detail, 'detail');
+    //console.log(detail, 'detail');
     setDataSource(detail)
   }
 
@@ -391,7 +391,7 @@ const TrayForm = ({
             ],
             initialValue: modifyData ? modifyData['trayNumber'] : undefined
           })(
-            <Input disabled={type} placeholder={getFormattedMsg('SemiFinishedWarehousingReceipt.placeholder.orderNumber')} style={{ width: '100%' }} />
+            <Input disabled={type} placeholder={getFormattedMsg('SemiFinishedWarehousingReceipt.placeholder.trayNumber')} style={{ width: '100%' }} />
           )}
       </Form.Item>
       <Form.Item {...formItemLayout} label={'订单数量'}>
@@ -478,15 +478,15 @@ const TrayForm = ({
                 dataSource={detailDataSource}
                 expandedRowKeys={detailExpandedRowKey}
                 onExpand={(expanded, record) => {
-                  console.log('expanded', expanded);
-                  console.log('record', record);
+                  //console.log('expanded', expanded);
+                  //console.log('record', record);
                   if (expanded) {
                     const expandedRowKeys = [...detailExpandedRowKey, record.id]
-                    console.log('expandedRowKeys111', expandedRowKeys);
+                    //console.log('expandedRowKeys111', expandedRowKeys);
                     setDetailExpandedRowKey(expandedRowKeys)
                   } else {
                     const expandedRowKeys = detailExpandedRowKey.filter(i => i != record.id)
-                    console.log('expandedRowKeys222', expandedRowKeys);
+                    //console.log('expandedRowKeys222', expandedRowKeys);
                     setDetailExpandedRowKey(expandedRowKeys)
                   }
                 }}
@@ -609,10 +609,10 @@ const TrayForm = ({
 
 //   const sortPositionChange = async (e) => {
 //     const sortPosition = e
-//     console.log('sortPosition', sortPosition);
+//     //console.log('sortPosition', sortPosition);
 //     await PrepareAreaServices.findByArea({ areaCode: sortPosition })
 //       .then(res => {
-//         console.log(res, 'res');
+//         //console.log(res, 'res');
 //         if (res.content.length > 0) {
 //           const transferCode = res.content[0].transferCode
 //           setFieldsValue({ trayNumber: transferCode })
@@ -628,7 +628,7 @@ const TrayForm = ({
 
 //     const dataString = e.target.value
 //     const arr = dataString.split('|');
-//     console.log('arr', arr);
+//     //console.log('arr', arr);
 
 //     // const materialCode = arr[0]
 //     // const quantity = arr[1]
@@ -645,7 +645,7 @@ const TrayForm = ({
 //         {id:3, name: '产品名称', value: arr[3], },
 //       ]
 //     }
-//     console.log([...dataSource, addData], '[...dataSource,addData]');
+//     //console.log([...dataSource, addData], '[...dataSource,addData]');
 //     setDataSource([...dataSource, addData])
 
 //     setFieldsValue({
@@ -720,19 +720,19 @@ const TrayForm = ({
 //   ]
 
 //   const handleDelete = (record) => {
-//     console.log(record, 'record');
+//     //console.log(record, 'record');
 //     const newD  = dataSource.filter(i=>i.value != record.value)
-//     console.log(newD, 'newD');
+//     //console.log(newD, 'newD');
 //     setDataSource(newD)
 //   }
 
 //   const onInputChange = (e,record) => {
-//     console.log('edasdad', e.target.value);
+//     //console.log('edasdad', e.target.value);
 //     record.value = e.target.value
 //   }
 
 //   const manualAdd = () => {
-//     console.log(dataSource.length, 'dataSource.length');
+//     //console.log(dataSource.length, 'dataSource.length');
 //     const addData = {
 //       id: dataSource.length + 1,
 //       name: '主订单号',
@@ -743,9 +743,9 @@ const TrayForm = ({
 //         { id: 3, name: '产品名称', value: '', },
 //       ]
 //     }
-//     console.log([...dataSource, addData], '[...dataSource,addData]');
+//     //console.log([...dataSource, addData], '[...dataSource,addData]');
 //     setDataSource([...dataSource, addData])
-//     console.log(dataSource.length, 'dataSource.length');
+//     //console.log(dataSource.length, 'dataSource.length');
 //     setExpandedRowKey([dataSource.length+1])
 //   }
 
@@ -824,7 +824,7 @@ const TrayForm = ({
 //                 setExpandedRowKey(expandedRowKeys)
 //               }else{
 //                 const expandedRowKeys = expandedRowKey.filter(i=>i != record.id)
-//                 console.log(expandedRowKeys,'expandedRowKeys');
+//                 //console.log(expandedRowKeys,'expandedRowKeys');
 //                 setExpandedRowKey(expandedRowKeys)
 //               }
 //             }}

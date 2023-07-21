@@ -34,24 +34,19 @@ const SurplusForm = ({
   const [suborderNumber, setSuborderNumber] = useState('');
 
   useEffect(() => {
-    getAllOderByQuery()
+    // getAllOderByQuery()
   }, [])
 
   useEffect(() => {
   }, [selectedRowKeys,detailSelectedRowKeys])
 
   const getAllOderByQuery = async (orderNumber,suborderNumber) => {
-    console.log(orderNumber,'orderNumber');
-    console.log(suborderNumber,'suborderNumber');
-
     const params={}
     orderNumber == undefined||orderNumber == ''  ?delete params.orderNumber: params.orderNumber = orderNumber
     suborderNumber == undefined||suborderNumber == ''  ?delete params.suborderNumber: params.suborderNumber = suborderNumber
-    console.log(params,'params');
 
     await SemiFinishedWarehousingReceiptServices.getAllOderByQuery(params)
       .then(res => {
-        console.log('res', res);
         setTableData(res)
       })
       .catch(err => {
@@ -164,7 +159,7 @@ const SurplusForm = ({
           getFieldDecorator('suborderNumber', {
             rules: [
               {
-                required: true,
+                // required: true,
                 message: '请选择子订单号',
               },
             ],

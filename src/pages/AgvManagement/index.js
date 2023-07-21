@@ -348,13 +348,10 @@ const Index = () => {
     AgvManagementServices
       .findTaskView({ ...searchValue, page: page - 1, pageSize })
       .then(res => {
-        if (!isNull(res)) {
-          setTableData(res.content);
-          setTotalPage(res.totalElements);
-          setPage(res.pageable.pageNumber + 1)
-          setPageSize(res.pageable.pageSize)
-        }
-        setLoading(false);
+        setTableData(res.content);
+        setTotalPage(res.totalElements);
+        setPage(res.pageable.pageNumber + 1)
+        setPageSize(res.pageable.pageSize)
       })
       .catch(err => {
         setLoading(false);
@@ -363,6 +360,7 @@ const Index = () => {
           description: err.message
         });
       });
+    setLoading(false);
   };
 
   //刷新按钮
@@ -658,8 +656,6 @@ const Index = () => {
         <Pane
           tab
           onTabChange={e => {
-            console.log(e, 'e');
-
             setNowTab(+e);
             loadData(page, pageSize, { ...searchValue, taskState: e });
           }}

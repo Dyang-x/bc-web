@@ -30,105 +30,6 @@ import TypeTree from './TypeTree';
 import { Table } from '@hvisions/h-ui';
 import styles from './style.scss'
 
-const columns1111 = [
-  {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
-    width: 100,
-    fixed: 'left',
-    filters: [
-      {
-        text: 'Joe',
-        value: 'Joe',
-      },
-      {
-        text: 'John',
-        value: 'John',
-      },
-    ],
-    onFilter: (value, record) => record.name.indexOf(value) === 0,
-  },
-  {
-    title: 'Other',
-    children: [
-      {
-        title: 'Age',
-        dataIndex: 'age',
-        key: 'age',
-        width: 200,
-        sorter: (a, b) => a.age - b.age,
-      },
-      {
-        title: 'Address',
-        children: [
-          {
-            title: 'Street',
-            dataIndex: 'street',
-            key: 'street',
-            width: 200,
-          },
-          {
-            title: 'Block',
-            children: [
-              {
-                title: 'Building',
-                dataIndex: 'building',
-                key: 'building',
-                width: 100,
-              },
-              {
-                title: 'Door No.',
-                dataIndex: 'number',
-                key: 'number',
-                width: 100,
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-  {
-    title: 'Company',
-    children: [
-      {
-        title: 'Company Address',
-        dataIndex: 'companyAddress',
-        key: 'companyAddress',
-        width: 200,
-      },
-      {
-        title: 'Company Name',
-        dataIndex: 'companyName',
-        key: 'companyName',
-      },
-    ],
-  },
-  {
-    title: 'Gender',
-    dataIndex: 'gender',
-    key: 'gender',
-    width: 80,
-    fixed: 'right',
-  },
-];
-
-const data11111 = [];
-for (let i = 0; i < 100; i++) {
-  data11111.push({
-    key: i,
-    name: 'John Brown',
-    age: i + 1,
-    street: 'Lake Park',
-    building: 'C',
-    number: 2035,
-    companyAddress: 'Lake Street 42',
-    companyName: 'SoftLake Co',
-    gender: 'M',
-  });
-}
-
 const isChinese = session.getLocale();
 const apiAddress = session.getApiAddress();
 
@@ -387,6 +288,26 @@ export default class Material extends Page {
             </Select>
           ),
           key: 'materialGroup'
+        },
+        {
+          label: '材质',
+          component: (
+            <Input
+              allowClear
+              placeholder={'请输入物料材质'}
+            />
+          ),
+          key: 'materialTexture'
+        },
+        {
+          label: '规格',
+          component: (
+            <Input
+              allowClear
+              placeholder={'请输入物料规格'}
+            />
+          ),
+          key: 'specification'
         }
       ]
     });
@@ -760,13 +681,6 @@ export default class Material extends Page {
         });
         layout.setNode('rightBottom', () => (
           <Spin spinning={this.state.loading}>
-           {/* <Table
-    columns={columns1111}
-    dataSource={data11111}
-    bordered
-    size="middle"
-    scroll={{ x: '130%', y: 240 }}
-  /> */}
             <Table
             // className ={stl}
               dataSource={this.state.tableData.map((i, idx) => ({
@@ -796,7 +710,6 @@ export default class Material extends Page {
           right: {
             ...layout.getOptions().right,
             bottom: { ...layout.getOptions().right.bottom, settingButton: () => <SettingButton /> }
-            // bottom: { ...layout.getOptions().right.bottom }
           }
         });
       })

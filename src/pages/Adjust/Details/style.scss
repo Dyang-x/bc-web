@@ -1,0 +1,17 @@
+.header {
+  :global {
+    .ant-page-header {
+      padding: 6px 16px;
+    }
+    .ant-page-header-heading-extra {
+      position: absolute;
+      top: 3px;
+      right: 24px;
+    }
+    .ant-page-header-heading-title {
+      margin-left: 15px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+  }
+}

@@ -166,7 +166,6 @@ const EmptyPalletsWarehousingPage = ({ history }) => {
 
   const handleCreate = () => {
     setAddOrUpdateVis(true)
-    console.log('addOrUpdateData', addOrUpdateData);
     setAddOrUpdateData({})
   }
 
@@ -220,7 +219,6 @@ const EmptyPalletsWarehousingPage = ({ history }) => {
   }
 
   const handleUpdate = (record) => {
-    console.log('record', record);
     setAddOrUpdateVis(true)
     setAddOrUpdateData(record)
   }

@@ -17,7 +17,7 @@ const JoinAreaForm = ({
   const [transferList, setTransferList] = useState([])
 
   useEffect(() => {
-    console.log(modifyData, 'modifyData');
+    //console.log(modifyData, 'modifyData');
     getTransfer()
   }, [])
 

@@ -48,7 +48,7 @@ const PalletManagementConnectionPort = () => {
       align: 'center',
       render: (value, record, index) => {
         //  const joinState = state.filter(i=>i.id == value)
-        //  console.log(joinState,'joinState');
+        //  //console.log(joinState,'joinState');
         //   return joinState[0].value
         return dockingPointState[value - 1].value
       }
@@ -260,7 +260,7 @@ const PalletManagementConnectionPort = () => {
   }
 
   const getTransfer = async (searchValue) => {
-    console.log(searchValue, 'searchValue');
+    //console.log(searchValue, 'searchValue');
     await TransferBoxServices.getPage({ code: searchValue, page: pageInfo.page - 1, pageSize: pageInfo.pageSize })
       .then(res => {
         setTransferList(res.content);

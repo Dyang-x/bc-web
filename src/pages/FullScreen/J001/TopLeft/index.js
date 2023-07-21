@@ -14,7 +14,6 @@ const TopLeft = ({ LeftData }) => {
   const childDom2 = useRef();
 
   useEffect(() => {
-    console.log(LeftData,LeftData.length);
     setList(LeftData)
     setIsScrolle(true)
   }, [LeftData]);
@@ -28,7 +27,6 @@ const TopLeft = ({ LeftData }) => {
     // }
 
     let timerMid;
-    // console.log(isScrolle, 'isScrolle');
 
     if (isScrolle) {
       timerMid = setInterval(

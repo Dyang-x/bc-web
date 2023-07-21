@@ -135,6 +135,7 @@ const WirelineStorage = ({ history }) => {
       key: 'opt',
       align: 'center',
       width: 500,
+      fixed:'right',
       render: (_, record) => [
         <a key="detail" onClick={() => handlePutOn(record)}>
           上架
@@ -155,6 +156,10 @@ const WirelineStorage = ({ history }) => {
         <a key="detail" onClick={() => updateHighLevel(record)}>
           更新上下料数据
         </a>,
+        <Divider key="divider5" type="vertical" />,
+        <a key="detail" onClick={() => relieveOccupation(record)}>
+          解除占用
+        </a>,
       ],
     }
   ]
@@ -169,7 +174,7 @@ const WirelineStorage = ({ history }) => {
         // setTotalPage(res.totalElements);
         // setPage(res.pageable.pageNumber + 1);
         // setPageSize(res.pageable.pageSize);
-        console.log(res,'res');
+        //console.log(res,'res');
         setTableData(res);
         setLoading(false);
       })
@@ -188,15 +193,15 @@ const WirelineStorage = ({ history }) => {
     return () => loadData({ ...searchValue });
   };
 
-  const onShowSizeChange = (p, s) => {
-    loadData(p, s, { ...searchValue });
-    setPageSize(s);
-  };
+  // const onShowSizeChange = (p, s) => {
+  //   loadData(p, s, { ...searchValue });
+  //   setPageSize(s);
+  // };
 
-  const pageChange = (p, s) => {
-    loadData(p, s, { ...searchValue });
-    setPage(p);
-  };
+  // const pageChange = (p, s) => {
+  //   loadData(p, s, { ...searchValue });
+  //   setPage(p);
+  // };
 
   //查询按钮
   const handleSearch = data => {
@@ -212,7 +217,7 @@ const WirelineStorage = ({ history }) => {
         delete params[i]
       }
     })
-    console.log(params,'params');
+    //console.log(params,'params');
 
     setSearchValue({ ...params });
     // setPage(1);
@@ -233,7 +238,7 @@ const WirelineStorage = ({ history }) => {
       trayNumber: record.trayNumber,
       state: 0,
     }
-    console.log(data,'上架');
+    //console.log(data,'上架');
     Modal.confirm({
       title: `${getFormattedMsg('PalletManagement.title.putOnPallet')}${record.trayNumber}?`,
       onOk: () => {
@@ -250,7 +255,8 @@ const WirelineStorage = ({ history }) => {
         notification.success({
           message: '托盘入库任务生成成功'
         });
-        reFreshFunc()
+        // reFreshFunc()
+        loadData({ ...searchValue })
       })
       .catch(err => {
         notification.warning({
@@ -260,7 +266,7 @@ const WirelineStorage = ({ history }) => {
   }
 
   const handleUp = (record) => {
-    const addremove  = "+1"
+    const addremove  = "%2B1"
     Modal.confirm({
       title: `确认托盘${record.trayNumber}数量+1 ?`,
       onOk: async() => {
@@ -269,7 +275,8 @@ const WirelineStorage = ({ history }) => {
           notification.success({
             message: '数量增加成功'
           })
-          reFreshFunc()
+        // reFreshFunc()
+        loadData({ ...searchValue })
         })
         .catch(err => {
           notification.warning({
@@ -291,7 +298,8 @@ const WirelineStorage = ({ history }) => {
           notification.success({
             message: '数量减少成功'
           })
-          reFreshFunc()
+        // reFreshFunc()
+        loadData({ ...searchValue })
         })
         .catch(err => {
           notification.warning({
@@ -309,7 +317,8 @@ const WirelineStorage = ({ history }) => {
           notification.success({
             message: '物料退库成功'
           })
-          reFreshFunc()
+        // reFreshFunc()
+        loadData({ ...searchValue })
         })
         .catch(err => {
           notification.warning({
@@ -325,7 +334,8 @@ const WirelineStorage = ({ history }) => {
           notification.success({
             message: '数据更新成功'
           })
-          reFreshFunc()
+        // reFreshFunc()
+        loadData({ ...searchValue })
         })
         .catch(err => {
           notification.warning({
@@ -335,71 +345,88 @@ const WirelineStorage = ({ history }) => {
         })
   }
 
-  const handleAdd = () => {
-    setAddVis(true);
-  };
+  const relieveOccupation =async(record)=>{
+    await LineEdgeLibraryApi.relieveOccupation(record.fromLocation ,0 )
+    .then(res => {
+      notification.success({
+        message: '物料解除占用成功'
+      })
+        // reFreshFunc()
+        loadData({ ...searchValue })
+    })
+    .catch(err => {
+      notification.warning({
+        message: '物料占用失败',
+        description: err.message
+      })
+    })
+  }
 
-  const handleCancelAdd = () => {
-    const { resetFields } = addForm.current;
-    resetFields();
-    setAddVis(false);
-  };
+  // const handleAdd = () => {
+  //   setAddVis(true);
+  // };
 
-  const modalAddFoot = () => [
-    <Button key="save" type="primary" onClick={handleSaveAdd}>
-      {getFormattedMsg('SurplusInStorage.button.save')}
-    </Button>,
-    <Button key="cancel" onClick={handleCancelAdd}>
-      {getFormattedMsg('SurplusInStorage.button.cancel')}
-    </Button>
-  ];
+  // const handleCancelAdd = () => {
+  //   const { resetFields } = addForm.current;
+  //   resetFields();
+  //   setAddVis(false);
+  // };
 
-  const handleSaveAdd = () => {
-    const { getFieldsValue, validateFields, setFieldsValue } = addForm.current;
-    validateFields(async (err, values) => {
-      if (err) return;
-      const params = getFieldsValue();
-      await SurplusMaterialApi
-        .addSurplus(params)
-        .then(res => {
-          notification.success({
-            message: getFormattedMsg('SurplusInStorage.message.addSuccess')
-          });
-          loadData(page, pageSize, { ...searchValue});
-        })
-        .catch(err => {
-          notification.warning({
-            message: getFormattedMsg('SurplusInStorage.message.addFailure'),
-            description: err.message
-          });
-        });
-      handleCancelAdd();
-    });
-  };
+  // const modalAddFoot = () => [
+  //   <Button key="save" type="primary" onClick={handleSaveAdd}>
+  //     {getFormattedMsg('SurplusInStorage.button.save')}
+  //   </Button>,
+  //   <Button key="cancel" onClick={handleCancelAdd}>
+  //     {getFormattedMsg('SurplusInStorage.button.cancel')}
+  //   </Button>
+  // ];
 
-  const handleDelete = record => {
-    Modal.confirm({
-      title: getFormattedMsg('SurplusInStorage.operation.delete'),
-      okType: 'danger',
-      onOk: async () => {
-        await SurplusMaterialApi
-          .deleteById(record.id)
-          .then(res => {
-            notification.success({
-              message: getFormattedMsg('SurplusInStorage.message.deleteSuccess'),
-            });
-            loadData(page, pageSize, { ...searchValue});
-          })
-          .catch(err => {
-            notification.warning({
-              message: getFormattedMsg('SurplusInStorage.message.deleteFailure'),
-              description: err.message
-            });
-          });
-      },
-      onCancel() {}
-    });
-  };
+  // const handleSaveAdd = () => {
+  //   const { getFieldsValue, validateFields, setFieldsValue } = addForm.current;
+  //   validateFields(async (err, values) => {
+  //     if (err) return;
+  //     const params = getFieldsValue();
+  //     await SurplusMaterialApi
+  //       .addSurplus(params)
+  //       .then(res => {
+  //         notification.success({
+  //           message: getFormattedMsg('SurplusInStorage.message.addSuccess')
+  //         });
+  //         loadData(page, pageSize, { ...searchValue});
+  //       })
+  //       .catch(err => {
+  //         notification.warning({
+  //           message: getFormattedMsg('SurplusInStorage.message.addFailure'),
+  //           description: err.message
+  //         });
+  //       });
+  //     handleCancelAdd();
+  //   });
+  // };
+
+  // const handleDelete = record => {
+  //   Modal.confirm({
+  //     title: getFormattedMsg('SurplusInStorage.operation.delete'),
+  //     okType: 'danger',
+  //     onOk: async () => {
+  //       await SurplusMaterialApi
+  //         .deleteById(record.id)
+  //         .then(res => {
+  //           notification.success({
+  //             message: getFormattedMsg('SurplusInStorage.message.deleteSuccess'),
+  //           });
+  //           loadData(page, pageSize, { ...searchValue});
+  //         })
+  //         .catch(err => {
+  //           notification.warning({
+  //             message: getFormattedMsg('SurplusInStorage.message.deleteFailure'),
+  //             description: err.message
+  //           });
+  //         });
+  //     },
+  //     onCancel() {}
+  //   });
+  // };
 
   return (
     <>

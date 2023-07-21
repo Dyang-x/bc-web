@@ -31,7 +31,6 @@ const ContentTwo = ({newDataDetail}) => {
   const childDom2 = useRef();
 
   useEffect(() => {
-    // console.log('newDataDetail.length',newDataDetail.length);
     // setList(data)
     setList(newDataDetail)    
     setIsScrolle(true)
@@ -46,7 +45,6 @@ const ContentTwo = ({newDataDetail}) => {
     // }
 
     let timerMid;
-    // console.log(isScrolle, 'isScrolle');
 
     if (isScrolle) {
       timerMid = setInterval(

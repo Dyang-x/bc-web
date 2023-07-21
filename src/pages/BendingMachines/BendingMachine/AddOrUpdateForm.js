@@ -28,7 +28,7 @@ const AddOrUpdateForm = ({
             ],
             initialValue: modifyData?modifyData['bendingNumber'] : ''
           })(
-            <Input placeholder={getFormattedMsg('BendingMachineConfiguration.placeholder.bendingNumber')} />
+            <Input disabled={modifyData.id != null} placeholder={getFormattedMsg('BendingMachineConfiguration.placeholder.bendingNumber')} />
           )
         }
       </Form.Item>
@@ -124,6 +124,7 @@ const AddOrUpdateForm = ({
             placeholder={getFormattedMsg('BendingMachineConfiguration.placeholder.readyMaterials')}
             showSearch
             filterOption={false}
+            disabled={modifyData.id != null}
           >
             {prepareAreas.map((value, index) => (
               <Option value={value.value} key={value.id}>

@@ -14,7 +14,6 @@ const ContentThree = ({ trayCount, rbgStatus }) => {
     }, []);
 
     const getStatus = (rbgStatus) => {
-        // console.log('others.rbgStatus',others.rbgStatus);
         if (rbgStatus == "手动") {
             return <Button className={styles["manual"]}>手动</Button>
         }

@@ -80,13 +80,13 @@ const moduleConfig = {
   }
 };
 
-const CoreConfig = {
-  username: 'admin',
-  password: 'admin',
-  // wsAddress: `${process.env.MESSAGE_API_ADDRESS_}`,
-  wsAddress: `ws://192.168.1.34:15672/ws`,
-  needNotification: true,
-}
+// const CoreConfig = {
+//   username: 'admin',
+//   password: 'admin',
+//   // wsAddress: `${process.env.MESSAGE_API_ADDRESS_}`,
+//   wsAddress: `ws://192.168.1.34:15672/ws`,
+//   needNotification: true,
+// }
 
 
 new Core({
@@ -94,5 +94,5 @@ new Core({
   locales, // 国际化
   store, // redux store
   moduleConfig, // 已有模块插入自定义功能
-  CoreConfig, //消息通知
+  // CoreConfig, //消息通知
 }).mount('#root');

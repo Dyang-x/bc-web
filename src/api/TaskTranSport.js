@@ -70,14 +70,14 @@ class TaskTranSportServices extends Service {
     }
   }
 
-    // 完成任务
-    async finishRBG(taskCode) {
-      try {
-        return await this.put(`${appName}/tasktransport/finishRBG?taskCode=${taskCode}`);
-      } catch (error) {
-        throw new Error(error);
-      }
+  // 完成任务
+  async finishRBG(taskCode) {
+    try {
+      return await this.put(`${appName}/tasktransport/finishRBG?taskCode=${taskCode}`);
+    } catch (error) {
+      throw new Error(error);
     }
+  }
 
   // 暂停任务
   async suspendTask(id) {
@@ -88,60 +88,66 @@ class TaskTranSportServices extends Service {
     }
   }
 
+  async manualSt2(taskCode) {
+    try {
+      return await this.put(`${appName}/task-management/manualSt2?taskCode=${taskCode}`);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 
-    async manualSt2(taskCode) {
+  async startTask(id) {
+    try {
+      return await this.put(`${appName}/tasktransport/startTask?id=${id}`);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  //J002扫码
+  async j002Scan(taskCode) {
+    try {
+      return await this.put(`${appName}/tasktransport/j002Scan?taskCode=${taskCode}`);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  //J003扫码
+  async j003Scan() {
+    try {
+      return await this.put(`${appName}/tasktransport/j003Scan`);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  //J002强制通过
+  async manualJ002(taskCode) {
+    try {
+      return await this.put(`${appName}/tasktransport/manualJ002?taskCode=${taskCode}`);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  //J003强制通过
+  async manualJ003() {
+    try {
+      return await this.put(`${appName}/tasktransport/manualJ003`);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+    // 完成任务
+    async finishLnl(taskCode) {
       try {
-        return await this.put(`${appName}/task-management/manualSt2?taskCode=${taskCode}`);
+        return await this.put(`${appName}/tasktransport/finishLnl?taskCode=${taskCode}`);
       } catch (error) {
         throw new Error(error);
       }
     }
-
-    async startTask(id) {
-      try {
-        return await this.put(`${appName}/tasktransport/startTask?id=${id}`);
-      } catch (error) {
-        throw new Error(error);
-      }
-    }
-
-
-    //J002扫码
-    async j002Scan(taskCode) {
-      try {
-        return await this.put(`${appName}/tasktransport/j002Scan?taskCode=${taskCode}`);
-      } catch (error) {
-        throw new Error(error);
-      }
-    }
-
-    //J003扫码
-    async j003Scan() {
-      try {
-        return await this.put(`${appName}/tasktransport/j003Scan`);
-      } catch (error) {
-        throw new Error(error);
-      }
-    }
-
-    //J002强制通过
-    async manualJ002(taskCode) {
-      try {
-        return await this.put(`${appName}/tasktransport/manualJ002?taskCode=${taskCode}`);
-      } catch (error) {
-        throw new Error(error);
-      }
-    }
-
-    //J003强制通过
-    async manualJ003() {
-      try {
-        return await this.put(`${appName}/tasktransport/manualJ003`);
-      } catch (error) {
-        throw new Error(error);
-      }
-    }
-    
 }
 
 export default new TaskTranSportServices();

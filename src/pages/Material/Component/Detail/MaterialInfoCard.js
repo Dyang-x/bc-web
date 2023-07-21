@@ -292,7 +292,7 @@ const MaterialInfoCard = ({ materialData }) => {
   const onRemoveOne = item => e => {
     e.preventDefault();
     e.stopPropagation();
-    console.log(item.classId);
+    //console.log(item.classId);
     if (item.classId !== null) {
       notification.warning({
         message: '有类型信息，不可删除'

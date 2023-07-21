@@ -1,6 +1,36 @@
 import { Service } from '@hvisions/core';
 const appName = '/materials-master-data';
 class Material extends Service {
+  // getMaterial(search = {}, page = 1, size = 10) {
+  //   const pageInfo = {
+  //     pageSize: size,
+  //     direction: false,
+  //     sort: true,
+  //     sortCol: 'id'
+  //   };
+  //   return this.post(`${appName}/material/getMaterialByNameOrCode`, {
+  //     ...pageInfo,
+  //     page: page - 1,
+  //     ...search
+  //   });
+  // }
+
+  // getMaterial(search = {}, ) {
+  //   const page = 1
+  //   const size = 10
+  //   const pageInfo = {
+  //     pageSize: size,
+  //     direction: false,
+  //     sort: true,
+  //     sortCol: 'id'
+  //   };
+  //   return this.post(`${appName}/material/getMaterialByNameOrCode`, {
+  //     ...pageInfo,
+  //     page: page - 1,
+  //     ...search
+  //   });
+  // }
+
   getMaterial(search = {}, page = 1, size = 10) {
     const pageInfo = {
       pageSize: size,
@@ -8,6 +38,7 @@ class Material extends Service {
       sort: true,
       sortCol: 'id'
     };
+
     return this.post(`${appName}/material/getMaterialByNameOrCode`, {
       ...pageInfo,
       page: page - 1,
@@ -285,8 +316,6 @@ class Material extends Service {
       throw new Error(error);
     }
   }
-
-
 }
 
 export default new Material();

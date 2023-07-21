@@ -180,7 +180,6 @@ const EmptyPalletDeliveryPage = ({ history }) => {
 
   const handleCreate = () => {
     setAddOrUpdateVis(true)
-    console.log('addOrUpdateData', addOrUpdateData);
     setAddOrUpdateData({})
   }
 
@@ -234,7 +233,6 @@ const EmptyPalletDeliveryPage = ({ history }) => {
   }
 
   const handleUpdate = (record) => {
-    console.log('record', record);
     setAddOrUpdateVis(true)
     setAddOrUpdateData(record)
   }

@@ -34,7 +34,7 @@ const OutForm = ({
           //   arr.push(i.readyMaterials)
           // })
           
-          // console.log(arr, 'arr');
+          // //console.log(arr, 'arr');
 
           const newArr = []
           res.content.forEach(item => {
@@ -42,7 +42,7 @@ const OutForm = ({
               newArr.push(item.readyMaterials)
             }
           })
-          console.log(newArr, 'newArr');
+          //console.log(newArr, 'newArr');
 
           setReadyMaterials(newArr);
         })

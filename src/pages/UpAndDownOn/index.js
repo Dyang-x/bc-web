@@ -23,8 +23,8 @@ const Index = () => {
   const [pageSize, setPageSize] = useState(10);
   const [totalPage, setTotalPage] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [searchValue, setSearchValue] = useState({});
-  const [taskKind, setTaskKind] = useState(7);
+  const [searchValue, setSearchValue] = useState({taskKind: 7,});
+  // const [taskKind, setTaskKind] = useState(7);
 
   const [nowTab, setNowTab] = useState(6);
   const [adjustModalVis, setAdjustModalVis] = useState(false);
@@ -32,7 +32,8 @@ const Index = () => {
   const adjustRef = useRef();
 
   useEffect(() => {
-    loadData(page, pageSize, { ...searchValue, taskKind: taskKind, taskState: nowTab });
+    // loadData(page, pageSize, { ...searchValue, taskKind: taskKind, taskState: nowTab });
+    loadData(page, pageSize, { ...searchValue,  taskState: nowTab });
   }, []);
 
   const columns = useMemo(() => {
@@ -53,7 +54,7 @@ const Index = () => {
             if (text == null) {
               return
             }
-            return taskType[text - 1].name
+            return TransportTaskType[text - 1].name
           }
         },
         {
@@ -150,7 +151,7 @@ const Index = () => {
             if (text == null) {
               return
             }
-            return taskType[text - 1].name
+            return TransportTaskType[text - 1].name
           }
         },
         {
@@ -323,6 +324,7 @@ const Index = () => {
 
   //查询页面数据
   const loadData = async (page, pageSize, searchValue) => {
+    console.log('searchValue',searchValue);
     setLoading(true);
     TaskTranSportServices
       .findTaskView({ ...searchValue, page: page - 1, pageSize })
@@ -344,47 +346,52 @@ const Index = () => {
 
   //刷新按钮
   const reFreshFunc = () => {
-    return () => loadData(page, pageSize, { ...searchValue, taskKind: taskKind, taskState: nowTab });
+    return () => loadData(page, pageSize, { ...searchValue,   taskState: nowTab });
   };
 
   const onShowSizeChange = (p, s) => {
-    loadData(p, s, { ...searchValue, taskKind: taskKind, taskState: nowTab });
+    loadData(p, s, { ...searchValue,   taskState: nowTab });
     setPageSize(s);
   };
 
   const pageChange = (p, s) => {
-    loadData(p, s, { ...searchValue, taskKind: taskKind, taskState: nowTab });
+    loadData(p, s, { ...searchValue,   taskState: nowTab });
     setPage(p);
   };
 
   //查询按钮
   const handleSearch = data => {
-    if (data.taskCode == "") { delete data.taskCode }
-    if (data.taskType == undefined) { delete data.taskType }
-    if (data.oderCode == "") { delete data.oderCode }
+    if (data.taskCode == ""||data.taskCode ==undefined) { delete data.taskCode }
+    if (data.taskType == ""||data.taskType == undefined) { delete data.taskType }
     const params = { ...data }
 
-    const kind = data.taskKind == undefined ? taskKind : data.taskKind
-    setSearchValue({ ...params, taskKind: kind });
-    setTaskKind(kind)
+    const kind = data.taskKind
+    // setSearchValue({ ...params, taskKind: kind });
+    console.log(data,'data' ,typeof data);
+    setSearchValue(data)
+    // setTaskKind(kind)
     setPage(1);
     setPageSize(10);
-    loadData(1, 10, { ...params, taskKind: kind, taskState: nowTab });
+    loadData(1, 10, { ...data,taskState: nowTab });
   };
 
   const handleStartTask = (record) => {
     Modal.confirm({
       title: '确认任务开始排队？',
       onOk: async () => {
-        await TaskTranSportServices.startTask(record.id)
-          .then(res => {
-            loadData(page, pageSize, { ...searchValue, taskState: nowTab });
-          })
-          .catch(err => {
-            notification.warning({
-              description: err.message
-            })
-          })
+        console.log({ ...searchValue, taskState: nowTab },'.....');
+        console.log(searchValue,'.searchValue..');
+
+        // await TaskTranSportServices.startTask(record.id)
+        //   .then(res => {
+        //     // loadData(page, pageSize, { ...searchValue, taskKind: record.taskKind, taskState: nowTab });
+        //     loadData(page, pageSize, { ...searchValue, taskState: nowTab });
+        //   })
+        //   .catch(err => {
+        //     notification.warning({
+        //       description: err.message
+        //     })
+        //   })
       },
       onCancel() { }
     })
@@ -419,7 +426,7 @@ const Index = () => {
           notification.success({
             message: getFormattedMsg('TaskTransport.message.adjustSuccess'),
           })
-          loadData(page, pageSize, { ...searchValue, taskState: nowTab });
+          //loadData(page, pageSize, { ...searchValue, taskKind: taskKind, taskState: nowTab });
         })
         .catch(err => {
           notification.warning({
@@ -438,7 +445,7 @@ const Index = () => {
         notification.success({
           message: getFormattedMsg('TaskTransport.message.pauseSuccess'),
         })
-        loadData(page, pageSize, { ...searchValue, taskState: nowTab });
+        //loadData(page, pageSize, { ...searchValue, taskKind: taskKind, taskState: nowTab });
       })
       .catch(err => {
         notification.warning({
@@ -458,7 +465,7 @@ const Index = () => {
             notification.success({
               message: getFormattedMsg('TaskTransport.message.deleteSuccess'),
             })
-            loadData(page, pageSize, { ...searchValue, taskState: nowTab });
+            //loadData(page, pageSize, { ...searchValue, taskKind: taskKind, taskState: nowTab });
           })
           .catch(err => {
             notification.warning({
@@ -476,7 +483,7 @@ const Index = () => {
         notification.success({
           message: getFormattedMsg('TaskTransport.message.continueSuccess'),
         })
-        loadData(page, pageSize, { ...searchValue, taskState: nowTab });
+        //loadData(page, pageSize, { ...searchValue, taskKind: taskKind, taskState: nowTab });
       })
       .catch(err => {
         notification.warning({
@@ -496,7 +503,7 @@ const Index = () => {
             notification.success({
               message: getFormattedMsg('TaskTransport.message.rollbackSuccess'),
             })
-            loadData(page, pageSize, { ...searchValue, taskState: nowTab });
+            //loadData(page, pageSize, { ...searchValue, taskKind: taskKind, taskState: nowTab });
           })
           .catch(err => {
             notification.warning({
@@ -512,12 +519,12 @@ const Index = () => {
     Modal.confirm({
       title: getFormattedMsg('TaskTransport.title.complete'),
       onOk: async () => {
-        await TaskTranSportServices.finishRBG(record.taskCode)
+        await TaskTranSportServices.finishLnl(record.taskCode)
           .then(res => {
             notification.success({
               message: getFormattedMsg('TaskTransport.message.completeSuccess'),
             })
-            loadData(page, pageSize, { ...searchValue, taskState: nowTab });
+            //loadData(page, pageSize, { ...searchValue, taskKind: taskKind, taskState: nowTab });
           })
           .catch(err => {
             notification.warning({
@@ -525,12 +532,27 @@ const Index = () => {
               description: err.message
             })
           })
+
+        // await TaskTranSportServices.finishRBG(record.taskCode)
+        //   .then(res => {
+        //     notification.success({
+        //       message: getFormattedMsg('TaskTransport.message.completeSuccess'),
+        //     })
+        //     //loadData(page, pageSize, { ...searchValue, taskState: nowTab });
+        //   })
+        //   .catch(err => {
+        //     notification.warning({
+        //       message: getFormattedMsg('TaskTransport.message.completeFailure'),
+        //       description: err.message
+        //     })
+        //   })
+
         // await TaskTranSportServices.finishTask(record.id)
         //   .then(res => {
         //     notification.success({
         //       message: getFormattedMsg('TaskTransport.message.completeSuccess'),
         //     })
-        //     loadData(page, pageSize, { ...searchValue, taskState: nowTab });
+        //     //loadData(page, pageSize, { ...searchValue, taskState: nowTab });
         //   })
         //   .catch(err => {
         //     notification.warning({
@@ -607,7 +629,7 @@ const Index = () => {
             <SearchForm.Item
               label={'设备'}
               name="taskKind"
-              initialValue={7}
+              initialValue={searchValue.taskKind}
             >
               <Select
                 placeholder={'请选择设备'}
@@ -626,7 +648,8 @@ const Index = () => {
           tab
           onTabChange={e => {
             setNowTab(+e);
-            loadData(page, pageSize, { ...searchValue, taskState: e });
+            // loadData(page, pageSize, { ...searchValue, taskKind: taskKind, taskState: e });
+            loadData(page, pageSize, { ...searchValue,  taskState: e });
           }}
         >
           <Pane.Tab

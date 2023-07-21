@@ -189,7 +189,7 @@ const DetailTable = ({
       middle: emptyData.fromLocation,
     }
     params.state = 0
-    console.log('params', params);
+    //console.log('params', params);
     await EmptyPalletsWarehousing
       .saveOrUpdate(params)
       .then(res => {

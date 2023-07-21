@@ -285,7 +285,6 @@ const PickTray = ({ modifyData,attribute1,attribute2 }) => {
     validateFields(async (err, values) => {
       if (err) return;
       const params = getFieldsValue();
-      console.log(params, 'params');
       const ids = selectedRowKeys
       SemiFinisheDeliveryPalletSelectionServices
         .outStore(params.dockingPoint, ids, params.readyMaterials)
