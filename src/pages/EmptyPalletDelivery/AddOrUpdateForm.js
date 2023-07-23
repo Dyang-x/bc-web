@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Form, Input, Select } from '@hvisions/h-ui'
 import { i18n } from '@hvisions/toolkit';
-import { emptyInMid, taskType } from '~/enum/enum';
+import { emptyInMid } from '~/enum/enum';
 import { isEmpty } from 'lodash';
 
 
@@ -22,6 +22,11 @@ const TrayForm = ({
     { id: 1, value: '下发中' },
     { id: 2, value: '已完成' },
   ]
+
+  const taskType = [
+    { id: 6, name: '原料托盘出库', value: '原料托盘出库', },
+    { id: 8, name: '半成品托盘出库', value: '半成品托盘出库', },
+]
 
   return (
     <Form >

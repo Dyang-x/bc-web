@@ -47,12 +47,12 @@ const EmptyPalletDeliveryPage = ({ history }) => {
       key: 'trayNumber',
       align: 'center',
     },
-    {
-      title: '起点',
-      dataIndex: 'fromLocation',
-      key: 'fromLocation',
-      align: 'center',
-    },
+    // {
+    //   title: '起点',
+    //   dataIndex: 'fromLocation',
+    //   key: 'fromLocation',
+    //   align: 'center',
+    // },
     {
       title: '中间点',
       dataIndex: 'middle',
@@ -82,12 +82,12 @@ const EmptyPalletDeliveryPage = ({ history }) => {
       key: 'createTime',
       align: 'center',
     },
-    {
-      title: getFormattedMsg('EmptyPalletDelivery.title.creator'),
-      dataIndex: 'creator',
-      key: 'creator',
-      align: 'center',
-    },
+    // {
+    //   title: getFormattedMsg('EmptyPalletDelivery.title.creator'),
+    //   dataIndex: 'creator',
+    //   key: 'creator',
+    //   align: 'center',
+    // },
     {
       title: getFormattedMsg('EmptyPalletDelivery.title.operation'),
       key: 'opt',

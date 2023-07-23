@@ -69,7 +69,7 @@ const InfoForm = forwardRef(({
                 </FormItem> */}
           <FormItem label='出库单类型' >
             {getFieldDecorator('type', {
-              initialValue: detail ? detail['stockType'] : undefined
+              initialValue: detail && detail['stockType'] != null ? detail['stockType'] : undefined
             })(<Select
               placeholder="请选择出库单类型"
               onChange={(key, value) => { onHandleChange(key, value) }}

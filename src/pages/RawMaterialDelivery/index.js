@@ -73,12 +73,12 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
       key: 'sizeY',
       align: 'center',
     },
-    {
-      title: '计划描述',
-      dataIndex: 'description',
-      key: 'description',
-      align: 'center',
-    },
+    // {
+    //   title: '计划描述',
+    //   dataIndex: 'description',
+    //   key: 'description',
+    //   align: 'center',
+    // },
     {
       title: '计划状态',
       dataIndex: 'planState',
@@ -146,6 +146,13 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
       align: 'center',
     },
     {
+      title: '异常描述',
+      dataIndex: 'abnormalDescription',
+      key: 'abnormalDescription',
+      align: 'center',
+      width:200,
+    },
+    {
       title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.operation'),
       key: 'opt',
       align: 'center',
@@ -175,8 +182,9 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
         (selectedstatus != 2) && [
           <a key="detail2" onClick={() => handleManualFinish(record)}>手动完成</a>,
           <Divider key="divider2" type="vertical" />,
-          <a key="detail3" onClick={() => handleManualDown(record)}>手动下架</a>,
+          // <a key="detail3" onClick={() => handleManualDown(record)}>手动下架</a>,
         ],
+        <a key="detail3" onClick={() => handleManualDown(record)}>手动下架</a>,
       ],
       width: 300,
       // fixed: 'right'

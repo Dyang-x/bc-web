@@ -213,7 +213,7 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
   };
 
   const pageChange = (p, s) => {
-    loadData(p, s, { ...searchValue, state: selectedstatus });
+    loadData(p, s, { ...searchValue, state: selectedstatus });          
     setPage(p);
   };
 

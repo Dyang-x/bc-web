@@ -665,6 +665,12 @@ const RetrievalOperate = ({ history, ...props }) => {
 
   // 保存头部信息 saveHeaderInfo
   const onHandleSaveHeader = async data => {
+    if(data.type == undefined){
+      notification.warning({
+        message:'请选择出库单类型'
+      })
+      return
+    }
     const params = {
       ...data,
       ...purchaseOrderDetail,
@@ -748,6 +754,13 @@ const RetrievalOperate = ({ history, ...props }) => {
       return
     }
 
+    if(selectedType == null){
+      notification.warning({
+        message: '请先选择出库单类型'
+      })
+      return
+    }
+
     const params = {}
     params.batchNumber = rightData.trayNumber
     params.description = ""
@@ -757,6 +770,7 @@ const RetrievalOperate = ({ history, ...props }) => {
     params.owId = purchaseOrderDetail.id;
     params.owNumber = purchaseOrderDetail.owNumber;
     params.stockType = selectedType
+    params.transferCode = rightData.trayNumber
     console.log(params, 'params');
     confirmSave(params);
     chooseTrayCancel();
@@ -802,16 +816,16 @@ const RetrievalOperate = ({ history, ...props }) => {
                 <HIcon h-type="add" />
                 添加出库清单
               </Button>,
-              <Button
-                key="out"
-                type="primary"
-                className={styles['center']}
-                onClick={showAddMaterial}
-                disabled={state == 1 ? true : false}
-              >
-                <Icon type="rollback" />
-                直接出库
-              </Button>
+              // <Button
+              //   key="out"
+              //   type="primary"
+              //   className={styles['center']}
+              //   onClick={showAddMaterial}
+              //   disabled={state == 1 ? true : false}
+              // >
+              //   <Icon type="rollback" />
+              //   直接出库
+              // </Button>
             ]}
             settingButton={<SettingButton1 />}
             onRefresh={() => {

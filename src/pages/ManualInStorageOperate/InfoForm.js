@@ -1,4 +1,4 @@
-import React, { useState, useEffect,forwardRef,useImperativeHandle } from 'react';
+import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 import { Form, DatePicker, Input, Button, Checkbox, Select, Row, Col, notification } from '@hvisions/h-ui';
 import { i18n } from '@hvisions/core';
 import moment from 'moment';
@@ -9,7 +9,7 @@ const FormItem = Form.Item;
 const dateTime = 'YYYY-MM-DD HH:mm:ss'
 const getFormattedMsg = i18n.getFormattedMsg;
 
-const InfoForm = forwardRef(({ 
+const InfoForm = forwardRef(({
   form: { getFieldDecorator, getFieldsValue, resetFields, setFieldsValue },
   handleSave,
   onHandlecreate,
@@ -18,18 +18,18 @@ const InfoForm = forwardRef(({
   goBack,
   handleSubmiit,
   state,
-  type,setSelectedType
-},ref) => {
-  
+  type, setSelectedType
+}, ref) => {
+
   const [supplier, setSupplier] = useState('')
   const save = () => {
-    const params = { ...getFieldsValue()}
+    const params = { ...getFieldsValue() }
     handleSave(params)
   }
   const handleCreate = (e) => {
     if (e.keyCode == 13) {
-        const params = { ...getFieldsValue()}
-        onHandlecreate(params)
+      const params = { ...getFieldsValue() }
+      onHandlecreate(params)
     }
   }
   useImperativeHandle(
@@ -48,13 +48,13 @@ const InfoForm = forwardRef(({
     <>
       <div className={'hv-search-form'} >
         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-          
-              <FormItem label='入库单号'>
-                      {getFieldDecorator('receiptNumber', {
-                      })(<div  style={{width:200}}>{detail && detail.receiptNumber}</div>)}
-              </FormItem>   
 
-              {/* <FormItem label='供应商'  >
+          <FormItem label='入库单号'>
+            {getFieldDecorator('receiptNumber', {
+            })(<div style={{ width: 200 }}>{detail && detail.receiptNumber}</div>)}
+          </FormItem>
+
+          {/* <FormItem label='供应商'  >
                   {getFieldDecorator('supplierId', {
                       initialValue: detail && detail.supplierId ? detail['supplierId'] : undefined
                   })(
@@ -68,9 +68,9 @@ const InfoForm = forwardRef(({
                       </Select>
                   )}
                   </FormItem> */}
-                            <FormItem label='入库单类型' >
+          <FormItem label='入库单类型' >
             {getFieldDecorator('type', {
-              initialValue: detail ? detail['type'] : undefined
+              initialValue: detail && detail['type'] != null ? detail['type'] : undefined
             })(<Select
               placeholder="请选择入库单类型"
               onChange={(key, value) => { onHandleChange(key, value) }}
@@ -84,9 +84,9 @@ const InfoForm = forwardRef(({
             </Select>)}
           </FormItem>
 
-          </div>
-        </div>    
-      </>
+        </div>
+      </div>
+    </>
   )
 });
 export default Form.create()(InfoForm)

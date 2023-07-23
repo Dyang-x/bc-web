@@ -69,9 +69,9 @@ const ManualInStorageOperate = props => {
       <Button type="primary" key="2" onClick={handleSubmiit} disabled={!orderLineId || state != 1}>
         <HIcon h-type="save" />确认入库
       </Button>,
-      <Button type="primary" key="2" onClick={handleInShelf} disabled={!orderLineId || state != 1}>
-        上架
-      </Button>
+      // <Button type="primary" key="2" onClick={handleInShelf} disabled={!orderLineId || state != 1}>
+      //   上架
+      // </Button>
     ]);
   }, [purchaseOrderDetail, state, orderLineId]);
 
@@ -522,6 +522,12 @@ const ManualInStorageOperate = props => {
 
   // 保存头部信息 saveHeaderInfo
   const onHandleSaveHeader = async data => {
+    if(data.type == undefined){
+      notification.warning({
+        message:'请选择入库单类型'
+      })
+      return
+    }
     const params = {
       ...data,
       ...purchaseOrderDetail,
