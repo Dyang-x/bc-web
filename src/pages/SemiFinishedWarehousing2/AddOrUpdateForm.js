@@ -14,8 +14,8 @@ const { getFormattedMsg } = i18n;
 const dateFormat = 'YYYY-MM-DD HH:mm:ss';
 const { Option } = Select
 const formItemLayout = {
-  labelCol: { span: 5 },
-  wrapperCol: { span: 19 },
+  labelCol: { span: 2 },
+  wrapperCol: { span: 22 },
 };
 
 const sortPosition = [

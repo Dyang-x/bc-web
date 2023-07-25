@@ -382,7 +382,7 @@ let orderDetails = []
       params.suborderNumber = suborderNumber.toString()
 
       // delete params.scan
-      //console.log(params, 'params');
+      console.log(params, 'params');
 
       await SemiFinishedWarehousingReceiptApi
         .bindSemiMaterial(params)

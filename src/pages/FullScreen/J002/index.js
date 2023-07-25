@@ -48,48 +48,51 @@ const J002OverView = () => {
         refreshRate: 300,
         onResize
     });
+
     useEffect(() => {
         let tableKey = 1
-        const getDetails = () =>{
+        const getDetails = () => {
             LargeScreenApi.semiMterialDetails('J002')
-            .then(res => {
-                // console.log('getDetailData', res);
-                // console.log('getDetailData------', res!= null);
-                if(res != null){
-                setDetailData(res);
-                }
-                //在主页 + 子页有数据  = 跳
-                if (tableKey == 1 && res != null) {
-                    // console.log('111');
-                    tableKey = 2
-                    carouselRef.current.next()
-                    return
-                }
-                //在主页 + 子页没数据  = 不跳
-                if (tableKey == 1 && res == null) {
-                    // console.log('222');
-                    tableKey = 1
-                    return
-                }
-                //在子页 + 子页有数据  = 不跳
-                if (tableKey == 2 && res != null) {
-                    // console.log('333');
-                    tableKey = 2
-                    return
-                }
-                //在子页 + 子页没数据  = 跳
-                if (tableKey == 2 && res == null) {
-                    // console.log('444');
-                    tableKey = 1
-                    carouselRef.current.next()
-                    return
-                }
-            })
-            .catch(err => {
-                notification.warning({
-                    description: err.message
+                .then(res => {
+                    // console.log('getDetailData', res);
+                    // console.log('getDetailData------', res!= null);
+                    if (res != null) {
+                        setDetailData(res);
+                    }
+                    //在主页 + 子页有数据  = 跳
+                    if (tableKey == 1 && res != null) {
+                        // console.log('111');
+                        tableKey = 2
+                        getOverviewData()
+                        carouselRef.current.next()
+                        return
+                    }
+                    //在主页 + 子页没数据  = 不跳
+                    if (tableKey == 1 && res == null) {
+                        // console.log('222');
+                        tableKey = 1
+                        return
+                    }
+                    //在子页 + 子页有数据  = 不跳
+                    if (tableKey == 2 && res != null) {
+                        // console.log('333');
+                        tableKey = 2
+                        return
+                    }
+                    //在子页 + 子页没数据  = 跳
+                    if (tableKey == 2 && res == null) {
+                        // console.log('444');
+                        tableKey = 1
+                        getOverviewData()
+                        carouselRef.current.next()
+                        return
+                    }
+                })
+                .catch(err => {
+                    notification.warning({
+                        description: err.message
+                    });
                 });
-            });
         }
         getDetails()
         const refreshDetailData = setInterval(() => {
@@ -102,70 +105,10 @@ const J002OverView = () => {
     }, []);
 
     useEffect(() => {
-        let datas = []
-        const getData = () => {
-            LargeScreenApi.semiOrder()
-                .then(res => {
-                    //console.log(res,'semiOrder');
-                    if(res != null){
-                        // setDataSource(res);
-                        datas = res
-                        setData(res);
-                    }
-                })
-                .catch(err => {
-                    notification.warning({
-                        description: err.message
-                    });
-                });
-
-            LargeScreenApi.getTrayNumberCount()
-                .then(res => {
-                        setTrayCount(res);
-                })
-                .catch(err => {
-                    notification.warning({
-                        description: err.message
-                    });
-                });
-
-            let number = 0
-            const setData = (datas) => {
-                if(!isEmpty(datas)){
-                    const data = datas[number]
-                    setNewData(data)
-                    if(data.semiOrderListDTO != null){
-                        const detail = data.semiOrderListDTO
-                        setNewDataDetail(detail)
-                    }
-                    number = number == datas.length - 1 ? 0 : number + 1
-                    //console.log('11111111111111');
-                }
-            }
-
-            const refreshData = setInterval(() => {
-                setData(datas);
-            }, 1000 * 30);
-
-            return () => {
-                clearInterval(refreshData);
-            };
-        };
-        getData()
-        const refreshData = setInterval(() => {
-            getData();
-        }, 1000 * 60);
-
-        return () => {
-            clearInterval(refreshData);
-        };
-    }, []);
-
-    useEffect(() => {
         const getRbgStatus = () => {
             LargeScreenApi.getRbgStatus()
                 .then(res => {
-                    if(rbgStatus != res ){
+                    if (rbgStatus != res) {
                         setRbgStatus(res);
                     }
                 })
@@ -178,12 +121,120 @@ const J002OverView = () => {
         getRbgStatus()
         const getRbgData = setInterval(() => {
             getRbgStatus()
-        }, 1000 );
+        }, 1000);
 
         return () => {
             clearInterval(getRbgData);
         };
     }, []);
+
+    // useEffect(() => {
+    //     const getData = () => {
+    //         let datas = []
+    //         LargeScreenApi.semiOrder()
+    //             .then(res => {
+    //                 //console.log(res,'semiOrder');
+    //                 if(res != null){
+    //                     // setDataSource(res);
+    //                     datas = res
+    //                     setData(res);
+    //                 }
+    //             })
+    //             .catch(err => {
+    //                 notification.warning({
+    //                     description: err.message
+    //                 });
+    //             });
+
+    //         LargeScreenApi.getTrayNumberCount()
+    //             .then(res => {
+    //                     setTrayCount(res);
+    //             })
+    //             .catch(err => {
+    //                 notification.warning({
+    //                     description: err.message
+    //                 });
+    //             });
+
+    //         let number = 0
+    //         const setData = (datas) => {
+    //             if(!isEmpty(datas)){
+    //                 const data = datas[number]
+    //                 setNewData(data)
+    //                 if(data.semiOrderListDTO != null){
+    //                     const detail = data.semiOrderListDTO
+    //                     setNewDataDetail(detail)
+    //                 }
+    //                 number = number == datas.length - 1 ? 0 : number + 1
+    //                 //console.log('11111111111111');
+    //             }
+    //         }
+
+    //         const refreshData = setInterval(() => {
+    //             setData(datas);
+    //         }, 1000 * 30);
+
+    //         return () => {
+    //             clearInterval(refreshData);
+    //         };
+    //     };
+    //     getData()
+    //     const refreshData = setInterval(() => {
+    //         getData();
+    //     }, 1000 * 60);
+
+    //     return () => {
+    //         clearInterval(refreshData);
+    //     };
+    // }, []);
+    useEffect(() => {
+        getOverviewData()
+    }, []);
+
+    const getOverviewData = () => {
+        let datas = []
+        LargeScreenApi.semiOrder()
+            .then(res => {
+                console.log(res, 'semiOrder2222');
+                if (res != null) {
+                    // setDataSource(res);
+                    datas = res
+                    setData(res);
+                }
+            })
+            .catch(err => {
+                notification.warning({
+                    description: err.message
+                });
+            });
+        LargeScreenApi.getTrayNumberCount()
+            .then(res => {
+                setTrayCount(res);
+            })
+            .catch(err => {
+                notification.warning({
+                    description: err.message
+                });
+            });
+        let number = 0
+        const setData = (datas) => {
+            if (!isEmpty(datas)) {
+                const data = datas[number]
+                setNewData(data)
+                if (data.semiOrderListDTO != null) {
+                    const detail = data.semiOrderListDTO
+                    setNewDataDetail(detail)
+                }
+                number = number == datas.length - 1 ? 0 : number + 1
+            }
+        }
+        const refreshData = setInterval(() => {
+            setData(datas);
+        }, 1000 * 30);
+        return () => {
+            clearInterval(refreshData);
+        };
+    }
 
     return (
         <div>
@@ -212,11 +263,11 @@ const J002OverView = () => {
                                     </PageMid>
                                 </PageContent>
                                 <PageDetail>
-                                    <Detail detailData={detailData}/>
+                                    <Detail detailData={detailData} />
                                 </PageDetail>
                             </Carousel>
                             <PageDown  >
-                                <ContentThree trayCount={trayCount} rbgStatus={rbgStatus}/>
+                                <ContentThree trayCount={trayCount} rbgStatus={rbgStatus} />
                             </PageDown>
                         </IndexPageContent>
                     </IndexPageStyle>

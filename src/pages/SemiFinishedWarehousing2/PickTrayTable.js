@@ -155,7 +155,7 @@ const PickTrayTable = ({
             allowClear 
             placeholder={getFormattedMsg('SemiFinisheDeliveryPalletSelection.placeholder.orderNumber')} 
             onChange={e=>{setOrderNumber(e.target.value)}}
-            style={{width:'15rem'}}
+            style={{width:'25rem'}}
             />
             <Button onClick={handleSearch} style={{margin:'0px 30px'}} type='primary'>查询</Button>
       </HVLayout.Pane>
