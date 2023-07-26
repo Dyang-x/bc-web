@@ -28,6 +28,14 @@ const PalletManagementStockLevel = () => {
   const [selectedUpdateState, setSelectedUpdateState] = useState();
   const [searchValue, setSearchValue] = useState(null);
 
+  const [shelfVis, setShelfVis] = useState(false);
+  const [shelfData, setShelfData] = useState({});
+  const [location, setLocation] = useState('J002');
+  const middles = [
+    { id: 1, name: 'J002', value: 'J002', },
+    { id: 2, name: 'J003', value: 'J003', },
+  ]
+
   const searchRef = useRef(null);
   const addForm = useRef();
   const updateForm = useRef();
@@ -161,25 +169,45 @@ const PalletManagementStockLevel = () => {
   );
 
   const HandleShelf = record => {
-    //console.log('record', record);
+    setShelfVis(true)
+    setShelfData(record)
+  };
+
+  const shelfCancel = () => {
+    setShelfVis(false)
+    setShelfData({})
+  }
+
+  const modalShelfFoot = () => [
+    <Button key="save" type="primary" onClick={shelfSave}>
+    {getFormattedMsg('PalletManagementStockLevel.button.save')}
+    </Button>,
+    <Button key="cancel" onClick={shelfCancel}>
+    {getFormattedMsg('PalletManagementStockLevel.button.cancel')}
+    </Button>
+  ];
+
+  const shelfSave =()=>{
+
     const data = {
-      origin: record.areaCode,
-      middle: record.areaCode,
-      trayNumber: record.transferCode,
+      origin: shelfData.areaCode,
+      // middle: shelfData.areaCode,
+      middle: location,
+      trayNumber: shelfData.transferCode,
       state: 0,
       // { id: 5, name: '原料托盘回库', value: '原料托盘回库', },
       // { id: 7, name: '半成品托盘回库', value: '半成品托盘回库', },
-      taskType: record.areaCode == 'J001' ? 5 : 7,
-      inType: record.areaCode == 'J001' ? 5 : 7,
+      taskType: shelfData.areaCode == 'J001' ? 5 : 7,
+      inType: shelfData.areaCode == 'J001' ? 5 : 7,
     }
-    //console.log('data', data);
+    console.log('data', data);
     Modal.confirm({
-      title: `${getFormattedMsg('PalletManagement.title.putOnPallet')}${record.transferCode}?`,
+      title: `${getFormattedMsg('PalletManagement.title.putOnPallet')}${shelfData.transferCode}?`,
       onOk: () => {
         addAndUpShelves(data)
       }
     });
-  };
+  }
 
   
     //托盘上架  新增并上架
@@ -190,7 +218,7 @@ const PalletManagementStockLevel = () => {
           notification.success({
             message: '托盘入库任务生成成功'
           });
-          loadData();
+          loadData(pageInfo.page, pageInfo.pageSize, { ...searchValue });
         })
         .catch(err => {
           notification.warning({
@@ -567,6 +595,40 @@ const PalletManagementStockLevel = () => {
             </Select>
           </Form.Item>
         </Form>
+      </Modal>
+      <Modal
+        title={'托盘上架'}
+        visible={shelfVis}
+        onCancel={shelfCancel}
+        footer={modalShelfFoot()}
+        destroyOnClose
+      >
+        <div style={{ display: 'flex' }}>
+          <div style={{
+            width: '15%',
+            display: 'flex',
+            justifyContent: 'middle',
+            alignItems: 'center',
+            textAlign: 'center',
+          }}>
+            中间点：
+          </div>
+          <Select
+            placeholder={'请选择中间点'}
+            showSearch
+            filterOption={false}
+            onChange={(e) => {
+              setLocation(e)
+            }}
+            value={location}
+          >
+            {
+              middles.length && middles.map(item => {
+                return (<Option key={item.id} value={item.value}>{item.value}</Option>)
+              })
+            }
+          </Select>
+        </div>
       </Modal>
     </>
   );

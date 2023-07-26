@@ -140,14 +140,44 @@ class TaskTranSportServices extends Service {
     }
   }
 
-    // 完成任务
-    async finishLnl(taskCode) {
-      try {
-        return await this.put(`${appName}/tasktransport/finishLnl?taskCode=${taskCode}`);
-      } catch (error) {
-        throw new Error(error);
-      }
+  // 完成任务
+  async finishLnl(taskCode) {
+    try {
+      return await this.put(`${appName}/tasktransport/finishLnl?taskCode=${taskCode}`);
+    } catch (error) {
+      throw new Error(error);
     }
+  }
+
+
+  // 手动执行ST2
+  async manualst2(taskCode) {
+    try {
+      return await this.put(`${appName}/task-management/manualst2?taskCode=${taskCode}`);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  // ST3/4手动执行
+  async manualStart(id) {
+    try {
+      return await this.put(`${appName}/task-management/manualStart?id=${id}`);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  // RBG手动执行
+  async manualRbg(id) {
+    try {
+      return await this.put(`${appName}/task-management/manualRbg?id=${id}`);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+    
 }
 
 export default new TaskTranSportServices();

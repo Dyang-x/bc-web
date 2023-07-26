@@ -152,16 +152,16 @@ const BendingMachine = ({ bendingNumber, tableName }) => {
     bendingMachineServices
       .getByQuery({ ...searchValue, page: page - 1, pageSize })
       .then(res => {
-        res.content.map(i => {
-          const text = i.attribute
-          const arr = text.split(',');
-          let array = []
-          arr.map(j => {
-            const a = Number(j)
-            array = [...array, a]
-          })
-          i.attributeOne = array
-        })
+        // res.content.map(i => {
+        //   const text = i.attribute
+        //   const arr = text.split(',');
+        //   let array = []
+        //   arr.map(j => {
+        //     const a = Number(j)
+        //     array = [...array, a]
+        //   })
+        //   i.attributeOne = array
+        // })
         setTableData(res.content);
         setTotalPage(res.totalElements);
         setPage(res.pageable.pageNumber + 1)
@@ -302,7 +302,7 @@ const BendingMachine = ({ bendingNumber, tableName }) => {
   const handleCancelPutOn = () => {
     setPullVis(false)
     setPullData({})
-    setLocation('J002')
+    setLocation('J003')
   }
 
   const modalPutOnFoot = () => [

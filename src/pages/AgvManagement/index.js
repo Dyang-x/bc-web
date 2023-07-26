@@ -629,7 +629,7 @@ const Index = () => {
                 ))}
               </Select>
             </SearchForm.Item>
-            <SearchForm.Item
+            {/* <SearchForm.Item
               label={getFormattedMsg('AgvManagement.label.taskKind')}
               name="taskKind"
             >
@@ -642,7 +642,7 @@ const Index = () => {
                   </Option>
                 ))}
               </Select>
-            </SearchForm.Item>
+            </SearchForm.Item> */}
             <SearchForm.Item
               label={getFormattedMsg('AgvManagement.label.orderCode')}
               name="oderCode"

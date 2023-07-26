@@ -29,301 +29,110 @@ const Index = ({ taskKind, taskType }) => {
   }, []);
 
   const columns = useMemo(() => {
-    if (nowTab == 4) {
-      return [
-        {
-          title: getFormattedMsg('TaskTransport.title.taskCode'),
-          dataIndex: 'taskCode',
-          key: 'taskCode',
-          align: 'center',
-        },
-        {
-          title: getFormattedMsg('TaskTransport.title.taskType'),
-          dataIndex: 'taskType',
-          key: 'taskType',
-          align: 'center',
-          render: (text, recoed, index) => {
-            if (text == null) {
-              return
-            }
-            return taskType[text - 1].name
+    const updateTimeTitle = nowTab==4?'任务完成时间':'任务启动时间'
+    return [
+      {
+        title: getFormattedMsg('TaskTransport.title.taskCode'),
+        dataIndex: 'taskCode',
+        key: 'taskCode',
+        align: 'center',
+      },
+      {
+        title: getFormattedMsg('TaskTransport.title.taskType'),
+        dataIndex: 'taskType',
+        key: 'taskType',
+        align: 'center',
+        render: (text, recoed, index) => {
+          if (text == null) {
+            return
           }
-        },
-        {
-          title: '任务完成时间',
-          dataIndex: 'updateTime',
-          key: 'updateTime',
-          align: 'center',
-        },
-        {
-          title: getFormattedMsg('TaskTransport.title.transferCode'),
-          dataIndex: 'transferCode',
-          key: 'transferCode',
-          align: 'center',
-        },
-        {
-          title: getFormattedMsg('TaskTransport.title.fromLocation'),
-          dataIndex: 'fromLocation',
-          key: 'fromLocation',
-          align: 'center',
-        },
-        // {
-        //   title: getFormattedMsg('TaskTransport.title.middle'),
-        //   dataIndex: 'middle',
-        //   key: 'middle',
-        //   align: 'center',
-        // },
-        {
-          title: getFormattedMsg('TaskTransport.title.toLocation'),
-          dataIndex: 'toLocation',
-          key: 'toLocation',
-          align: 'center',
-        },
-        {
-          title: getFormattedMsg('TaskTransport.title.priority'),
-          dataIndex: 'priority',
-          key: 'priority',
-          align: 'center',
-        },
-        {
-          title: getFormattedMsg('TaskTransport.title.operation'),
-          key: 'opt',
-          align: 'center',
-          render: (_, record) => [
-            nowTab == 6 && [
-              <a key="start" onClick={() => handleStart(record)} >手动开始</a>,
-              <Divider key="divider4" type="vertical" />,
-              <a key="start" onClick={() => handleJ002Scan(record)} >J002扫码</a>,
-              <Divider key="divider5" type="vertical" />,
-              <a key="start" onClick={() => handleManualJ002(record)} >J002强制通过</a>,
-            ],
-            nowTab == 1 && [
-              <a key="adjust" onClick={() => handleAdjust(record)}>{getFormattedMsg('TaskTransport.button.adjust')}</a>,
-              <Divider key="divider1" type="vertical" />,
-              <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)} >
-                {getFormattedMsg('TaskTransport.button.delete')}
-              </a>,
-              <Divider key="divider2" type="vertical" />,
-              <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
-                {getFormattedMsg('TaskTransport.button.pause')}
-              </a>,
-            ],
-            nowTab == 2 && [
-              // <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
-              //   {getFormattedMsg('TaskTransport.button.pause')}
-              // </a>,
-              // <Divider key="divider2" type="vertical" />,
-              <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskTransport.button.complete')}</a>
-            ],
-            nowTab == 3 && [
-              <a key="continue" onClick={() => handleContinue(record)} >{getFormattedMsg('TaskTransport.button.continue')}</a>
-            ],
-            nowTab == 5 && [
-              <a key="rollback" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleRollback(record)} >
-                {getFormattedMsg('TaskTransport.button.rollback')}
-              </a>,
-              <Divider key="divider3" type="vertical" />,
-              <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskTransport.button.complete')}</a>
-            ],
-          ],
-          width: 300,
+          return taskType[text - 1].name
         }
-      ];
-    }
-    if (nowTab != 4) {
-      return [
-        {
-          title: getFormattedMsg('TaskTransport.title.taskCode'),
-          dataIndex: 'taskCode',
-          key: 'taskCode',
-          align: 'center',
-        },
-        {
-          title: getFormattedMsg('TaskTransport.title.taskType'),
-          dataIndex: 'taskType',
-          key: 'taskType',
-          align: 'center',
-          render: (text, recoed, index) => {
-            if (text == null) {
-              return
-            }
-            return taskType[text - 1].name
-          }
-        },
-        {
-          title: '任务启动时间',
-          dataIndex: 'updateTime',
-          key: 'updateTime',
-          align: 'center',
-        },
-        {
-          title: getFormattedMsg('TaskTransport.title.transferCode'),
-          dataIndex: 'transferCode',
-          key: 'transferCode',
-          align: 'center',
-        },
-        {
-          title: getFormattedMsg('TaskTransport.title.fromLocation'),
-          dataIndex: 'fromLocation',
-          key: 'fromLocation',
-          align: 'center',
-        },
-        // {
-        //   title: getFormattedMsg('TaskTransport.title.middle'),
-        //   dataIndex: 'middle',
-        //   key: 'middle',
-        //   align: 'center',
-        // },
-        {
-          title: getFormattedMsg('TaskTransport.title.toLocation'),
-          dataIndex: 'toLocation',
-          key: 'toLocation',
-          align: 'center',
-        },
-        {
-          title: getFormattedMsg('TaskTransport.title.priority'),
-          dataIndex: 'priority',
-          key: 'priority',
-          align: 'center',
-        },
-        {
-          title: getFormattedMsg('TaskTransport.title.operation'),
-          key: 'opt',
-          align: 'center',
-          render: (_, record) => [
-            nowTab == 6 && [
-              <a key="start" onClick={() => handleStart(record)} >手动开始</a>,
-              <Divider key="divider4" type="vertical" />,
-              <a key="start" onClick={() => handleJ002Scan(record)} >J002扫码</a>,
-              <Divider key="divider5" type="vertical" />,
-              <a key="start" onClick={() => handleManualJ002(record)} >J002强制通过</a>,
-            ],
-            nowTab == 1 && [
-              <a key="adjust" onClick={() => handleAdjust(record)}>{getFormattedMsg('TaskTransport.button.adjust')}</a>,
-              <Divider key="divider1" type="vertical" />,
-              <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)} >
-                {getFormattedMsg('TaskTransport.button.delete')}
-              </a>,
-              <Divider key="divider2" type="vertical" />,
-              <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
-                {getFormattedMsg('TaskTransport.button.pause')}
-              </a>,
-            ],
-            nowTab == 2 && [
-              // <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
-              //   {getFormattedMsg('TaskTransport.button.pause')}
-              // </a>,
-              // <Divider key="divider2" type="vertical" />,
-              <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskTransport.button.complete')}</a>
-            ],
-            nowTab == 3 && [
-              <a key="continue" onClick={() => handleContinue(record)} >{getFormattedMsg('TaskTransport.button.continue')}</a>
-            ],
-            nowTab == 5 && [
-              <a key="rollback" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleRollback(record)} >
-                {getFormattedMsg('TaskTransport.button.rollback')}
-              </a>,
-              <Divider key="divider3" type="vertical" />,
-              <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskTransport.button.complete')}</a>
-            ],
+      },
+      {
+        title: updateTimeTitle,
+        dataIndex: 'updateTime',
+        key: 'updateTime',
+        align: 'center',
+      },
+      {
+        title: getFormattedMsg('TaskTransport.title.transferCode'),
+        dataIndex: 'transferCode',
+        key: 'transferCode',
+        align: 'center',
+      },
+      {
+        title: getFormattedMsg('TaskTransport.title.fromLocation'),
+        dataIndex: 'fromLocation',
+        key: 'fromLocation',
+        align: 'center',
+      },
+      // {
+      //   title: getFormattedMsg('TaskTransport.title.middle'),
+      //   dataIndex: 'middle',
+      //   key: 'middle',
+      //   align: 'center',
+      // },
+      {
+        title: getFormattedMsg('TaskTransport.title.toLocation'),
+        dataIndex: 'toLocation',
+        key: 'toLocation',
+        align: 'center',
+      },
+      {
+        title: getFormattedMsg('TaskTransport.title.priority'),
+        dataIndex: 'priority',
+        key: 'priority',
+        align: 'center',
+      },
+      {
+        title: getFormattedMsg('TaskTransport.title.operation'),
+        key: 'opt',
+        align: 'center',
+        render: (_, record) => [
+          nowTab == 6 && [
+            <a key="start1" onClick={() => handleStart(record)} >手动开始</a>,
+            <Divider key="divider4" type="vertical" />,
+            <a key="start2" onClick={() => handleJ002Scan(record)} >J002扫码</a>,
+            <Divider key="divider5" type="vertical" />,
+            <a key="start3" onClick={() => handleManualJ002(record)} >J002强制通过</a>,
           ],
-          width: 300,
-        }
-      ];
-    }
-    // return [
-    //   {
-    //     title: getFormattedMsg('TaskTransport.title.taskCode'),
-    //     dataIndex: 'taskCode',
-    //     key: 'taskCode',
-    //     align: 'center',
-    //   },
-    //   {
-    //     title: getFormattedMsg('TaskTransport.title.taskType'),
-    //     dataIndex: 'taskType',
-    //     key: 'taskType',
-    //     align: 'center',
-    //     render: (text, recoed, index) => {
-    //       if (text == null) {
-    //         return
-    //       }
-    //       return taskType[text - 1].name
-    //     }
-    //   },
-    //   {
-    //     title: getFormattedMsg('TaskTransport.title.transferCode'),
-    //     dataIndex: 'transferCode',
-    //     key: 'transferCode',
-    //     align: 'center',
-    //   },
-    //   {
-    //     title: getFormattedMsg('TaskTransport.title.fromLocation'),
-    //     dataIndex: 'fromLocation',
-    //     key: 'fromLocation',
-    //     align: 'center',
-    //   },
-    //   // {
-    //   //   title: getFormattedMsg('TaskTransport.title.middle'),
-    //   //   dataIndex: 'middle',
-    //   //   key: 'middle',
-    //   //   align: 'center',
-    //   // },
-    //   {
-    //     title: getFormattedMsg('TaskTransport.title.toLocation'),
-    //     dataIndex: 'toLocation',
-    //     key: 'toLocation',
-    //     align: 'center',
-    //   },
-    //   {
-    //     title: getFormattedMsg('TaskTransport.title.priority'),
-    //     dataIndex: 'priority',
-    //     key: 'priority',
-    //     align: 'center',
-    //   },
-    //   {
-    //     title: getFormattedMsg('TaskTransport.title.operation'),
-    //     key: 'opt',
-    //     align: 'center',
-    //     render: (_, record) => [
-    //       nowTab == 6 && [
-    //         <a key="start" onClick={() => handleStart(record)} >手动开始</a>,
-    //         <Divider key="divider4" type="vertical" />,
-    //         <a key="start" onClick={() => handleJ002Scan(record)} >J002扫码</a>,
-    //         <Divider key="divider5" type="vertical" />,
-    //         <a key="start" onClick={() => handleManualJ002(record)} >J002强制通过</a>,
-    //       ],
-    //       nowTab == 1 && [
-    //         <a key="adjust" onClick={() => handleAdjust(record)}>{getFormattedMsg('TaskTransport.button.adjust')}</a>,
-    //         <Divider key="divider1" type="vertical" />,
-    //         <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)} >
-    //           {getFormattedMsg('TaskTransport.button.delete')}
-    //         </a>,
-    //         <Divider key="divider2" type="vertical" />,
-    //         <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
-    //           {getFormattedMsg('TaskTransport.button.pause')}
-    //         </a>,
-    //       ],
-    //       nowTab == 2 && [
-    //         // <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
-    //         //   {getFormattedMsg('TaskTransport.button.pause')}
-    //         // </a>,
-    //         // <Divider key="divider2" type="vertical" />,
-    //         <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskTransport.button.complete')}</a>
-    //       ],
-    //       nowTab == 3 && [
-    //         <a key="continue" onClick={() => handleContinue(record)} >{getFormattedMsg('TaskTransport.button.continue')}</a>
-    //       ],
-    //       nowTab == 5 && [
-    //         <a key="rollback" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleRollback(record)} >
-    //           {getFormattedMsg('TaskTransport.button.rollback')}
-    //         </a>,
-    //         <Divider key="divider3" type="vertical" />,
-    //         <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskTransport.button.complete')}</a>
-    //       ],
-    //     ],
-    //     width: 300,
-    //   }
-    // ];
+          nowTab == 1 && [
+            <a key="adjust" onClick={() => handleAdjust(record)}>{getFormattedMsg('TaskTransport.button.adjust')}</a>,
+            <Divider key="divider1" type="vertical" />,
+            <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)} >
+              {getFormattedMsg('TaskTransport.button.delete')}
+            </a>,
+            <Divider key="divider2" type="vertical" />,
+            <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
+              {getFormattedMsg('TaskTransport.button.pause')}
+            </a>,
+          ],
+          nowTab == 2 && [
+            // <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
+            //   {getFormattedMsg('TaskTransport.button.pause')}
+            // </a>,
+            // <Divider key="divider2" type="vertical" />,
+            <a key="again"  onClick={() => handleAgain(record)}>
+            再次执行
+          </a>,
+          <Divider key="divider2" type="vertical" />,
+            <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskTransport.button.complete')}</a>
+          ],
+          nowTab == 3 && [
+            <a key="continue" onClick={() => handleContinue(record)} >{getFormattedMsg('TaskTransport.button.continue')}</a>
+          ],
+          nowTab == 5 && [
+            <a key="rollback" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleRollback(record)} >
+              {getFormattedMsg('TaskTransport.button.rollback')}
+            </a>,
+            <Divider key="divider3" type="vertical" />,
+            <a key="complete2" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskTransport.button.complete')}</a>
+          ],
+        ],
+        width: 300,
+      }
+    ];
   }, [nowTab]);
 
   //查询页面数据
@@ -539,6 +348,28 @@ const Index = ({ taskKind, taskType }) => {
     })
   }
 
+  const handleAgain = (record) => {
+    Modal.confirm({
+      title: '确认再次执行任务？',
+      okType: 'danger',
+      onOk: async () => {
+        await TaskTranSportServices.manualst2(record.transferCode)
+          .then(res => {
+            notification.success({
+              message: '任务再次执行成功',
+            })
+            loadData(page, pageSize, { ...searchValue, taskState: nowTab });
+          })
+          .catch(err => {
+            notification.warning({
+              message: '任务再次执行失败',
+              description: err.message
+            })
+          })
+      }
+    })
+  }
+
   const handleContinue = async (record) => {
     await TaskTranSportServices.continueTask(record.id)
       .then(res => {
@@ -686,8 +517,8 @@ const Index = ({ taskKind, taskType }) => {
           }}
           buttons={
             <>
-              <Button key="start" type='primary' onClick={() => handleJ003Scan()} >J003扫码</Button>
-              <Button key="start" type='primary' onClick={() => handleManualJ003()} >J003强制通过</Button>
+              <Button key="start11" type='primary' onClick={() => handleJ003Scan()} >J003扫码</Button>
+              <Button key="start12" type='primary' onClick={() => handleManualJ003()} >J003强制通过</Button>
             </>
           }
         >
@@ -762,3 +593,304 @@ const Index = ({ taskKind, taskType }) => {
 };
 
 export default Index;
+
+
+
+
+// const columns = useMemo(() => {
+//   if (nowTab == 4) {
+//     return [
+//       {
+//         title: getFormattedMsg('TaskTransport.title.taskCode'),
+//         dataIndex: 'taskCode',
+//         key: 'taskCode',
+//         align: 'center',
+//       },
+//       {
+//         title: getFormattedMsg('TaskTransport.title.taskType'),
+//         dataIndex: 'taskType',
+//         key: 'taskType',
+//         align: 'center',
+//         render: (text, recoed, index) => {
+//           if (text == null) {
+//             return
+//           }
+//           return taskType[text - 1].name
+//         }
+//       },
+//       {
+//         title: '任务完成时间',
+//         dataIndex: 'updateTime',
+//         key: 'updateTime',
+//         align: 'center',
+//       },
+//       {
+//         title: getFormattedMsg('TaskTransport.title.transferCode'),
+//         dataIndex: 'transferCode',
+//         key: 'transferCode',
+//         align: 'center',
+//       },
+//       {
+//         title: getFormattedMsg('TaskTransport.title.fromLocation'),
+//         dataIndex: 'fromLocation',
+//         key: 'fromLocation',
+//         align: 'center',
+//       },
+//       // {
+//       //   title: getFormattedMsg('TaskTransport.title.middle'),
+//       //   dataIndex: 'middle',
+//       //   key: 'middle',
+//       //   align: 'center',
+//       // },
+//       {
+//         title: getFormattedMsg('TaskTransport.title.toLocation'),
+//         dataIndex: 'toLocation',
+//         key: 'toLocation',
+//         align: 'center',
+//       },
+//       {
+//         title: getFormattedMsg('TaskTransport.title.priority'),
+//         dataIndex: 'priority',
+//         key: 'priority',
+//         align: 'center',
+//       },
+//       {
+//         title: getFormattedMsg('TaskTransport.title.operation'),
+//         key: 'opt',
+//         align: 'center',
+//         render: (_, record) => [
+//           nowTab == 6 && [
+//             <a key="start" onClick={() => handleStart(record)} >手动开始</a>,
+//             <Divider key="divider4" type="vertical" />,
+//             <a key="start" onClick={() => handleJ002Scan(record)} >J002扫码</a>,
+//             <Divider key="divider5" type="vertical" />,
+//             <a key="start" onClick={() => handleManualJ002(record)} >J002强制通过</a>,
+//           ],
+//           nowTab == 1 && [
+//             <a key="adjust" onClick={() => handleAdjust(record)}>{getFormattedMsg('TaskTransport.button.adjust')}</a>,
+//             <Divider key="divider1" type="vertical" />,
+//             <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)} >
+//               {getFormattedMsg('TaskTransport.button.delete')}
+//             </a>,
+//             <Divider key="divider2" type="vertical" />,
+//             <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
+//               {getFormattedMsg('TaskTransport.button.pause')}
+//             </a>,
+//           ],
+//           nowTab == 2 && [
+//             // <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
+//             //   {getFormattedMsg('TaskTransport.button.pause')}
+//             // </a>,
+//             // <Divider key="divider2" type="vertical" />,
+//             <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskTransport.button.complete')}</a>
+//           ],
+//           nowTab == 3 && [
+//             <a key="continue" onClick={() => handleContinue(record)} >{getFormattedMsg('TaskTransport.button.continue')}</a>
+//           ],
+//           nowTab == 5 && [
+//             <a key="rollback" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleRollback(record)} >
+//               {getFormattedMsg('TaskTransport.button.rollback')}
+//             </a>,
+//             <Divider key="divider3" type="vertical" />,
+//             <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskTransport.button.complete')}</a>
+//           ],
+//         ],
+//         width: 300,
+//       }
+//     ];
+//   }
+//   if (nowTab != 4) {
+//     return [
+//       {
+//         title: getFormattedMsg('TaskTransport.title.taskCode'),
+//         dataIndex: 'taskCode',
+//         key: 'taskCode',
+//         align: 'center',
+//       },
+//       {
+//         title: getFormattedMsg('TaskTransport.title.taskType'),
+//         dataIndex: 'taskType',
+//         key: 'taskType',
+//         align: 'center',
+//         render: (text, recoed, index) => {
+//           if (text == null) {
+//             return
+//           }
+//           return taskType[text - 1].name
+//         }
+//       },
+//       {
+//         title: '任务启动时间',
+//         dataIndex: 'updateTime',
+//         key: 'updateTime',
+//         align: 'center',
+//       },
+//       {
+//         title: getFormattedMsg('TaskTransport.title.transferCode'),
+//         dataIndex: 'transferCode',
+//         key: 'transferCode',
+//         align: 'center',
+//       },
+//       {
+//         title: getFormattedMsg('TaskTransport.title.fromLocation'),
+//         dataIndex: 'fromLocation',
+//         key: 'fromLocation',
+//         align: 'center',
+//       },
+//       // {
+//       //   title: getFormattedMsg('TaskTransport.title.middle'),
+//       //   dataIndex: 'middle',
+//       //   key: 'middle',
+//       //   align: 'center',
+//       // },
+//       {
+//         title: getFormattedMsg('TaskTransport.title.toLocation'),
+//         dataIndex: 'toLocation',
+//         key: 'toLocation',
+//         align: 'center',
+//       },
+//       {
+//         title: getFormattedMsg('TaskTransport.title.priority'),
+//         dataIndex: 'priority',
+//         key: 'priority',
+//         align: 'center',
+//       },
+//       {
+//         title: getFormattedMsg('TaskTransport.title.operation'),
+//         key: 'opt',
+//         align: 'center',
+//         render: (_, record) => [
+//           nowTab == 6 && [
+//             <a key="start" onClick={() => handleStart(record)} >手动开始</a>,
+//             <Divider key="divider4" type="vertical" />,
+//             <a key="start" onClick={() => handleJ002Scan(record)} >J002扫码</a>,
+//             <Divider key="divider5" type="vertical" />,
+//             <a key="start" onClick={() => handleManualJ002(record)} >J002强制通过</a>,
+//           ],
+//           nowTab == 1 && [
+//             <a key="adjust" onClick={() => handleAdjust(record)}>{getFormattedMsg('TaskTransport.button.adjust')}</a>,
+//             <Divider key="divider1" type="vertical" />,
+//             <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)} >
+//               {getFormattedMsg('TaskTransport.button.delete')}
+//             </a>,
+//             <Divider key="divider2" type="vertical" />,
+//             <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
+//               {getFormattedMsg('TaskTransport.button.pause')}
+//             </a>,
+//           ],
+//           nowTab == 2 && [
+//             // <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
+//             //   {getFormattedMsg('TaskTransport.button.pause')}
+//             // </a>,
+//             // <Divider key="divider2" type="vertical" />,
+//             <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskTransport.button.complete')}</a>
+//           ],
+//           nowTab == 3 && [
+//             <a key="continue" onClick={() => handleContinue(record)} >{getFormattedMsg('TaskTransport.button.continue')}</a>
+//           ],
+//           nowTab == 5 && [
+//             <a key="rollback" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleRollback(record)} >
+//               {getFormattedMsg('TaskTransport.button.rollback')}
+//             </a>,
+//             <Divider key="divider3" type="vertical" />,
+//             <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskTransport.button.complete')}</a>
+//           ],
+//         ],
+//         width: 300,
+//       }
+//     ];
+//   }
+//   // return [
+//   //   {
+//   //     title: getFormattedMsg('TaskTransport.title.taskCode'),
+//   //     dataIndex: 'taskCode',
+//   //     key: 'taskCode',
+//   //     align: 'center',
+//   //   },
+//   //   {
+//   //     title: getFormattedMsg('TaskTransport.title.taskType'),
+//   //     dataIndex: 'taskType',
+//   //     key: 'taskType',
+//   //     align: 'center',
+//   //     render: (text, recoed, index) => {
+//   //       if (text == null) {
+//   //         return
+//   //       }
+//   //       return taskType[text - 1].name
+//   //     }
+//   //   },
+//   //   {
+//   //     title: getFormattedMsg('TaskTransport.title.transferCode'),
+//   //     dataIndex: 'transferCode',
+//   //     key: 'transferCode',
+//   //     align: 'center',
+//   //   },
+//   //   {
+//   //     title: getFormattedMsg('TaskTransport.title.fromLocation'),
+//   //     dataIndex: 'fromLocation',
+//   //     key: 'fromLocation',
+//   //     align: 'center',
+//   //   },
+//   //   // {
+//   //   //   title: getFormattedMsg('TaskTransport.title.middle'),
+//   //   //   dataIndex: 'middle',
+//   //   //   key: 'middle',
+//   //   //   align: 'center',
+//   //   // },
+//   //   {
+//   //     title: getFormattedMsg('TaskTransport.title.toLocation'),
+//   //     dataIndex: 'toLocation',
+//   //     key: 'toLocation',
+//   //     align: 'center',
+//   //   },
+//   //   {
+//   //     title: getFormattedMsg('TaskTransport.title.priority'),
+//   //     dataIndex: 'priority',
+//   //     key: 'priority',
+//   //     align: 'center',
+//   //   },
+//   //   {
+//   //     title: getFormattedMsg('TaskTransport.title.operation'),
+//   //     key: 'opt',
+//   //     align: 'center',
+//   //     render: (_, record) => [
+//   //       nowTab == 6 && [
+//   //         <a key="start" onClick={() => handleStart(record)} >手动开始</a>,
+//   //         <Divider key="divider4" type="vertical" />,
+//   //         <a key="start" onClick={() => handleJ002Scan(record)} >J002扫码</a>,
+//   //         <Divider key="divider5" type="vertical" />,
+//   //         <a key="start" onClick={() => handleManualJ002(record)} >J002强制通过</a>,
+//   //       ],
+//   //       nowTab == 1 && [
+//   //         <a key="adjust" onClick={() => handleAdjust(record)}>{getFormattedMsg('TaskTransport.button.adjust')}</a>,
+//   //         <Divider key="divider1" type="vertical" />,
+//   //         <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)} >
+//   //           {getFormattedMsg('TaskTransport.button.delete')}
+//   //         </a>,
+//   //         <Divider key="divider2" type="vertical" />,
+//   //         <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
+//   //           {getFormattedMsg('TaskTransport.button.pause')}
+//   //         </a>,
+//   //       ],
+//   //       nowTab == 2 && [
+//   //         // <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
+//   //         //   {getFormattedMsg('TaskTransport.button.pause')}
+//   //         // </a>,
+//   //         // <Divider key="divider2" type="vertical" />,
+//   //         <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskTransport.button.complete')}</a>
+//   //       ],
+//   //       nowTab == 3 && [
+//   //         <a key="continue" onClick={() => handleContinue(record)} >{getFormattedMsg('TaskTransport.button.continue')}</a>
+//   //       ],
+//   //       nowTab == 5 && [
+//   //         <a key="rollback" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleRollback(record)} >
+//   //           {getFormattedMsg('TaskTransport.button.rollback')}
+//   //         </a>,
+//   //         <Divider key="divider3" type="vertical" />,
+//   //         <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskTransport.button.complete')}</a>
+//   //       ],
+//   //     ],
+//   //     width: 300,
+//   //   }
+//   // ];
+// }, [nowTab]);

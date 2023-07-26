@@ -4,7 +4,7 @@ import { tree } from '@hvisions/toolkit';
 import { i18n } from '@hvisions/toolkit';
 import TransferBoxServices from '~/api/TransferBox';
 import SemiFinishedWarehousingReceiptServices from '~/api/SemiFinishedWarehousingReceipt';
-import { dockingPoints } from '~/enum/enum';
+import { dockingPoints ,attributeOne } from '~/enum/enum';
 
 const { formatTree } = tree;
 const { getFormattedMsg } = i18n;
@@ -18,8 +18,8 @@ const formItemLayout = {
 const SurplusForm = ({
   form: { getFieldDecorator, validateFields, getFieldValue, setFieldsValue },
   modifyData,
-  attributeOne,
-  attributeTwo,
+  // attributeOne,
+  // attributeTwo,
 }) => {
 
   const [searchValue, setSearchValue] = useState({})
