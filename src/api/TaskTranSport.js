@@ -88,13 +88,13 @@ class TaskTranSportServices extends Service {
     }
   }
 
-  async manualSt2(taskCode) {
-    try {
-      return await this.put(`${appName}/task-management/manualSt2?taskCode=${taskCode}`);
-    } catch (error) {
-      throw new Error(error);
-    }
-  }
+  // async manualst2(taskCode) {
+  //   try {
+  //     return await this.put(`${appName}/task-management/manualst2?taskCode=${taskCode}`);
+  //   } catch (error) {
+  //     throw new Error(error);
+  //   }
+  // }
 
   async startTask(id) {
     try {
@@ -151,9 +151,9 @@ class TaskTranSportServices extends Service {
 
 
   // 手动执行ST2
-  async manualst2(taskCode) {
+  async manualSt2(taskCode) {
     try {
-      return await this.put(`${appName}/task-management/manualst2?taskCode=${taskCode}`);
+      return await this.put(`${appName}/task-management/manualSt2?taskCode=${taskCode}`);
     } catch (error) {
       throw new Error(error);
     }

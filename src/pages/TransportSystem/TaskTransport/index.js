@@ -29,7 +29,7 @@ const Index = ({ taskKind, taskType }) => {
   }, []);
 
   const columns = useMemo(() => {
-    const updateTimeTitle = nowTab==4?'任务完成时间':'任务启动时间'
+    const updateTimeTitle = nowTab == 4 ? '任务完成时间' : '任务启动时间'
     return [
       {
         title: getFormattedMsg('TaskTransport.title.taskCode'),
@@ -113,10 +113,10 @@ const Index = ({ taskKind, taskType }) => {
             //   {getFormattedMsg('TaskTransport.button.pause')}
             // </a>,
             // <Divider key="divider2" type="vertical" />,
-            <a key="again"  onClick={() => handleAgain(record)}>
-            再次执行
-          </a>,
-          <Divider key="divider2" type="vertical" />,
+            <a key="again" onClick={() => handleAgain(record)}>
+              再次执行
+            </a>,
+            <Divider key="divider2" type="vertical" />,
             <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskTransport.button.complete')}</a>
           ],
           nowTab == 3 && [
@@ -311,19 +311,25 @@ const Index = ({ taskKind, taskType }) => {
   }
 
   const handlePause = async (record) => {
-    await TaskTranSportServices.suspendTask(record.id)
-      .then(res => {
-        notification.success({
-          message: getFormattedMsg('TaskTransport.message.pauseSuccess'),
-        })
-        loadData(page, pageSize, { ...searchValue, taskState: nowTab });
-      })
-      .catch(err => {
-        notification.warning({
-          message: getFormattedMsg('TaskTransport.message.pauseFailure'),
-          description: err.message
-        })
-      })
+    Modal.confirm({
+      title: '确认暂停？',
+      onOk: async () => {
+        await TaskTranSportServices.suspendTask(record.id)
+          .then(res => {
+            notification.success({
+              message: getFormattedMsg('TaskTransport.message.pauseSuccess'),
+            })
+            loadData(page, pageSize, { ...searchValue, taskState: nowTab });
+          })
+          .catch(err => {
+            notification.warning({
+              message: getFormattedMsg('TaskTransport.message.pauseFailure'),
+              description: err.message
+            })
+          })
+      }
+    })
+
   }
 
   const handleDelete = (record) => {
@@ -353,7 +359,7 @@ const Index = ({ taskKind, taskType }) => {
       title: '确认再次执行任务？',
       okType: 'danger',
       onOk: async () => {
-        await TaskTranSportServices.manualst2(record.transferCode)
+        await TaskTranSportServices.manualSt2(record.taskCode)
           .then(res => {
             notification.success({
               message: '任务再次执行成功',
@@ -371,6 +377,9 @@ const Index = ({ taskKind, taskType }) => {
   }
 
   const handleContinue = async (record) => {
+    Modal.confirm({
+      title: '确认执行任务？',
+      onOk: async () => {
     await TaskTranSportServices.continueTask(record.id)
       .then(res => {
         notification.success({
@@ -384,6 +393,8 @@ const Index = ({ taskKind, taskType }) => {
           description: err.message
         })
       })
+    }
+  })
   }
 
   const handleRollback = (record) => {
