@@ -69,8 +69,8 @@ const PalletManagementConnectionPort = () => {
         </a>,
         <Divider key="divider1" type="vertical" />,
         <a key="takedown" onClick={() => HandleTakedown(record)}>
-          {/* {getFormattedMsg('PalletManagementConnectionPort.button.Takedown')} */}
-          下架
+          {getFormattedMsg('PalletManagementConnectionPort.button.takedown')}
+          {/* 下架 */}
         </a>,
         <Divider key="divider2" type="vertical" />,
         <a key="addTransfer" onClick={() => handleAddTransfer(record)}>
@@ -132,7 +132,8 @@ const PalletManagementConnectionPort = () => {
         .addAndupShelves(data)
         .then(res => {
           notification.success({
-            message: '托盘入库任务生成成功'
+            // message: '托盘入库任务生成成功'
+            message: getFormattedMsg('PalletManagement.message.addAndUpShelves')
           });
           loadData();
         })
@@ -145,19 +146,21 @@ const PalletManagementConnectionPort = () => {
 
   const HandleTakedown =  record => {
     Modal.confirm({
-      // title: `${getFormattedMsg('PalletManagement.title.pullOffPallet')}${record.transferCode}?`,
-      title: `确认在接驳口${record.joinCode}下架托盘?`,
+      title: `${getFormattedMsg('PalletManagementConnectionPort.title.handleTakedown')}${record.joinCode}${getFormattedMsg('PalletManagementConnectionPort.title.pullOff')}?`,
+      // title: `确认在接驳口${record.joinCode}下架托盘?`,
       onOk: async() => {
         await EmptyPalletDeliveryApi.callTransferOut({qrName:record.joinCode})
         .then(res => {
           notification.success({
-            message: '托盘下架成功'
+            // message: '托盘下架成功',
+            message: getFormattedMsg('PalletManagementConnectionPort.message.removedSuccess'),
           })
           loadData();
         })
         .catch(err => {
           notification.warning({
-            message: '托盘下架失败',
+            // message: '托盘下架失败',
+            message: getFormattedMsg('PalletManagementConnectionPort.message.removedFailure'),
             description: err.message
           })
         })

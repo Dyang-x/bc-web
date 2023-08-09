@@ -57,19 +57,22 @@ const TrayForm = ({
         }
       </Form.Item>
 
-      <Form.Item {...formItemLayout} label={'中间点'}>
+      {/* <Form.Item {...formItemLayout} label={'中间点'}> */}
+      <Form.Item {...formItemLayout} label={getFormattedMsg('EmptyPalletDelivery.title.middle')}>
         {
           getFieldDecorator('middle', {
             rules: [
               {
                 required: true,
-                message: '请选择中间点',
+                // message: '请选择中间点',
+                message: getFormattedMsg('EmptyPalletDelivery.message.middle'),
               },
             ],
             initialValue: addOrUpdateData ? addOrUpdateData['middle'] : ''
           })(
             <Select
-              placeholder={'请选择中间点'}
+              // placeholder={'请选择中间点'}
+              placeholder={getFormattedMsg('EmptyPalletDelivery.message.middle')}
               showSearch
               filterOption={false}
             >
@@ -82,32 +85,38 @@ const TrayForm = ({
           )
         }
       </Form.Item>
-      <Form.Item {...formItemLayout} label={'终点'}>
+      {/* <Form.Item {...formItemLayout} label={'终点'}> */}
+      <Form.Item {...formItemLayout} label={getFormattedMsg('EmptyPalletDelivery.title.toLocation')}>
         {
           getFieldDecorator('toLocation', {
             rules: [
               {
                 required: true,
-                message: '请选择终点',
+                // message: '请选择终点',
+                message: getFormattedMsg('EmptyPalletDelivery.message.toLocation'),
               },
             ],
             initialValue: addOrUpdateData ? addOrUpdateData['toLocation'] : ''
-          })(<Input placeholder={'请选择终点'} style={{ width: '100%' }} />)
+          // })(<Input placeholder={'请选择终点'} style={{ width: '100%' }} />)
+        })(<Input placeholder={getFormattedMsg('EmptyPalletDelivery.message.toLocation')} style={{ width: '100%' }} />)
         }
       </Form.Item>
-      <Form.Item {...formItemLayout} label={'出库类型'}>
+      {/* <Form.Item {...formItemLayout} label={'出库类型'}> */}
+      <Form.Item {...formItemLayout} label={getFormattedMsg('EmptyPalletDelivery.title.inType')}>
         {
           getFieldDecorator('inType', {
             rules: [
               {
                 required: true,
-                message: '请选择出库类型',
+                // message: '请选择出库类型',
+                message: getFormattedMsg('EmptyPalletDelivery.message.inType'),
               },
             ],
             initialValue: !isEmpty(addOrUpdateData) ? Number(addOrUpdateData['inType']) : undefined
           })(
             <Select
-              placeholder={'请选择出库类型'}
+              // placeholder={'请选择出库类型'}
+              placeholder={getFormattedMsg('EmptyPalletDelivery.message.inType')}
               showSearch
               filterOption={false}
             >

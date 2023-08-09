@@ -58,6 +58,9 @@ module.exports = {
       binding: 'Binding TransferCode',
       updateState: 'update AreaState',
       tableName:'Material position tray management',
+
+      handleTakedown:'Confirm pallet removal at port ',
+      pullOff:' ',
     },
     message: {
       trayNumber: 'Please input Tray number',
@@ -75,6 +78,9 @@ module.exports = {
       updateFailure:'Modification failure',
       bindingSuccess:'Binding success',
       bindingFailure:'Binding failure',
+      
+      removedSuccess:'Removed successfully',
+      removedFailure:'Removal failure',
     },
     button:{
       addTransfer:'addTransfer',
@@ -85,6 +91,8 @@ module.exports = {
       save:'save',
       cancel:'cancel',
       add:'add',
+
+      takedown:'delist',
     },
   },
   zh_CN: {
@@ -140,6 +148,9 @@ module.exports = {
       binding: '绑定托盘',
       updateState: '更新备料口状态',
       tableName:'备料位托盘管理',
+
+      handleTakedown:'确认在备料区',
+      pullOff:'下架托盘',
     },
     message:{
       trayNumber: '请输入托盘号',
@@ -157,6 +168,9 @@ module.exports = {
       updateFailure:'修改失败',
       bindingSuccess:'绑定成功',
       bindingFailure:'绑定失败',
+      
+      removedSuccess:'托盘下架成功',
+      removedFailure:'托盘下架失败',
     },
     button:{
       addTransfer:'绑定托盘',
@@ -167,6 +181,8 @@ module.exports = {
       save:'保存',
       cancel:'取消',
       add:'新增',
+
+      takedown:'下架',
     },
   }
 };

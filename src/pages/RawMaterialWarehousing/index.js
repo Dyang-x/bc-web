@@ -97,7 +97,8 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
     // },
 
     {
-      title: '采购订单号',
+      // title: '采购订单号',
+      title: getFormattedMsg('RawMaterialWarehousingReceipt.title.associatedNumber'),
       dataIndex: 'associatedNumber',
       key: 'associatedNumber',
       align: 'center',
@@ -153,8 +154,9 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
             {getFormattedMsg('RawMaterialWarehousingReceipt.button.delete')}
           </a>,
           <Divider key="divider2" type="vertical" />,
-          <a key="weighing" type="primary" onClick={() => handInStore(record)} >
-            小车进入
+          <a key="inStore" type="primary" onClick={() => handInStore(record)} >
+            {/* 小车进入 */}
+            {getFormattedMsg('RawMaterialWarehousingReceipt.button.inStore')}
           </a>,
         ],
         record.state == 1 && [
@@ -321,13 +323,15 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
 
   const handInStore = (record) => {
     Modal.confirm({
-      title: '确认开始小车进入流程？',
+      // title: '确认开始小车进入流程？',
+      title: getFormattedMsg('RawMaterialWarehousingReceipt.title.inStore'),
       onOk: async () => {
         await RawMaterialWarehousingReceiptApi
           .handInStore(record.id)
           .then(res => {
             notification.success({
-              message: '流程已开始'
+              // message: '流程已开始'
+              message: getFormattedMsg('RawMaterialWarehousingReceipt.message.inStoreSuccess'),
             });
             loadData(page, pageSize, { ...searchValue, state: selectedstatus });
           })
@@ -347,7 +351,8 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
       .getWeigh(weighingId)
       .then(res => {
         notification.success({
-          message: '称重成功'
+          // message: '称重成功'
+          message: getFormattedMsg('RawMaterialWarehousingReceipt.message.weighingSuccess'),
         });
         loadData(page, pageSize, { ...searchValue, state: selectedstatus });
       })
@@ -366,12 +371,14 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
       transferType: 0 //原料托盘
     }
     Modal.confirm({
-      title: '确认托盘自动下架？',
+      // title: '确认托盘自动下架？',
+      title: getFormattedMsg('RawMaterialWarehousingReceipt.title.automatic'),
       onOk: async () => {
         await EmptyPalletDeliveryApi.autoTransferOut(data)
           .then(res => {
             notification.success({
-              message: '托盘自动下架成功'
+              // message: '托盘自动下架成功'              
+          message: getFormattedMsg('RawMaterialWarehousingReceipt.message.automaticSuccess'),
             });
             loadData(page, pageSize, { ...searchValue, state: selectedstatus });
           })
@@ -432,13 +439,15 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
     }
     //console.log('data',data);
     Modal.confirm({
-      title: '确认下架托盘？',
+      // title: '确认下架托盘？',
+      title: getFormattedMsg('RawMaterialWarehousingReceipt.title.manualT'),
       onOk: async () => {
         await EmptyPalletDeliveryApi
           .addAnddownShelves(data)
           .then(res => {
             notification.success({
-              message: '托盘出库任务生成成功'
+              // message: '托盘出库任务生成成功'
+              message: getFormattedMsg('RawMaterialWarehousingReceipt.message.manualSuccess'),
             });
             handleCancelManual();
             loadData(page, pageSize, { ...searchValue, state: selectedstatus });
@@ -503,7 +512,8 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
       .inStore(record.id)
       .then(res => {
         notification.success({
-          message: '入库成功'
+          // message: '入库成功'
+          message: getFormattedMsg('RawMaterialWarehousingReceipt.message.warehousingSuccess'),
         });
         loadData(page, pageSize, { ...searchValue, state: selectedstatus });
       })

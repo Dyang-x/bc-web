@@ -38,7 +38,8 @@ const Index = () => {
   }, []);
 
   const columns = useMemo(() => {
-    const updateTimeTitle = nowTab==4?'任务完成时间':'任务启动时间'
+    // const updateTimeTitle = nowTab==4?'任务完成时间':'任务启动时间'    
+    const updateTimeTitle = nowTab == 4 ? getFormattedMsg('TaskTransport.title.finishTime') : getFormattedMsg('TaskTransport.title.updateTime')
     return [
       {
         title: getFormattedMsg('TaskTransport.title.taskCode'),
@@ -100,7 +101,8 @@ const Index = () => {
         align: 'center',
         render: (_, record) => [
           nowTab == 6 && [
-            <a key="start" onClick={() => handleStartTask(record)} >手动排队</a>
+            // <a key="start" onClick={() => handleStartTask(record)} >手动排队</a>
+            <a key="start" onClick={() => handleStartTask(record)} >{getFormattedMsg('TaskTransport.button.handleStartTask')}</a>
           ],
           nowTab == 1 && [
             <a key="adjust" onClick={() => handleAdjust(record)}>{getFormattedMsg('TaskTransport.button.adjust')}</a>,
@@ -119,7 +121,8 @@ const Index = () => {
             // </a>,
             // <Divider key="divider2" type="vertical" />,
             <a key="again"  onClick={() => handleAgain(record)}>
-            再次执行
+              {/* 再次执行 */}
+              {getFormattedMsg('TaskTransport.button.handleAgain')}
           </a>,
           <Divider key="divider2" type="vertical" />,
             <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskTransport.button.complete')}</a>
@@ -284,7 +287,8 @@ const Index = () => {
 
   const handleStartTask = (record) => {
     Modal.confirm({
-      title: '确认任务开始排队？',
+      // title: '确认任务开始排队？',
+      title: getFormattedMsg('TaskTransport.title.handleStartTask'),
       onOk: async () => {
         console.log({ ...searchItems, taskState: nowTab },'.....');
         console.log(searchItems,'.searchValue..');
@@ -388,19 +392,22 @@ const Index = () => {
 
   const handleAgain = (record) => {
     Modal.confirm({
-      title: '确认再次执行任务？',
+      // title: '确认再次执行任务？',
+      title: getFormattedMsg('TaskTransport.title.handleAgain'),
       okType: 'danger',
       onOk: async () => {
         await TaskTranSportServices.manualStart(record.id)
           .then(res => {
             notification.success({
-              message: '任务再次执行成功',
+              // message: '任务再次执行成功',
+              message: getFormattedMsg('TaskTransport.message.againSuccess'),
             })
             loadData(page, pageSize, { ...searchItems, taskState: nowTab });
           })
           .catch(err => {
             notification.warning({
-              message: '任务再次执行失败',
+              // message: '任务再次执行失败',
+              message: getFormattedMsg('TaskTransport.message.againFailure'),
               description: err.message
             })
           })
@@ -561,12 +568,14 @@ const Index = () => {
               </Select>
             </SearchForm.Item>
             <SearchForm.Item
-              label={'设备'}
+              // label={'设备'}
+              label={getFormattedMsg('TaskTransport.label.taskKinds')}
               name="taskKind"
               initialValue={7}
             >
               <Select
-                placeholder={'请选择设备'}
+                // placeholder={'请选择设备'}
+                placeholder={getFormattedMsg('TaskTransport.placeholder.taskKinds')}
                 allowClear={false}
               >
                 {machineMap.map((value, index) => (
@@ -587,7 +596,8 @@ const Index = () => {
           }}
         >
           <Pane.Tab
-            title={'就绪'}
+            // title={'就绪'}
+            title={getFormattedMsg('TaskTransport.title.ready')}
             name='6'
             isComponent
             settingButton={<SettingButton />}

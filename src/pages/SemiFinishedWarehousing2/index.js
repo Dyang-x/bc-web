@@ -131,13 +131,15 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
     //   }
     // },
     {
-      title: '主订单号',
+      // title: '主订单号',
+      title: getFormattedMsg('SemiFinishedWarehousingReceipt.title.orderNumber'),
       dataIndex: 'orderNumber',
       key: 'orderNumber',
       align: 'center',
     },
     {
-      title: '子订单号',
+      // title: '子订单号',
+      title: getFormattedMsg('SemiFinishedWarehousingReceipt.title.suborderNumber'),
       dataIndex: 'suborderNumber',
       key: 'suborderNumber',
       align: 'center',
@@ -599,7 +601,8 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
       await EmptyPalletDeliveryApi.autoTransferOut(data)
         .then(res => {
           notification.success({
-            message: '托盘自动出库成功'
+            // message: '托盘自动出库成功'
+            message: getFormattedMsg('SemiFinishedWarehousingReceipt.message.autoTransferOut'),
           });
           loadData(page, pageSize, { ...searchValue, state: selectedstatus });
         })
@@ -675,7 +678,8 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
       await SemiFinisheDeliveryPalletSelectionApi.returnStore(selectedDatas[0].id, params.middle, params.toLocation)
         .then(res => {
           notification.success({
-            message: '托盘下架成功'
+            // message: '托盘下架成功'
+            message: getFormattedMsg('SemiFinishedWarehousingReceipt.message.returnStore'),
           });
           loadData(page, pageSize, { ...searchValue, state: selectedstatus });
         })
@@ -750,7 +754,8 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
         </HVLayout.Pane>
         <HVLayout.Pane
           icon={<i className="h-visions hv-table" />}
-          title={'切割机2收料'}
+          // title={'切割机2收料'}
+          title={getFormattedMsg('SemiFinishedWarehousingReceipt.title.tableName2')}
           buttons={[
             <Button key="add" type="primary" onClick={() => handleAdd()}>
               {getFormattedMsg('SemiFinishedWarehousingReceipt.button.add')}
@@ -809,8 +814,8 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
         </HVLayout.Pane>
       </HVLayout>
       <Modal
-        // title={getFormattedMsg('SemiFinishedWarehousingReceipt.title.addOrder')}
-        title={'半成品绑定'}
+        title={getFormattedMsg('SemiFinishedWarehousingReceipt.title.addOrder')}
+        // title={'半成品绑定'}
         visible={addVis}
         footer={modalAddFoot()}
         onCancel={handleCancelAdd}
@@ -901,7 +906,8 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
 
 
       <Modal
-        title={'托盘下架'}
+        // title={'托盘下架'}
+        title={getFormattedMsg('SemiFinishedWarehousingReceipt.title.pickTrayOut')}
         visible={pickTrayOutVis}
         footer={modalTrayOutFoot()}
         onCancel={handleCancelTrayOut}

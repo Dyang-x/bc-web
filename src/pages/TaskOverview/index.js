@@ -57,7 +57,9 @@ const Index = ({ history }) => {
           align: 'center',
         },
         {
-          title: '任务完成时间',
+          // title: '任务完成时间',
+          title: getFormattedMsg('TaskOverview.title.finishTime'),
+
           dataIndex: 'updateTime',
           key: 'updateTime',
           align: 'center',
@@ -105,8 +107,8 @@ const Index = ({ history }) => {
           }
         },
         {
-          // title: getFormattedMsg('TaskOverview.title.transportState'),
-          title: 'RBG状态',
+          title: getFormattedMsg('TaskOverview.title.transportState'),
+          // title: 'RBG状态',
           dataIndex: 'transportState',
           key: 'transportState',
           align: 'center',
@@ -185,7 +187,8 @@ const Index = ({ history }) => {
           align: 'center',
         },
         {
-          title: '任务启动时间',
+          // title: '任务启动时间',
+          title: getFormattedMsg('TaskOverview.title.updateTime'),
           dataIndex: 'updateTime',
           key: 'updateTime',
           align: 'center',
@@ -233,8 +236,8 @@ const Index = ({ history }) => {
           }
         },
         {
-          // title: getFormattedMsg('TaskOverview.title.transportState'),
-          title: 'RBG状态',
+          title: getFormattedMsg('TaskOverview.title.transportState'),
+          // title: 'RBG状态',
           dataIndex: 'transportState',
           key: 'transportState',
           align: 'center',
@@ -286,124 +289,7 @@ const Index = ({ history }) => {
         }
       ];
     }
-    // return [
-    //   {
-    //     title: getFormattedMsg('TaskOverview.title.taskCode'),
-    //     dataIndex: 'taskCode',
-    //     key: 'taskCode',
-    //     align: 'center',
-    //   },
-    //   {
-    //     title: getFormattedMsg('TaskOverview.title.taskType'),
-    //     dataIndex: 'taskType',
-    //     key: 'taskType',
-    //     align: 'center',
-    //     render: (text) => {
-    //       if (text == null) {
-    //         return
-    //       }
-    //       return taskType[text - 1].name
-    //     }
-    //   },
-    //   {
-    //     title: getFormattedMsg('TaskOverview.title.priority'),
-    //     dataIndex: 'priority',
-    //     key: 'priority',
-    //     align: 'center',
-    //   },
-    //   {
-    //     title: getFormattedMsg('TaskOverview.title.transferCode'),
-    //     dataIndex: 'transferCode',
-    //     key: 'transferCode',
-    //     align: 'center',
-    //   },
-    //   {
-    //     title: getFormattedMsg('TaskOverview.title.orderCode'),
-    //     dataIndex: 'orderCode',
-    //     key: 'orderCode',
-    //     align: 'center',
-    //   },
-    //   {
-    //     title: getFormattedMsg('TaskOverview.title.fromLocation'),
-    //     dataIndex: 'fromLocation',
-    //     key: 'fromLocation',
-    //     align: 'center',
-    //   },
-    //   {
-    //     title: getFormattedMsg('TaskOverview.title.middle'),
-    //     dataIndex: 'middle',
-    //     key: 'middle',
-    //     align: 'center',
-    //   },
-    //   {
-    //     title: getFormattedMsg('TaskOverview.title.toLocation'),
-    //     dataIndex: 'toLocation',
-    //     key: 'toLocation',
-    //     align: 'center',
-    //   },
-    //   {
-    //     title: getFormattedMsg('TaskOverview.title.agvState'),
-    //     dataIndex: 'agvState',
-    //     key: 'agvState',
-    //     align: 'center',
-    //     render: (text) => {
-    //       if (text == null) {
-    //         return
-    //       }
-    //       return agvState[text - 1].name
-    //     }
-    //   },
-    //   {
-    //     // title: getFormattedMsg('TaskOverview.title.transportState'),
-    //     title: 'RBG状态',
-    //     dataIndex: 'transportState',
-    //     key: 'transportState',
-    //     align: 'center',
-    //     render: (text) => {
-    //       if (text == null) {
-    //         return
-    //       }
-    //       return transportState[text - 1].name
-    //     }
-    //   },
-    //   {
-    //     title: getFormattedMsg('TaskOverview.title.operation'),
-    //     key: 'opt',
-    //     align: 'center',
-    //     render: (_, record) => [
-    //       nowTab == 1 && [
-    //         <a key="adjust" onClick={() => handleAdjust(record)}>{getFormattedMsg('TaskOverview.button.adjust')}</a>,
-    //         <Divider key="divider1" type="vertical" />,
-    //         <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)} >
-    //           {getFormattedMsg('TaskOverview.button.delete')}
-    //         </a>,
-    //         <Divider key="divider2" type="vertical" />,
-    //         <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
-    //           {getFormattedMsg('TaskOverview.button.pause')}
-    //           </a>,
-    //       ],
-    //       nowTab == 2 && [
-    //         // <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
-    //         //   {getFormattedMsg('TaskOverview.button.pause')}
-    //         //   </a>,
-    //         // <Divider key="divider2" type="vertical" />,
-    //         <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskOverview.button.complete')}</a>
-    //       ],
-    //       nowTab == 3 && [
-    //         <a key="continue" onClick={() => handleContinue(record)} >{getFormattedMsg('TaskOverview.button.continue')}</a>
-    //       ],
-    //       nowTab == 5 && [
-    //         <a key="rollback" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleRollback(record)} >
-    //           {getFormattedMsg('TaskOverview.button.rollback')}
-    //         </a>,
-    //         <Divider key="divider3" type="vertical" />,
-    //         <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskOverview.button.complete')}</a>
-    //       ],
-    //     ],
-    //     width: 300,
-    //   }
-    // ];
-  }, [nowTab]);
+}, [nowTab]);
 
   //查询页面数据
   const loadData = async (page, pageSize, searchValue) => {

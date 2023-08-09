@@ -182,7 +182,8 @@ const SurplusInStorage = ({ history }) => {
 
   const modalAddFoot = () => [
     <Button key="save" type="primary" onClick={handleSaveAdd}>
-      保存并上架
+      {/* 保存并上架 */}
+      {getFormattedMsg('SurplusInStorage.button.saveAndUp')}
     </Button>,
     <Button key="cancel" onClick={handleCancelAdd}>
       {getFormattedMsg('SurplusInStorage.button.cancel')}
@@ -217,12 +218,14 @@ const SurplusInStorage = ({ history }) => {
       qrName: 'J002'
     }
     Modal.confirm({
-      title: '确认呼叫托盘至J002？',
+      // title: '确认呼叫托盘至J002？',
+      title: getFormattedMsg('SurplusInStorage.title.callTransferOut'),
       onOk: async () => {
         await EmptyPalletDeliveryApi.callTransferOut(params)
           .then(res => {
             notification.success({
-              message: '呼叫成功'
+              // message: '呼叫成功'
+              message: getFormattedMsg('SurplusInStorage.message.callSuccess')
             })
           })
           .catch(err => {
@@ -300,7 +303,8 @@ const SurplusInStorage = ({ history }) => {
           title={getFormattedMsg('SurplusInStorage.title.tableName')}
           buttons={[
             <Button key="call" type="primary" onClick={() => handleCallTray()}>
-              呼叫托盘
+              {/* 呼叫托盘 */}
+              {getFormattedMsg('SurplusInStorage.button.handleCallTray')}
             </Button>,
             <Button key="add" type="primary" onClick={() => handleAdd()}>
               {getFormattedMsg('SurplusInStorage.button.add')}

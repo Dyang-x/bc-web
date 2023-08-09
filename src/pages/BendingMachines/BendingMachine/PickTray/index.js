@@ -80,31 +80,36 @@ const PickTray = ({ modifyData,attribute1,attribute2 }) => {
     //   align: 'center',
     // },
     {
-      title: '订单号',
+      // title: '订单号',
+      title: getFormattedMsg('BendingMachineConfiguration.title.orderCode'),
       dataIndex: 'orderNumber',
       key: 'orderNumber',
       align: 'center',
     },
     {
-      title: '子订单号',
+      // title: '子订单号',
+      title: getFormattedMsg('BendingMachineConfiguration.title.suborderNumber'),
       dataIndex: 'suborderNumber',
       key: 'suborderNumber',
       align: 'center',
     },
     {
-      title: '产品名称',
+      // title: '产品名称',
+      title: getFormattedMsg('BendingMachineConfiguration.title.materialName'),
       dataIndex: 'productName',
       key: 'productName',
       align: 'center',
     },
     {
-      title: '产品代码',
+      // title: '产品代码',
+      title: getFormattedMsg('BendingMachineConfiguration.title.materialCode'),
       dataIndex: 'productCode',
       key: 'productCode',
       align: 'center',
     },
     {
-      title: '产品数量(张)',
+      // title: '产品数量(张)',
+      title: getFormattedMsg('BendingMachineConfiguration.title.productNum'),
       dataIndex: 'productNum',
       key: 'productNum',
       align: 'center',
@@ -157,7 +162,8 @@ const PickTray = ({ modifyData,attribute1,attribute2 }) => {
       }
     },
     {
-      title: '备注',
+      // title: '备注',
+      title: getFormattedMsg('BendingMachineConfiguration.title.description'),
       dataIndex: 'description',
       key: 'description',
       align: 'center',
@@ -290,14 +296,16 @@ const PickTray = ({ modifyData,attribute1,attribute2 }) => {
         .outStore(params.dockingPoint, ids, params.readyMaterials)
         .then(res => {
           notification.success({
-            message: '出库成功',
+            // message: '出库成功',
+            message: getFormattedMsg('BendingMachineConfiguration.message.outSuccess'),
           });
           loadData(page, pageSize, { ...searchValue });
         })
         .catch(err => {
           setLoading(false);
           notification.warning({
-            message: '出库失败',
+            // message: '出库失败',
+            message: getFormattedMsg('BendingMachineConfiguration.message.outFailure'),
             description: err.message
           });
         });
@@ -366,16 +374,20 @@ const PickTray = ({ modifyData,attribute1,attribute2 }) => {
             </SearchForm.Item>
             
             <SearchForm.Item
-              label={'子订单号'}
+              // label={'子订单号'}
+              label={getFormattedMsg('BendingMachineConfiguration.label.suborderNumber')}
               name="suborderNumber"
             >
-              <Input allowClear placeholder={'请输入子订单号'} />
+              {/* <Input allowClear placeholder={'请输入子订单号'} /> */}
+              <Input allowClear placeholder={getFormattedMsg('BendingMachineConfiguration.placeholder.suborderNumber')} />
             </SearchForm.Item>
             <SearchForm.Item
-              label={'备注'}
+              // label={'备注'}
+              label={getFormattedMsg('BendingMachineConfiguration.label.description')}
               name="description"
             >
-              <Input allowClear placeholder={'请输入备注信息'} />
+              {/* <Input allowClear placeholder={'请输入备注信息'} /> */}
+              <Input allowClear placeholder={getFormattedMsg('BendingMachineConfiguration.placeholder.description')} />
             </SearchForm.Item>
           </SearchForm>
         </HVLayout.Pane>

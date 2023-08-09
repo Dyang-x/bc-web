@@ -15,11 +15,21 @@ module.exports = {
       tray:'tray',
       relatedOrder:'relatedOrder',
       out:'out',
+
+      suborderNumber:'Suborder number',
+      productName:'Product name',
+      productCode:'Product code',
+      productNum:'Product quantity (sheet)',
+      desc:'remark',
+      tableName:'Semi-finished products inventory',
     },
     message:{
       trayNumber: 'Please select Tray',
       prepareArea:'Please select Prepare Area',
       dockingPoint: 'Please select Docking Point',
+      
+      outStoreSuccess: 'Outbound success',
+      outStoreFailure: 'Outbound failure',
     },
     button:{
       save:'save',
@@ -42,6 +52,9 @@ module.exports = {
       attributeTwo: 'Please select attribute',
       prepareArea:'Please select Prepare Area',
       dockingPoint: 'Please select Docking Point',
+
+      suborderNumber:'Please enter the suborder number',
+      desc:'Please enter remarks',
     },
   },
   zh_CN: {
@@ -60,11 +73,21 @@ module.exports = {
       tray:'托盘',
       relatedOrder:'相关订单',
       out:'出库',
+
+      suborderNumber:'子订单号',
+      productName:'产品名称',
+      productCode:'产品代码',
+      productNum:'产品数量(张)',
+      desc:'备注',
+      tableName:'半成品库存',
     },
     message:{
       trayNumber: '请勾选托盘',
       prepareArea:'请选择备料区',
       dockingPoint: '请选择接驳口',
+      
+      outStoreSuccess: '出库成功',
+      outStoreFailure: '出库失败',
     },
     button:{
       save:'确认',
@@ -87,6 +110,9 @@ module.exports = {
       attributeTwo: '请选择托盘属性2',
       prepareArea:'请选择备料区',
       dockingPoint: '请选择接驳口',
+
+      suborderNumber:'请输入子订单号',
+      desc:'请输入备注信息',
     },
   }
 };

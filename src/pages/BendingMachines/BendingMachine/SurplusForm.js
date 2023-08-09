@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { TreeSelect, notification, Form, Input, Select, Table,Button } from '@hvisions/h-ui'
+import { TreeSelect, notification, Form, Input, Select, Table, Button } from '@hvisions/h-ui'
 import { tree } from '@hvisions/toolkit';
 import { i18n } from '@hvisions/toolkit';
 import TransferBoxServices from '~/api/TransferBox';
 import SemiFinishedWarehousingReceiptServices from '~/api/SemiFinishedWarehousingReceipt';
-import { dockingPoints ,attributeOne } from '~/enum/enum';
+import { dockingPoints, attributeOne } from '~/enum/enum';
 
 const { formatTree } = tree;
 const { getFormattedMsg } = i18n;
@@ -38,12 +38,12 @@ const SurplusForm = ({
   }, [])
 
   useEffect(() => {
-  }, [selectedRowKeys,detailSelectedRowKeys])
+  }, [selectedRowKeys, detailSelectedRowKeys])
 
-  const getAllOderByQuery = async (orderNumber,suborderNumber) => {
-    const params={}
-    orderNumber == undefined||orderNumber == ''  ?delete params.orderNumber: params.orderNumber = orderNumber
-    suborderNumber == undefined||suborderNumber == ''  ?delete params.suborderNumber: params.suborderNumber = suborderNumber
+  const getAllOderByQuery = async (orderNumber, suborderNumber) => {
+    const params = {}
+    orderNumber == undefined || orderNumber == '' ? delete params.orderNumber : params.orderNumber = orderNumber
+    suborderNumber == undefined || suborderNumber == '' ? delete params.suborderNumber : params.suborderNumber = suborderNumber
 
     await SemiFinishedWarehousingReceiptServices.getAllOderByQuery(params)
       .then(res => {
@@ -58,25 +58,29 @@ const SurplusForm = ({
 
   const columns = [
     {
-      title: '订单号',
+      // title: '订单号',
+      title: getFormattedMsg('BendingMachineConfiguration.title.orderCode'),
       dataIndex: 'orderCode',
       key: 'orderCode',
       align: 'center',
     },
     {
-      title: '产品代码',
+      // title: '产品代码',
+      title: getFormattedMsg('BendingMachineConfiguration.title.materialCode'),
       dataIndex: 'materialCode',
       key: 'materialCode',
       align: 'center',
     },
     {
-      title: '产品名称',
+      // title: '产品名称',
+      title: getFormattedMsg('BendingMachineConfiguration.title.materialName'),
       dataIndex: 'materialName',
       key: 'materialName',
       align: 'center',
     },
     {
-      title: '数量',
+      // title: '数量',
+      title: getFormattedMsg('BendingMachineConfiguration.title.quantity'),
       dataIndex: 'quantity',
       key: 'quantity',
       align: 'center',
@@ -85,13 +89,15 @@ const SurplusForm = ({
 
   const detailColumns = [
     {
-      title: '子订单号',
+      // title: '子订单号',
+      title: getFormattedMsg('BendingMachineConfiguration.title.suborderNumber'),
       dataIndex: 'suborderNumber',
       key: 'suborderNumber',
       align: 'center',
     },
     {
-      title: '产品图号',
+      // title: '产品图号',
+      title: getFormattedMsg('BendingMachineConfiguration.title.figureNumber'),
       dataIndex: 'figureNumber',
       key: 'figureNumber',
       align: 'center',
@@ -99,7 +105,7 @@ const SurplusForm = ({
   ]
 
   const onTableSelect = e => {
-    let number=[]
+    let number = []
     if (selectedRowKeys.indexOf(e.id) === -1) {
       setSelectedRowKeys([...selectedRowKeys, e.id])
       number = [...orderNumbers, e.orderCode]
@@ -108,11 +114,11 @@ const SurplusForm = ({
       number = orderNumbers.filter(i => i != e.orderCode)
     }
     setOrderNumbers(number)
-    setFieldsValue({orderNumber:number.toString()})
+    setFieldsValue({ orderNumber: number.toString() })
   };
 
   const onDetailTableSelect = e => {
-    let number=[]
+    let number = []
     if (detailSelectedRowKeys.indexOf(e.id) === -1) {
       setDetailSelectedRowKeys([...detailSelectedRowKeys, e.id])
       number = [...suborderNumbers, e.suborderNumber]
@@ -121,7 +127,7 @@ const SurplusForm = ({
       number = suborderNumbers.filter(i => i != e.suborderNumber)
     }
     setSuborderNumbers(number)
-    setFieldsValue({suborderNumber:number.toString()})
+    setFieldsValue({ suborderNumber: number.toString() })
   };
 
   return (
@@ -140,40 +146,46 @@ const SurplusForm = ({
             <Input placeholder={getFormattedMsg('SemiFinishedWarehousingReceipt.placeholder.trayNumber')} style={{ width: '100%' }} />
           )}
       </Form.Item>
-      <Form.Item {...formItemLayout} label={'主订单号'}>
+      {/* <Form.Item {...formItemLayout} label={'主订单号'}> */}
+      <Form.Item {...formItemLayout} label={getFormattedMsg('BendingMachineConfiguration.label.orderNumber')}>
         {
           getFieldDecorator('orderNumber', {
             rules: [
               {
                 required: true,
-                message: '请选择主订单号',
+                message: getFormattedMsg('BendingMachineConfiguration.placeholder.orderNumber'),
               },
             ],
           })(
-            <Input placeholder={'请选择主订单号'} style={{ width: '100%' }} />
+            // <Input placeholder={'请选择主订单号'} style={{ width: '100%' }} />
+            <Input placeholder={getFormattedMsg('BendingMachineConfiguration.placeholder.orderNumber')} style={{ width: '100%' }} />
           )
         }
       </Form.Item>
-      <Form.Item {...formItemLayout} label={'子订单号'}>
+      {/* <Form.Item {...formItemLayout} label={'子订单号'}> */}
+      <Form.Item {...formItemLayout} label={getFormattedMsg('BendingMachineConfiguration.label.suborderNumber')}>
         {
           getFieldDecorator('suborderNumber', {
             rules: [
               {
                 // required: true,
-                message: '请选择子订单号',
+                message: getFormattedMsg('BendingMachineConfiguration.placeholder.suborderNumber'),
               },
             ],
           })(
-            <Input placeholder={'请选择子订单号'} style={{ width: '100%' }} />
+            // <Input placeholder={'请选择子订单号'} style={{ width: '100%' }} />
+            <Input placeholder={getFormattedMsg('BendingMachineConfiguration.placeholder.suborderNumber')} style={{ width: '100%' }} />
           )
         }
       </Form.Item>
       <Form.Item>
         <div>
-          <div style={{display:'flex',marginBottom:'1rem'}}>
-          <Input addonBefore={'主订单号：'} style ={{marginLeft:'1rem'}} onChange={e=>{setOrderNumber(e.target.value)}}/>
-          <Input addonBefore={'子订单号：'} style ={{marginLeft:'1rem'}} onChange={e=>{setSuborderNumber(e.target.value)}}/>
-          <Button type="primary" shape="circle" icon="search" style ={{marginLeft:'1rem'}} onClick={()=>getAllOderByQuery(orderNumber,suborderNumber)}/>
+          <div style={{ display: 'flex', marginBottom: '1rem' }}>
+            {/* <Input addonBefore={'主订单号：'} style ={{marginLeft:'1rem'}} onChange={e=>{setOrderNumber(e.target.value)}}/>
+          <Input addonBefore={'子订单号：'} style ={{marginLeft:'1rem'}} onChange={e=>{setSuborderNumber(e.target.value)}}/> */}
+            <Input addonBefore={getFormattedMsg('BendingMachineConfiguration.addonBefore.orderNumber')} style={{ marginLeft: '1rem' }} onChange={e => { setOrderNumber(e.target.value) }} />
+            <Input addonBefore={getFormattedMsg('BendingMachineConfiguration.addonBefore.suborderNumber')} style={{ marginLeft: '1rem' }} onChange={e => { setSuborderNumber(e.target.value) }} />
+            <Button type="primary" shape="circle" icon="search" style={{ marginLeft: '1rem' }} onClick={() => getAllOderByQuery(orderNumber, suborderNumber)} />
           </div>
           <Table
             rowKey={record => record.id}

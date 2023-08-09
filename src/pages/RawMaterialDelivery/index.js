@@ -48,7 +48,6 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
   const [ManualDownData, setManualDownData] = useState({});
   const [ManualDownSelected, setManualDownSelected] = useState({});
 
-
   useEffect(() => {
     getStrategy()
     loadData(page, pageSize, { ...setSearchValue, state: selectedstatus });
@@ -56,19 +55,22 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
 
   const columns = [
     {
-      title: '订单号',
+      // title: '订单号',
+      title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.name'),
       dataIndex: 'name',
       key: 'name',
       align: 'center',
     },
     {
-      title: '计划大小 X',
+      // title: '计划大小 X',
+      title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.sizeX'),
       dataIndex: 'sizeX',
       key: 'sizeX',
       align: 'center',
     },
     {
-      title: '计划大小 Y',
+      // title: '计划大小 Y',
+      title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.sizeY'),
       dataIndex: 'sizeY',
       key: 'sizeY',
       align: 'center',
@@ -80,7 +82,8 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
     //   align: 'center',
     // },
     {
-      title: '计划状态',
+      // title: '计划状态',
+      title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.planState'),
       dataIndex: 'planState',
       key: 'planState',
       align: 'center',
@@ -98,55 +101,64 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
       }
     },
     {
-      title: '切割机',
+      // title: '切割机',
+      title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.cuttingMachine'),
       dataIndex: 'cuttingMachine',
       key: 'cuttingMachine',
       align: 'center',
     },
     {
-      title: '材料名称',
+      // title: '材料名称',
+      title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.materialName'),
       dataIndex: 'materialName',
       key: 'materialName',
       align: 'center',
     },
     {
-      title: '材料大小 X',
+      // title: '材料大小 X',
+      title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.materialSizeX'),
       dataIndex: 'materialSizeX',
       key: 'materialSizeX',
       align: 'center',
     },
     {
-      title: '材料大小 Y',
+      // title: '材料大小 Y',
+      title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.materialSizeY'),
       dataIndex: 'materialSizeY',
       key: 'materialSizeY',
       align: 'center',
     },
     {
-      title: '材料厚度',
+      // title: '材料厚度',
+      title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.materialThickness'),
       dataIndex: 'materialThickness',
       key: 'materialThickness',
       align: 'center',
     },
     {
-      title: '总数(张)',
+      // title: '总数(张)',
+      title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.totalRuns'),
       dataIndex: 'totalRuns',
       key: 'totalRuns',
       align: 'center',
     },
     {
-      title: '出库数量(张)',
+      // title: '出库数量(张)',
+      title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.outNum'),
       dataIndex: 'outNum',
       key: 'outNum',
       align: 'center',
     },
     {
-      title: '剩余数量(张)',
+      // title: '剩余数量(张)',
+      title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.remainRuns'),
       dataIndex: 'remainRuns',
       key: 'remainRuns',
       align: 'center',
     },
     {
-      title: '异常描述',
+      // title: '异常描述',
+      title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.abnormalDescription'),
       dataIndex: 'abnormalDescription',
       key: 'abnormalDescription',
       align: 'center',
@@ -180,11 +192,13 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
         //   <Divider key="divider1" type="vertical" />
         // ],
         (selectedstatus != 2) && [
-          <a key="detail2" onClick={() => handleManualFinish(record)}>手动完成</a>,
+          // <a key="detail2" onClick={() => handleManualFinish(record)}>手动完成</a>,
+          <a key="detail2" onClick={() => handleManualFinish(record)}>{getFormattedMsg('RawMaterialDeliveryOrderManagement.button.handleManualFinish')}</a>,
           <Divider key="divider2" type="vertical" />,
           // <a key="detail3" onClick={() => handleManualDown(record)}>手动下架</a>,
         ],
-        <a key="detail3" onClick={() => handleManualDown(record)}>手动下架</a>,
+        // <a key="detail3" onClick={() => handleManualDown(record)}>手动下架</a>,
+        <a key="detail3" onClick={() => handleManualDown(record)}>{getFormattedMsg('RawMaterialDeliveryOrderManagement.button.handleManualDown')}</a>,
       ],
       width: 300,
       // fixed: 'right'
@@ -282,13 +296,15 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
 
   const handleManualFinish = (record) => {
     Modal.confirm({
-      title: `确认完成订单${record.name}?`,
+      // title: `确认完成订单${record.name}?`,
+      title: `${getFormattedMsg('RawMaterialDeliveryOrderManagement.title.handleManualFinish')}${record.name}?`,      
       onOk: async () => {
         await ReadIOTServices
           .manualFinish(record.id)
           .then(res => {
             notification.success({
-              message: '订单手动完成成功'
+              // message: '订单手动完成成功'
+              message: getFormattedMsg('RawMaterialDeliveryOrderManagement.message.manualFinishSuccess')
             })
             loadData(page, pageSize, { ...setSearchValue, state: selectedstatus });
           })
@@ -320,13 +336,15 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
   const HandleSaveManualDown = () => {
     //console.log('---',ManualDownSelected.lineId, ManualDownData.id, ManualDownSelected.stockId);
     Modal.confirm({
-      title: `确认下架?`,
+      // title: `确认下架?`,
+      title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.HandleSaveManualDown'),
       onOk: async () => {
         await ReadIOTServices
           .manualOut(ManualDownSelected.lineId, ManualDownData.id, ManualDownSelected.stockId)
           .then(res => {
             notification.success({
-              message: '手动下架成功'
+              // message: '手动下架成功'
+              message: getFormattedMsg('RawMaterialDeliveryOrderManagement.message.manualSaveSuccess'),
             })
                 loadData(page, pageSize, { ...setSearchValue, state: selectedstatus });
             handleCancelManualDown()
@@ -446,7 +464,8 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
         <HVLayout.Pane height={'auto'}>
           <SearchForm onSearch={handleSearch}>
             <SearchForm.Item
-              label={'计划名称'}
+              // label={'计划名称'}
+              label={getFormattedMsg('RawMaterialDeliveryOrderManagement.label.code')}
               name="code"
             >
               <Input
@@ -484,8 +503,10 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
                 CheckboxChange(e)
               }}
             >
-              <Radio.Button value={1} className={styles.leftRadius}>先入先出</Radio.Button>
-              <Radio.Button value={0} className={styles.rightRadius}>路径最优</Radio.Button>
+              {/* <Radio.Button value={1} className={styles.leftRadius}>先入先出</Radio.Button>
+              <Radio.Button value={0} className={styles.rightRadius}>路径最优</Radio.Button> */}
+              <Radio.Button value={1} className={styles.leftRadius}>{getFormattedMsg('RawMaterialDeliveryOrderManagement.button.leftRadius')}</Radio.Button>
+              <Radio.Button value={0} className={styles.rightRadius}>{getFormattedMsg('RawMaterialDeliveryOrderManagement.button.rightRadius')}</Radio.Button>
             </Radio.Group>
           ]}
           settingButton={<SettingButton />}
@@ -544,7 +565,8 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
       </Drawer>
 
       <Drawer
-        title="余料托盘回库"
+        // title="余料托盘回库"
+        title={getFormattedMsg('RawMaterialDeliveryOrderManagement.title.surplusForm')}
         visible={surplusVis}
         onClose={handleCancelSurplus}
         width={400}

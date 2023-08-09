@@ -50,32 +50,38 @@ const TrayForm = ({
         }
       </Form.Item>
 
-      <Form.Item {...formItemLayout} label={'起点'}>
+      {/* <Form.Item {...formItemLayout} label={'起点'}> */}
+      <Form.Item {...formItemLayout} label={getFormattedMsg('EmptyPalletsWarehousing.title.origin')}>
         {
           getFieldDecorator('origin', {
             rules: [
               {
                 required: true,
-                message: '请选择起点',
+                // message: '请选择起点',
+                message: getFormattedMsg('EmptyPalletsWarehousing.message.origin'),
               },
             ],
             initialValue: addOrUpdateData ? addOrUpdateData['origin'] : ''
-          })(<Input placeholder={'请选择起点'} style={{ width: '100%' }} />)
+          // })(<Input placeholder={'请选择起点'} style={{ width: '100%' }} />)
+        })(<Input placeholder={getFormattedMsg('EmptyPalletsWarehousing.message.origin')} style={{ width: '100%' }} />)
         }
       </Form.Item>
-      <Form.Item {...formItemLayout} label={'中间点'}>
+      {/* <Form.Item {...formItemLayout} label={'中间点'}> */}
+      <Form.Item {...formItemLayout} label={getFormattedMsg('EmptyPalletsWarehousing.title.middle')}>
         {
           getFieldDecorator('middle', {
             rules: [
               {
                 required: true,
-                message: '请选择中间点',
+                // message: '请选择中间点',
+                message: getFormattedMsg('EmptyPalletsWarehousing.message.middle'),
               },
             ],
             initialValue: addOrUpdateData ? addOrUpdateData['middle'] : ''
           })(
             <Select
-              placeholder={'请选择中间点'}
+              // placeholder={'请选择中间点'}
+              placeholder={getFormattedMsg('EmptyPalletsWarehousing.message.middle')}
               showSearch
               filterOption={false}
             >

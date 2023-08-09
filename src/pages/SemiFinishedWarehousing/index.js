@@ -10,7 +10,7 @@ import PickTrayTable from './PickTrayTable';
 import CallTrayForm from './CallTrayForm';
 import AddOrUpdateForm from './AddOrUpdateForm';
 import { isEmpty } from 'lodash';
-import { attributeOne,attributeTwo,dockingPoints,sortPositions } from '~/enum/enum';
+import { attributeOne, attributeTwo, dockingPoints, sortPositions } from '~/enum/enum';
 import PickTrayOut from './PickTrayOut';
 
 const getFormattedMsg = i18n.getFormattedMsg;
@@ -25,7 +25,7 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
   const [totalPage, setTotalPage] = useState(0);
   const [loading, setLoading] = useState(false);
   // const [searchValue, setSearchValue] = useState(null);
-  const [searchValue, setSearchValue] = useState({cuttingName:'切割机1'});
+  const [searchValue, setSearchValue] = useState({ cuttingName: '切割机1' });
   const state = {
     0: '新建', 2: '已完成'
   }
@@ -131,13 +131,15 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
     //   }
     // },
     {
-      title: '主订单号',
+      // title: '主订单号',
+      title: getFormattedMsg('SemiFinishedWarehousingReceipt.title.orderNumber'),
       dataIndex: 'orderNumber',
       key: 'orderNumber',
       align: 'center',
     },
     {
-      title: '子订单号',
+      // title: '子订单号',
+      title: getFormattedMsg('SemiFinishedWarehousingReceipt.title.suborderNumber'),
       dataIndex: 'suborderNumber',
       key: 'suborderNumber',
       align: 'center',
@@ -246,17 +248,17 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
   //查询按钮
   const handleSearch = data => {
     const params = { ...data }
-    
+
     if (searchValue.receiptNumber != null) {
       delete searchValue.receiptNumber
     }
     if (searchValue.trayNumber != null) {
       delete searchValue.trayNumber
     }
-    if (params.receiptNumber =='') {
+    if (params.receiptNumber == '') {
       delete params.receiptNumber
     }
-    if (params.trayNumber =='') {
+    if (params.trayNumber == '') {
       delete params.trayNumber
     }
     if (params.creationTime && params.creationTime.length > 0) {
@@ -265,10 +267,10 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
     }
     delete params.creationTime
 
-    setSearchValue({ ...params,...searchValue });
+    setSearchValue({ ...params, ...searchValue });
     setPage(1);
     setPageSize(10);
-    loadData(1, 10, { ...params,...searchValue , state: selectedstatus });
+    loadData(1, 10, { ...params, ...searchValue, state: selectedstatus });
   };
 
   const { Table, SettingButton } = useMemo(
@@ -316,61 +318,61 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
       params.attributetwoState = true
 
 
-let figureNumber = ''
-let materialCode =''
-let materialName =''
-let orderNumber =''
-let quantity =''
-let suborderNumber = ''
-let orderDetails = []
+      let figureNumber = ''
+      let materialCode = ''
+      let materialName = ''
+      let orderNumber = ''
+      let quantity = ''
+      let suborderNumber = ''
+      let orderDetails = []
 
       dataSource.map(i => {
         const orderDetail = {}
 
-        materialCode =i.Detail[1].value!='' ?[...materialCode, i.Detail[1].value]:materialCode
-        materialName = i.Detail[2].value!='' ?[...materialName, i.Detail[2].value]:materialName
-        orderNumber = i.value!='' ?[...orderNumber, i.value]:orderNumber
-        quantity = i.Detail[0].value!='' ?[...quantity, i.Detail[0].value]:quantity
+        materialCode = i.Detail[1].value != '' ? [...materialCode, i.Detail[1].value] : materialCode
+        materialName = i.Detail[2].value != '' ? [...materialName, i.Detail[2].value] : materialName
+        orderNumber = i.value != '' ? [...orderNumber, i.value] : orderNumber
+        quantity = i.Detail[0].value != '' ? [...quantity, i.Detail[0].value] : quantity
 
         let materialCodeD = ''
         let materialNameD = ''
         let quantityD = ''
         let orderCodeD = ''
         // let masterCodeD = ''
-        let figureNumberD =''
+        let figureNumberD = ''
         let suborderNumberDetails = []
 
         i.suborder.map(j => {
-          materialCodeD = j.Detail[0].value != '' ?[...materialCodeD, j.Detail[0].value]:materialCodeD
-          materialNameD = j.Detail[4].value != '' ?[...materialNameD, j.Detail[4].value]:materialNameD
-          quantityD = j.Detail[1].value != '' ?[...quantityD, j.Detail[1].value]:quantityD
-          orderCodeD = j.value != '' ?[...orderCodeD, j.value]:orderCodeD
-          figureNumberD = j.Detail[3].value != '' ?[...figureNumberD,j.Detail[3].value]:figureNumberD
+          materialCodeD = j.Detail[0].value != '' ? [...materialCodeD, j.Detail[0].value] : materialCodeD
+          materialNameD = j.Detail[4].value != '' ? [...materialNameD, j.Detail[4].value] : materialNameD
+          quantityD = j.Detail[1].value != '' ? [...quantityD, j.Detail[1].value] : quantityD
+          orderCodeD = j.value != '' ? [...orderCodeD, j.value] : orderCodeD
+          figureNumberD = j.Detail[3].value != '' ? [...figureNumberD, j.Detail[3].value] : figureNumberD
 
           const detail = {
-            materialCode: j.Detail[0].value != null?j.Detail[0].value:'',
-            quantity: j.Detail[1].value != null?Number(j.Detail[1].value):0,
-            orderCode: j.Detail[2].value != null?j.Detail[2].value:'',
-            figureNumber: j.Detail[3].value != null?j.Detail[3].value:'',
-            materialName: j.Detail[4].value != null?j.Detail[4].value:'',
-            suborderNumber: j.Detail[5].value != null?j.Detail[5].value:'',
+            materialCode: j.Detail[0].value != null ? j.Detail[0].value : '',
+            quantity: j.Detail[1].value != null ? Number(j.Detail[1].value) : 0,
+            orderCode: j.Detail[2].value != null ? j.Detail[2].value : '',
+            figureNumber: j.Detail[3].value != null ? j.Detail[3].value : '',
+            materialName: j.Detail[4].value != null ? j.Detail[4].value : '',
+            suborderNumber: j.Detail[5].value != null ? j.Detail[5].value : '',
           }
           suborderNumberDetails = [...suborderNumberDetails, detail]
         })
 
-        figureNumber = [...figureNumber,figureNumberD]
-        suborderNumber =[...suborderNumber,orderCodeD]
+        figureNumber = [...figureNumber, figureNumberD]
+        suborderNumber = [...suborderNumber, orderCodeD]
 
         // orderDetail.materialCode = materialCodeD.toString()
         // orderDetail.materialName = materialNameD.toString()
         // orderDetail.orderNumber = orderCodeD.toString()
         // orderDetail.quantity = quantityD.toString()
-        orderDetail.materialCode = i.Detail[1].value!='' ? i.Detail[1].value:''
-        orderDetail.materialName =  i.Detail[2].value!='' ? i.Detail[2].value:''
-        orderDetail.orderCode =  i.value!='' ? i.value:''
-        orderDetail.quantity =  i.Detail[0].value!='' ? Number(i.Detail[0].value):0
+        orderDetail.materialCode = i.Detail[1].value != '' ? i.Detail[1].value : ''
+        orderDetail.materialName = i.Detail[2].value != '' ? i.Detail[2].value : ''
+        orderDetail.orderCode = i.value != '' ? i.value : ''
+        orderDetail.quantity = i.Detail[0].value != '' ? Number(i.Detail[0].value) : 0
         orderDetail.suborderNumberDetails = suborderNumberDetails
-        orderDetails = [...orderDetails,orderDetail]
+        orderDetails = [...orderDetails, orderDetail]
       })
 
       params.orderDetails = orderDetails
@@ -427,11 +429,11 @@ let orderDetails = []
   ];
 
   const HandleSaveUpdate = () => {
-    const { getFieldsValue, validateFields ,setFieldsValue} = updateForm.current;
+    const { getFieldsValue, validateFields, setFieldsValue } = updateForm.current;
     validateFields(async (err, values) => {
       if (err) return;
       const params = getFieldsValue();
-      if(!isEmpty(params.attributeOne)){
+      if (!isEmpty(params.attributeOne)) {
         params.attributeOne = params.attributeOne.toString()
       }
       Object.keys(params).map(i => {
@@ -451,7 +453,7 @@ let orderDetails = []
             description: err.message
           });
         });
-        handleCancelUpdate();
+      handleCancelUpdate();
     });
   }
 
@@ -540,7 +542,8 @@ let orderDetails = []
       await EmptyPalletDeliveryApi.autoTransferOut(data)
         .then(res => {
           notification.success({
-            message: '托盘自动出库成功'
+            // message: '托盘自动出库成功'
+            message: getFormattedMsg('SemiFinishedWarehousingReceipt.message.autoTransferOut'),
           });
           loadData(page, pageSize, { ...searchValue, state: selectedstatus });
         })
@@ -613,10 +616,11 @@ let orderDetails = []
       }
       //console.log(data, 'data');
 
-      await SemiFinisheDeliveryPalletSelectionApi.returnStore(selectedDatas[0].id,params.middle,params.toLocation)
+      await SemiFinisheDeliveryPalletSelectionApi.returnStore(selectedDatas[0].id, params.middle, params.toLocation)
         .then(res => {
           notification.success({
-            message: '托盘下架成功'
+            // message: '托盘下架成功'
+            message: getFormattedMsg('SemiFinishedWarehousingReceipt.message.returnStore'),
           });
           loadData(page, pageSize, { ...searchValue, state: selectedstatus });
         })
@@ -625,12 +629,12 @@ let orderDetails = []
             description: err.message
           });
         })
-        handleCancelTrayOut();
-        handleCancelPickTray();
+      handleCancelTrayOut();
+      handleCancelPickTray();
     })
   }
 
-  const handleWarehousing =(record)=>{
+  const handleWarehousing = (record) => {
     Modal.confirm({
       title: getFormattedMsg('SemiFinishedWarehousingReceipt.message.warehousing'),
       onOk: async () => {
@@ -691,7 +695,8 @@ let orderDetails = []
         </HVLayout.Pane>
         <HVLayout.Pane
           icon={<i className="h-visions hv-table" />}
-          title={'切割机1收料'}
+          // title={'切割机1收料'}
+          title={getFormattedMsg('SemiFinishedWarehousingReceipt.title.tableName1')}
           buttons={[
             <Button key="add" type="primary" onClick={() => handleAdd()}>
               {getFormattedMsg('SemiFinishedWarehousingReceipt.button.add')}
@@ -750,9 +755,9 @@ let orderDetails = []
         </HVLayout.Pane>
       </HVLayout>
       <Modal
-        // title={getFormattedMsg('SemiFinishedWarehousingReceipt.title.addOrder')}
-        title={'半成品绑定'}
-        visible={addVis} 
+        title={getFormattedMsg('SemiFinishedWarehousingReceipt.title.addOrder')}
+        // title={'半成品绑定'}
+        visible={addVis}
         footer={modalAddFoot()}
         onCancel={handleCancelAdd}
         // width={1000}
@@ -760,16 +765,16 @@ let orderDetails = []
         destroyOnClose
       >
         <AddOrUpdateForm
-            ref={addForm}
-            attributeOneState={attributeOneState}
-            attributeTwoState={attributeTwoState}
-            setAttributeOneState={setAttributeOneState}
-            setAttributeTwoState={setAttributeTwoState}
-            attributeOne={attributeOne}
-            attributeTwo={attributeTwo}
-            setDataSource={setDataSource}
-            dataSource={dataSource}
-          />
+          ref={addForm}
+          attributeOneState={attributeOneState}
+          attributeTwoState={attributeTwoState}
+          setAttributeOneState={setAttributeOneState}
+          setAttributeTwoState={setAttributeTwoState}
+          attributeOne={attributeOne}
+          attributeTwo={attributeTwo}
+          setDataSource={setDataSource}
+          dataSource={dataSource}
+        />
       </Modal>
       {/* <Drawer title={getFormattedMsg('SemiFinishedWarehousingReceipt.title.addOrder')} visible={addVis} onClose={handleCancelAdd} width={500}>
         <Drawer.DrawerContent>
@@ -798,8 +803,8 @@ let orderDetails = []
             setAttributeTwoState={setAttributeTwoState}
             attributeOne={attributeOne}
             attributeTwo={attributeTwo}
-            // dockingPoints={dockingPoints}
-            // sortPositions={sortPositions}
+          // dockingPoints={dockingPoints}
+          // sortPositions={sortPositions}
           />
         </Drawer.DrawerContent>
         <Drawer.DrawerBottomBar>{modalUpdateFoot()}</Drawer.DrawerBottomBar>
@@ -824,19 +829,20 @@ let orderDetails = []
         onCancel={handleCancelPickTray}
         width={window.innerWidth - 300}
         bodyStyle={{
-          paddingTop:0,
+          paddingTop: 0,
           paddingLeft: 0,
           paddingRight: 0,
           paddingBottom: 0,
         }}
         destroyOnClose
       >
-        <PickTrayTable selectedRowKeys={selectedRowKeys} setSelectedRowKeys={setSelectedRowKeys} setSelectedDatas={setSelectedDatas} modalPickTrayFoot={modalPickTrayFoot}/>
+        <PickTrayTable selectedRowKeys={selectedRowKeys} setSelectedRowKeys={setSelectedRowKeys} setSelectedDatas={setSelectedDatas} modalPickTrayFoot={modalPickTrayFoot} />
       </Modal>
 
 
       <Modal
-        title={'托盘下架'}
+        // title={'托盘下架'}
+        title={getFormattedMsg('SemiFinishedWarehousingReceipt.title.pickTrayOut')}
         visible={pickTrayOutVis}
         footer={modalTrayOutFoot()}
         onCancel={handleCancelTrayOut}

@@ -96,8 +96,8 @@ const PalletManagementStockLevel = () => {
         </a>,
         <Divider key="divider4" type="vertical" />,
         <a key="takedown" onClick={() => HandleTakedown(record)}>
-          {/* {getFormattedMsg('PalletManagementConnectionPort.button.Takedown')} */}
-          下架
+          {getFormattedMsg('PalletManagementStockLevel.button.takedown')}
+          {/* 下架 */}
         </a>,
         <Divider key="divider5" type="vertical" />,
         <a key="addTransfer" onClick={() => handleAddTransfer(record)}>
@@ -216,7 +216,8 @@ const PalletManagementStockLevel = () => {
         .addAndupShelves(data)
         .then(res => {
           notification.success({
-            message: '托盘入库任务生成成功'
+            // message: '托盘入库任务生成成功'
+            message: getFormattedMsg('PalletManagement.message.addAndUpShelves')
           });
           loadData(pageInfo.page, pageInfo.pageSize, { ...searchValue });
         })
@@ -229,19 +230,21 @@ const PalletManagementStockLevel = () => {
 
     const HandleTakedown =  record => {
       Modal.confirm({
-        // title: `${getFormattedMsg('PalletManagement.title.pullOffPallet')}${record.transferCode}?`,
-        title: `确认在备料区${record.areaCode}下架托盘?`,
+        title: `${getFormattedMsg('PalletManagementStockLevel.title.handleTakedown')}${record.areaCode}${getFormattedMsg('PalletManagementStockLevel.title.pullOff')}?`,
+        // title: `确认在备料区${record.areaCode}下架托盘?`,
         onOk: async() => {
           await EmptyPalletDeliveryApi.callTransferOut({qrName:record.areaCode})
           .then(res => {
             notification.success({
-              message: '托盘下架成功'
+              // message: '托盘下架成功'
+              message: getFormattedMsg('PalletManagementStockLevel.message.removedSuccess'),
             })
             loadData(pageInfo.page, pageInfo.pageSize, { ...searchValue });
           })
           .catch(err => {
             notification.warning({
-              message: '托盘下架失败',
+              // message: '托盘下架失败',
+              message: getFormattedMsg('PalletManagementStockLevel.message.removedFailure'),
               description: err.message
             })
           })
@@ -597,7 +600,8 @@ const PalletManagementStockLevel = () => {
         </Form>
       </Modal>
       <Modal
-        title={'托盘上架'}
+        // title={'托盘上架'}
+        title={getFormattedMsg('PalletManagement.title.putOn')}
         visible={shelfVis}
         onCancel={shelfCancel}
         footer={modalShelfFoot()}
@@ -611,10 +615,12 @@ const PalletManagementStockLevel = () => {
             alignItems: 'center',
             textAlign: 'center',
           }}>
-            中间点：
+            {/* 中间点： */}
+            {getFormattedMsg('PalletManagement.title.mid')}
           </div>
           <Select
-            placeholder={'请选择中间点'}
+            // placeholder={'请选择中间点'}
+            placeholder={getFormattedMsg('PalletManagement.placeholder.middle')}
             showSearch
             filterOption={false}
             onChange={(e) => {

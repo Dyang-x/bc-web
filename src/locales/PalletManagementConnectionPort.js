@@ -18,7 +18,10 @@ module.exports = {
       binding: 'Binding TransferCode',
       areaState:'areaState',
       updateState: 'update AreaState',
-      unbind:'Confirm untying tray ?'
+      unbind:'Confirm untying tray ?',
+      
+      handleTakedown:'Confirm pallet removal at port ',
+      pullOff:' ',
     },
     button:{
       shelf:'shelf',
@@ -31,6 +34,7 @@ module.exports = {
       save:'save',
       cancel:'cancel',
       add:'add',
+      takedown:'delist',
     },
     message:{
       addSuccess:'Added success',
@@ -44,6 +48,9 @@ module.exports = {
       portNumber:'Please enter the port number',
       unbindingSuccess:'Unbind successfully',
       unbindingFailure:'Unbinding failure',
+
+      removedSuccess:'Removed successfully',
+      removedFailure:'Removal failure',
     },
     label:{
       portNumber:'Port number'
@@ -67,7 +74,10 @@ module.exports = {
       binding: '绑定托盘',
       areaState:'备料区状态',
       updateState: '更新备料口状态',
-      unbind:'确认解绑托盘?'
+      unbind:'确认解绑托盘?',
+
+      handleTakedown:'确认在接驳口',
+      pullOff:'下架托盘',
     },
     button:{
       shelf:'上架',
@@ -80,6 +90,7 @@ module.exports = {
       save:'保存',
       cancel:'取消',
       add:'新增',
+      takedown:'下架',
     },
     message:{
       addSuccess:'新增成功',
@@ -93,6 +104,9 @@ module.exports = {
       portNumber:'请输入接驳口编码',
       unbindingSuccess:'解绑成功',
       unbindingFailure:'解绑失败',
+
+      removedSuccess:'托盘下架成功',
+      removedFailure:'托盘下架失败',
     },
     label:{
       portNumber:'接驳口编码'

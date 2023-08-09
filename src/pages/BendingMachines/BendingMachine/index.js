@@ -71,7 +71,8 @@ const BendingMachine = ({ bendingNumber, tableName }) => {
       align: 'center',
     },
     {
-      title: '折弯机状态',
+      title: getFormattedMsg('BendingMachineConfiguration.title.bendingState'),
+      // title: '折弯机状态',
       dataIndex: 'bendingState',
       key: 'bendingState',
       align: 'center',
@@ -89,7 +90,8 @@ const BendingMachine = ({ bendingNumber, tableName }) => {
       align: 'center',
     },
     {
-      title: "是否允许切割未完成出库",
+      // title: "是否允许切割未完成出库",
+      title: getFormattedMsg('BendingMachineConfiguration.title.ifout'),
       dataIndex: 'ifout',
       key: 'ifout',
       align: 'center',
@@ -111,7 +113,8 @@ const BendingMachine = ({ bendingNumber, tableName }) => {
       align: 'center',
     },
     {
-      title: "托盘号",
+      title: getFormattedMsg('BendingMachineConfiguration.title.transferCode'),
+      // title: "托盘号",
       dataIndex: 'transferCode',
       key: 'transferCode',
       align: 'center',
@@ -121,20 +124,24 @@ const BendingMachine = ({ bendingNumber, tableName }) => {
       key: 'opt',
       align: 'center',
       render: (_, record) => [
-        <a key="pick" onClick={() => handlePick(record)}>
-          托盘拣选
+        <a key="picking" onClick={() => handlePick(record)}>
+          {/* 托盘拣选 */}
+          {getFormattedMsg('BendingMachineConfiguration.button.picking')}
         </a>,
         <Divider key="divider4" type="vertical" />,
         <a key="takedown" onClick={() => HandlePullOff(record)}>
-          托盘下架
+          {/* 托盘下架 */}
+          {getFormattedMsg('BendingMachineConfiguration.button.takedown')}
         </a>,
         <Divider key="divider1" type="vertical" />,
-        <a key="shelf" onClick={() => HandlePutOn(record)}>
-          空托上架
+        <a key="shelving" onClick={() => HandlePutOn(record)}>
+          {/* 空托上架 */}
+          {getFormattedMsg('BendingMachineConfiguration.button.shelving')}
         </a>,
         <Divider key="divider5" type="vertical" />,
-        <a key="surplus" onClick={() => handleSurplus(record)}>
-          未完工回库
+        <a key="back" onClick={() => handleSurplus(record)}>
+          {/* 未完工回库 */}
+          {getFormattedMsg('BendingMachineConfiguration.button.back')}
         </a>,
         <Divider key="divider6" type="vertical" />,
         <a key="update" onClick={() => handleUpdate(record)}>
@@ -335,7 +342,8 @@ const BendingMachine = ({ bendingNumber, tableName }) => {
       .addAndupShelves(data)
       .then(res => {
         notification.success({
-          message: '托盘入库任务生成成功'
+          // message: '托盘入库任务生成成功',
+          message: getFormattedMsg('BendingMachineConfiguration.message.addAndupShelvesSuccess'),          
         });
         loadData(page, pageSize, { ...searchValue });
         handleCancelPutOn()
@@ -447,7 +455,8 @@ const BendingMachine = ({ bendingNumber, tableName }) => {
       </HVLayout>
       <Drawer
         className='pickDrawer'
-        title={'托盘拣选'}
+        // title={'托盘拣选'}
+        title={getFormattedMsg('BendingMachineConfiguration.button.picking')}
         visible={pickVis}
         onClose={handleCancelPick}
         width={window.innerWidth * 0.8}
@@ -462,7 +471,8 @@ const BendingMachine = ({ bendingNumber, tableName }) => {
       </Drawer>
       <Drawer
         className='pullOffDrawer'
-        title={'托盘下架'}
+        // title={'托盘下架'}
+        title={getFormattedMsg('BendingMachineConfiguration.button.takedown')}
         visible={pullOffVis}
         onClose={handleCancelPullOff}
         width={window.innerWidth * 0.8}
@@ -472,7 +482,8 @@ const BendingMachine = ({ bendingNumber, tableName }) => {
         <PullOff pullOffData={pullOffData} handleCancelPullOff={handleCancelPullOff}/>
       </Drawer>
       <Modal
-        title={'托盘上架'}
+        // title={'托盘上架'}
+        title={getFormattedMsg('BendingMachineConfiguration.title.putOn')}
         visible={pullVis}
         onCancel={handleCancelPutOn}
         footer={modalPutOnFoot()}
@@ -486,10 +497,12 @@ const BendingMachine = ({ bendingNumber, tableName }) => {
             alignItems: 'center',
             textAlign: 'center',
           }}>
-            中间点：
+             {/* 中间点： */}
+             {getFormattedMsg('BendingMachineConfiguration.title.middle')}
           </div>
           <Select
-            placeholder={'请选择中间点'}
+            // placeholder={'请选择中间点'}
+            placeholder={getFormattedMsg('BendingMachineConfiguration.placeholder.middle')}
             showSearch
             filterOption={false}
             onChange={(e) => {
@@ -522,7 +535,8 @@ const BendingMachine = ({ bendingNumber, tableName }) => {
         <Drawer.DrawerBottomBar>{modalAddFoot()}</Drawer.DrawerBottomBar>
       </Drawer> */}
       <Modal
-        title={'未完工回库'}
+        // title={'未完工回库'}
+        title={getFormattedMsg('BendingMachineConfiguration.button.back')}
         visible={surplusFormVis}
         onCancel={handleCancelSurplus}
         footer={modalAddFoot()}

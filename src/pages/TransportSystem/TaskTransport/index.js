@@ -29,7 +29,8 @@ const Index = ({ taskKind, taskType }) => {
   }, []);
 
   const columns = useMemo(() => {
-    const updateTimeTitle = nowTab == 4 ? '任务完成时间' : '任务启动时间'
+    // const updateTimeTitle = nowTab == 4 ? '任务完成时间' : '任务启动时间'
+    const updateTimeTitle = nowTab == 4 ? getFormattedMsg('TaskTransport.title.finishTime') : getFormattedMsg('TaskTransport.title.updateTime')
     return [
       {
         title: getFormattedMsg('TaskTransport.title.taskCode'),
@@ -91,11 +92,14 @@ const Index = ({ taskKind, taskType }) => {
         align: 'center',
         render: (_, record) => [
           nowTab == 6 && [
-            <a key="start1" onClick={() => handleStart(record)} >手动开始</a>,
+            // <a key="start1" onClick={() => handleStart(record)} >手动开始</a>,
+            <a key="start1" onClick={() => handleStart(record)} >{getFormattedMsg('TaskTransport.button.handleStart')}</a>,
             <Divider key="divider4" type="vertical" />,
-            <a key="start2" onClick={() => handleJ002Scan(record)} >J002扫码</a>,
+            // <a key="start2" onClick={() => handleJ002Scan(record)} >J002扫码</a>,
+            <a key="start2" onClick={() => handleJ002Scan(record)} >{getFormattedMsg('TaskTransport.button.handleJ002Scan')}</a>,
             <Divider key="divider5" type="vertical" />,
-            <a key="start3" onClick={() => handleManualJ002(record)} >J002强制通过</a>,
+            // <a key="start3" onClick={() => handleManualJ002(record)} >J002强制通过</a>,
+            <a key="start3" onClick={() => handleManualJ002(record)} >{getFormattedMsg('TaskTransport.button.handleManualJ002')}</a>,
           ],
           nowTab == 1 && [
             <a key="adjust" onClick={() => handleAdjust(record)}>{getFormattedMsg('TaskTransport.button.adjust')}</a>,
@@ -114,7 +118,8 @@ const Index = ({ taskKind, taskType }) => {
             // </a>,
             // <Divider key="divider2" type="vertical" />,
             <a key="again" onClick={() => handleAgain(record)}>
-              再次执行
+              {/* 再次执行 */}
+              {getFormattedMsg('TaskTransport.button.handleAgain')}
             </a>,
             <Divider key="divider2" type="vertical" />,
             <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskTransport.button.complete')}</a>
@@ -185,7 +190,8 @@ const Index = ({ taskKind, taskType }) => {
 
   const handleStart = (record) => {
     Modal.confirm({
-      title: '确认任务开始？',
+      // title: '确认任务开始？',
+      title: getFormattedMsg('TaskTransport.title.handleStart'),
       onOk: async () => {
         await TaskTranSportServices.manualSt2(record.taskCode)
           .then(res => {
@@ -202,7 +208,8 @@ const Index = ({ taskKind, taskType }) => {
 
   const handleJ002Scan = (record) => {
     Modal.confirm({
-      title: '确认扫码？',
+      // title: '确认扫码？',
+      title: getFormattedMsg('TaskTransport.title.handleJ002Scan'),
       onOk: async () => {
         await TaskTranSportServices.j002Scan(record.taskCode)
           .then(res => {
@@ -219,7 +226,8 @@ const Index = ({ taskKind, taskType }) => {
 
   const handleManualJ002 = (record) => {
     Modal.confirm({
-      title: '确认通过？',
+      // title: '确认通过？',
+      title: getFormattedMsg('TaskTransport.title.handleManualJ002'),
       onOk: async () => {
         await TaskTranSportServices.manualJ002(record.taskCode)
           .then(res => {
@@ -236,7 +244,8 @@ const Index = ({ taskKind, taskType }) => {
 
   const handleJ003Scan = (record) => {
     Modal.confirm({
-      title: '确认扫码？',
+      // title: '确认扫码？',
+      title: getFormattedMsg('TaskTransport.title.handleJ003Scan'),
       onOk: async () => {
         await TaskTranSportServices.j003Scan()
           .then(res => {
@@ -253,7 +262,8 @@ const Index = ({ taskKind, taskType }) => {
 
   const handleManualJ003 = (record) => {
     Modal.confirm({
-      title: '确认通过？',
+      // title: '确认通过？',
+      title: getFormattedMsg('TaskTransport.title.handleManualJ003'),
       onOk: async () => {
         await TaskTranSportServices.manualJ003()
           .then(res => {
@@ -312,7 +322,8 @@ const Index = ({ taskKind, taskType }) => {
 
   const handlePause = async (record) => {
     Modal.confirm({
-      title: '确认暂停？',
+      // title: '确认暂停？',
+      title: getFormattedMsg('TaskTransport.title.handlePause'),
       onOk: async () => {
         await TaskTranSportServices.suspendTask(record.id)
           .then(res => {
@@ -356,19 +367,22 @@ const Index = ({ taskKind, taskType }) => {
 
   const handleAgain = (record) => {
     Modal.confirm({
-      title: '确认再次执行任务？',
+      // title: '确认再次执行任务？',
+      title: getFormattedMsg('TaskTransport.title.handleAgain'),
       okType: 'danger',
       onOk: async () => {
         await TaskTranSportServices.manualSt2(record.taskCode)
           .then(res => {
             notification.success({
-              message: '任务再次执行成功',
+              // message: '任务再次执行成功',
+              message: getFormattedMsg('TaskTransport.message.againSuccess'),
             })
             loadData(page, pageSize, { ...searchValue, taskState: nowTab });
           })
           .catch(err => {
             notification.warning({
-              message: '任务再次执行失败',
+              // message: '任务再次执行失败',
+              message: getFormattedMsg('TaskTransport.message.againFailure'),
               description: err.message
             })
           })
@@ -378,7 +392,8 @@ const Index = ({ taskKind, taskType }) => {
 
   const handleContinue = async (record) => {
     Modal.confirm({
-      title: '确认执行任务？',
+      // title: '确认执行任务？',
+      title: getFormattedMsg('TaskTransport.title.handleContinue'),
       onOk: async () => {
     await TaskTranSportServices.continueTask(record.id)
       .then(res => {
@@ -528,13 +543,16 @@ const Index = ({ taskKind, taskType }) => {
           }}
           buttons={
             <>
-              <Button key="start11" type='primary' onClick={() => handleJ003Scan()} >J003扫码</Button>
-              <Button key="start12" type='primary' onClick={() => handleManualJ003()} >J003强制通过</Button>
+              {/* <Button key="start11" type='primary' onClick={() => handleJ003Scan()} >J003扫码</Button> */}
+              <Button key="start11" type='primary' onClick={() => handleJ003Scan()} >{getFormattedMsg('TaskTransport.button.handleJ003Scan')}</Button>
+              {/* <Button key="start12" type='primary' onClick={() => handleManualJ003()} >J003强制通过</Button> */}
+              <Button key="start12" type='primary' onClick={() => handleManualJ003()} >{getFormattedMsg('TaskTransport.button.handleManualJ003')}</Button>
             </>
           }
         >
           <Pane.Tab
-            title={'就绪'}
+            // title={'就绪'}
+            title={getFormattedMsg('TaskTransport.title.ready')}
             name='6'
             isComponent
             settingButton={<SettingButton />}

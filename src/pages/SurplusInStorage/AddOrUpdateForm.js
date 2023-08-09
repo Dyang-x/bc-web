@@ -108,40 +108,49 @@ const AddForm = ({
           })(<Input placeholder={'请输入材料编码'} style={{ width: '100%' }} />)
         }
       </Form.Item> */}
-      <Form.Item {...formItemLayout} label={'材质'}>
+      {/* <Form.Item {...formItemLayout} label={'材质'}> */}
+      <Form.Item {...formItemLayout} label={getFormattedMsg('SurplusInStorage.label.materialName')}>
         {
           getFieldDecorator('materialName', {
             rules: [
               {
                 required: true,
-                message: '请输入材质',
+                // message: '请输入材质',
+                message:getFormattedMsg('SurplusInStorage.placeholder.materialName'),
               },
             ],
-          })(<Input placeholder={'请输入材质'} style={{ width: '100%' }} />)
+          // })(<Input placeholder={'请输入材质'} style={{ width: '100%' }} />)
+        })(<Input placeholder={getFormattedMsg('SurplusInStorage.placeholder.materialName')} style={{ width: '100%' }} />)
         }
       </Form.Item>
-      <Form.Item {...formItemLayout} label={'材料大小 X'}>
+      {/* <Form.Item {...formItemLayout} label={'材料大小 X'}> */}
+      <Form.Item {...formItemLayout} label={getFormattedMsg('SurplusInStorage.label.materialSizeX')}>
         {
           getFieldDecorator('materialSizeX', {
             rules: [
               {
                 required: true,
-                message: '请输入材料大小 X',
+                // message: '请输入材料大小 X',
+                message:getFormattedMsg('SurplusInStorage.placeholder.materialSizeX'),
               },
             ],
-          })(<Input placeholder={'请输入材料大小 X'} style={{ width: '100%' }} />)
+          // })(<Input placeholder={'请输入材料大小 X'} style={{ width: '100%' }} />)
+        })(<Input placeholder={getFormattedMsg('SurplusInStorage.placeholder.materialSizeX')} style={{ width: '100%' }} />)
         }
       </Form.Item>
-      <Form.Item {...formItemLayout} label={'材料大小 Y'}>
+      {/* <Form.Item {...formItemLayout} label={'材料大小 Y'}> */}
+      <Form.Item {...formItemLayout} label={getFormattedMsg('SurplusInStorage.label.materialSizeY')}>
         {
           getFieldDecorator('materialSizeY', {
             rules: [
               {
                 required: true,
-                message: '请输入材料大小 Y',
+                // message: '请输入材料大小 Y',
+                message:getFormattedMsg('SurplusInStorage.placeholder.materialSizeY'),
               },
             ],
-          })(<Input placeholder={'请输入材料大小 Y'} style={{ width: '100%' }} />)
+          // })(<Input placeholder={'请输入材料大小 Y'} style={{ width: '100%' }} />)
+        })(<Input placeholder={getFormattedMsg('SurplusInStorage.placeholder.materialSizeY')} style={{ width: '100%' }} />)
         }
       </Form.Item>
       {/* <Form.Item {...formItemLayout} label={'材料规格'}>
@@ -156,28 +165,34 @@ const AddForm = ({
           })(<Input placeholder={'请输入材料规格'} style={{ width: '100%' }} />)
         }
       </Form.Item> */}
-      <Form.Item {...formItemLayout} label={'材料厚度'}>
+      {/* <Form.Item {...formItemLayout} label={'材料厚度'}> */}
+      <Form.Item {...formItemLayout} label={getFormattedMsg('SurplusInStorage.label.materialThickness')}>
         {
           getFieldDecorator('materialThickness', {
             rules: [
               {
                 required: true,
-                message: '请输入材料厚度',
+                // message: '请输入材料厚度',
+                message:getFormattedMsg('SurplusInStorage.placeholder.materialThickness'),
               },
             ],
-          })(<Input placeholder={'请输入材料厚度'} style={{ width: '100%' }} />)
+          // })(<Input placeholder={'请输入材料厚度'} style={{ width: '100%' }} />)
+        })(<Input placeholder={getFormattedMsg('SurplusInStorage.placeholder.materialThickness')} style={{ width: '100%' }} />)
         }
       </Form.Item>
-      <Form.Item {...formItemLayout} label={'数量'}>
+      {/* <Form.Item {...formItemLayout} label={'数量'}> */}
+      <Form.Item {...formItemLayout} label={getFormattedMsg('SurplusInStorage.label.quantity')}>
         {
           getFieldDecorator('quantity', {
             rules: [
               {
                 required: true,
-                message: '请输入数量',
+                // message: '请输入数量',
+                message:getFormattedMsg('SurplusInStorage.placeholder.quantity'),
               },
             ],
-          })(<Input placeholder={'请输入数量'} style={{ width: '100%' }} />)
+          // })(<Input placeholder={'请输入数量'} style={{ width: '100%' }} />)
+        })(<Input placeholder={getFormattedMsg('SurplusInStorage.placeholder.quantity')} style={{ width: '100%' }} />)
         }
       </Form.Item>
       {/* <Form.Item {...formItemLayout} label={'起始位置'}>

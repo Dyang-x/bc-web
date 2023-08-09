@@ -54,19 +54,22 @@ const EmptyPalletDeliveryPage = ({ history }) => {
     //   align: 'center',
     // },
     {
-      title: '中间点',
+      // title: '中间点',
+      title: getFormattedMsg('EmptyPalletDelivery.title.middle'),
       dataIndex: 'middle',
       key: 'middle',
       align: 'center',
     },
     {
-      title: '终点',
+      // title: '终点',
+      title: getFormattedMsg('EmptyPalletDelivery.title.toLocation'),
       dataIndex: 'toLocation',
       key: 'toLocation',
       align: 'center',
     },
     {
-      title: '出库类型',
+      // title: '出库类型',
+      title: getFormattedMsg('EmptyPalletDelivery.title.inType'),
       dataIndex: 'inType',
       key: 'inType',
       align: 'center',
@@ -94,7 +97,8 @@ const EmptyPalletDeliveryPage = ({ history }) => {
       align: 'center',
       render: (_, record) => [
         record.state == 0 && [<a key="downShelves" onClick={() => handleDownShelves(record)}>
-          下架
+          {/* 下架 */}
+          {getFormattedMsg('EmptyPalletDelivery.button.downShelves')}
         </a>,
         <Divider key="divider2" type="vertical" />],
         record.state == 0 && [
@@ -107,7 +111,8 @@ const EmptyPalletDeliveryPage = ({ history }) => {
           </a>
         ],
         record.state == 1 && [<a key="finishOrder" onClick={() => handleFinishOrder(record)}>
-          完成
+          {/* 完成 */}
+          {getFormattedMsg('EmptyPalletDelivery.button.finishOrder')}
         </a>,
           // <Divider key="divider3" type="vertical" />
         ],
@@ -239,19 +244,22 @@ const EmptyPalletDeliveryPage = ({ history }) => {
 
   const handleDownShelves = (record) => {
     Modal.confirm({
-      title: '确认下架？',
+      // title: '确认下架？',
+      title:getFormattedMsg('EmptyPalletDelivery.title.downShelves'),
       onOk: async () => {
         await EmptyPalletDelivery
           .downShelves(record.id)
           .then(res => {
             notification.success({
-              message: '下架开始成功'
+              // message: '下架开始成功'
+              message: getFormattedMsg('EmptyPalletDelivery.message.downSuccess'),
             });
             loadData(page, pageSize, { ...searchValue, state: selectedstatus });
           })
           .catch(err => {
             notification.warning({
-              message: '下架开始失败',
+              // message: '下架开始失败',
+              message: getFormattedMsg('EmptyPalletDelivery.message.downFailure'),
               description: err.message
             });
           });
@@ -262,19 +270,22 @@ const EmptyPalletDeliveryPage = ({ history }) => {
 
   const handleFinishOrder = (record) => {
     Modal.confirm({
-      title: '确认完成任务？',
+      // title: '确认完成任务？',
+      title:getFormattedMsg('EmptyPalletDelivery.title.finishOrder'),
       onOk: async () => {
         await EmptyPalletDelivery
           .finishById(record.id)
           .then(res => {
             notification.success({
-              message: '任务完成成功'
+              // message: '任务完成成功'
+              message: getFormattedMsg('EmptyPalletDelivery.message.finishSuccess'),
             });
             loadData(page, pageSize, { ...searchValue, state: selectedstatus });
           })
           .catch(err => {
             notification.warning({
-              message: '任务完成失败',
+              // message: '任务完成失败',
+              message: getFormattedMsg('EmptyPalletDelivery.message.finishFailure'),
               description: err.message
             });
           });

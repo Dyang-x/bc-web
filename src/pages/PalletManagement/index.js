@@ -58,6 +58,8 @@ const PalletManagement = () => {
   const searchForm = useRef();
   const pullForm = useRef();
 
+  const [updateFormData,setUpdateFormData] =useState({})
+
   useEffect(() => {
 
   }, []);
@@ -98,6 +100,11 @@ const PalletManagement = () => {
       key: 'opt',
       align: 'center',
       render: (_, record) => [
+        <a key="update" onClick={() => handleCreate(record)}>
+        {/* 修改 */}
+        {getFormattedMsg('PalletManagement.button.update')}
+      </a>,
+      <Divider key="divider5" type="vertical" />,
         <a key="binding" onClick={() => HandleBinding(record)}>
           {getFormattedMsg('PalletManagement.button.binding')}
         </a>,
@@ -201,13 +208,15 @@ const PalletManagement = () => {
         // { id: 7, name: '半成品托盘回库', value: '半成品托盘回库', },
         params.taskType = pullFormData.type == 0 ? 5 : 7
         Modal.confirm({
-          title: `确认上架托盘${pullFormData.code}?`,
+          // title: `确认上架托盘${pullFormData.code}?`,
+          title: `${getFormattedMsg('EmptyPalletDelivery.title.putOnPallet')}${pullFormData.code}?`,
           onOk: async () => {
             await EmptyPalletsWarehousingApi
               .autoTransferIn(params)
               .then(res => {
                 notification.success({
-                  message: '托盘上架成功'
+                  // message: '托盘上架成功'
+                  message: getFormattedMsg('EmptyPalletDelivery.message.shelfSuccess')
                 });
                 // loadData(pageInfo.page, pageInfo.pageSize, searchValue);
               })
@@ -226,14 +235,16 @@ const PalletManagement = () => {
         // { id: 8, name: '半成品托盘出库', value: '半成品托盘出库', },
         params.taskType = pullFormData.type == 1 ? 6 : 8
         Modal.confirm({
-          title: `确认下架托盘${pullFormData.code}?`,
+          // title: `确认下架托盘${pullFormData.code}?`,
+          title: `${getFormattedMsg('EmptyPalletDelivery.title.pullOffPallet')}${pullFormData.code}?`,
           onOk: async () => {
             await EmptyPalletDeliveryApi
               // .saveOrUpdate(data)
               .autoTransferOut(params)
               .then(res => {
                 notification.success({
-                  message: '托盘下架成功'
+                  // message: '托盘下架成功'
+                  message: getFormattedMsg('EmptyPalletDelivery.message.removedSuccess')
                 });
                 // loadData(pageInfo.page, pageInfo.pageSize, searchValue);
               })
@@ -255,7 +266,8 @@ const PalletManagement = () => {
       .addAndupShelves(data)
       .then(res => {
         notification.success({
-          message: '托盘入库任务生成成功'
+          // message: '托盘入库任务生成成功'
+          message: getFormattedMsg('EmptyPalletDelivery.message.addAndUpShelves')
         });
         loadData(pageInfo.page, pageInfo.pageSize, searchValue);
       })
@@ -272,7 +284,8 @@ const PalletManagement = () => {
       .addAnddownShelves(data)
       .then(res => {
         notification.success({
-          message: '托盘出库任务生成成功'
+          // message: '托盘出库任务生成成功'
+          message: getFormattedMsg('EmptyPalletDelivery.message.addAnddownShelves')
         });
         loadData(pageInfo.page, pageInfo.pageSize, searchValue);
       })
@@ -491,7 +504,8 @@ const PalletManagement = () => {
   const printLabel = () => {
     //console.log('selectedDatas', selectedDatas);
     if (isEmpty(selectedDatas)) {
-      notification.warning({ message: '请勾选需要打印标签的托盘' })
+      // notification.warning({ message: '请勾选需要打印标签的托盘' })
+      notification.warning({ message: getFormattedMsg('PalletManagement.message.printWarning') })
       return
     }
     setModalVis(true)
@@ -530,12 +544,14 @@ const PalletManagement = () => {
       });
   }
 
-  const handleCreate = () => {
+  const handleCreate = (record) => {
     setAddFormVis(true)
+    setUpdateFormData(record)
   }
 
   const handleCancelCreate = () => {
     setAddFormVis(false)
+    setUpdateFormData({})
   }
 
   const modalCreateFoot = () => [
@@ -552,8 +568,9 @@ const PalletManagement = () => {
     validateFields(async (err, values) => {
       if (err) return;
       const params = getFieldsValue();
-      //console.log(params, 'HandleSaveCreate');
-      await TransferBoxServices.createBox(params)
+      console.log(params, 'HandleSaveCreate');
+      if(isEmpty(updateFormData)){
+        await TransferBoxServices.createBox(params)
         .then(res => {
           notification.success({
             message: getFormattedMsg('PalletManagement.message.addSuccess')
@@ -571,6 +588,30 @@ const PalletManagement = () => {
             description: err.message
           })
         })
+      }else{
+        const data = {...updateFormData,...params}
+        await TransferBoxServices.updateBox(data)
+        .then(res => {
+          notification.success({
+            // message: '修改成功'
+            message: getFormattedMsg('PalletManagement.message.updateSuccess'),
+          })
+          const pageInfos = {
+            page: 1,
+            pageSize: 10
+          }
+          setPageInfo(pageInfos)
+          loadData(pageInfos.page, pageInfos.pageSize, { type: selectedType });
+        })
+        .catch(err => {
+          notification.warning({
+            // message: '修改失败',
+            message: getFormattedMsg('PalletManagement.message.updateFailure'),
+            description: err.message
+          })
+        })
+      }
+      
       resetFields()
       handleCancelCreate()
     });
@@ -645,7 +686,8 @@ const PalletManagement = () => {
 
   const modalPrintFoot = () => [
     <Button key="save" type="primary" onClick={handleSavePrint}>
-      打印
+      {/* 打印 */}
+      {getFormattedMsg('PalletManagement.button.print')}
     </Button>,
     <Button key="cancel" onClick={handleCancelPrint}>
       {getFormattedMsg('PalletManagement.button.cancel')}
@@ -684,12 +726,14 @@ const PalletManagement = () => {
     PrintService.print(printData)
       .then(res => {
         notification.success({
-          message: '打印成功'
+          // message: '打印成功',
+          message: getFormattedMsg('PalletManagement.message.printSuccess')
         });
       })
       .catch(error => {
         notification.warning({
-          message: '打印失败',
+          // message: '打印失败',
+          message: getFormattedMsg('PalletManagement.message.printFailure'),
           description: error.message
         });
       });
@@ -727,11 +771,13 @@ const PalletManagement = () => {
                 />
               </SearchForm.Item>
               <SearchForm.Item
-                label={'库位号'}
+                // label={'库位号'}
+                label={getFormattedMsg('PalletManagement.label.locationCode')}
                 name="locationCode"
               >
                 <Input
-                  placeholder={'请输入库位号'}
+                  // placeholder={'请输入库位号'}
+                  placeholder={getFormattedMsg('PalletManagement.placeholder.locationCode')}
                   allowClear
                   disabled={selectedType == null}
                 />
@@ -762,7 +808,7 @@ const PalletManagement = () => {
                 key="add"
                 h-icon="add"
                 type="primary"
-                onClick={handleCreate}
+                onClick={()=>handleCreate({})}
               >
                 {getFormattedMsg('PalletManagement.button.add')}
               </Button>
@@ -809,6 +855,7 @@ const PalletManagement = () => {
           <AddForm
             ref={addRef}
             palletTypeList={palletTypeList}
+            updateFormData={updateFormData}
           />
         </Drawer.DrawerContent>
         <Drawer.DrawerBottomBar>{modalCreateFoot()}</Drawer.DrawerBottomBar>
@@ -825,7 +872,8 @@ const PalletManagement = () => {
         />
       </Modal>
       <Modal
-        title={pullType == 1 ? '托盘上架' : '托盘下架'}
+        // title={pullType == 1 ? '托盘上架' : '托盘下架'}
+        title={pullType == 1 ? getFormattedMsg('PalletManagement.title.putOn') : getFormattedMsg('PalletManagement.title.pullOff')}
         visible={pullFormVis}
         footer={modalPullFoot()}
         onCancel={handleCancelPull}
@@ -836,7 +884,8 @@ const PalletManagement = () => {
       </Modal>
 
       <Modal
-        title={'打印列表'}
+        // title={'打印列表'}
+        title={getFormattedMsg('PalletManagement.title.ModalQR')}
         visible={modalVis}
         onCancel={handleCancelPrint}
         destroyOnClose
@@ -847,7 +896,8 @@ const PalletManagement = () => {
       </Modal>
 
       <Modal
-        title={'托盘下架'}
+        // title={'托盘下架'}
+        title={getFormattedMsg('PalletManagement.title.pullOff')}
         visible={simVis}
         onCancel={handleCancelSim}
         footer={modalSimFoot()}
@@ -861,10 +911,12 @@ const PalletManagement = () => {
             alignItems: 'center',
             textAlign:'center',
             }}>
-            {simType == 1 ? '起点：' : '终点：'}
+            {/* {simType == 1 ? '起点：' : '终点：'} */}
+            {simType == 1 ? getFormattedMsg('PalletManagement.title.start') : getFormattedMsg('PalletManagement.title.end')}
           </div>
           <Select
-            placeholder={simType == 1 ? '请选择起点' : '请选择终点'}
+            // placeholder={simType == 1 ? '请选择起点' : '请选择终点'}
+            placeholder={simType == 1 ? getFormattedMsg('PalletManagement.placeholder.start') : getFormattedMsg('PalletManagement.placeholder.end')}
             showSearch
             filterOption={false}
             onChange={(e) => {

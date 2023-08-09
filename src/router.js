@@ -75,6 +75,12 @@ import AdjustDetails from '~/pages/Adjust/Details';
 import StockLog from '~/pages/StockLog';
 
 export default [
+
+  // {
+  //   path: '/',
+  //   component: J001OverView
+  // },
+
   {
     path: '/product-fullScreen',
     component: ProductOverView

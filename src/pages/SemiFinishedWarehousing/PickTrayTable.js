@@ -32,7 +32,8 @@ const PickTrayTable = ({
 
   const columns = [
     {
-      title: '订单号',
+      // title: '订单号',
+      title: getFormattedMsg('SemiFinishedWarehousingReceipt.label.orderNumber'),
       dataIndex: 'orderNumber',
       key: 'orderNumber',
       align: 'center',
@@ -44,19 +45,22 @@ const PickTrayTable = ({
       align: 'center',
     },
     {
-      title: '产品名称',
+      // title: '产品名称',
+      title: getFormattedMsg('SemiFinishedWarehousingReceipt.label.materialName'),
       dataIndex: 'materialName',
       key: 'materialName',
       align: 'center',
     },
     {
-      title: '产品代码',
+      // title: '产品代码',
+      title: getFormattedMsg('SemiFinishedWarehousingReceipt.label.materialCode'),
       dataIndex: 'materialCode',
       key: 'materialCode',
       align: 'center',
     },
     {
-      title: '产品数量(张)',
+      // title: '产品数量(张)',
+      title: getFormattedMsg('SemiFinishedWarehousingReceipt.label.quantity'),
       dataIndex: 'quantity',
       key: 'quantity',
       align: 'center',
@@ -74,7 +78,8 @@ const PickTrayTable = ({
       align: 'center',
     },
     {
-      title: '备注',
+      // title: '备注',
+      title: getFormattedMsg('SemiFinishedWarehousingReceipt.label.desc'),
       dataIndex: 'desc',
       key: 'desc',
       align: 'center',
@@ -157,7 +162,8 @@ const PickTrayTable = ({
             onChange={e=>{setOrderNumber(e.target.value)}}
             style={{width:'25rem'}}
             />
-            <Button onClick={handleSearch} style={{margin:'0px 30px'}} type='primary'>查询</Button>
+            {/* <Button onClick={handleSearch} style={{margin:'0px 30px'}} type='primary'>查询</Button> */}
+            <Button onClick={handleSearch} style={{margin:'0px 30px'}} type='primary'>{getFormattedMsg('SemiFinishedWarehousingReceipt.button.searchB')}</Button>
       </HVLayout.Pane>
       <HVLayout.Pane
         title={getFormattedMsg('SemiFinishedWarehousingReceipt.button.pickTray')}

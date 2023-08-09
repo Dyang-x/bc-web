@@ -45,77 +45,88 @@ const ManualTable = ({
   // ]
   const columns = [
     {
-      title: '托盘号',
+      // title: '托盘号',
+      title: getFormattedMsg('RawMaterialWarehousingReceipt.title.trayNumber'),
       dataIndex: 'trayNumber',
       key: 'trayNumber',
       width: 120,
       align: 'center'
     },
     {
-      title: '物料名称',
+      // title: '物料名称',
+      title: getFormattedMsg('RawMaterialWarehousingReceipt.title.materialName'),
       dataIndex: 'materialName',
       key: 'materialName',
       width: 120,
       align: 'center',
     },
     {
-      title: '库位名称',
+      // title: '库位名称',
+      title: getFormattedMsg('RawMaterialWarehousingReceipt.title.locationName'),
       dataIndex: 'locationName',
       key: 'locationName',
       width: 120,
       align: 'center'
     },
     {
-      title: '库存数量',
+      // title: '库存数量',
+      title: getFormattedMsg('RawMaterialWarehousingReceipt.title.quantity'),
       dataIndex: 'quantity',
       key: 'quantity',
       width: 120,
       align: 'center'
     },
     {
-      title: '状态',
+      // title: '状态',
+      title: getFormattedMsg('RawMaterialWarehousingReceipt.title.state'),
       dataIndex: 'state',
       key: 'state',
       width: 120,
       align: 'center'
     },
     {
-      title: '单位',
+      // title: '单位',
+      title: getFormattedMsg('RawMaterialWarehousingReceipt.title.unitName'),
       dataIndex: 'unitName',
       key: 'unitName',
       width: 120,
       align: 'center'
     },
     {
-      title: '材质',
+      // title: '材质',
+      title: getFormattedMsg('RawMaterialWarehousingReceipt.title.materialType'),
       dataIndex: 'materialType',
       key: 'materialType',
       width: 200,
       align: 'center'
     },
     {
-      title: '规格',
+      // title: '规格',
+      title: getFormattedMsg('RawMaterialWarehousingReceipt.title.specification'),
       dataIndex: 'specification',
       key: 'specification',
       width: 150,
       align: 'center'
     },
     {
-      title: '长度',
+      // title: '长度',
+      title: getFormattedMsg('RawMaterialWarehousingReceipt.title.length'),
       dataIndex: 'length',
       key: 'length',
       width: 120,
       align: 'center'
     },
     {
-      title: '宽度',
+      // title: '宽度',
+      title: getFormattedMsg('RawMaterialWarehousingReceipt.title.width'),
       dataIndex: 'width',
       key: 'width',
       width: 120,
       align: 'center'
     },
     {
-      title: '厚度',
+      // title: '厚度',
+      title: getFormattedMsg('RawMaterialWarehousingReceipt.title.thickness'),
       dataIndex: 'thickness',
       key: 'thickness',
       width: 120,

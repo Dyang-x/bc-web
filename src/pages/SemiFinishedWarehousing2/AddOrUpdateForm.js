@@ -394,34 +394,41 @@ const TrayForm = ({
             <Input disabled={type} placeholder={getFormattedMsg('SemiFinishedWarehousingReceipt.placeholder.trayNumber')} style={{ width: '100%' }} />
           )}
       </Form.Item>
-      <Form.Item {...formItemLayout} label={'订单数量'}>
-        {
+      {/* <Form.Item {...formItemLayout} label={'订单数量'}> */}
+      <Form.Item {...formItemLayout} label={getFormattedMsg('SemiFinishedWarehousingReceipt.label.scan')}>
+      {
           getFieldDecorator('scan', {
             rules: [
               {
                 required: true,
-                message: '请完善订单信息',
+                // message: '请完善订单信息',
+                message:getFormattedMsg('SemiFinishedWarehousingReceipt.label.scan'),
               },
             ],
           })(
             <Input
               disabled={true}
-              placeholder={'订单数量'}
+              // placeholder={'订单数量'}
+              placeholder={getFormattedMsg('SemiFinishedWarehousingReceipt.message.scan')}
               style={{ width: '100%' }}
             />
           )
         }
       </Form.Item>
-      <Form.Item  {...formItemLayout} label={'订单信息'} >
+      {/* <Form.Item  {...formItemLayout} label={'订单信息'} > */}
+      <Form.Item {...formItemLayout} label={getFormattedMsg('SemiFinishedWarehousingReceipt.label.info')}>
         <div style={{ display: 'flex' }}>
-          <div style={{ width: '10%',display: 'gird', justifyContent: 'center', alignContent: 'center', margin: 'auto' }}>
-            <Button type="link" style={{ marginLeft: 0}} onClick={() => manualAdd()}>手动新增主订单</Button>
-            <Button type="link" style={{ marginLeft: 0 }} disabled={isEmpty(selectedRowKeys)} onClick={() => manualAddSuborder()}>手动新增子订单</Button>
+        <div style={{ width: '10%',display: 'gird', justifyContent: 'center', alignContent: 'center', margin: 'auto' }}>
+            {/* <Button type="link" style={{ marginLeft: 0}} onClick={() => manualAdd()}>手动新增主订单</Button> */}
+            <Button type="link" style={{ marginLeft: 0}} onClick={() => manualAdd()}>{getFormattedMsg('SemiFinishedWarehousingReceipt.button.orderAdd')}</Button>
+            {/* <Button type="link" style={{ marginLeft: 0 }} disabled={isEmpty(selectedRowKeys)} onClick={() => manualAddSuborder()}>手动新增子订单</Button> */}
+            <Button type="link" style={{ marginLeft: 0 }} disabled={isEmpty(selectedRowKeys)} onClick={() => manualAddSuborder()}>{getFormattedMsg('SemiFinishedWarehousingReceipt.button.suborderAdd')}</Button>
           </div>
           <div className='div-Table' style={{ width: '50%', display: 'flex' }}>
             <div style={{ marginLeft: '1rem', flex: 1 }}>
               <Input
-                placeholder={'请输入主订单号'}
+                // placeholder={'请输入主订单号'}
+                placeholder={getFormattedMsg('SemiFinishedWarehousingReceipt.placeholder.orderAdd')}
                 style={{ width: '100%', marginBottom: 16 }}
                 onPressEnter={(e) => { onKeyDowm(e) }}
                 value={inputV}
@@ -464,7 +471,8 @@ const TrayForm = ({
             <div style={{ marginLeft: '1rem', flex: 1 }}>
               <Input
                 disabled={isEmpty(selectedRowKeys)}
-                placeholder={'请输入子订单号'}
+                // placeholder={'请输入子订单号'}
+                placeholder={getFormattedMsg('SemiFinishedWarehousingReceipt.placeholder.suborderAdd')}
                 style={{ width: '100%', marginBottom: 16 }}
                 onPressEnter={(e) => { onDetailKeyDowm(e) }}
                 value={detailInputV}
@@ -588,12 +596,14 @@ const TrayForm = ({
           )
         }
       </Form.Item>
-      <Form.Item {...formItemLayout} label={'备注'}>
+      {/* <Form.Item {...formItemLayout} label={'备注'}> */}
+      <Form.Item {...formItemLayout} label={getFormattedMsg('SemiFinishedWarehousingReceipt.label.desc')}>
         {
           getFieldDecorator('desc', {
             initialValue: modifyData ? modifyData['desc'] : undefined
           })(
-            <Input disabled={type} placeholder={'请输入备注'} style={{ width: '100%' }} />
+            // <Input disabled={type} placeholder={'请输入备注'} style={{ width: '100%' }} />
+            <Input disabled={type}  placeholder={getFormattedMsg('SemiFinishedWarehousingReceipt.placeholder.desc')} style={{ width: '100%' }} />
           )}
       </Form.Item>
     </Form>
