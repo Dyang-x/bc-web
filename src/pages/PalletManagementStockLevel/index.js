@@ -9,9 +9,20 @@ import TransferBoxServices from '~/api/TransferBox';
 import EmptyPalletsWarehousingApi from '~/api/EmptyPalletsWarehousing';
 import EmptyPalletDeliveryApi from '~/api/EmptyPalletDelivery'
 
+import { withPermission } from '@hvisions/core';
+
 const getFormattedMsg = i18n.getFormattedMsg;
 const { Option } = Select;
 const { showTotal } = page
+
+const ShelfButton = withPermission('a', 'Shelf');
+const TakedownButton = withPermission('a', 'Takedown');
+const AddTransferButton = withPermission('a', 'AddTransfer');
+const UpdateStateButton = withPermission('a', 'UpdateState');
+const UpdateButton = withPermission('a', 'Update');
+const DeleteButton = withPermission('a', 'Delete');
+const AddButton = withPermission(Button, 'Add');
+
 const PalletManagementStockLevel = () => {
   const [total, setTotal] = useState(0);
   const [dataSource, setDataSource] = useState([]);
@@ -91,30 +102,30 @@ const PalletManagementStockLevel = () => {
       key: 'opt',
       align: 'center',
       render: (_, record) => [
-                <a key="shelf" onClick={() => HandleShelf(record)}>
+                <ShelfButton key="shelf" onClick={() => HandleShelf(record)}>
           {getFormattedMsg('PalletManagementConnectionPort.button.shelf')}
-        </a>,
+        </ShelfButton>,
         <Divider key="divider4" type="vertical" />,
-        <a key="takedown" onClick={() => HandleTakedown(record)}>
+        <TakedownButton key="takedown" onClick={() => HandleTakedown(record)}>
           {getFormattedMsg('PalletManagementStockLevel.button.takedown')}
           {/* 下架 */}
-        </a>,
+        </TakedownButton>,
         <Divider key="divider5" type="vertical" />,
-        <a key="addTransfer" onClick={() => handleAddTransfer(record)}>
+        <AddTransferButton key="addTransfer" onClick={() => handleAddTransfer(record)}>
           {getFormattedMsg('PalletManagementStockLevel.button.addTransfer')}
-        </a>,
+        </AddTransferButton>,
         <Divider key="divider1" type="vertical" />,
-        <a key="updateState" onClick={() => handleUpdateState(record)}>
+        <UpdateStateButton key="updateState" onClick={() => handleUpdateState(record)}>
           {getFormattedMsg('PalletManagementStockLevel.button.updateState')}
-        </a>,
+        </UpdateStateButton>,
         <Divider key="divider2" type="vertical" />,
-        <a key="update" onClick={() => handleUpdate(record)}>
+        <UpdateButton key="update" onClick={() => handleUpdate(record)}>
           {getFormattedMsg('PalletManagementStockLevel.button.update')}
-        </a>,
+        </UpdateButton>,
         <Divider key="divider3" type="vertical" />,
-        <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)}>
+        <DeleteButton key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)}>
           {getFormattedMsg('PalletManagementStockLevel.button.delete')}
-        </a>,
+        </DeleteButton>,
         // <Divider key="divider4" type="vertical" />,
         // <Checkbox key="checkbox" defaultChecked={record.automaticState} onChange={(e) => CheckboxChange(e, record)}>{getFormattedMsg('PalletManagementStockLevel.button.checkbox')}</Checkbox>
       ],
@@ -164,7 +175,7 @@ const PalletManagementStockLevel = () => {
   };
 
   const { Table, SettingButton } = useMemo(
-    () => CacheTable({ columns, scrollHeight: 'calc(100vh - 470px)', key: 'wms_quality1' }),
+    () => CacheTable({ columns, scrollHeight: 'calc(100vh - 470px)', key: 'pallet_management_stock_level' }),
     []
   );
 
@@ -482,14 +493,14 @@ const PalletManagementStockLevel = () => {
           icon={<i className="h-visions hv-table" />}
           title={getFormattedMsg('PalletManagementStockLevel.title.tableName')}
           buttons={[
-            <Button
+            <AddButton
               key="add"
               h-icon="add"
               type="primary"
               onClick={showAddTray}
             >
               {getFormattedMsg('PalletManagementStockLevel.button.add')}
-            </Button>
+            </AddButton>
           ]}
           settingButton={<SettingButton />}
           onRefresh={reFreshFunc()}

@@ -13,6 +13,7 @@ import { attributeOne, attributeTwo, BendingStates } from '~/enum/enum';
 import PickTray from './PickTray/index';
 import PullOff from './PullOff/index';
 import SurplusForm from './SurplusForm';
+import { withPermission } from '@hvisions/core';
 
 const getFormattedMsg = i18n.getFormattedMsg;
 const { showTotal } = page
@@ -22,6 +23,12 @@ const middles = [
   { id: 1, name: 'J002', value: 'J002', },
   { id: 2, name: 'J003', value: 'J003', },
 ]
+
+const PickingButton = withPermission('a', 'Picking');
+const TakedownButton = withPermission('a', 'Takedown');
+const ShelvingButton = withPermission('a', 'Shelving');
+const BackButton = withPermission('a', 'Back');
+const UpdateButton = withPermission('a', 'Update');
 
 const BendingMachine = ({ bendingNumber, tableName }) => {
   const [tableData, setTableData] = useState([]);
@@ -124,29 +131,29 @@ const BendingMachine = ({ bendingNumber, tableName }) => {
       key: 'opt',
       align: 'center',
       render: (_, record) => [
-        <a key="picking" onClick={() => handlePick(record)}>
+        <PickingButton key="picking" onClick={() => handlePick(record)}>
           {/* 托盘拣选 */}
           {getFormattedMsg('BendingMachineConfiguration.button.picking')}
-        </a>,
+        </PickingButton>,
         <Divider key="divider4" type="vertical" />,
-        <a key="takedown" onClick={() => HandlePullOff(record)}>
+        <TakedownButton key="takedown" onClick={() => HandlePullOff(record)}>
           {/* 托盘下架 */}
           {getFormattedMsg('BendingMachineConfiguration.button.takedown')}
-        </a>,
+        </TakedownButton>,
         <Divider key="divider1" type="vertical" />,
-        <a key="shelving" onClick={() => HandlePutOn(record)}>
+        <ShelvingButton key="shelving" onClick={() => HandlePutOn(record)}>
           {/* 空托上架 */}
           {getFormattedMsg('BendingMachineConfiguration.button.shelving')}
-        </a>,
+        </ShelvingButton>,
         <Divider key="divider5" type="vertical" />,
-        <a key="back" onClick={() => handleSurplus(record)}>
+        <BackButton key="back" onClick={() => handleSurplus(record)}>
           {/* 未完工回库 */}
           {getFormattedMsg('BendingMachineConfiguration.button.back')}
-        </a>,
+        </BackButton>,
         <Divider key="divider6" type="vertical" />,
-        <a key="update" onClick={() => handleUpdate(record)}>
+        <UpdateButton key="update" onClick={() => handleUpdate(record)}>
           {getFormattedMsg('BendingMachineConfiguration.button.update')}
-        </a>,
+        </UpdateButton>,
       ],
       width: 500,
       // fixed: 'right'
@@ -209,7 +216,7 @@ const BendingMachine = ({ bendingNumber, tableName }) => {
   // };
 
   const { Table, SettingButton } = useMemo(
-    () => CacheTable({ columns, scrollHeight: 'calc(100vh - 470px)', key: 'bendingMachine' }),
+    () => CacheTable({ columns, scrollHeight: 'calc(100vh - 470px)', key: 'bc_bendingMachine' }),
     []
   );
 

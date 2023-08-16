@@ -8,9 +8,15 @@ import EmptyPalletDelivery from '~/api/EmptyPalletDelivery';
 import AddOrUpdateForm from './AddOrUpdateForm';
 import { isEmpty } from 'lodash';
 import { taskType } from '~/enum/enum';
+import { withPermission } from '@hvisions/core';
 
 const getFormattedMsg = i18n.getFormattedMsg;
 const { showTotal } = page;
+const CreateButton = withPermission(Button, 'CREATE');
+const ShelvesButton = withPermission('a', 'DownShelves');
+const UpdateButton = withPermission('a', 'Update');
+const DeleteButton = withPermission('a', 'Delete');
+const FinishOrderButton = withPermission('a', 'FinishOrder');
 
 const EmptyPalletDeliveryPage = ({ history }) => {
   const [tableData, setTableData] = useState([]);
@@ -96,24 +102,24 @@ const EmptyPalletDeliveryPage = ({ history }) => {
       key: 'opt',
       align: 'center',
       render: (_, record) => [
-        record.state == 0 && [<a key="downShelves" onClick={() => handleDownShelves(record)}>
+        record.state == 0 && [<ShelvesButton key="downShelves" onClick={() => handleDownShelves(record)}>
           {/* 下架 */}
           {getFormattedMsg('EmptyPalletDelivery.button.downShelves')}
-        </a>,
+        </ShelvesButton>,
         <Divider key="divider2" type="vertical" />],
         record.state == 0 && [
-          <a key="update" onClick={() => handleUpdate(record)}>
+          <UpdateButton key="update" onClick={() => handleUpdate(record)}>
             {getFormattedMsg('EmptyPalletDelivery.button.update')}
-          </a>,
+          </UpdateButton>,
           <Divider key="divider1" type="vertical" />,
-          <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)}>
+          <DeleteButton key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)}>
             {getFormattedMsg('EmptyPalletDelivery.button.delete')}
-          </a>
+          </DeleteButton>
         ],
-        record.state == 1 && [<a key="finishOrder" onClick={() => handleFinishOrder(record)}>
+        record.state == 1 && [<FinishOrderButton key="finishOrder" onClick={() => handleFinishOrder(record)}>
           {/* 完成 */}
           {getFormattedMsg('EmptyPalletDelivery.button.finishOrder')}
-        </a>,
+        </FinishOrderButton>,
           // <Divider key="divider3" type="vertical" />
         ],
       ],
@@ -179,7 +185,7 @@ const EmptyPalletDeliveryPage = ({ history }) => {
   };
 
   const { Table, SettingButton } = useMemo(
-    () => CacheTable({ columns, scrollHeight: 'calc(100vh - 470px)', key: 'wms_quality' }),
+    () => CacheTable({ columns, scrollHeight: 'calc(100vh - 470px)', key: 'bc_emptyPallet_delivery' }),
     []
   );
 
@@ -347,9 +353,9 @@ const EmptyPalletDeliveryPage = ({ history }) => {
           settingButton={<SettingButton />}
           onRefresh={reFreshFunc()}
           buttons={[
-            <Button key="weighing" type="primary" icon='plus' onClick={() => handleCreate()} >
+            <CreateButton key="weighing" type="primary" icon='plus' onClick={() => handleCreate()} >
               {getFormattedMsg('EmptyPalletDelivery.button.create')}
-            </Button>,
+            </CreateButton>,
           ]}
         >
           <div style={{ marginBottom: '12px' }}>

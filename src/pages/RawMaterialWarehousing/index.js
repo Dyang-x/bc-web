@@ -9,11 +9,22 @@ import UpdateForm from './UpdateForm';
 import ManualTable from './ManualTable';
 import BindingForm from './BindingForm';
 import { isEmpty } from 'lodash';
+import { withPermission } from '@hvisions/core';
 
 const getFormattedMsg = i18n.getFormattedMsg;
 const { RangePicker } = DatePicker;
 const dateTime = 'YYYY-MM-DD HH:mm:ss';
 const { showTotal } = page;
+
+const AutomaticButton = withPermission(Button, 'Automatic');
+const ManualButton = withPermission(Button, 'Manual');
+const BindingButton = withPermission(Button, 'Binding');
+
+const UpdateButton = withPermission('a', 'Update');
+const DeleteButton = withPermission('a', 'Delete');
+const InStoreButton = withPermission('a', 'InStore');
+const WeighingButton = withPermission('a', 'Weighing');
+const WarehousingButton = withPermission('a', 'Warehousing');
 
 const RawMaterialWarehousingReceipt = ({ history }) => {
   const [tableData, setTableData] = useState([]);
@@ -145,29 +156,29 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
       align: 'center',
       width: 200,
       render: (_, record) => [
-        record.state != 2 && <a key="update" onClick={() => handleUpdate(record)}>
+        record.state != 2 && <UpdateButton key="update" onClick={() => handleUpdate(record)}>
           {getFormattedMsg('RawMaterialWarehousingReceipt.button.update')}
-        </a>,
+        </UpdateButton>,
         record.state == 0 && [
           <Divider key="divider1" type="vertical" />,
-          <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)}>
+          <DeleteButton key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)}>
             {getFormattedMsg('RawMaterialWarehousingReceipt.button.delete')}
-          </a>,
+          </DeleteButton>,
           <Divider key="divider2" type="vertical" />,
-          <a key="inStore" type="primary" onClick={() => handInStore(record)} >
+          <InStoreButton key="inStore" type="primary" onClick={() => handInStore(record)} >
             {/* 小车进入 */}
             {getFormattedMsg('RawMaterialWarehousingReceipt.button.inStore')}
-          </a>,
+          </InStoreButton>,
         ],
         record.state == 1 && [
           <Divider key="divider4" type="vertical" />,
-          <a key="weighing" type="primary" onClick={() => handleWeighing(record)} >
+          <WeighingButton key="weighing" type="primary" onClick={() => handleWeighing(record)} >
             {getFormattedMsg('RawMaterialWarehousingReceipt.button.weighing')}
-          </a>,
+          </WeighingButton>,
           <Divider key="divider3" type="vertical" />,
-          <a key="warehousing" type="primary" onClick={() => handleWarehousing(record)} >
+          <WarehousingButton key="warehousing" type="primary" onClick={() => handleWarehousing(record)} >
             {getFormattedMsg('RawMaterialWarehousingReceipt.button.warehousing')}
-          </a>
+          </WarehousingButton>
         ],
 
         // <Divider key="divider2" type="vertical" />,
@@ -245,7 +256,7 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
   };
 
   const { Table, SettingButton } = useMemo(
-    () => CacheTable({ columns, scrollHeight: 'calc(100vh - 470px)', key: 'wms_quality' }),
+    () => CacheTable({ columns, scrollHeight: 'calc(100vh - 470px)', key: 'raw_material_delivery_warehousing' }),
     []
   );
 
@@ -580,15 +591,15 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
           icon={<i className="h-visions hv-table" />}
           title={getFormattedMsg('RawMaterialWarehousingReceipt.title.tableName')}
           buttons={[
-            selectedstatus == 0 && <Button key="automatic" type="primary" onClick={() => handleAutomatic()} >
+            selectedstatus == 0 && <AutomaticButton key="automatic" type="primary" onClick={() => handleAutomatic()} >
               {getFormattedMsg('RawMaterialWarehousingReceipt.button.automatic')}
-            </Button>,
-            selectedstatus == 0 && <Button key="manual" type="primary" onClick={() => handleManual()} >
+            </AutomaticButton>,
+            selectedstatus == 0 && <ManualButton key="manual" type="primary" onClick={() => handleManual()} >
               {getFormattedMsg('RawMaterialWarehousingReceipt.button.manual')}
-            </Button>,
-            selectedstatus == 0 && <Button key="binding" type="primary" onClick={() => handleBinding()}>
+            </ManualButton>,
+            selectedstatus == 0 && <BindingButton key="binding" type="primary" onClick={() => handleBinding()}>
               {getFormattedMsg('RawMaterialWarehousingReceipt.button.binding')}
-            </Button>,
+            </BindingButton>,
             // selectedstatus == 1 && <Button key="weighing" type="primary" onClick={() => handleWeighing()} >
             //   {getFormattedMsg('RawMaterialWarehousingReceipt.button.weighing')}
             // </Button>,

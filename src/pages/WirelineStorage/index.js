@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import {  HVLayout,  Button,  notification,  Modal,  Spin,  Pagination,  SearchForm,  DatePicker,  Input,  Drawer,Divider} from '@hvisions/h-ui';
+import { Menu, Dropdown, Icon } from '@hvisions/h-ui';
 import { i18n, page } from '@hvisions/toolkit';
 import { CacheTable } from '~/components';
 import moment from 'moment';
@@ -7,11 +8,19 @@ import SurplusMaterialApi from '~/api/SurplusMaterial';
 
 import LineEdgeLibraryApi from '~/api/LineEdgeLibraryController';
 import EmptyPalletsWarehousingApi from '~/api/EmptyPalletsWarehousing';
+import { withPermission } from '@hvisions/core';
 
 const getFormattedMsg = i18n.getFormattedMsg;
 const { RangePicker } = DatePicker;
 const dateTime = 'YYYY-MM-DD HH:mm:ss';
 const { showTotal } = page;
+
+const PutOnButton = withPermission('a', 'PutOn');
+const RelieveOccupationButton = withPermission('a', 'RelieveOccupation');
+const UpButton = withPermission('a', 'Up');
+const DownButton = withPermission('a', 'Down');
+const MaterialReturnButton = withPermission('a', 'MaterialReturn');
+const UpdateButton = withPermission('a', 'Update');
 
 const WirelineStorage = ({ history }) => {
   const [tableData, setTableData] = useState([]);
@@ -144,46 +153,98 @@ const WirelineStorage = ({ history }) => {
       align: 'center',
       width:100,
     },
+    // {
+    //   title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.operation'),
+    //   key: 'opt',
+    //   align: 'center',
+    //   width: 500,
+    //   fixed:'right',
+    //   render: (_, record) => [
+    //     <a key="PutOn" onClick={() => handlePutOn(record)}>
+    //       {/* 上架 */}
+    //       {getFormattedMsg('WirelineStorage.button.handlePutOn')}
+    //     </a>,
+    //     <Divider key="divider1" type="vertical" />,
+    //     <a key="Up" onClick={() => handleUp(record)}>
+    //       {/* 数量+1 */}
+    //       {getFormattedMsg('WirelineStorage.button.handleUp')}
+    //     </a>,
+    //     <Divider key="divider2" type="vertical" />,
+    //     <a key="Down" onClick={() => handleDown(record)}>
+    //       {/* 数量-1 */}
+    //       {getFormattedMsg('WirelineStorage.button.handleDown')}
+    //     </a>,
+    //     <Divider key="divider3" type="vertical" />,
+    //     <a key="MaterialReturn" onClick={() => handMaterialReturn(record)}>
+    //       {/* 手动剩余物料退库 */}
+    //       {getFormattedMsg('WirelineStorage.button.handMaterialReturn')}
+    //     </a>,
+    //     <Divider key="divider4" type="vertical" />,
+    //     <a key="updateHighLevel" onClick={() => updateHighLevel(record)}>
+    //       {/* 更新上下料数据 */}
+    //       {getFormattedMsg('WirelineStorage.button.updateHighLevel')}
+    //     </a>,
+    //     <Divider key="divider5" type="vertical" />,
+    //     <a key="relieveOccupation" onClick={() => relieveOccupation(record)}>
+    //       {/* 解除占用 */}
+    //       {getFormattedMsg('WirelineStorage.button.relieveOccupation')}
+    //     </a>,
+    //   ],
+    // }
     {
       title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.operation'),
       key: 'opt',
       align: 'center',
-      width: 500,
+      width: 250,
       fixed:'right',
       render: (_, record) => [
-        <a key="PutOn" onClick={() => handlePutOn(record)}>
+        <PutOnButton key="PutOn" onClick={() => handlePutOn(record)}>
           {/* 上架 */}
           {getFormattedMsg('WirelineStorage.button.handlePutOn')}
-        </a>,
+        </PutOnButton>,
         <Divider key="divider1" type="vertical" />,
-        <a key="Up" onClick={() => handleUp(record)}>
-          {/* 数量+1 */}
-          {getFormattedMsg('WirelineStorage.button.handleUp')}
-        </a>,
-        <Divider key="divider2" type="vertical" />,
-        <a key="Down" onClick={() => handleDown(record)}>
-          {/* 数量-1 */}
-          {getFormattedMsg('WirelineStorage.button.handleDown')}
-        </a>,
-        <Divider key="divider3" type="vertical" />,
-        <a key="MaterialReturn" onClick={() => handMaterialReturn(record)}>
-          {/* 手动剩余物料退库 */}
-          {getFormattedMsg('WirelineStorage.button.handMaterialReturn')}
-        </a>,
-        <Divider key="divider4" type="vertical" />,
-        <a key="updateHighLevel" onClick={() => updateHighLevel(record)}>
-          {/* 更新上下料数据 */}
-          {getFormattedMsg('WirelineStorage.button.updateHighLevel')}
-        </a>,
-        <Divider key="divider5" type="vertical" />,
-        <a key="relieveOccupation" onClick={() => relieveOccupation(record)}>
+        <RelieveOccupationButton key="relieveOccupation" onClick={() => relieveOccupation(record)}>
           {/* 解除占用 */}
           {getFormattedMsg('WirelineStorage.button.relieveOccupation')}
-        </a>,
+        </RelieveOccupationButton>,
+        <Divider key="divider2" type="vertical" />,
+        <Dropdown key="dropdown" overlay={menu(record)} placement="bottomLeft">
+          <a className="ant-dropdown-link" href="#">
+            更多 <Icon type="down" />
+          </a>
+        </Dropdown>
       ],
     }
   ]
-
+  
+  const menu = record => (
+    <Menu>
+      <Menu.Item>
+        <UpButton key="Up" onClick={() => handleUp(record)}>
+          {/* 数量+1 */}
+          {getFormattedMsg('WirelineStorage.button.handleUp')}
+        </UpButton>
+      </Menu.Item>
+      <Menu.Item>
+      <DownButton key="Down" onClick={() => handleDown(record)}>
+          {/* 数量-1 */}
+          {getFormattedMsg('WirelineStorage.button.handleDown')}
+        </DownButton>
+      </Menu.Item>
+      <Menu.Item>
+      <MaterialReturnButton key="MaterialReturn" onClick={() => handMaterialReturn(record)}>
+          {/* 手动剩余物料退库 */}
+          {getFormattedMsg('WirelineStorage.button.handMaterialReturn')}
+        </MaterialReturnButton>
+      </Menu.Item>
+      <Menu.Item >
+      <UpdateButton key="updateHighLevel" onClick={() => updateHighLevel(record)}>
+          {/* 更新上下料数据 */}
+          {getFormattedMsg('WirelineStorage.button.updateHighLevel')}
+        </UpdateButton>
+      </Menu.Item>
+    </Menu>
+  );
   //查询页面数据
   const loadData = async ( searchValue) => {
     setLoading(true);

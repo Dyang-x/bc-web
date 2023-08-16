@@ -234,7 +234,7 @@ const SemiFinisheDeliveryPalletSelection = ({ history }) => {
   };
 
   const { Table: TableL, SettingButton: SettingButtonL } = useMemo(
-    () => CacheTable({ columns: columns, scrollHeight: 'calc(100vh - 470px)', key: 'PalletSelection_L' }),
+    () => CacheTable({ columns: columns, scrollHeight: 'calc(100vh - 470px)', key: 'semi_finished_delivery' }),
     []
   );
 

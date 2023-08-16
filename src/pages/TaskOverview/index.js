@@ -6,11 +6,19 @@ import { taskState, taskType, agvState, transportState } from '~/enum/enum';
 import TaskOverviewServices from '~/api/TaskOverview';
 import { notification } from '~/../node_modules/antd/lib/index';
 import AdjustForm from './AdjustForm';
+import { withPermission } from '@hvisions/core';
 
 const getFormattedMsg = i18n.getFormattedMsg;
 const { Pane } = HVLayout;
 const { showTotal } = page
 const { Option } = Select;
+
+const AdjustButton = withPermission('a', 'Adjust');
+const DeleteButton = withPermission('a', 'Delete');
+const PauseButton = withPermission('a', 'Pause');
+const CompleteButton = withPermission('a', 'Complete');
+const ContinueButton = withPermission('a', 'Continue');
+const RollbackButton = withPermission('a', 'Rollback');
 
 const Index = ({ history }) => {
 
@@ -125,35 +133,35 @@ const Index = ({ history }) => {
           align: 'center',
           render: (_, record) => [
             nowTab == 1 && [
-              <a key="adjust" onClick={() => handleAdjust(record)}>{getFormattedMsg('TaskOverview.button.adjust')}</a>,
+              <AdjustButton key="adjust" onClick={() => handleAdjust(record)}>{getFormattedMsg('TaskOverview.button.adjust')}</AdjustButton>,
               <Divider key="divider1" type="vertical" />,
-              <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)} >
+              <DeleteButton key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)} >
                 {getFormattedMsg('TaskOverview.button.delete')}
-              </a>,
+              </DeleteButton>,
               <Divider key="divider2" type="vertical" />,
-              <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
+              <PauseButton key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
                 {getFormattedMsg('TaskOverview.button.pause')}
-              </a>,
+              </PauseButton>,
             ],
             nowTab == 2 && [
               // <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
               //   {getFormattedMsg('TaskOverview.button.pause')}
               //   </a>,
-              <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)} >
+              <DeleteButton key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)} >
                 {getFormattedMsg('TaskOverview.button.delete')}
-              </a>,
+              </DeleteButton>,
               <Divider key="divider4" type="vertical" />,
-              <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskOverview.button.complete')}</a>
+              <CompleteButton key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskOverview.button.complete')}</CompleteButton>
             ],
             nowTab == 3 && [
-              <a key="continue" onClick={() => handleContinue(record)} >{getFormattedMsg('TaskOverview.button.continue')}</a>
+              <ContinueButton key="continue" onClick={() => handleContinue(record)} >{getFormattedMsg('TaskOverview.button.continue')}</ContinueButton>
             ],
             nowTab == 5 && [
-              <a key="rollback" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleRollback(record)} >
+              <RollbackButton key="rollback" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleRollback(record)} >
                 {getFormattedMsg('TaskOverview.button.rollback')}
-              </a>,
+              </RollbackButton>,
               <Divider key="divider3" type="vertical" />,
-              <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskOverview.button.complete')}</a>
+              <CompleteButton key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskOverview.button.complete')}</CompleteButton>
             ],
           ],
           width: 300,
@@ -478,7 +486,7 @@ const Index = ({ history }) => {
     })
   }
 
-  const { Table, SettingButton } = useMemo(() => CacheTable({ columns: columns, scrollHeight: 'calc(100vh - 480px)', key: `work_process_execute` }), [nowTab]);
+  const { Table, SettingButton } = useMemo(() => CacheTable({ columns: columns, scrollHeight: 'calc(100vh - 480px)', key: `bc_task_overview` }), [nowTab]);
 
   const renderTable = useMemo(() => {
     return (

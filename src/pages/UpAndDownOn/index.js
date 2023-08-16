@@ -6,11 +6,22 @@ import { taskState, taskType, TransportTaskType } from '~/enum/enum';
 import TaskTranSportServices from '~/api/TaskTranSport';
 import { notification } from '~/../node_modules/antd/lib/index';
 import AdjustForm from './AdjustForm';
+import { withPermission } from '@hvisions/core';
 
 const getFormattedMsg = i18n.getFormattedMsg;
 const { Pane } = HVLayout;
 const { showTotal } = page
 const { Option } = Select;
+
+
+const StartTaskButton = withPermission('a', 'StartTask');
+const AdjustButton = withPermission('a', 'Adjust');
+const DeleteButton = withPermission('a', 'Delete');
+const PauseButton = withPermission('a', 'Pause');
+const AgainButton = withPermission('a', 'Again');
+const CompleteButton = withPermission('a', 'Complete');
+const ContinueButton = withPermission('a', 'Continue');
+const RollbackButton = withPermission('a', 'Rollback');
 
 const machineMap = [
   { id: 7, st: 'ST4任务', name: '切割机1' },
@@ -102,40 +113,40 @@ const Index = () => {
         render: (_, record) => [
           nowTab == 6 && [
             // <a key="start" onClick={() => handleStartTask(record)} >手动排队</a>
-            <a key="start" onClick={() => handleStartTask(record)} >{getFormattedMsg('TaskTransport.button.handleStartTask')}</a>
+            <StartTaskButton key="start" onClick={() => handleStartTask(record)} >{getFormattedMsg('TaskTransport.button.handleStartTask')}</StartTaskButton>
           ],
           nowTab == 1 && [
-            <a key="adjust" onClick={() => handleAdjust(record)}>{getFormattedMsg('TaskTransport.button.adjust')}</a>,
+            <AdjustButton key="adjust" onClick={() => handleAdjust(record)}>{getFormattedMsg('TaskTransport.button.adjust')}</AdjustButton>,
             <Divider key="divider1" type="vertical" />,
-            <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)} >
+            <DeleteButton key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)} >
               {getFormattedMsg('TaskTransport.button.delete')}
-            </a>,
+            </DeleteButton>,
             <Divider key="divider2" type="vertical" />,
-            <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
+            <PauseButton key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
               {getFormattedMsg('TaskTransport.button.pause')}
-            </a>,
+            </PauseButton>,
           ],
           nowTab == 2 && [
             // <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
             //   {getFormattedMsg('TaskTransport.button.pause')}
             // </a>,
             // <Divider key="divider2" type="vertical" />,
-            <a key="again"  onClick={() => handleAgain(record)}>
+            <AgainButton key="again"  onClick={() => handleAgain(record)}>
               {/* 再次执行 */}
               {getFormattedMsg('TaskTransport.button.handleAgain')}
-          </a>,
+          </AgainButton>,
           <Divider key="divider2" type="vertical" />,
-            <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskTransport.button.complete')}</a>
+            <CompleteButton key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskTransport.button.complete')}</CompleteButton>
           ],
           nowTab == 3 && [
-            <a key="continue" onClick={() => handleContinue(record)} >{getFormattedMsg('TaskTransport.button.continue')}</a>
+            <ContinueButton key="continue" onClick={() => handleContinue(record)} >{getFormattedMsg('TaskTransport.button.continue')}</ContinueButton>
           ],
           nowTab == 5 && [
-            <a key="rollback" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleRollback(record)} >
+            <RollbackButton key="rollback" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleRollback(record)} >
               {getFormattedMsg('TaskTransport.button.rollback')}
-            </a>,
+            </RollbackButton>,
             <Divider key="divider3" type="vertical" />,
-            <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskTransport.button.complete')}</a>
+            <CompleteButton key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskTransport.button.complete')}</CompleteButton>
           ],
         ],
         width: 300,
@@ -505,7 +516,7 @@ const Index = () => {
     })
   }
 
-  const { Table, SettingButton } = useMemo(() => CacheTable({ columns: columns, scrollHeight: 'calc(100vh - 480px)', key: `work_process_execute` }), [nowTab]);
+  const { Table, SettingButton } = useMemo(() => CacheTable({ columns: columns, scrollHeight: 'calc(100vh - 480px)', key: `bc_up_and_down` }), [nowTab]);
 
   const renderTable = useMemo(() => {
     return (

@@ -6,11 +6,15 @@ import moment from 'moment';
 import SurplusMaterialApi from '~/api/SurplusMaterial';
 import AddOrUpdateForm from './AddOrUpdateForm';
 import EmptyPalletDeliveryApi from '~/api/EmptyPalletDelivery';
+import { withPermission } from '@hvisions/core';
 
 const getFormattedMsg = i18n.getFormattedMsg;
 const { RangePicker } = DatePicker;
 const dateTime = 'YYYY-MM-DD HH:mm:ss';
 const { showTotal } = page;
+
+const CallButton = withPermission(Button, 'Call');
+const AddButton = withPermission(Button, 'Add');
 
 const SurplusInStorage = ({ history }) => {
   const [tableData, setTableData] = useState([]);
@@ -166,7 +170,7 @@ const SurplusInStorage = ({ history }) => {
   };
 
   const { Table, SettingButton } = useMemo(
-    () => CacheTable({ columns, scrollHeight: 'calc(100vh - 470px)', key: 'wms_surplus_inStorage' }),
+    () => CacheTable({ columns, scrollHeight: 'calc(100vh - 470px)', key: 'bc_surplus_inStorage' }),
     []
   );
 
@@ -302,13 +306,13 @@ const SurplusInStorage = ({ history }) => {
           icon={<i className="h-visions hv-table" />}
           title={getFormattedMsg('SurplusInStorage.title.tableName')}
           buttons={[
-            <Button key="call" type="primary" onClick={() => handleCallTray()}>
+            <CallButton key="call" type="primary" onClick={() => handleCallTray()}>
               {/* 呼叫托盘 */}
               {getFormattedMsg('SurplusInStorage.button.handleCallTray')}
-            </Button>,
-            <Button key="add" type="primary" onClick={() => handleAdd()}>
+            </CallButton>,
+            <AddButton key="add" type="primary" onClick={() => handleAdd()}>
               {getFormattedMsg('SurplusInStorage.button.add')}
-            </Button>
+            </AddButton>
           ]}
           settingButton={<SettingButton />}
           onRefresh={reFreshFunc()}

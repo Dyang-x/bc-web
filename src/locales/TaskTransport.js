@@ -46,6 +46,7 @@ module.exports = {
       confirm:'confirm',
       cancel:'cancel',
 
+      again:'again',
       handleStart:'Manual start',
       handleJ002Scan:'J002 Scan code',
       handleManualJ002:'J002 Forcibly passes',
@@ -139,6 +140,7 @@ module.exports = {
       confirm:'确认',
       cancel:'取消',
 
+      again:'再次执行',
       handleStart:'手动开始',
       handleJ002Scan:'J002扫码',
       handleManualJ002:'J002强制通过',

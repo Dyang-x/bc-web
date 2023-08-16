@@ -10,11 +10,18 @@ import EmptyPalletsWarehousingApi from '~/api/EmptyPalletsWarehousing';
 import EmptyPalletDeliveryApi from '~/api/EmptyPalletDelivery';
 import SurplusForm from './SurplusForm';
 import { attributeOne,attributeTwo, BendingStates} from '~/enum/enum';
+import { withPermission } from '@hvisions/core';
 
 const getFormattedMsg = i18n.getFormattedMsg;
 const { showTotal } = page
 const { Pane } = HVLayout;
 const { Option } = Select;
+
+const CreateButton = withPermission(Button, 'CREATE');
+const AddTransferButton = withPermission('a', 'AddTransfer');
+const UnbindButton = withPermission('a', 'Unbind');
+const UpdateButton = withPermission('a', 'Update');
+
 const middles =[
   { id: 1, name: 'J002', value: 'J002', },
   { id: 2, name: 'J003', value: 'J003', },
@@ -131,13 +138,13 @@ const BendingMachineConfiguration = () => {
       align: 'center',
       render: (_, record) => [
         
-        <a key="addTransfer" onClick={() => handlebind(record)}>
+        <AddTransferButton key="addTransfer" onClick={() => handlebind(record)}>
           {getFormattedMsg('PalletManagementConnectionPort.button.addTransfer')}
-        </a>,
+        </AddTransferButton>,
         <Divider key="divider3" type="vertical" />,
-        <a key="unbind" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleUnbind(record)}>
+        <UnbindButton key="unbind" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleUnbind(record)}>
           {getFormattedMsg('PalletManagementConnectionPort.button.unbind')}
-        </a>,
+        </UnbindButton>,
         <Divider key="divider2" type="vertical" />,
 
         // <a key="shelf" onClick={() => HandlePutOn(record)}>
@@ -154,9 +161,9 @@ const BendingMachineConfiguration = () => {
         // <Divider key="divider6" type="vertical" />,
 
 
-        <a key="update" onClick={()=>handleUpdate(record)}>
+        <UpdateButton key="update" onClick={()=>handleUpdate(record)}>
           {getFormattedMsg('BendingMachineConfiguration.button.update')}
-        </a>,
+        </UpdateButton>,
         // <Divider key="divider1" type="vertical" />,
         // <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={()=>handleDelete(record)}>
         //  {getFormattedMsg('BendingMachineConfiguration.button.delete')}
@@ -223,7 +230,7 @@ const BendingMachineConfiguration = () => {
   };
 
   const { Table, SettingButton} = useMemo(
-    () => CacheTable({ columns, scrollHeight: 'calc(100vh - 470px)', key: 'bendingMachine' }),
+    () => CacheTable({ columns, scrollHeight: 'calc(100vh - 470px)', key: 'bc_bendingMachine_configuration' }),
     []
   );
 
@@ -541,9 +548,9 @@ const BendingMachineConfiguration = () => {
             icon={<i className="h-visions hv-table" />}
             title={getFormattedMsg('BendingMachineConfiguration.title.information')}
             buttons={[
-              <Button key="create" type="primary" onClick={() => handleAdd()}>
+              <CreateButton key="create" type="primary" onClick={() => handleAdd()}>
                 {getFormattedMsg('BendingMachineConfiguration.button.create')}
-              </Button>,
+              </CreateButton>,
             ]}
             settingButton={<SettingButton />}
             onRefresh={reFreshFunc()}

@@ -7,11 +7,21 @@ import AgvManagementServices from '~/api/AgvManagement';
 import { notification } from '~/../node_modules/antd/lib/index';
 import AdjustForm from './AdjustForm';
 import { isNull } from 'lodash';
+import { withPermission } from '@hvisions/core';
 
 const getFormattedMsg = i18n.getFormattedMsg;
 const { Pane } = HVLayout;
 const { showTotal } = page
 const { Option } = Select;
+
+const AdjustButton = withPermission('a', 'Adjust');
+const DeleteButton = withPermission('a', 'Delete');
+const PauseButton = withPermission('a', 'Pause');
+const CarInButton = withPermission('a', 'CarIn');
+const CompleteButton = withPermission('a', 'Complete');
+const ContinueButton = withPermission('a', 'Continue');
+const AgvRequestInButton = withPermission('a', 'AgvRequestIn');
+const RollbackButton = withPermission('a', 'Rollback');
 
 const Index = () => {
   const [tableData, setTableData] = useState([]);
@@ -99,43 +109,43 @@ const Index = () => {
             // </a>,
             // <Divider key="divider4" type="vertical" />,
 
-            <a key="adjust" onClick={() => handleAdjust(record)}>{getFormattedMsg('AgvManagement.button.adjust')}</a>,
+            <AdjustButton key="adjust" onClick={() => handleAdjust(record)}>{getFormattedMsg('AgvManagement.button.adjust')}</AdjustButton>,
             <Divider key="divider1" type="vertical" />,
-            <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)} >
+            <DeleteButton key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)} >
               {getFormattedMsg('AgvManagement.button.delete')}
-            </a>,
+            </DeleteButton>,
             <Divider key="divider2" type="vertical" />,
-            <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
+            <PauseButton key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
               {getFormattedMsg('AgvManagement.button.pause')}
-            </a>,
+            </PauseButton>,
           ],
           nowTab == 2 && [
-            <a key="carIn" onClick={() => handleCarIn(record)}>
+            <CarInButton key="carIn" onClick={() => handleCarIn(record)}>
               {getFormattedMsg('AgvManagement.button.carIn')}
               {/* agv请求进入 */}
-            </a>,
+            </CarInButton>,
             <Divider key="divider4" type="vertical" />,
             // <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
             //   {getFormattedMsg('AgvManagement.button.pause')}
             //   </a>,
             // <Divider key="divider2" type="vertical" />,
-            <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('AgvManagement.button.complete')}</a>
+            <CompleteButton key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('AgvManagement.button.complete')}</CompleteButton>
           ],
           nowTab == 3 && [
-            <a key="continue" onClick={() => handleContinue(record)} >{getFormattedMsg('AgvManagement.button.continue')}</a>
+            <ContinueButton key="continue" onClick={() => handleContinue(record)} >{getFormattedMsg('AgvManagement.button.continue')}</ContinueButton>
           ],
           nowTab == 5 && [
-            <a key="rollback" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleRollback(record)} >
+            <RollbackButton key="rollback" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleRollback(record)} >
               {getFormattedMsg('AgvManagement.button.rollback')}
-            </a>,
+            </RollbackButton>,
             <Divider key="divider3" type="vertical" />,
-            <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('AgvManagement.button.complete')}</a>
+            <CompleteButton key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('AgvManagement.button.complete')}</CompleteButton>
           ],
           nowTab == 7 && [
-            <a key="agvRequestIn" onClick={() => agvRequestIn(record)} >
+            <AgvRequestInButton key="agvRequestIn" onClick={() => agvRequestIn(record)} >
               {getFormattedMsg('AgvManagement.button.carIn')}
               {/* agv请求进入 */}
-            </a>
+            </AgvRequestInButton>
           ],
         ],
         width: 300,
@@ -592,7 +602,7 @@ const Index = () => {
     })
   }
 
-  const { Table, SettingButton } = useMemo(() => CacheTable({ columns: columns, scrollHeight: 'calc(100vh - 480px)', key: `work_process_execute` }), [nowTab]);
+  const { Table, SettingButton } = useMemo(() => CacheTable({ columns: columns, scrollHeight: 'calc(100vh - 480px)', key: `bc_agv_management` }), [nowTab]);
 
   const renderTable = useMemo(() => {
     return (

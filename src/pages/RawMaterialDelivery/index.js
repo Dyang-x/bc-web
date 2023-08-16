@@ -15,11 +15,15 @@ import EmptyPalletsWarehousing from '~/api/EmptyPalletsWarehousing';
 import ReadIOTServices from '~/api/ReadIOT';
 import SurplusMaterialApi from '~/api/SurplusMaterial';
 import ManualDownTable from './ManualDownTable';
+import { withPermission } from '@hvisions/core';
 
 const getFormattedMsg = i18n.getFormattedMsg;
 const { RangePicker } = DatePicker;
 const dateTime = 'YYYY-MM-DD HH:mm:ss';
 const { showTotal } = page;
+
+const ManualFinishButton = withPermission('a', 'ManualFinish');
+const ManualDownButton = withPermission('a', 'ManualDown');
 
 const RawMaterialDeliveryOrderManagement = ({ history }) => {
   const [tableData, setTableData] = useState([]);
@@ -56,7 +60,7 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
   const columns = [
     {
       // title: '订单号',
-      title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.name'),
+      title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.orderNumber'),
       dataIndex: 'name',
       key: 'name',
       align: 'center',
@@ -193,12 +197,12 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
         // ],
         (selectedstatus != 2) && [
           // <a key="detail2" onClick={() => handleManualFinish(record)}>手动完成</a>,
-          <a key="detail2" onClick={() => handleManualFinish(record)}>{getFormattedMsg('RawMaterialDeliveryOrderManagement.button.handleManualFinish')}</a>,
+          <ManualFinishButton key="detail2" onClick={() => handleManualFinish(record)}>{getFormattedMsg('RawMaterialDeliveryOrderManagement.button.handleManualFinish')}</ManualFinishButton>,
           <Divider key="divider2" type="vertical" />,
           // <a key="detail3" onClick={() => handleManualDown(record)}>手动下架</a>,
         ],
         // <a key="detail3" onClick={() => handleManualDown(record)}>手动下架</a>,
-        <a key="detail3" onClick={() => handleManualDown(record)}>{getFormattedMsg('RawMaterialDeliveryOrderManagement.button.handleManualDown')}</a>,
+        <ManualDownButton key="detail3" onClick={() => handleManualDown(record)}>{getFormattedMsg('RawMaterialDeliveryOrderManagement.button.handleManualDown')}</ManualDownButton>,
       ],
       width: 300,
       // fixed: 'right'
@@ -272,7 +276,7 @@ const RawMaterialDeliveryOrderManagement = ({ history }) => {
   };
 
   const { Table, SettingButton } = useMemo(
-    () => CacheTable({ columns, scrollHeight: 'calc(100vh - 470px)', key: 'raw_material_delivery_order_management' }),
+    () => CacheTable({ columns, scrollHeight: 'calc(100vh - 470px)', key: 'raw_material_delivery' }),
     []
   );
 

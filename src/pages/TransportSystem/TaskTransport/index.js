@@ -6,11 +6,28 @@ import { CacheTable } from '~/components';
 import TaskTranSportServices from '~/api/TaskTranSport';
 import { notification } from '~/../node_modules/antd/lib/index';
 import AdjustForm from './AdjustForm';
+import { withPermission } from '@hvisions/core';
 
 const getFormattedMsg = i18n.getFormattedMsg;
 const { Pane } = HVLayout;
 const { showTotal } = page
 const { Option } = Select;
+
+
+const StartButton = withPermission('a', 'Start');
+const J002ScanButton = withPermission('a', 'J002Scan');
+const ManualJ002Button = withPermission('a', 'ManualJ002');
+const AdjustButton = withPermission('a', 'Adjust');
+const DeleteButton = withPermission('a', 'Delete');
+const PauseButton = withPermission('a', 'Pause');
+const AgainButton = withPermission('a', 'Again');
+const CompleteButton = withPermission('a', 'Complete');
+const ContinueButton = withPermission('a', 'Continue');
+const RollbackButton = withPermission('a', 'Rollback');
+
+const J003ScanButton = withPermission(Button, 'J003Scan');
+const ManualJ003Button = withPermission(Button, 'ManualJ003');
+
 
 const Index = ({ taskKind, taskType }) => {
   const [tableData, setTableData] = useState([]);
@@ -93,46 +110,46 @@ const Index = ({ taskKind, taskType }) => {
         render: (_, record) => [
           nowTab == 6 && [
             // <a key="start1" onClick={() => handleStart(record)} >手动开始</a>,
-            <a key="start1" onClick={() => handleStart(record)} >{getFormattedMsg('TaskTransport.button.handleStart')}</a>,
+            <StartButton key="start1" onClick={() => handleStart(record)} >{getFormattedMsg('TaskTransport.button.handleStart')}</StartButton>,
             <Divider key="divider4" type="vertical" />,
             // <a key="start2" onClick={() => handleJ002Scan(record)} >J002扫码</a>,
-            <a key="start2" onClick={() => handleJ002Scan(record)} >{getFormattedMsg('TaskTransport.button.handleJ002Scan')}</a>,
+            <J002ScanButton key="start2" onClick={() => handleJ002Scan(record)} >{getFormattedMsg('TaskTransport.button.handleJ002Scan')}</J002ScanButton>,
             <Divider key="divider5" type="vertical" />,
             // <a key="start3" onClick={() => handleManualJ002(record)} >J002强制通过</a>,
-            <a key="start3" onClick={() => handleManualJ002(record)} >{getFormattedMsg('TaskTransport.button.handleManualJ002')}</a>,
+            <ManualJ002Button key="start3" onClick={() => handleManualJ002(record)} >{getFormattedMsg('TaskTransport.button.handleManualJ002')}</ManualJ002Button>,
           ],
           nowTab == 1 && [
-            <a key="adjust" onClick={() => handleAdjust(record)}>{getFormattedMsg('TaskTransport.button.adjust')}</a>,
+            <AdjustButton key="adjust" onClick={() => handleAdjust(record)}>{getFormattedMsg('TaskTransport.button.adjust')}</AdjustButton>,
             <Divider key="divider1" type="vertical" />,
-            <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)} >
+            <DeleteButton key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)} >
               {getFormattedMsg('TaskTransport.button.delete')}
-            </a>,
+            </DeleteButton>,
             <Divider key="divider2" type="vertical" />,
-            <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
+            <PauseButton key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
               {getFormattedMsg('TaskTransport.button.pause')}
-            </a>,
+            </PauseButton>,
           ],
           nowTab == 2 && [
             // <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
             //   {getFormattedMsg('TaskTransport.button.pause')}
             // </a>,
             // <Divider key="divider2" type="vertical" />,
-            <a key="again" onClick={() => handleAgain(record)}>
+            <AgainButton key="again" onClick={() => handleAgain(record)}>
               {/* 再次执行 */}
               {getFormattedMsg('TaskTransport.button.handleAgain')}
-            </a>,
+            </AgainButton>,
             <Divider key="divider2" type="vertical" />,
-            <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskTransport.button.complete')}</a>
+            <CompleteButton key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskTransport.button.complete')}</CompleteButton>
           ],
           nowTab == 3 && [
-            <a key="continue" onClick={() => handleContinue(record)} >{getFormattedMsg('TaskTransport.button.continue')}</a>
+            <ContinueButton key="continue" onClick={() => handleContinue(record)} >{getFormattedMsg('TaskTransport.button.continue')}</ContinueButton>
           ],
           nowTab == 5 && [
-            <a key="rollback" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleRollback(record)} >
+            <RollbackButton key="rollback" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleRollback(record)} >
               {getFormattedMsg('TaskTransport.button.rollback')}
-            </a>,
+            </RollbackButton>,
             <Divider key="divider3" type="vertical" />,
-            <a key="complete2" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskTransport.button.complete')}</a>
+            <CompleteButton key="complete2" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskTransport.button.complete')}</CompleteButton>
           ],
         ],
         width: 300,
@@ -471,7 +488,7 @@ const Index = ({ taskKind, taskType }) => {
     })
   }
 
-  const { Table, SettingButton } = useMemo(() => CacheTable({ columns: columns, scrollHeight: 'calc(100vh - 480px)', key: `work_process_execute` }), [nowTab]);
+  const { Table, SettingButton } = useMemo(() => CacheTable({ columns: columns, scrollHeight: 'calc(100vh - 480px)', key: `bc_transport_system` }), [nowTab]);
 
   const renderTable = useMemo(() => {
     return (
@@ -544,9 +561,9 @@ const Index = ({ taskKind, taskType }) => {
           buttons={
             <>
               {/* <Button key="start11" type='primary' onClick={() => handleJ003Scan()} >J003扫码</Button> */}
-              <Button key="start11" type='primary' onClick={() => handleJ003Scan()} >{getFormattedMsg('TaskTransport.button.handleJ003Scan')}</Button>
+              <J003ScanButton key="start11" type='primary' onClick={() => handleJ003Scan()} >{getFormattedMsg('TaskTransport.button.handleJ003Scan')}</J003ScanButton>
               {/* <Button key="start12" type='primary' onClick={() => handleManualJ003()} >J003强制通过</Button> */}
-              <Button key="start12" type='primary' onClick={() => handleManualJ003()} >{getFormattedMsg('TaskTransport.button.handleManualJ003')}</Button>
+              <ManualJ003Button key="start12" type='primary' onClick={() => handleManualJ003()} >{getFormattedMsg('TaskTransport.button.handleManualJ003')}</ManualJ003Button>
             </>
           }
         >

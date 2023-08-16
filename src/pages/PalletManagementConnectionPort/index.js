@@ -11,10 +11,18 @@ import TransferBoxServices from '~/api/TransferBox';
 import EmptyPalletsWarehousingApi from '~/api/EmptyPalletsWarehousing';
 import EmptyPalletDeliveryApi from '~/api/EmptyPalletDelivery'
 
+import { withPermission } from '@hvisions/core';
 
 const getFormattedMsg = i18n.getFormattedMsg;
 const { Option } = Select;
 const { showTotal } = page
+
+const ShelfButton = withPermission('a', 'Shelf');
+const TakedownButton = withPermission('a', 'Takedown');
+const AddTransferButton = withPermission('a', 'AddTransfer');
+const UnbindButton = withPermission('a', 'Unbind');
+const UpdateStateButton = withPermission('a', 'UpdateState');
+
 const PalletManagementConnectionPort = () => {
   const [dataSource, setDataSource] = useState([]);
   const [pageInfo, setPageInfo] = useState({ page: 1, pageSize: 10 });
@@ -64,26 +72,26 @@ const PalletManagementConnectionPort = () => {
       key: 'opt',
       align: 'center',
       render: (_, record) => [
-        <a key="shelf" onClick={() => HandleShelf(record)}>
+        <ShelfButton key="shelf" onClick={() => HandleShelf(record)}>
           {getFormattedMsg('PalletManagementConnectionPort.button.shelf')}
-        </a>,
+        </ShelfButton>,
         <Divider key="divider1" type="vertical" />,
-        <a key="takedown" onClick={() => HandleTakedown(record)}>
+        <TakedownButton key="takedown" onClick={() => HandleTakedown(record)}>
           {getFormattedMsg('PalletManagementConnectionPort.button.takedown')}
           {/* 下架 */}
-        </a>,
+        </TakedownButton>,
         <Divider key="divider2" type="vertical" />,
-        <a key="addTransfer" onClick={() => handleAddTransfer(record)}>
+        <AddTransferButton key="addTransfer" onClick={() => handleAddTransfer(record)}>
           {getFormattedMsg('PalletManagementConnectionPort.button.addTransfer')}
-        </a>,
+        </AddTransferButton>,
         <Divider key="divider3" type="vertical" />,
-        <a key="unbind" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleUnbind(record)}>
+        <UnbindButton key="unbind" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleUnbind(record)}>
           {getFormattedMsg('PalletManagementConnectionPort.button.unbind')}
-        </a>,
+        </UnbindButton>,
         <Divider key="divider4" type="vertical" />,
-        <a key="updateState" onClick={() => handleUpdateState(record)}>
+        <UpdateStateButton key="updateState" onClick={() => handleUpdateState(record)}>
           {getFormattedMsg('PalletManagementConnectionPort.button.updateState')}
-        </a>,
+        </UpdateStateButton>,
         // <Divider key="divider5" type="vertical" />,
         // <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)}>
         //   {getFormattedMsg('PalletManagementConnectionPort.button.delete')}
@@ -170,7 +178,7 @@ const PalletManagementConnectionPort = () => {
   };
 
   const { Table, SettingButton } = useMemo(
-    () => CacheTable({ columns, key: 'pallet-management-connection-port' }),
+    () => CacheTable({ columns, key: 'pallet_management_connection_port' }),
     []
   );
 
