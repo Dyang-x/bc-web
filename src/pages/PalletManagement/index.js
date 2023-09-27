@@ -861,7 +861,7 @@ const PalletManagement = () => {
           </HVLayout.Pane>
         </HVLayout>
       </HVLayout>
-      <Drawer title={getFormattedMsg('PalletManagement.title.add')} visible={addFormVis} onClose={handleCancelCreate} width={500} destroyOnClose>
+      <Drawer title={isEmpty(updateFormData)? getFormattedMsg('PalletManagement.title.add') : getFormattedMsg('PalletManagement.button.update') } visible={addFormVis} onClose={handleCancelCreate} width={500} destroyOnClose>
         <Drawer.DrawerContent>
           <AddForm
             ref={addRef}

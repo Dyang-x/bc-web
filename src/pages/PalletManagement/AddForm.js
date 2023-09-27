@@ -94,7 +94,7 @@ useEffect(()=>{
             ],
             initialValue: updateFormData ? updateFormData['name'] : ''
           })(
-            <Input disabled={!isEmpty(updateFormData)} placeholder={getFormattedMsg('PalletManagement.message.name')} />
+            <Input placeholder={getFormattedMsg('PalletManagement.message.name')} />
           )
         }
       </Form.Item>
@@ -109,7 +109,7 @@ useEffect(()=>{
             ],
             initialValue: updateFormData ? updateFormData['code'] : ''
           })(
-            <Input disabled={!isEmpty(updateFormData)} placeholder={getFormattedMsg('PalletManagement.message.code')} />
+            <Input placeholder={getFormattedMsg('PalletManagement.message.code')} />
           )
         }
       </Form.Item>

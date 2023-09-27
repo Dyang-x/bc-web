@@ -156,14 +156,20 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
       align: 'center',
       width: 200,
       render: (_, record) => [
-        record.state != 2 && <UpdateButton key="update" onClick={() => handleUpdate(record)}>
+        record.state != 2 && [
+        <UpdateButton key="update" onClick={() => handleUpdate(record)}>
           {getFormattedMsg('RawMaterialWarehousingReceipt.button.update')}
         </UpdateButton>,
+        <Divider key="divider1" type="vertical" />,
+        <DeleteButton key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)}>
+          {getFormattedMsg('RawMaterialWarehousingReceipt.button.delete')}
+        </DeleteButton>,
+        ],
         record.state == 0 && [
-          <Divider key="divider1" type="vertical" />,
-          <DeleteButton key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)}>
-            {getFormattedMsg('RawMaterialWarehousingReceipt.button.delete')}
-          </DeleteButton>,
+          // <Divider key="divider1" type="vertical" />,
+          // <DeleteButton key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)}>
+          //   {getFormattedMsg('RawMaterialWarehousingReceipt.button.delete')}
+          // </DeleteButton>,
           <Divider key="divider2" type="vertical" />,
           <InStoreButton key="inStore" type="primary" onClick={() => handInStore(record)} >
             {/* 小车进入 */}
@@ -180,7 +186,6 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
             {getFormattedMsg('RawMaterialWarehousingReceipt.button.warehousing')}
           </WarehousingButton>
         ],
-
         // <Divider key="divider2" type="vertical" />,
         // <a key="warehousing" type="primary" onClick={(record) => handleWarehousing(record)} >
         //   {getFormattedMsg('RawMaterialWarehousingReceipt.button.warehousing')}
