@@ -15,12 +15,23 @@ import PrintService from '~/api/print';
 import { isEmpty, set } from 'lodash';
 import ModalQR from './ModalQR';
 import { imageToZ64 } from "./imageToZ64";
+import { withPermission } from '@hvisions/core';
 
 const getFormattedMsg = i18n.getFormattedMsg;
 const { Option } = Select;
 const { showTotal } = page
 
-const destinations =[
+const UpdateButton = withPermission('a', 'Update');
+const BindingButton = withPermission('a', 'Binding');
+const UnbindButton = withPermission('a', 'Unbind');
+const PutOnButton = withPermission('a', 'PutOn');
+const PullOffButton = withPermission('a', 'PullOff');
+const DeleteButton = withPermission('a', 'Delete');
+const PrintButton = withPermission(Button, 'Print');
+const AddButton = withPermission(Button, 'Add');
+
+
+const destinations = [
   { id: 1, name: 'J002', value: 'J002', },
   { id: 2, name: 'J003', value: 'J003', },
 ]
@@ -57,6 +68,8 @@ const PalletManagement = () => {
   const selectRef = useRef();
   const searchForm = useRef();
   const pullForm = useRef();
+
+  const [updateFormData, setUpdateFormData] = useState({})
 
   useEffect(() => {
 
@@ -98,25 +111,30 @@ const PalletManagement = () => {
       key: 'opt',
       align: 'center',
       render: (_, record) => [
-        <a key="binding" onClick={() => HandleBinding(record)}>
+        <UpdateButton key="update" onClick={() => handleCreate(record)}>
+          {/* 修改 */}
+          {getFormattedMsg('PalletManagement.button.update')}
+        </UpdateButton>,
+        <Divider key="divider5" type="vertical" />,
+        <BindingButton key="binding" onClick={() => HandleBinding(record)}>
           {getFormattedMsg('PalletManagement.button.binding')}
-        </a>,
+        </BindingButton>,
         <Divider key="divider3" type="vertical" />,
-        <a key="unbind" onClick={() => HandleUnbind(record)}>
+        <UnbindButton key="unbind" onClick={() => HandleUnbind(record)}>
           {getFormattedMsg('PalletManagement.button.unbind')}
-        </a>,
+        </UnbindButton>,
         <Divider key="divider4" type="vertical" />,
-        <a key="putOn" onClick={() => HandlePutOn(record)}>
+        <PutOnButton key="putOn" onClick={() => HandlePutOn(record)}>
           {getFormattedMsg('PalletManagement.button.putOn')}
-        </a>,
+        </PutOnButton>,
         <Divider key="divider1" type="vertical" />,
-        <a key="pullOff" onClick={() => HandlePullOff(record)}>
+        <PullOffButton key="pullOff" onClick={() => HandlePullOff(record)}>
           {getFormattedMsg('PalletManagement.button.pullOff')}
-        </a>,
+        </PullOffButton>,
         <Divider key="divider2" type="vertical" />,
-        <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => HandleDelete(record)}>
+        <DeleteButton key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => HandleDelete(record)}>
           {getFormattedMsg('PalletManagement.button.delete')}
-        </a>
+        </DeleteButton>
       ],
       width: 300,
     }
@@ -201,13 +219,15 @@ const PalletManagement = () => {
         // { id: 7, name: '半成品托盘回库', value: '半成品托盘回库', },
         params.taskType = pullFormData.type == 0 ? 5 : 7
         Modal.confirm({
-          title: `确认上架托盘${pullFormData.code}?`,
+          // title: `确认上架托盘${pullFormData.code}?`,
+          title: `${getFormattedMsg('EmptyPalletDelivery.title.putOnPallet')}${pullFormData.code}?`,
           onOk: async () => {
             await EmptyPalletsWarehousingApi
               .autoTransferIn(params)
               .then(res => {
                 notification.success({
-                  message: '托盘上架成功'
+                  // message: '托盘上架成功'
+                  message: getFormattedMsg('EmptyPalletDelivery.message.shelfSuccess')
                 });
                 // loadData(pageInfo.page, pageInfo.pageSize, searchValue);
               })
@@ -226,14 +246,16 @@ const PalletManagement = () => {
         // { id: 8, name: '半成品托盘出库', value: '半成品托盘出库', },
         params.taskType = pullFormData.type == 1 ? 6 : 8
         Modal.confirm({
-          title: `确认下架托盘${pullFormData.code}?`,
+          // title: `确认下架托盘${pullFormData.code}?`,
+          title: `${getFormattedMsg('EmptyPalletDelivery.title.pullOffPallet')}${pullFormData.code}?`,
           onOk: async () => {
             await EmptyPalletDeliveryApi
               // .saveOrUpdate(data)
               .autoTransferOut(params)
               .then(res => {
                 notification.success({
-                  message: '托盘下架成功'
+                  // message: '托盘下架成功'
+                  message: getFormattedMsg('EmptyPalletDelivery.message.removedSuccess')
                 });
                 // loadData(pageInfo.page, pageInfo.pageSize, searchValue);
               })
@@ -255,7 +277,8 @@ const PalletManagement = () => {
       .addAndupShelves(data)
       .then(res => {
         notification.success({
-          message: '托盘入库任务生成成功'
+          // message: '托盘入库任务生成成功'
+          message: getFormattedMsg('EmptyPalletDelivery.message.addAndUpShelves')
         });
         loadData(pageInfo.page, pageInfo.pageSize, searchValue);
       })
@@ -265,14 +288,15 @@ const PalletManagement = () => {
         });
       });
   }
-  
+
   //托盘下架  新增并下架
   const addAndDownShelves = async (data) => {
     await EmptyPalletDeliveryApi
       .addAnddownShelves(data)
       .then(res => {
         notification.success({
-          message: '托盘出库任务生成成功'
+          // message: '托盘出库任务生成成功'
+          message: getFormattedMsg('EmptyPalletDelivery.message.addAnddownShelves')
         });
         loadData(pageInfo.page, pageInfo.pageSize, searchValue);
       })
@@ -305,7 +329,7 @@ const PalletManagement = () => {
       });
     }
     //半成品托盘上架
-    if(record.type == 1){
+    if (record.type == 1) {
       setSimVis(true)
       setSimData(record)
       setSimType(1)
@@ -334,14 +358,14 @@ const PalletManagement = () => {
       });
     }
     //半成品托盘下架
-    if(record.type == 1){
+    if (record.type == 1) {
       setSimVis(true)
       setSimData(record)
       setSimType(2)
     }
   }
 
-  const handleCancelSim =()=>{
+  const handleCancelSim = () => {
     setSimVis(false)
     setSimData({})
     setLocation('J002')
@@ -357,9 +381,9 @@ const PalletManagement = () => {
     </Button>
   ];
 
-  const handleSaveSim =()=>{
+  const handleSaveSim = () => {
     //上架
-    if(simType == 1){
+    if (simType == 1) {
       const data = {
         origin: location,
         middle: location,
@@ -378,26 +402,26 @@ const PalletManagement = () => {
         }
       });
     }
-        //下架
-        if(simType == 2){
-          const data = {
-            toLocation: location,
-            middle: location,
-            trayNumber: simData.code,
-            state: 0,
-            transferType: simData.type,
-            // { id: 8, name: '半成品托盘出库', value: '半成品托盘出库', },
-            taskType: 8,
-            inType: 8,
-          }
-          //console.log(data,'半成品托盘上架');
-          Modal.confirm({
-            title: `${getFormattedMsg('PalletManagement.title.pullOffPallet')}${simData.code}?`,
-            onOk: () => {
-              addAndDownShelves(data)
-            }
-          });
+    //下架
+    if (simType == 2) {
+      const data = {
+        toLocation: location,
+        middle: location,
+        trayNumber: simData.code,
+        state: 0,
+        transferType: simData.type,
+        // { id: 8, name: '半成品托盘出库', value: '半成品托盘出库', },
+        taskType: 8,
+        inType: 8,
+      }
+      //console.log(data,'半成品托盘上架');
+      Modal.confirm({
+        title: `${getFormattedMsg('PalletManagement.title.pullOffPallet')}${simData.code}?`,
+        onOk: () => {
+          addAndDownShelves(data)
         }
+      });
+    }
   }
 
   const HandleUnbind = record => {
@@ -447,7 +471,7 @@ const PalletManagement = () => {
   };
 
   const { Table, SettingButton } = useMemo(
-    () => CacheTable({ columns, key: 'pallet-management-connection-port' }),
+    () => CacheTable({ columns, key: 'pallet_management' }),
     []
   );
 
@@ -491,7 +515,8 @@ const PalletManagement = () => {
   const printLabel = () => {
     //console.log('selectedDatas', selectedDatas);
     if (isEmpty(selectedDatas)) {
-      notification.warning({ message: '请勾选需要打印标签的托盘' })
+      // notification.warning({ message: '请勾选需要打印标签的托盘' })
+      notification.warning({ message: getFormattedMsg('PalletManagement.message.printWarning') })
       return
     }
     setModalVis(true)
@@ -530,12 +555,14 @@ const PalletManagement = () => {
       });
   }
 
-  const handleCreate = () => {
+  const handleCreate = (record) => {
     setAddFormVis(true)
+    setUpdateFormData(record)
   }
 
   const handleCancelCreate = () => {
     setAddFormVis(false)
+    setUpdateFormData({})
   }
 
   const modalCreateFoot = () => [
@@ -552,25 +579,50 @@ const PalletManagement = () => {
     validateFields(async (err, values) => {
       if (err) return;
       const params = getFieldsValue();
-      //console.log(params, 'HandleSaveCreate');
-      await TransferBoxServices.createBox(params)
-        .then(res => {
-          notification.success({
-            message: getFormattedMsg('PalletManagement.message.addSuccess')
+      console.log(params, 'HandleSaveCreate');
+      if (isEmpty(updateFormData)) {
+        await TransferBoxServices.createBox(params)
+          .then(res => {
+            notification.success({
+              message: getFormattedMsg('PalletManagement.message.addSuccess')
+            })
+            const pageInfos = {
+              page: 1,
+              pageSize: 10
+            }
+            setPageInfo(pageInfos)
+            loadData(pageInfos.page, pageInfos.pageSize, { type: selectedType });
           })
-          const pageInfos = {
-            page: 1,
-            pageSize: 10
-          }
-          setPageInfo(pageInfos)
-          loadData(pageInfos.page, pageInfos.pageSize, { type: selectedType });
-        })
-        .catch(err => {
-          notification.warning({
-            message: getFormattedMsg('PalletManagement.message.addFailure'),
-            description: err.message
+          .catch(err => {
+            notification.warning({
+              message: getFormattedMsg('PalletManagement.message.addFailure'),
+              description: err.message
+            })
           })
-        })
+      } else {
+        const data = { ...updateFormData, ...params }
+        await TransferBoxServices.updateBox(data)
+          .then(res => {
+            notification.success({
+              // message: '修改成功'
+              message: getFormattedMsg('PalletManagement.message.updateSuccess'),
+            })
+            const pageInfos = {
+              page: 1,
+              pageSize: 10
+            }
+            setPageInfo(pageInfos)
+            loadData(pageInfos.page, pageInfos.pageSize, { type: selectedType });
+          })
+          .catch(err => {
+            notification.warning({
+              // message: '修改失败',
+              message: getFormattedMsg('PalletManagement.message.updateFailure'),
+              description: err.message
+            })
+          })
+      }
+
       resetFields()
       handleCancelCreate()
     });
@@ -645,7 +697,8 @@ const PalletManagement = () => {
 
   const modalPrintFoot = () => [
     <Button key="save" type="primary" onClick={handleSavePrint}>
-      打印
+      {/* 打印 */}
+      {getFormattedMsg('PalletManagement.button.print')}
     </Button>,
     <Button key="cancel" onClick={handleCancelPrint}>
       {getFormattedMsg('PalletManagement.button.cancel')}
@@ -684,12 +737,14 @@ const PalletManagement = () => {
     PrintService.print(printData)
       .then(res => {
         notification.success({
-          message: '打印成功'
+          // message: '打印成功',
+          message: getFormattedMsg('PalletManagement.message.printSuccess')
         });
       })
       .catch(error => {
         notification.warning({
-          message: '打印失败',
+          // message: '打印失败',
+          message: getFormattedMsg('PalletManagement.message.printFailure'),
           description: error.message
         });
       });
@@ -727,11 +782,13 @@ const PalletManagement = () => {
                 />
               </SearchForm.Item>
               <SearchForm.Item
-                label={'库位号'}
+                // label={'库位号'}
+                label={getFormattedMsg('PalletManagement.label.locationCode')}
                 name="locationCode"
               >
                 <Input
-                  placeholder={'请输入库位号'}
+                  // placeholder={'请输入库位号'}
+                  placeholder={getFormattedMsg('PalletManagement.placeholder.locationCode')}
                   allowClear
                   disabled={selectedType == null}
                 />
@@ -742,14 +799,14 @@ const PalletManagement = () => {
             icon={<i className="h-visions hv-table" />}
             title={getFormattedMsg('PalletManagement.title.tableName')}
             buttons={[
-              <Button
+              <PrintButton
                 key="printLabel"
                 // h-icon="add"
                 type="primary"
                 onClick={printLabel}
               >
                 {getFormattedMsg('PalletManagement.button.printLabel')}
-              </Button>,
+              </PrintButton>,
               // <Button
               //   key="printBarcodes"
               //   // h-icon="add"
@@ -758,14 +815,14 @@ const PalletManagement = () => {
               // >
               //   {getFormattedMsg('PalletManagement.button.printBarcodes')}
               // </Button>,
-              <Button
+              <AddButton
                 key="add"
                 h-icon="add"
                 type="primary"
-                onClick={handleCreate}
+                onClick={() => handleCreate({})}
               >
                 {getFormattedMsg('PalletManagement.button.add')}
-              </Button>
+              </AddButton>
             ]}
             settingButton={<SettingButton />}
             onRefresh={reFreshFunc}
@@ -804,11 +861,12 @@ const PalletManagement = () => {
           </HVLayout.Pane>
         </HVLayout>
       </HVLayout>
-      <Drawer title={getFormattedMsg('PalletManagement.title.add')} visible={addFormVis} onClose={handleCancelCreate} width={500} destroyOnClose>
+      <Drawer title={isEmpty(updateFormData)? getFormattedMsg('PalletManagement.title.add') : getFormattedMsg('PalletManagement.button.update') } visible={addFormVis} onClose={handleCancelCreate} width={500} destroyOnClose>
         <Drawer.DrawerContent>
           <AddForm
             ref={addRef}
             palletTypeList={palletTypeList}
+            updateFormData={updateFormData}
           />
         </Drawer.DrawerContent>
         <Drawer.DrawerBottomBar>{modalCreateFoot()}</Drawer.DrawerBottomBar>
@@ -825,7 +883,8 @@ const PalletManagement = () => {
         />
       </Modal>
       <Modal
-        title={pullType == 1 ? '托盘上架' : '托盘下架'}
+        // title={pullType == 1 ? '托盘上架' : '托盘下架'}
+        title={pullType == 1 ? getFormattedMsg('PalletManagement.title.putOn') : getFormattedMsg('PalletManagement.title.pullOff')}
         visible={pullFormVis}
         footer={modalPullFoot()}
         onCancel={handleCancelPull}
@@ -836,7 +895,8 @@ const PalletManagement = () => {
       </Modal>
 
       <Modal
-        title={'打印列表'}
+        // title={'打印列表'}
+        title={getFormattedMsg('PalletManagement.title.ModalQR')}
         visible={modalVis}
         onCancel={handleCancelPrint}
         destroyOnClose
@@ -847,24 +907,27 @@ const PalletManagement = () => {
       </Modal>
 
       <Modal
-        title={'托盘下架'}
+        // title={'托盘下架'}
+        title={getFormattedMsg('PalletManagement.title.pullOff')}
         visible={simVis}
         onCancel={handleCancelSim}
         footer={modalSimFoot()}
         destroyOnClose
       >
-        <div style={{display:'flex'}}>
+        <div style={{ display: 'flex' }}>
           <div style={{
-            width:'15%',
+            width: '15%',
             display: 'flex',
             justifyContent: 'middle',
             alignItems: 'center',
-            textAlign:'center',
-            }}>
-            {simType == 1 ? '起点：' : '终点：'}
+            textAlign: 'center',
+          }}>
+            {/* {simType == 1 ? '起点：' : '终点：'} */}
+            {simType == 1 ? getFormattedMsg('PalletManagement.title.start') : getFormattedMsg('PalletManagement.title.end')}
           </div>
           <Select
-            placeholder={simType == 1 ? '请选择起点' : '请选择终点'}
+            // placeholder={simType == 1 ? '请选择起点' : '请选择终点'}
+            placeholder={simType == 1 ? getFormattedMsg('PalletManagement.placeholder.start') : getFormattedMsg('PalletManagement.placeholder.end')}
             showSearch
             filterOption={false}
             onChange={(e) => {

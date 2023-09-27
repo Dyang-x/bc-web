@@ -7,9 +7,15 @@ import moment from 'moment';
 import EmptyPalletsWarehousing from '~/api/EmptyPalletsWarehousing';
 import AddOrUpdateForm from './AddOrUpdateForm';
 import { isEmpty } from 'lodash';
+import { withPermission } from '@hvisions/core';
 
 const getFormattedMsg = i18n.getFormattedMsg;
 const { showTotal } = page;
+const CreateButton = withPermission(Button, 'CREATE');
+const ShelvesButton = withPermission('a', 'UpShelves');
+const UpdateButton = withPermission('a', 'Update');
+const DeleteButton = withPermission('a', 'Delete');
+const FinishOrderButton = withPermission('a', 'FinishOrder');
 
 const EmptyPalletsWarehousingPage = ({ history }) => {
   const [tableData, setTableData] = useState([]);
@@ -47,19 +53,22 @@ const EmptyPalletsWarehousingPage = ({ history }) => {
       align: 'center',
     },
     {
-      title: '起点',
+      // title: '起点',
+      title: getFormattedMsg('EmptyPalletsWarehousing.title.origin'),
       dataIndex: 'origin',
       key: 'origin',
       align: 'center',
     },
     {
-      title: '中间点',
+      // title: '中间点',
+      title: getFormattedMsg('EmptyPalletsWarehousing.title.middle'),
       dataIndex: 'middle',
       key: 'middle',
       align: 'center',
     },
     {
-      title: '终点',
+      // title: '终点',
+      title: getFormattedMsg('EmptyPalletsWarehousing.title.destination'),
       dataIndex: 'destination',
       key: 'destination',
       align: 'center',
@@ -81,20 +90,22 @@ const EmptyPalletsWarehousingPage = ({ history }) => {
       key: 'opt',
       align: 'center',
       render: (_, record) => [
-        record.state == 0 && [<a key="upShelves" onClick={() => handleUpShelves(record)}>
-          上架
-        </a>,
+        record.state == 0 && [<ShelvesButton key="upShelves" onClick={() => handleUpShelves(record)}>
+          {/* 上架 */}
+          {getFormattedMsg('EmptyPalletsWarehousing.button.upShelves')}
+        </ShelvesButton>,
         <Divider key="divider2" type="vertical" />],
-        record.state == 0 && [<a key="update" onClick={() => handleUpdate(record)}>
+        record.state == 0 && [<UpdateButton key="update" onClick={() => handleUpdate(record)}>
           {getFormattedMsg('EmptyPalletsWarehousing.button.update')}
-        </a>,
+        </UpdateButton>,
         <Divider key="divider1" type="vertical" />,
-        <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)}>
+        <DeleteButton key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)}>
           {getFormattedMsg('EmptyPalletsWarehousing.button.delete')}
-        </a>],
-        record.state == 1 && [<a key="finishOrder" onClick={() => handleFinishOrder(record)}>
-          完成
-        </a>,
+        </DeleteButton>],
+        record.state == 1 && [<FinishOrderButton key="finishOrder" onClick={() => handleFinishOrder(record)}>
+          {/* 完成 */}
+          {getFormattedMsg('EmptyPalletsWarehousing.button.finishOrder')}
+        </FinishOrderButton>,
           // <Divider key="divider3" type="vertical" />
         ],
       ],
@@ -160,7 +171,7 @@ const EmptyPalletsWarehousingPage = ({ history }) => {
   };
 
   const { Table, SettingButton } = useMemo(
-    () => CacheTable({ columns, scrollHeight: 'calc(100vh - 470px)', key: 'wms_quality' }),
+    () => CacheTable({ columns, scrollHeight: 'calc(100vh - 470px)', key: 'bc_emptyPallet_warehousing' }),
     []
   );
 
@@ -225,19 +236,22 @@ const EmptyPalletsWarehousingPage = ({ history }) => {
 
 const handleUpShelves =(record)=>{
   Modal.confirm({
-    title: '确认上架？',
+    // title: '确认上架？',
+    title:getFormattedMsg('EmptyPalletsWarehousing.title.upShelves'),
     onOk: async () => {
       await EmptyPalletsWarehousing
         .upShelves(record.id)
         .then(res => {
           notification.success({
-            message: '上架开始成功'
+            // message: '上架开始成功'
+            message: getFormattedMsg('EmptyPalletsWarehousing.message.upSuccess'),
           });
           loadData(page, pageSize, { ...searchValue, state: selectedstatus });
         })
         .catch(err => {
           notification.warning({
-            message: '上架开始失败',
+            // message: '上架开始失败',
+            message: getFormattedMsg('EmptyPalletsWarehousing.message.upFailure'),
             description: err.message
           });
         });
@@ -248,19 +262,22 @@ const handleUpShelves =(record)=>{
 
 const handleFinishOrder =(record)=>{
   Modal.confirm({
-    title: '确认完成任务？',
+    // title: '确认完成任务？',
+    title:getFormattedMsg('EmptyPalletsWarehousing.title.finishOrder'),
     onOk: async () => {
       await EmptyPalletsWarehousing
         .finishById(record.id)
         .then(res => {
           notification.success({
-            message: '任务完成成功'
+            // message: '任务完成成功'
+            message: getFormattedMsg('EmptyPalletsWarehousing.message.finishSuccess'),
           });
           loadData(page, pageSize, { ...searchValue, state: selectedstatus });
         })
         .catch(err => {
           notification.warning({
-            message: '任务完成失败',
+            // message: '任务完成失败',
+            message: getFormattedMsg('EmptyPalletsWarehousing.message.finishFailure'),
             description: err.message
           });
         });
@@ -322,9 +339,9 @@ const handleFinishOrder =(record)=>{
           settingButton={<SettingButton />}
           onRefresh={reFreshFunc()}
           buttons={[
-            <Button key="weighing" type="primary" icon='plus' onClick={() => handleCreate()} >
+            <CreateButton key="weighing" type="primary" icon='plus' onClick={() => handleCreate()} >
               {getFormattedMsg('EmptyPalletsWarehousing.button.create')}
-            </Button>,
+            </CreateButton>,
           ]}
         >
           <div style={{ marginBottom: '12px' }}>

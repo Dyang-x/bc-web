@@ -22,6 +22,19 @@ module.exports = {
       orderCode: 'orderCode',
       agvState: 'agvState',
       transportState: 'transportState',
+
+      updateTime: 'Task start time',
+      finishTime: 'Task completion time',
+      handleStart: 'Confirm the task start?',
+      handleJ002Scan: 'Confirm scan code?',
+      handleManualJ002: 'Is it confirmed?',
+      handleJ003Scan: 'Confirm scan code?',
+      handleManualJ003: 'Is it confirmed?',
+      handlePause: 'Confirm pause?',
+      handleAgain: 'Confirm re-mission?',
+      handleContinue: 'Confirm the mission?',
+      ready:'ready',
+      handleStartTask: 'Confirm task queue starts?',
     },
     button:{
       adjust:'adjust',
@@ -32,6 +45,15 @@ module.exports = {
       complete:'complete',
       confirm:'confirm',
       cancel:'cancel',
+
+      again:'again',
+      handleStart:'Manual start',
+      handleJ002Scan:'J002 Scan code',
+      handleManualJ002:'J002 Forcibly passes',
+      handleAgain:'Execute again',
+      handleJ003Scan:'J003 Scan code',
+      handleManualJ003:'J003 Forcibly passes',
+      handleStartTask:'Manual line',
     },
     message:{
       adjustSuccess:'adjust Success',
@@ -47,6 +69,9 @@ module.exports = {
       completeSuccess:'completeSuccess',
       completeFailure:'completeFailure',
       priority:'Please enter the adjusted task priority',
+
+      againSuccess:'Executed successfully',
+      againFailure:'Execution failure',
     },
     label: {
       taskCode: 'taskCode',
@@ -56,6 +81,7 @@ module.exports = {
 
       taskKind:'taskKind',
       orderCode: 'orderCode',
+      taskKinds:'equipment',
     },
     placeholder: {
       taskCode: 'Please enter the task code',
@@ -64,6 +90,7 @@ module.exports = {
 
       taskKind: 'Please select a task kind',
       orderCode: 'Please enter the order code',
+      taskKinds:'Please select device',
     },
   },
   zh_CN: {
@@ -86,10 +113,22 @@ module.exports = {
       rollback:'确认回退当前任务？',
       complete:'确认完成当前任务？',
 
-      
       orderCode: '业务号',
       agvState: 'agv任务状态',
       transportState: '提升机任务状态',
+
+      updateTime: '任务启动时间',
+      finishTime: '任务完成时间',
+      handleStart: '确认任务开始？',
+      handleJ002Scan: '确认扫码？',
+      handleManualJ002: '确认通过？',
+      handleJ003Scan: '确认扫码？',
+      handleManualJ003: '确认通过？',
+      handlePause: '确认暂停？',
+      handleAgain: '确认再次执行任务？',
+      handleContinue: '确认执行任务？',
+      ready:'就绪',
+      handleStartTask: '确认任务开始排队？',
     },
     button:{
       adjust:'调整优先级',
@@ -100,6 +139,15 @@ module.exports = {
       complete:'完成',
       confirm:'确认',
       cancel:'取消',
+
+      again:'再次执行',
+      handleStart:'手动开始',
+      handleJ002Scan:'J002扫码',
+      handleManualJ002:'J002强制通过',
+      handleAgain:'再次执行',
+      handleJ003Scan:'J003扫码',
+      handleManualJ003:'J003强制通过',
+      handleStartTask:'手动排队',
     },
     message:{
       adjustSuccess:'调整成功',
@@ -113,8 +161,11 @@ module.exports = {
       rollbackSuccess:'任务已回退',
       rollbackFailure:'任务回退失败',
       completeSuccess:'任务已完成',
-      completeFailure:'失败任务完成失败',
+      completeFailure:'任务完成失败',
       priority:'请输入调整后任务优先级',
+
+      againSuccess:'任务再次执行成功',
+      againFailure:'任务再次执行失败',
     },
     label: {
       taskCode: '任务编码',
@@ -124,6 +175,7 @@ module.exports = {
 
       taskKind:'任务种类',
       orderCode: '业务号',
+      taskKinds:'设备',
     },
     placeholder: {
       taskCode: '请输入任务编码',
@@ -132,6 +184,7 @@ module.exports = {
 
       taskKind:'请选择任务种类',
       orderCode: '请输入业务号',
+      taskKinds:'请选择设备',
     },
   }
 };

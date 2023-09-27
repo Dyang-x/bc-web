@@ -54,19 +54,22 @@ const PickTrayOutForm = ({
               <Input disabled={true} placeholder={getFormattedMsg('SemiFinishedWarehousingReceipt.placeholder.orderNumber')} style={{ width: '100%' }} />
             )}
         </Form.Item> */}
-      <Form.Item {...formItemLayout} label={"中间点"}>
+      {/* <Form.Item {...formItemLayout} label={"中间点"}> */}
+      <Form.Item {...formItemLayout} label={getFormattedMsg('SemiFinishedWarehousingReceipt.label.middle')}>
         {
           getFieldDecorator('middle', {
             rules: [
               {
                 required: true,
-                message: '请选择中间点',
+                // message: '请选择中间点',
+                message: getFormattedMsg('SemiFinishedWarehousingReceipt.placeholder.middle'),
               },
             ],
             initialValue: 'J002'
           })(
             <Select
-              placeholder={'请选择中间点'}
+              // placeholder={'请选择中间点'}
+              placeholder={getFormattedMsg('SemiFinishedWarehousingReceipt.placeholder.middle')}
               showSearch
               filterOption={false}
             >
@@ -79,19 +82,22 @@ const PickTrayOutForm = ({
           )
         }
       </Form.Item>
-      <Form.Item {...formItemLayout} label={'目的地'}>
+      {/* <Form.Item {...formItemLayout} label={'目的地'}> */}
+      <Form.Item {...formItemLayout} label={getFormattedMsg('SemiFinishedWarehousingReceipt.label.toLocation')}>
         {
           getFieldDecorator('toLocation', {
             rules: [
               {
                 required: true,
-                message: '请选择目的地',
+                // message: '请选择目的地',
+                message: getFormattedMsg('SemiFinishedWarehousingReceipt.placeholder.toLocation'),
               },
             ],
             initialValue: undefined
           })(
             <Select
-              placeholder={'请选择目的地'}
+              // placeholder={'请选择目的地'}
+              placeholder={getFormattedMsg('SemiFinishedWarehousingReceipt.placeholder.toLocation')}
               showSearch
               filterOption={false}
             >

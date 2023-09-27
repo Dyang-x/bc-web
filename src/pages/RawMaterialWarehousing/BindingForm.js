@@ -87,64 +87,78 @@ const TrayForm = ({
           })(<Input placeholder={getFormattedMsg('RawMaterialWarehousingReceipt.message.material')} style={{ width: '100%' }} />)
         }
       </Form.Item> */}
-      <Form.Item {...formItemLayout} label={'收料单扫码'}>
+      {/* <Form.Item {...formItemLayout} label={'收料单扫码'}> */}
+      <Form.Item {...formItemLayout} label={getFormattedMsg('RawMaterialWarehousingReceipt.label.scan')}>
         {
           getFieldDecorator('scan', {
           })(
             <Input
-              placeholder={'请扫描收料单条码'}
+              // placeholder={'请扫描收料单条码'}
+              placeholder={getFormattedMsg('RawMaterialWarehousingReceipt.message.scan')}
               style={{ width: '100%' }}
               onPressEnter={(e) => { onKeyDowm(e) }}
             />
           )
         }
       </Form.Item>
-      <Form.Item {...formItemLayout} label={'采购订单号'}>
+      {/* <Form.Item {...formItemLayout} label={'采购订单号'}> */}
+      <Form.Item {...formItemLayout} label={getFormattedMsg('RawMaterialWarehousingReceipt.label.orderNumber2')}>
         {
           getFieldDecorator('orderNumber', {
             rules: [
               {
                 required: true,
-                message: '请输入采购订单号',
+                // message: '请输入采购订单号',
+                message:getFormattedMsg('RawMaterialWarehousingReceipt.message.orderNumber2')
               },
             ],
-          })(<Input placeholder={'请输入采购订单号'} style={{ width: '100%' }} />)
+          // })(<Input placeholder={'请输入采购订单号'} style={{ width: '100%' }} />)
+        })(<Input placeholder={getFormattedMsg('RawMaterialWarehousingReceipt.message.orderNumber2')} style={{ width: '100%' }} />)
         }
       </Form.Item>
-      <Form.Item {...formItemLayout} label={'送货单行号'}>
+      {/* <Form.Item {...formItemLayout} label={'送货单行号'}> */}
+      <Form.Item {...formItemLayout} label={getFormattedMsg('RawMaterialWarehousingReceipt.label.lineNumber2')}>
         {
           getFieldDecorator('lineNumber', {
             rules: [
               {
                 required: true,
-                message: '请输入送货单行号',
+                // message: '请输入送货单行号',
+                message:getFormattedMsg('RawMaterialWarehousingReceipt.message.lineNumber2')
               },
             ],
-          })(<Input placeholder={'请输入送货单行号'} style={{ width: '100%' }} />)
+          // })(<Input placeholder={'请输入送货单行号'} style={{ width: '100%' }} />)
+        })(<Input placeholder={getFormattedMsg('RawMaterialWarehousingReceipt.message.lineNumber2')} style={{ width: '100%' }} />)
         }
       </Form.Item>
-      <Form.Item {...formItemLayout} label={'物料编码'}>
+      {/* <Form.Item {...formItemLayout} label={'物料编码'}> */}
+      <Form.Item {...formItemLayout} label={getFormattedMsg('RawMaterialWarehousingReceipt.label.materialCode2')}>
         {
           getFieldDecorator('materialCode', {
             rules: [
               {
                 required: true,
-                message: '请输入物料编码',
+                // message: '请输入物料编码',
+                message:getFormattedMsg('RawMaterialWarehousingReceipt.message.materialCode2')
               },
             ],
-          })(<Input placeholder={'请输入物料编码'} style={{ width: '100%' }} />)
+          // })(<Input placeholder={'请输入物料编码'} style={{ width: '100%' }} />)
+        })(<Input placeholder={getFormattedMsg('RawMaterialWarehousingReceipt.message.materialCode2')} style={{ width: '100%' }} />)
         }
       </Form.Item>
-      <Form.Item {...formItemLayout} label={'数量'}>
+      {/* <Form.Item {...formItemLayout} label={'数量'}> */}
+      <Form.Item {...formItemLayout} label={getFormattedMsg('RawMaterialWarehousingReceipt.label.number2')}>
         {
           getFieldDecorator('number', {
             rules: [
               {
                 required: true,
-                message: '请输入数量',
+                // message: '请输入数量',
+                message:getFormattedMsg('RawMaterialWarehousingReceipt.message.number')
               },
             ],
-          })(<Input placeholder={'请输入数量'} style={{ width: '100%' }} />)
+          // })(<Input placeholder={'请输入数量'} style={{ width: '100%' }} />)
+        })(<Input placeholder={getFormattedMsg('RawMaterialWarehousingReceipt.message.number')} style={{ width: '100%' }} />)
         }
       </Form.Item>
     </Form>

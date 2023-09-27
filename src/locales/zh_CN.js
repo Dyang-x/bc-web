@@ -19,6 +19,7 @@ const newWaresLocation = require('./newWaresLocation').zh_CN;
 const SurplusInStorage = require('./SurplusInStorage').zh_CN;
 const SemiFinishedReturn = require('./SemiFinishedReturn').zh_CN;
 const TaskTransport = require('./TaskTransport').zh_CN;
+const WirelineStorage = require('./WirelineStorage').zh_CN;
 
 module.exports = {
   user,
@@ -41,5 +42,6 @@ module.exports = {
   newWaresLocation,
   SurplusInStorage,
   SemiFinishedReturn,
-  TaskTransport
+  TaskTransport,
+  WirelineStorage
 };

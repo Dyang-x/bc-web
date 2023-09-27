@@ -8,9 +8,15 @@ import EmptyPalletDelivery from '~/api/EmptyPalletDelivery';
 import AddOrUpdateForm from './AddOrUpdateForm';
 import { isEmpty } from 'lodash';
 import { taskType } from '~/enum/enum';
+import { withPermission } from '@hvisions/core';
 
 const getFormattedMsg = i18n.getFormattedMsg;
 const { showTotal } = page;
+const CreateButton = withPermission(Button, 'CREATE');
+const ShelvesButton = withPermission('a', 'DownShelves');
+const UpdateButton = withPermission('a', 'Update');
+const DeleteButton = withPermission('a', 'Delete');
+const FinishOrderButton = withPermission('a', 'FinishOrder');
 
 const EmptyPalletDeliveryPage = ({ history }) => {
   const [tableData, setTableData] = useState([]);
@@ -54,19 +60,22 @@ const EmptyPalletDeliveryPage = ({ history }) => {
     //   align: 'center',
     // },
     {
-      title: '中间点',
+      // title: '中间点',
+      title: getFormattedMsg('EmptyPalletDelivery.title.middle'),
       dataIndex: 'middle',
       key: 'middle',
       align: 'center',
     },
     {
-      title: '终点',
+      // title: '终点',
+      title: getFormattedMsg('EmptyPalletDelivery.title.toLocation'),
       dataIndex: 'toLocation',
       key: 'toLocation',
       align: 'center',
     },
     {
-      title: '出库类型',
+      // title: '出库类型',
+      title: getFormattedMsg('EmptyPalletDelivery.title.inType'),
       dataIndex: 'inType',
       key: 'inType',
       align: 'center',
@@ -93,22 +102,24 @@ const EmptyPalletDeliveryPage = ({ history }) => {
       key: 'opt',
       align: 'center',
       render: (_, record) => [
-        record.state == 0 && [<a key="downShelves" onClick={() => handleDownShelves(record)}>
-          下架
-        </a>,
+        record.state == 0 && [<ShelvesButton key="downShelves" onClick={() => handleDownShelves(record)}>
+          {/* 下架 */}
+          {getFormattedMsg('EmptyPalletDelivery.button.downShelves')}
+        </ShelvesButton>,
         <Divider key="divider2" type="vertical" />],
         record.state == 0 && [
-          <a key="update" onClick={() => handleUpdate(record)}>
+          <UpdateButton key="update" onClick={() => handleUpdate(record)}>
             {getFormattedMsg('EmptyPalletDelivery.button.update')}
-          </a>,
+          </UpdateButton>,
           <Divider key="divider1" type="vertical" />,
-          <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)}>
+          <DeleteButton key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)}>
             {getFormattedMsg('EmptyPalletDelivery.button.delete')}
-          </a>
+          </DeleteButton>
         ],
-        record.state == 1 && [<a key="finishOrder" onClick={() => handleFinishOrder(record)}>
-          完成
-        </a>,
+        record.state == 1 && [<FinishOrderButton key="finishOrder" onClick={() => handleFinishOrder(record)}>
+          {/* 完成 */}
+          {getFormattedMsg('EmptyPalletDelivery.button.finishOrder')}
+        </FinishOrderButton>,
           // <Divider key="divider3" type="vertical" />
         ],
       ],
@@ -174,7 +185,7 @@ const EmptyPalletDeliveryPage = ({ history }) => {
   };
 
   const { Table, SettingButton } = useMemo(
-    () => CacheTable({ columns, scrollHeight: 'calc(100vh - 470px)', key: 'wms_quality' }),
+    () => CacheTable({ columns, scrollHeight: 'calc(100vh - 470px)', key: 'bc_emptyPallet_delivery' }),
     []
   );
 
@@ -239,19 +250,22 @@ const EmptyPalletDeliveryPage = ({ history }) => {
 
   const handleDownShelves = (record) => {
     Modal.confirm({
-      title: '确认下架？',
+      // title: '确认下架？',
+      title:getFormattedMsg('EmptyPalletDelivery.title.downShelves'),
       onOk: async () => {
         await EmptyPalletDelivery
           .downShelves(record.id)
           .then(res => {
             notification.success({
-              message: '下架开始成功'
+              // message: '下架开始成功'
+              message: getFormattedMsg('EmptyPalletDelivery.message.downSuccess'),
             });
             loadData(page, pageSize, { ...searchValue, state: selectedstatus });
           })
           .catch(err => {
             notification.warning({
-              message: '下架开始失败',
+              // message: '下架开始失败',
+              message: getFormattedMsg('EmptyPalletDelivery.message.downFailure'),
               description: err.message
             });
           });
@@ -262,19 +276,22 @@ const EmptyPalletDeliveryPage = ({ history }) => {
 
   const handleFinishOrder = (record) => {
     Modal.confirm({
-      title: '确认完成任务？',
+      // title: '确认完成任务？',
+      title:getFormattedMsg('EmptyPalletDelivery.title.finishOrder'),
       onOk: async () => {
         await EmptyPalletDelivery
           .finishById(record.id)
           .then(res => {
             notification.success({
-              message: '任务完成成功'
+              // message: '任务完成成功'
+              message: getFormattedMsg('EmptyPalletDelivery.message.finishSuccess'),
             });
             loadData(page, pageSize, { ...searchValue, state: selectedstatus });
           })
           .catch(err => {
             notification.warning({
-              message: '任务完成失败',
+              // message: '任务完成失败',
+              message: getFormattedMsg('EmptyPalletDelivery.message.finishFailure'),
               description: err.message
             });
           });
@@ -336,9 +353,9 @@ const EmptyPalletDeliveryPage = ({ history }) => {
           settingButton={<SettingButton />}
           onRefresh={reFreshFunc()}
           buttons={[
-            <Button key="weighing" type="primary" icon='plus' onClick={() => handleCreate()} >
+            <CreateButton key="weighing" type="primary" icon='plus' onClick={() => handleCreate()} >
               {getFormattedMsg('EmptyPalletDelivery.button.create')}
-            </Button>,
+            </CreateButton>,
           ]}
         >
           <div style={{ marginBottom: '12px' }}>

@@ -84,30 +84,36 @@ const EmptyForm = ({
           )
         }
       </Form.Item>
-      <Form.Item {...formItemLayout} label={'起点'}>
+      {/* <Form.Item {...formItemLayout} label={'起点'}> */}
+      <Form.Item {...formItemLayout} label={getFormattedMsg('RawMaterialDeliveryOrderManagement.label.origin')}>
         {
           getFieldDecorator('origin', {
             rules: [
               {
                 required: true,
-                message: '请选择起点',
+                // message: '请选择起点',
+                message: getFormattedMsg('RawMaterialDeliveryOrderManagement.placeholder.origin'),
               },
             ],
-          })(<Input placeholder={'请选择起点'} style={{ width: '100%' }} />)
+          // })(<Input placeholder={'请选择起点'} style={{ width: '100%' }} />)
+        })(<Input placeholder={getFormattedMsg('RawMaterialDeliveryOrderManagement.placeholder.origin')} style={{ width: '100%' }} />)
         }
       </Form.Item>
-      <Form.Item {...formItemLayout} label={'中间点'}>
+      {/* <Form.Item {...formItemLayout} label={'中间点'}> */}
+      <Form.Item {...formItemLayout} label={getFormattedMsg('RawMaterialDeliveryOrderManagement.label.middle')}>
         {
           getFieldDecorator('middle', {
             rules: [
               {
                 required: true,
-                message: '请选择中间点',
+                // message: '请选择中间点',
+                message: getFormattedMsg('RawMaterialDeliveryOrderManagement.placeholder.middle'),
               },
             ],
           })(
             <Select
-              placeholder={'请选择中间点'}
+              // placeholder={'请选择中间点'}
+              placeholder={getFormattedMsg('RawMaterialDeliveryOrderManagement.placeholder.middle')}
               showSearch
               filterOption={false}
             >

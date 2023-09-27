@@ -5137,6 +5137,11 @@ detect-port-alt@1.1.6:
     address "^1.0.1"
     debug "^2.6.0"
 
+dhtmlx-gantt@6.2.6:
+  version "6.2.6"
+  resolved "https://registry.npmmirror.com/dhtmlx-gantt/-/dhtmlx-gantt-6.2.6.tgz#a53ad0c56ead2a3cb836e9fb54227b9116ecb82c"
+  integrity sha512-8U8HrjP7mHr89MerHlwGXwU33eD++YVx1AoCBXCJbdsqnfhlSk7kW3fNqSvtnjn0biwuiFC21UH04suEa/mzbw==
+
 dhtmlx-gantt@^6.2.6:
   version "6.3.7"
   resolved "https://registry.npmmirror.com/dhtmlx-gantt/-/dhtmlx-gantt-6.3.7.tgz#c853b506e73d6633f916791c6b1444f2553d57c5"
@@ -5407,10 +5412,18 @@ echarts-for-react@^2.0.15-beta.0:
     fast-deep-equal "^2.0.1"
     size-sensor "^1.0.0"
 
-echarts-liquidfill@^3.1.0:
+echarts-liquidfill@3.1.0:
   version "3.1.0"
   resolved "https://registry.npmmirror.com/echarts-liquidfill/-/echarts-liquidfill-3.1.0.tgz#4ec70f3697382d0404c95fff9f3e8dd85c8377da"
   integrity sha512-5Dlqs/jTsdTUAsd+K5LPLLTgrbbNORUSBQyk8PSy1Mg2zgHDWm83FmvA4s0ooNepCJojFYRITTQ4GU1UUSKYLw==
+
+echarts@5.2.1:
+  version "5.2.1"
+  resolved "https://registry.npmmirror.com/echarts/-/echarts-5.2.1.tgz#bd58ec011cd82def4a714e4038ef4b73b8417bc3"
+  integrity sha512-OJ79b22eqRfbSV8vYmDKmA+XWfNbr0Uk/OafWcFNIGDWti2Uw9A6eVCiJLmqPa9Sk+EWL+t5v26aak0z3gxiZw==
+  dependencies:
+    tslib "2.3.0"
+    zrender "5.2.1"
 
 echarts@^4.2.1:
   version "4.9.0"
@@ -5418,14 +5431,6 @@ echarts@^4.2.1:
   integrity sha512-+ugizgtJ+KmsJyyDPxaw2Br5FqzuBnyOWwcxPKO6y0gc5caYcfnEUIlNStx02necw8jmKmTafmpHhGo4XDtEIA==
   dependencies:
     zrender "4.3.2"
-
-echarts@^5.2.1:
-  version "5.4.1"
-  resolved "https://registry.npmmirror.com/echarts/-/echarts-5.4.1.tgz#d7f65a584d78beff62568d878b16151b3381811c"
-  integrity sha512-9ltS3M2JB0w2EhcYjCdmtrJ+6haZcW6acBolMGIuf01Hql1yrIV01L1aRj7jsaaIULJslEP9Z3vKlEmnJaWJVQ==
-  dependencies:
-    tslib "2.3.0"
-    zrender "5.4.1"
 
 ee-first@1.1.1:
   version "1.1.1"
@@ -14574,9 +14579,9 @@ zrender@4.3.2:
   resolved "https://registry.npmmirror.com/zrender/-/zrender-4.3.2.tgz#ec7432f9415c82c73584b6b7b8c47e1b016209c6"
   integrity sha512-bIusJLS8c4DkIcdiK+s13HiQ/zjQQVgpNohtd8d94Y2DnJqgM1yjh/jpDb8DoL6hd7r8Awagw8e3qK/oLaWr3g==
 
-zrender@5.4.1:
-  version "5.4.1"
-  resolved "https://registry.npmmirror.com/zrender/-/zrender-5.4.1.tgz#892f864b885c71e1dc25dcb3c7a4ba42678d3f11"
-  integrity sha512-M4Z05BHWtajY2241EmMPHglDQAJ1UyHQcYsxDNzD9XLSkPDqMq4bB28v9Pb4mvHnVQ0GxyTklZ/69xCFP6RXBA==
+zrender@5.2.1:
+  version "5.2.1"
+  resolved "https://registry.npmmirror.com/zrender/-/zrender-5.2.1.tgz#5f4bbda915ba6d412b0b19dc2431beaad05417bb"
+  integrity sha512-M3bPGZuyLTNBC6LiNKXJwSCtglMp8XUEqEBG+2MdICDI3d1s500Y4P0CzldQGsqpRVB7fkvf3BKQQRxsEaTlsw==
   dependencies:
     tslib "2.3.0"

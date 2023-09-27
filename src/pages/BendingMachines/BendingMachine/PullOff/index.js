@@ -38,7 +38,8 @@ const PullOff = ({ pullOffData,handleCancelPullOff }) => {
 
     const columns = [
         {
-            title: '出库单号',
+            // title: '出库单号',
+            title: getFormattedMsg('BendingMachineConfiguration.title.owNumber'),
             dataIndex: 'owNumber',
             key: 'owNumber',
             align: 'center',
@@ -55,7 +56,8 @@ const PullOff = ({ pullOffData,handleCancelPullOff }) => {
             width: 200
         },
         {
-            title: '操作人',
+            // title: '操作人',
+            title: getFormattedMsg('BendingMachineConfiguration.title.operatorName'),
             dataIndex: 'operatorName',
             key: 'operatorName',
             align: 'center',
@@ -74,7 +76,8 @@ const PullOff = ({ pullOffData,handleCancelPullOff }) => {
         },
 
         {
-            title: '状态',
+            // title: '状态',
+            title: getFormattedMsg('BendingMachineConfiguration.title.status'),
             dataIndex: 'status',
             key: 'status',
             align: 'center',
@@ -90,7 +93,8 @@ const PullOff = ({ pullOffData,handleCancelPullOff }) => {
         },
 
         {
-            title: '出库时间',
+            // title: '出库时间',
+            title: getFormattedMsg('BendingMachineConfiguration.title.outStockTime'),
             dataIndex: 'outStockTime',
             key: 'outStockTime',
             align: 'center',
@@ -107,7 +111,8 @@ const PullOff = ({ pullOffData,handleCancelPullOff }) => {
             width: 170
         },
         {
-            title: '关联单号',
+            // title: '关联单号',
+            title: getFormattedMsg('BendingMachineConfiguration.title.associateNumber'),
             dataIndex: 'associateNumber',
             key: 'associateNumber',
             align: 'center',
@@ -124,7 +129,8 @@ const PullOff = ({ pullOffData,handleCancelPullOff }) => {
             width: 200
         },
         {
-            title: '托盘号',
+            // title: '托盘号',
+            title: getFormattedMsg('BendingMachineConfiguration.title.transferCode'),
             dataIndex: 'transferCode',
             key: 'transferCode',
             align: 'center',
@@ -141,7 +147,8 @@ const PullOff = ({ pullOffData,handleCancelPullOff }) => {
             // width: 200
         },
         {
-            title: '属性1',
+            // title: '属性1',
+            title: getFormattedMsg('BendingMachineConfiguration.title.attributeOne'),
             dataIndex: 'attributeOne',
             key: 'attributeOne',
             align: 'center',
@@ -158,7 +165,8 @@ const PullOff = ({ pullOffData,handleCancelPullOff }) => {
             // width: 200
         },
         {
-            title: '属性2',
+            // title: '属性2',
+            title: getFormattedMsg('BendingMachineConfiguration.title.attributeTwo'),
             dataIndex: 'attributeTwo',
             key: 'attributeTwo',
             align: 'center',
@@ -183,7 +191,8 @@ const PullOff = ({ pullOffData,handleCancelPullOff }) => {
             // fixed: 'right',
             render: (_, record) => [
                 <a key="delivery" onClick={() => onHandleDelivery(record)}>
-                    托盘下架
+                    {/* 托盘下架 */}
+                    {getFormattedMsg('BendingMachineConfiguration.button.takedown')}
                 </a>
             ]
         }
@@ -196,14 +205,16 @@ const PullOff = ({ pullOffData,handleCancelPullOff }) => {
                 await retrievalApi.outShelf(record.id)
                     .then(res => {
                         notification.warning({
-                            message: '托盘下架成功',
+                            // message: '托盘下架成功',
+                            message:getFormattedMsg('BendingMachineConfiguration.message.pullOffSuccess'),
                         });
                         handleCancelPullOff()
                     })
                     .catch(err => {
                         setLoading(false);
                         notification.warning({
-                            message: '托盘下架失败',
+                            // message: '托盘下架失败',
+                            message:getFormattedMsg('BendingMachineConfiguration.message.pullOffFailed'),
                             description: err.message
                         });
                     });
@@ -266,7 +277,8 @@ const PullOff = ({ pullOffData,handleCancelPullOff }) => {
                 <HVLayout.Pane height={'auto'}>
                     <SearchForm onSearch={handleSearch}>
                         <SearchForm.Item label={getFormattedMsg('retrieval.label.owNumber')} name="owNumber">
-                            <Input placeholder="请输入出库单号" allowClear />
+                            {/* <Input placeholder="请输入出库单号" allowClear /> */}
+                            <Input placeholder={getFormattedMsg('BendingMachineConfiguration.placeholder.owNumber')} allowClear />
                         </SearchForm.Item>
                         <SearchForm.Item
                             label={getFormattedMsg('retrieval.label.outStockTime')}
@@ -278,7 +290,8 @@ const PullOff = ({ pullOffData,handleCancelPullOff }) => {
                 </HVLayout.Pane>
                 <HVLayout.Pane
                     icon={<i className="h-visions hv-table" />}
-                    title="物料出库列表"
+                    // title="物料出库列表"
+                    title={getFormattedMsg('BendingMachineConfiguration.title.owNumberT')}
                     settingButton={<SettingButton />}
                     onRefresh={() => handleSearch(searchValue)}
                 >

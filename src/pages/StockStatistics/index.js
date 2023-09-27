@@ -62,7 +62,7 @@ const StockStatistics = () => {
           }));
         })
         .flat(1);
-        //console.log(_ds,'_ds');
+        console.log(_ds,'_ds');
       setDataSource(_ds);
       setTotal(res.totalElements);
     } catch (err) {
@@ -94,6 +94,22 @@ const StockStatistics = () => {
 
   const columns = [
     {
+      title: '物料编码',
+      dataIndex: 'materialCode',
+      render: (_, row) => {
+        return {
+          children: row.materialCode,
+          props: {
+            rowSpan: row['materialId-rowSpan']
+          }
+        };
+      },
+      key: 'materialCode',
+      width: 200,
+      align: 'center',
+      // fixed: 'left'
+    },
+    {
       title: '物料名称',
       dataIndex: 'materialName',
       render: (_, row) => {
@@ -106,7 +122,7 @@ const StockStatistics = () => {
       },
       key: 'materialName',
       width: 200,
-      align: 'center'
+      align: 'center',
       // fixed: 'left'
     },
     {

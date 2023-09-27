@@ -1,8 +1,10 @@
-import React, { useEffect,useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Input, Select } from '@hvisions/h-ui'
 import { emptyInMid, taskType } from '~/enum/enum';
+import { i18n } from '@hvisions/core';
 
 const { Option } = Select
+const { getFormattedMsg } = i18n;
 const formItemLayout = {
   labelCol: { span: 6 },
   wrapperCol: { span: 18 },
@@ -44,36 +46,42 @@ const PullOnForm = ({
 
   return (
     <Form >
-            <Form.Item {...formItemLayout} label={'起点'}>
+      {/* <Form.Item {...formItemLayout} label={'起点'}> */}
+      <Form.Item {...formItemLayout} label={getFormattedMsg('PalletManagement.title.origin')}>
         {
           getFieldDecorator('origin', {
             rules: [
               {
                 required: true,
-                message: '请输入起点',
+                // message: '请输入起点',
+                message: getFormattedMsg('PalletManagement.placeholder.origin'),
               },
             ],
-          })(<Input placeholder={'请输入起点'} style={{ width: '100%' }} />)
+            // })(<Input placeholder={'请输入起点'} style={{ width: '100%' }} />)
+          })(<Input placeholder={getFormattedMsg('PalletManagement.placeholder.origin')} style={{ width: '100%' }} />)
         }
       </Form.Item>
-      <Form.Item {...formItemLayout} label={'中间点'}>
+      {/* <Form.Item {...formItemLayout} label={'中间点'}> */}
+      <Form.Item {...formItemLayout} label={getFormattedMsg('PalletManagement.title.middle')}>
         {
           getFieldDecorator('middle', {
             rules: [
               {
                 required: true,
-                message: '请选择中间点',
+                // message: '请选择中间点',
+                message: getFormattedMsg('PalletManagement.placeholder.middle'),
               },
             ],
           })(
             <Select
-              placeholder={'请选择中间点'}
+              // placeholder={'请选择中间点'}
+              placeholder={getFormattedMsg('PalletManagement.placeholder.middle')}
               showSearch
               filterOption={false}
-              // onChange={(e) => onChangeSelect(e, '0')}
-              // // onSearch={value => onSearchSelect(value, '0')}
-              // onBlur={() => onBlurSelect('0')}
-              // value={emptyInMids[0] }
+            // onChange={(e) => onChangeSelect(e, '0')}
+            // // onSearch={value => onSearchSelect(value, '0')}
+            // onBlur={() => onBlurSelect('0')}
+            // value={emptyInMids[0] }
             >
               {
                 emptyInMids.length && emptyInMids.map(item => {

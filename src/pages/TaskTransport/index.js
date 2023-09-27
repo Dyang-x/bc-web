@@ -6,11 +6,20 @@ import { CacheTable } from '~/components';
 import TaskTranSportServices from '~/api/TaskTranSport';
 import { notification } from '~/../node_modules/antd/lib/index';
 import AdjustForm from './AdjustForm';
+import { withPermission } from '@hvisions/core';
 
 const getFormattedMsg = i18n.getFormattedMsg;
 const { Pane } = HVLayout;
 const { showTotal } = page
 const { Option } = Select;
+
+const AdjustButton = withPermission('a', 'Adjust');
+const DeleteButton = withPermission('a', 'Delete');
+const PauseButton = withPermission('a', 'Pause');
+const AgainButton = withPermission('a', 'Again');
+const CompleteButton = withPermission('a', 'Complete');
+const ContinueButton = withPermission('a', 'Continue');
+const RollbackButton = withPermission('a', 'Rollback');
 
 const Index = ({ taskKind ,taskType}) => {
   const [tableData, setTableData] = useState([]);
@@ -32,7 +41,8 @@ const Index = ({ taskKind ,taskType}) => {
   }, []);
 
   const columns = useMemo(() => {
-    const updateTimeTitle = nowTab==4?'任务完成时间':'任务启动时间'
+    // const updateTimeTitle = nowTab==4?'任务完成时间':'任务启动时间'
+    const updateTimeTitle = nowTab == 4 ? getFormattedMsg('TaskTransport.title.finishTime') : getFormattedMsg('TaskTransport.title.updateTime')
     return [
       {
         title: getFormattedMsg('TaskTransport.title.taskCode'),
@@ -88,36 +98,37 @@ const Index = ({ taskKind ,taskType}) => {
         align: 'center',
         render: (_, record) => [
           nowTab == 1 && [
-            <a key="adjust" onClick={() => handleAdjust(record)}>{getFormattedMsg('TaskTransport.button.adjust')}</a>,
+            <AdjustButton key="adjust" onClick={() => handleAdjust(record)}>{getFormattedMsg('TaskTransport.button.adjust')}</AdjustButton>,
             <Divider key="divider1" type="vertical" />,
-            <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)} >
+            <DeleteButton key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)} >
               {getFormattedMsg('TaskTransport.button.delete')}
-            </a>,
+            </DeleteButton>,
             <Divider key="divider2" type="vertical" />,
-            <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
+            <PauseButton key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
               {getFormattedMsg('TaskTransport.button.pause')}
-            </a>,
+            </PauseButton>,
           ],
           nowTab == 2 && [
             // <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
             //   {getFormattedMsg('TaskTransport.button.pause')}
             // </a>,
             // <Divider key="divider2" type="vertical" />,
-            <a key="again"  onClick={() => handleAgain(record)}>
-              再次执行
-            </a>,
+            <AgainButton key="again"  onClick={() => handleAgain(record)}>
+              {/* 再次执行 */}
+              {getFormattedMsg('TaskTransport.button.handleAgain')}
+            </AgainButton>,
             <Divider key="divider2" type="vertical" />,
-            <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskTransport.button.complete')}</a>
+            <CompleteButton key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskTransport.button.complete')}</CompleteButton>
           ],
           nowTab == 3 && [
-            <a key="continue" onClick={() => handleContinue(record)} >{getFormattedMsg('TaskTransport.button.continue')}</a>
+            <ContinueButton key="continue" onClick={() => handleContinue(record)} >{getFormattedMsg('TaskTransport.button.continue')}</ContinueButton>
           ],
           nowTab == 5 && [
-            <a key="rollback" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleRollback(record)} >
+            <RollbackButton key="rollback" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleRollback(record)} >
               {getFormattedMsg('TaskTransport.button.rollback')}
-            </a>,
+            </RollbackButton>,
             <Divider key="divider3" type="vertical" />,
-            <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskTransport.button.complete')}</a>
+            <CompleteButton key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskTransport.button.complete')}</CompleteButton>
           ],
         ],
         width: 300,
@@ -256,19 +267,22 @@ const Index = ({ taskKind ,taskType}) => {
 
   const handleAgain = (record) => {
     Modal.confirm({
-      title: '确认再次执行任务？',
+      // title: '确认再次执行任务？',
+      title: getFormattedMsg('TaskTransport.title.handleAgain'),
       okType: 'danger',
       onOk: async () => {
         await TaskTranSportServices.manualRbg(record.id)
           .then(res => {
             notification.success({
-              message: '任务再次执行成功',
+              // message: '任务再次执行成功',
+              message: getFormattedMsg('TaskTransport.message.againSuccess'),
             })
             loadData(page, pageSize, { ...searchValue, taskState: nowTab });
           })
           .catch(err => {
             notification.warning({
-              message: '任务再次执行失败',
+              // message: '任务再次执行失败',
+              message: getFormattedMsg('TaskTransport.message.againFailure'),
               description: err.message
             })
           })
@@ -351,7 +365,7 @@ const Index = ({ taskKind ,taskType}) => {
     })
   }
 
-  const { Table, SettingButton } = useMemo(() => CacheTable({ columns: columns, scrollHeight: 'calc(100vh - 480px)', key: `work_process_execute` }), [nowTab]);
+  const { Table, SettingButton } = useMemo(() => CacheTable({ columns: columns, scrollHeight: 'calc(100vh - 480px)', key: `bc_task_transport` }), [nowTab]);
 
   const renderTable = useMemo(() => {
     return (
@@ -484,282 +498,3 @@ const Index = ({ taskKind ,taskType}) => {
 };
 
 export default Index;
-
-
-
-    // return [
-    //   {
-    //     title: getFormattedMsg('TaskTransport.title.taskCode'),
-    //     dataIndex: 'taskCode',
-    //     key: 'taskCode',
-    //     align: 'center',
-    //   },
-    //   {
-    //     title: getFormattedMsg('TaskTransport.title.taskType'),
-    //     dataIndex: 'taskType',
-    //     key: 'taskType',
-    //     align: 'center',
-    //     render: (text, recoed, index) => {
-    //       if (text == null) {
-    //         return
-    //       }
-    //       return taskType[text - 1].name
-    //     }
-    //   },
-    //   {
-    //     title: getFormattedMsg('TaskTransport.title.transferCode'),
-    //     dataIndex: 'transferCode',
-    //     key: 'transferCode',
-    //     align: 'center',
-    //   },
-    //   {
-    //     title: getFormattedMsg('TaskTransport.title.fromLocation'),
-    //     dataIndex: 'fromLocation',
-    //     key: 'fromLocation',
-    //     align: 'center',
-    //   },
-    //   // {
-    //   //   title: getFormattedMsg('TaskTransport.title.middle'),
-    //   //   dataIndex: 'middle',
-    //   //   key: 'middle',
-    //   //   align: 'center',
-    //   // },
-    //   {
-    //     title: getFormattedMsg('TaskTransport.title.toLocation'),
-    //     dataIndex: 'toLocation',
-    //     key: 'toLocation',
-    //     align: 'center',
-    //   },
-    //   {
-    //     title: getFormattedMsg('TaskTransport.title.priority'),
-    //     dataIndex: 'priority',
-    //     key: 'priority',
-    //     align: 'center',
-    //   },
-    //   {
-    //     title: getFormattedMsg('TaskTransport.title.operation'),
-    //     key: 'opt',
-    //     align: 'center',
-    //     render: (_, record) => [
-    //       nowTab == 1 && [
-    //         <a key="adjust" onClick={() => handleAdjust(record)}>{getFormattedMsg('TaskTransport.button.adjust')}</a>,
-    //         <Divider key="divider1" type="vertical" />,
-    //         <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)} >
-    //           {getFormattedMsg('TaskTransport.button.delete')}
-    //         </a>,
-    //         <Divider key="divider2" type="vertical" />,
-    //         <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
-    //           {getFormattedMsg('TaskTransport.button.pause')}
-    //         </a>,
-    //       ],
-    //       nowTab == 2 && [
-    //         // <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
-    //         //   {getFormattedMsg('TaskTransport.button.pause')}
-    //         // </a>,
-    //         // <Divider key="divider2" type="vertical" />,
-    //         <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskTransport.button.complete')}</a>
-    //       ],
-    //       nowTab == 3 && [
-    //         <a key="continue" onClick={() => handleContinue(record)} >{getFormattedMsg('TaskTransport.button.continue')}</a>
-    //       ],
-    //       nowTab == 5 && [
-    //         <a key="rollback" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleRollback(record)} >
-    //           {getFormattedMsg('TaskTransport.button.rollback')}
-    //         </a>,
-    //         <Divider key="divider3" type="vertical" />,
-    //         <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskTransport.button.complete')}</a>
-    //       ],
-    //     ],
-    //     width: 300,
-    //   }
-    // ];
-
-
-    // if(nowTab==4){
-    //   return [
-    //     {
-    //       title: getFormattedMsg('TaskTransport.title.taskCode'),
-    //       dataIndex: 'taskCode',
-    //       key: 'taskCode',
-    //       align: 'center',
-    //     },
-    //     {
-    //       title: getFormattedMsg('TaskTransport.title.taskType'),
-    //       dataIndex: 'taskType',
-    //       key: 'taskType',
-    //       align: 'center',
-    //       render: (text, recoed, index) => {
-    //         if (text == null) {
-    //           return
-    //         }
-    //         return taskType[text - 1].name
-    //       }
-    //     },
-    //     {
-    //       title: '任务完成时间',
-    //       dataIndex: 'updateTime',
-    //       key: 'updateTime',
-    //       align: 'center',
-    //     },
-    //     {
-    //       title: getFormattedMsg('TaskTransport.title.transferCode'),
-    //       dataIndex: 'transferCode',
-    //       key: 'transferCode',
-    //       align: 'center',
-    //     },
-    //     {
-    //       title: getFormattedMsg('TaskTransport.title.fromLocation'),
-    //       dataIndex: 'fromLocation',
-    //       key: 'fromLocation',
-    //       align: 'center',
-    //     },
-    //     // {
-    //     //   title: getFormattedMsg('TaskTransport.title.middle'),
-    //     //   dataIndex: 'middle',
-    //     //   key: 'middle',
-    //     //   align: 'center',
-    //     // },
-    //     {
-    //       title: getFormattedMsg('TaskTransport.title.toLocation'),
-    //       dataIndex: 'toLocation',
-    //       key: 'toLocation',
-    //       align: 'center',
-    //     },
-    //     {
-    //       title: getFormattedMsg('TaskTransport.title.priority'),
-    //       dataIndex: 'priority',
-    //       key: 'priority',
-    //       align: 'center',
-    //     },
-    //     {
-    //       title: getFormattedMsg('TaskTransport.title.operation'),
-    //       key: 'opt',
-    //       align: 'center',
-    //       render: (_, record) => [
-    //         nowTab == 1 && [
-    //           <a key="adjust" onClick={() => handleAdjust(record)}>{getFormattedMsg('TaskTransport.button.adjust')}</a>,
-    //           <Divider key="divider1" type="vertical" />,
-    //           <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)} >
-    //             {getFormattedMsg('TaskTransport.button.delete')}
-    //           </a>,
-    //           <Divider key="divider2" type="vertical" />,
-    //           <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
-    //             {getFormattedMsg('TaskTransport.button.pause')}
-    //           </a>,
-    //         ],
-    //         nowTab == 2 && [
-    //           // <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
-    //           //   {getFormattedMsg('TaskTransport.button.pause')}
-    //           // </a>,
-    //           // <Divider key="divider2" type="vertical" />,
-    //           <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskTransport.button.complete')}</a>
-    //         ],
-    //         nowTab == 3 && [
-    //           <a key="continue" onClick={() => handleContinue(record)} >{getFormattedMsg('TaskTransport.button.continue')}</a>
-    //         ],
-    //         nowTab == 5 && [
-    //           <a key="rollback" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleRollback(record)} >
-    //             {getFormattedMsg('TaskTransport.button.rollback')}
-    //           </a>,
-    //           <Divider key="divider3" type="vertical" />,
-    //           <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskTransport.button.complete')}</a>
-    //         ],
-    //       ],
-    //       width: 300,
-    //     }
-    //   ];
-    // }
-    // if(nowTab!=4){
-    //   return [
-    //     {
-    //       title: getFormattedMsg('TaskTransport.title.taskCode'),
-    //       dataIndex: 'taskCode',
-    //       key: 'taskCode',
-    //       align: 'center',
-    //     },
-    //     {
-    //       title: getFormattedMsg('TaskTransport.title.taskType'),
-    //       dataIndex: 'taskType',
-    //       key: 'taskType',
-    //       align: 'center',
-    //       render: (text, recoed, index) => {
-    //         if (text == null) {
-    //           return
-    //         }
-    //         return taskType[text - 1].name
-    //       }
-    //     },
-    //     {
-    //       title: '任务启动时间',
-    //       dataIndex: 'updateTime',
-    //       key: 'updateTime',
-    //       align: 'center',
-    //     },
-    //     {
-    //       title: getFormattedMsg('TaskTransport.title.transferCode'),
-    //       dataIndex: 'transferCode',
-    //       key: 'transferCode',
-    //       align: 'center',
-    //     },
-    //     {
-    //       title: getFormattedMsg('TaskTransport.title.fromLocation'),
-    //       dataIndex: 'fromLocation',
-    //       key: 'fromLocation',
-    //       align: 'center',
-    //     },
-    //     // {
-    //     //   title: getFormattedMsg('TaskTransport.title.middle'),
-    //     //   dataIndex: 'middle',
-    //     //   key: 'middle',
-    //     //   align: 'center',
-    //     // },
-    //     {
-    //       title: getFormattedMsg('TaskTransport.title.toLocation'),
-    //       dataIndex: 'toLocation',
-    //       key: 'toLocation',
-    //       align: 'center',
-    //     },
-    //     {
-    //       title: getFormattedMsg('TaskTransport.title.priority'),
-    //       dataIndex: 'priority',
-    //       key: 'priority',
-    //       align: 'center',
-    //     },
-    //     {
-    //       title: getFormattedMsg('TaskTransport.title.operation'),
-    //       key: 'opt',
-    //       align: 'center',
-    //       render: (_, record) => [
-    //         nowTab == 1 && [
-    //           <a key="adjust" onClick={() => handleAdjust(record)}>{getFormattedMsg('TaskTransport.button.adjust')}</a>,
-    //           <Divider key="divider1" type="vertical" />,
-    //           <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)} >
-    //             {getFormattedMsg('TaskTransport.button.delete')}
-    //           </a>,
-    //           <Divider key="divider2" type="vertical" />,
-    //           <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
-    //             {getFormattedMsg('TaskTransport.button.pause')}
-    //           </a>,
-    //         ],
-    //         nowTab == 2 && [
-    //           // <a key="pause" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handlePause(record)}>
-    //           //   {getFormattedMsg('TaskTransport.button.pause')}
-    //           // </a>,
-    //           // <Divider key="divider2" type="vertical" />,
-    //           <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskTransport.button.complete')}</a>
-    //         ],
-    //         nowTab == 3 && [
-    //           <a key="continue" onClick={() => handleContinue(record)} >{getFormattedMsg('TaskTransport.button.continue')}</a>
-    //         ],
-    //         nowTab == 5 && [
-    //           <a key="rollback" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleRollback(record)} >
-    //             {getFormattedMsg('TaskTransport.button.rollback')}
-    //           </a>,
-    //           <Divider key="divider3" type="vertical" />,
-    //           <a key="complete" onClick={() => handleComplete(record)}>{getFormattedMsg('TaskTransport.button.complete')}</a>
-    //         ],
-    //       ],
-    //       width: 300,
-    //     }
-    //   ];
-    // }

@@ -10,7 +10,7 @@ module.exports = {
       middle: 'middle',
       toLocation: 'toLocation',
       agvState: 'agvState',
-      transportState: 'transportState',
+      // transportState: 'transportState',
       operation: 'operation',
       delete:'Confirm delete the current task？',
       rollback:'Confirm rollback the current task？',
@@ -21,6 +21,11 @@ module.exports = {
       completeTab:'complete',
       anomalyTab:'anomaly',
       adjustPriority:'Adjust Priority',
+
+      updateTime: 'Task start time',
+      finishTime: 'Task completion time',
+      transportState: 'RBG status',
+
     },
     button:{
       adjust:'adjust',
@@ -72,7 +77,7 @@ module.exports = {
       middle: '中间位置',
       toLocation: '目标位置',
       agvState: 'agv任务状态',
-      transportState: '提升机任务状态',
+      // transportState: '提升机任务状态',
       operation: '操作',
       delete:'确认删除当前任务？',
       rollback:'确认回退当前任务？',
@@ -83,6 +88,11 @@ module.exports = {
       completeTab:'完成',
       anomalyTab:'异常',
       adjustPriority:'调整优先级',
+
+      updateTime: '任务启动时间',
+      finishTime: '任务完成时间',
+      transportState: 'RBG状态',
+
     },
     button:{
       adjust:'调整优先级',

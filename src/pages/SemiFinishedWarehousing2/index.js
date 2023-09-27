@@ -12,11 +12,18 @@ import AddOrUpdateForm from './AddOrUpdateForm';
 import { isEmpty } from 'lodash';
 import { attributeOne, attributeTwo, dockingPoints, sortPositions } from '~/enum/enum';
 import PickTrayOut from './PickTrayOut';
+import { withPermission } from '@hvisions/core';
 
 const getFormattedMsg = i18n.getFormattedMsg;
 const { RangePicker } = DatePicker;
 const dateTime = 'YYYY-MM-DD HH:mm:ss';
 const { showTotal } = page;
+
+const AddButton = withPermission(Button, 'Add');
+const CallButton = withPermission(Button, 'Call');
+const PickButton = withPermission(Button, 'Pick');
+const DeleteButton = withPermission('a', 'Delete');
+const WarehousingButton = withPermission('a', 'Warehousing');
 
 const SemiFinishedWarehousingReceipt = ({ history }) => {
   const [tableData, setTableData] = useState([]);
@@ -131,13 +138,15 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
     //   }
     // },
     {
-      title: '主订单号',
+      // title: '主订单号',
+      title: getFormattedMsg('SemiFinishedWarehousingReceipt.title.orderNumber'),
       dataIndex: 'orderNumber',
       key: 'orderNumber',
       align: 'center',
     },
     {
-      title: '子订单号',
+      // title: '子订单号',
+      title: getFormattedMsg('SemiFinishedWarehousingReceipt.title.suborderNumber'),
       dataIndex: 'suborderNumber',
       key: 'suborderNumber',
       align: 'center',
@@ -188,13 +197,13 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
         //   {getFormattedMsg('SemiFinishedWarehousingReceipt.button.update')}
         // </a>,
         // <Divider key="divider1" type="vertical" />,
-        <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)}>
+        <DeleteButton key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)}>
           {getFormattedMsg('SemiFinishedWarehousingReceipt.button.delete')}
-        </a>,
+        </DeleteButton>,
         <Divider key="divider2" type="vertical" />,
-        <a key="warehousing" type="primary" onClick={() => handleWarehousing(record)} >
+        <WarehousingButton key="warehousing" type="primary" onClick={() => handleWarehousing(record)} >
           {getFormattedMsg('SemiFinishedWarehousingReceipt.button.warehousing')}
-        </a>
+        </WarehousingButton>
       ],
     }
   ];
@@ -272,7 +281,7 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
   };
 
   const { Table, SettingButton } = useMemo(
-    () => CacheTable({ columns, scrollHeight: 'calc(100vh - 470px)', key: 'wms_quality' }),
+    () => CacheTable({ columns, scrollHeight: 'calc(100vh - 470px)', key: 'semi_finished_warehousing_two' }),
     []
   );
 
@@ -599,7 +608,8 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
       await EmptyPalletDeliveryApi.autoTransferOut(data)
         .then(res => {
           notification.success({
-            message: '托盘自动出库成功'
+            // message: '托盘自动出库成功'
+            message: getFormattedMsg('SemiFinishedWarehousingReceipt.message.autoTransferOut'),
           });
           loadData(page, pageSize, { ...searchValue, state: selectedstatus });
         })
@@ -675,7 +685,8 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
       await SemiFinisheDeliveryPalletSelectionApi.returnStore(selectedDatas[0].id, params.middle, params.toLocation)
         .then(res => {
           notification.success({
-            message: '托盘下架成功'
+            // message: '托盘下架成功'
+            message: getFormattedMsg('SemiFinishedWarehousingReceipt.message.returnStore'),
           });
           loadData(page, pageSize, { ...searchValue, state: selectedstatus });
         })
@@ -750,17 +761,18 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
         </HVLayout.Pane>
         <HVLayout.Pane
           icon={<i className="h-visions hv-table" />}
-          title={'切割机2收料'}
+          // title={'切割机2收料'}
+          title={getFormattedMsg('SemiFinishedWarehousingReceipt.title.tableName2')}
           buttons={[
-            <Button key="add" type="primary" onClick={() => handleAdd()}>
+            <AddButton key="add" type="primary" onClick={() => handleAdd()}>
               {getFormattedMsg('SemiFinishedWarehousingReceipt.button.add')}
-            </Button>,
-            <Button key="callTray" type="primary" onClick={() => handleCallTray()} >
+            </AddButton>,
+            <CallButton key="callTray" type="primary" onClick={() => handleCallTray()} >
               {getFormattedMsg('SemiFinishedWarehousingReceipt.button.callTray')}
-            </Button>,
-            <Button key="pickTray" type="primary" onClick={() => handlePickTray()} >
+            </CallButton>,
+            <PickButton key="pickTray" type="primary" onClick={() => handlePickTray()} >
               {getFormattedMsg('SemiFinishedWarehousingReceipt.button.pickTray')}
-            </Button>,
+            </PickButton>,
             // <Button key="warehousing" type="primary"  onClick={() => handleWarehousing()} >
             //   {getFormattedMsg('SemiFinishedWarehousingReceipt.button.warehousing')}
             // </Button>
@@ -809,8 +821,8 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
         </HVLayout.Pane>
       </HVLayout>
       <Modal
-        // title={getFormattedMsg('SemiFinishedWarehousingReceipt.title.addOrder')}
-        title={'半成品绑定'}
+        title={getFormattedMsg('SemiFinishedWarehousingReceipt.title.addOrder')}
+        // title={'半成品绑定'}
         visible={addVis}
         footer={modalAddFoot()}
         onCancel={handleCancelAdd}
@@ -901,7 +913,8 @@ const SemiFinishedWarehousingReceipt = ({ history }) => {
 
 
       <Modal
-        title={'托盘下架'}
+        // title={'托盘下架'}
+        title={getFormattedMsg('SemiFinishedWarehousingReceipt.title.pickTrayOut')}
         visible={pickTrayOutVis}
         footer={modalTrayOutFoot()}
         onCancel={handleCancelTrayOut}

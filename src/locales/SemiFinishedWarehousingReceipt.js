@@ -12,13 +12,24 @@ module.exports = {
       creationTime: 'Creation time',
       material: 'Material',
       receiptNumber: 'receiptNumber',
+      // attributeOne: 'attributeOne',
       attributeOne: 'attributeOne',
+      // attributeTwo: 'attributeTwo',
       attributeTwo: 'attributeTwo',
       attributeOneState: 'attributeOneState',
       attributeTwoState: 'attributeTwoState',
       dockingPoint: 'dockingPoint',
       sortPosition: 'sortPosition',
       required: 'required',
+
+      scan: 'Order quantity',
+      info:'Order information',
+      desc:'remark',
+      middle:'Middle point',
+      toLocation:'destination',
+      quantity:'Product quantity (sheet)',
+      materialCode:'Product code',
+      materialName:'Product name',
     },
     placeholder: {
       trayNumber: 'Please enter the tray number',
@@ -28,6 +39,12 @@ module.exports = {
       attributeTwo: 'Please enter the attributeTwo',
       sortPosition: 'Please enter the sortPosition',
       dockingPoint: 'Please enter the dockingPoint',
+
+      orderAdd: 'Please enter the order number',
+      suborderAdd: 'Please enter the suborder number',
+      desc: 'Please enter remarks',
+      middle:'Please select the middle point',
+      toLocation:'Please select a destination',
     },
     title: {
       attributeOne: 'attributeOne',
@@ -35,7 +52,7 @@ module.exports = {
       attributeOneState: 'attributeOneState',
       attributeTwoState: 'attributeTwoState',
       dockingPoint: 'dockingPoint',
-      orderNumber: 'orderNumber',
+      // orderNumber: 'orderNumber',
       orderCount: 'orderCount',
       receiptNumber: 'receiptNumber',
       sortPosition: 'sortPosition',
@@ -45,7 +62,7 @@ module.exports = {
       creator: 'creator',
       updateCreator: 'updateCreator',
       updateTime: 'updateTime',
-      addOrder: 'add',
+      // addOrder: 'add',
 
       lineNumber: 'lineNumber',
       associatedNumber: 'associatedNumber',
@@ -62,6 +79,13 @@ module.exports = {
       tableName: 'Semi-finished Materials Receipt ',
       update: 'update',
       delete: 'delete',
+
+      orderNumber: 'Order number',
+      suborderNumber: 'Suborder number',
+      tableName1: 'Cutting machine 1 Collect material',
+      tableName2: 'Cutting machine 2 Collect material',
+      addOrder: 'Semi-finished binding',
+      pickTrayOut: 'Pallet down',
     },
     message: {
       addSuccess: 'add Success',
@@ -101,12 +125,20 @@ module.exports = {
       realityMaterialName: 'Please input realityMaterialName',
       location: 'Please input location number',
       material: 'Please input material',
+      sortPosition: 'Please select a sorting location',
+      dockingPoint: 'Please select a connection point',
       pickTray: 'Please select tray',
-      warehousing: 'Confirm warehousing?'
+      warehousing: 'Confirm warehousing?',
+
+      autoTransferOut: 'Outbound success',
+      returnStore: 'Removed successfully',
+      manualAddSuborder: 'Please select the relevant main orders',
+      scan: 'Please complete the order information',
     },
     button: {
       callTray: 'call Tray',
       pickTray: 'pick Tray',
+      // add: 'add',
       add: 'add',
       warehousing: 'warehousing',
 
@@ -121,6 +153,10 @@ module.exports = {
       cancel:'cancel',
       call: 'call',
       takeOff:'takeOff',
+
+      orderAdd: 'Manually add orders',
+      suborderAdd: 'Manually add suborders',
+      searchB: 'Query',
     },
     operation: {
       delete: 'Do you want to delete these items?'
@@ -142,6 +178,15 @@ module.exports = {
       dockingPoint: '接驳点',
       sortPosition: '分拣位置',
       required: '是否必填',
+
+      scan: '订单数量',
+      info:'订单信息',
+      desc:'备注',
+      middle:'中间点',
+      toLocation:'目的地',
+      quantity:'产品数量(张)',
+      materialCode:'产品代码',
+      materialName:'产品名称',
     },
     placeholder: {
       trayNumber: '请输入托盘号',
@@ -151,6 +196,12 @@ module.exports = {
       attributeTwo: '请输入属性2',
       sortPosition: '请输入分拣位置',
       dockingPoint: '请输入接驳点',
+
+      orderAdd: '请输入主订单号',
+      suborderAdd: '请输入子订单号',
+      desc: '请输入备注',
+      middle:'请选择中间点',
+      toLocation:'请选择目的地',
     },
     title: {
       attributeOne: '属性1',
@@ -158,7 +209,7 @@ module.exports = {
       attributeOneState: '属性1状态',
       attributeTwoState: '属性2状态',
       dockingPoint: '接驳点',
-      orderNumber: '单号',
+      // orderNumber: '单号',
       orderCount: '订单数量(张)',
       receiptNumber: '收料单号',
       sortPosition: '分拣位置',
@@ -168,7 +219,7 @@ module.exports = {
       creator: '创建人',
       updateCreator: '修改人',
       updateTime: '修改时间',
-      addOrder: '新增半成品收料单',
+      // addOrder: '新增半成品收料单',
 
       lineNumber: '行号',
       associatedNumber: '关联单号',
@@ -182,9 +233,16 @@ module.exports = {
       realityMaterialName: '实际物料名称',
       operation: '操作',
       location: '库位号',
-      tableName: '半成品收料单',
+      // tableName: '半成品收料单',
       update: '修改',
       delete: '删除',
+
+      orderNumber: '主订单号',
+      suborderNumber: '子订单号',
+      tableName1: '切割机1收料',
+      tableName2: '切割机2收料',
+      addOrder: '半成品绑定',
+      pickTrayOut: '托盘下架',
     },
     message: {
       addSuccess: '新增成功',
@@ -226,7 +284,12 @@ module.exports = {
       sortPosition: '请选择分拣位置',
       dockingPoint: '请选择接驳点',
       pickTray: '请选择托盘',
-      warehousing: '确认入库？'
+      warehousing: '确认入库？',
+
+      autoTransferOut: '托盘自动出库成功',
+      returnStore: '托盘下架成功',
+      manualAddSuborder: '请先选择相关主订单',
+      scan: '请完善订单信息',
     },
     button: {
       callTray: '空托呼叫',
@@ -246,6 +309,10 @@ module.exports = {
       cancel:'取消',
       call: '呼叫',
       takeOff:'下架',
+
+      orderAdd: '手动新增主订单',
+      suborderAdd: '手动新增子订单',
+      searchB: '查询',
     },
     operation: {
       delete: '确认删除当前收料单?'

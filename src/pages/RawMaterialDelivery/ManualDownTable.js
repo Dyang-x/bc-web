@@ -25,77 +25,88 @@ const ManualDownTable = ({
 
   const columns = [
     {
-      title: '托盘号',
+      // title: '托盘号',
+      title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.trayNumber'),
       dataIndex: 'trayNumber',
       key: 'trayNumber',
       width: 120,
       align: 'center'
     },
     {
-      title: '物料名称',
+      // title: '物料名称',
+      title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.materialNameM'),
       dataIndex: 'materialName',
       key: 'materialName',
       width: 120,
       align: 'center',
     },
     {
-      title: '库位名称',
+      // title: '库位名称',
+      title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.locationName'),
       dataIndex: 'locationName',
       key: 'locationName',
       width: 120,
       align: 'center'
     },
     {
-      title: '库存数量',
+      // title: '库存数量',
+      title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.quantity'),
       dataIndex: 'quantity',
       key: 'quantity',
       width: 120,
       align: 'center'
     },
     {
-      title: '状态',
+      // title: '状态',
+      title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.state'),
       dataIndex: 'state',
       key: 'state',
       width: 120,
       align: 'center'
     },
     {
-      title: '单位',
+      // title: '单位',
+      title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.unitName'),
       dataIndex: 'unitName',
       key: 'unitName',
       width: 120,
       align: 'center'
     },
     {
-      title: '材质',
+      // title: '材质',
+      title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.materialType'),
       dataIndex: 'materialType',
       key: 'materialType',
       width: 200,
       align: 'center'
     },
     {
-      title: '规格',
+      // title: '规格',
+      title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.specification'),
       dataIndex: 'specification',
       key: 'specification',
       width: 150,
       align: 'center'
     },
     {
-      title: '长度',
+      // title: '长度',
+      title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.length'),
       dataIndex: 'length',
       key: 'length',
       width: 120,
       align: 'center'
     },
     {
-      title: '宽度',
+      // title: '宽度',
+      title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.width'),
       dataIndex: 'width',
       key: 'width',
       width: 120,
       align: 'center'
     },
     {
-      title: '厚度',
+      // title: '厚度',
+      title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.thickness'),
       dataIndex: 'thickness',
       key: 'thickness',
       width: 120,
@@ -107,23 +118,23 @@ const ManualDownTable = ({
     loadData(ManualDownData.cuttingMachine);
   }, [])
 
-  const loadData = async ( cuttingMachine) => {
+  const loadData = async (cuttingMachine) => {
     // let stockId = 0
     let lineId = 0
     await LineEdgeLibraryApi.getByQuery({ cuttingMachine: cuttingMachine })
-    .then(res => {
-      setTableData(res);
-      //console.log(res[0].id, typeof res[0].id, 'res[0].id');
-      const data = res[0].id
-      setDefaultLine(data)
-      lineId = data
-    })
-    .catch(err => {
-      notification.warning({
-        message: getFormattedMsg('global.notify.fail'),
-        description: err.message
+      .then(res => {
+        setTableData(res);
+        //console.log(res[0].id, typeof res[0].id, 'res[0].id');
+        const data = res[0].id
+        setDefaultLine(data)
+        lineId = data
+      })
+      .catch(err => {
+        notification.warning({
+          message: getFormattedMsg('global.notify.fail'),
+          description: err.message
+        });
       });
-    });
 
     setLoading(true);
     const searchTerm = { warehouseId: 195 }
@@ -136,14 +147,14 @@ const ManualDownTable = ({
     setDataSource(data);
     setTotal(res.totalElements);
 
-    const stockId  = data[0].stockId
+    const stockId = data[0].stockId
     setSelectedRowKeys([stockId])
     setLoading(false);
 
-     //console.log('{ stockId: stockId, lineId: lineId }',{ stockId: stockId, lineId: lineId });
+    //console.log('{ stockId: stockId, lineId: lineId }',{ stockId: stockId, lineId: lineId });
     setManualDownSelected({ stockId: stockId, lineId: lineId })
 
-    
+
   }
 
   const loadData_ = async (pageInfo) => {
@@ -158,7 +169,7 @@ const ManualDownTable = ({
     setDataSource(data);
     setTotal(res.totalElements);
 
-    const stockId  = data[0].stockId
+    const stockId = data[0].stockId
     setSelectedRowKeys([stockId])
     setManualDownSelected({ ...ManualDownSelected, stockId: stockId })
 
@@ -179,11 +190,13 @@ const ManualDownTable = ({
   return (
     <HVLayout >
       <HVLayout.Pane
-        title={'手动下架'}
+        // title={'手动下架'}
+        title= {getFormattedMsg('RawMaterialDeliveryOrderManagement.button.handleManualDown')}
         buttons={modalManualDownFoot()}
       >
         <HVLayout.Pane
-          title={'线边库选择'}
+          // title={'线边库选择'}
+          title={getFormattedMsg('RawMaterialDeliveryOrderManagement.title.tableNameM1')}
         >
           <Radio.Group
             onChange={(e) => {
@@ -199,7 +212,8 @@ const ManualDownTable = ({
           </Radio.Group>
         </HVLayout.Pane>
         <HVLayout.Pane
-          title={'库存选择'}
+          // title={'库存选择'}
+          title={getFormattedMsg('RawMaterialDeliveryOrderManagement.title.tableNameM2')}
         >
           <Table
             loading={loading}

@@ -20,15 +20,15 @@ const DetailForm = ({
   form: { getFieldDecorator, validateFields, getFieldValue, setFieldsValue },
   formData,
   isLocation,
-  onWeighingThicknessChange={onWeighingThicknessChange},
-  setWeighingThickness={setWeighingThickness},
-  weighingThickness={weighingThickness} ,
-  onSelectionChange={onSelectionChange},
-  setSelection={setSelection},
-  selection={selection} ,
-  onHeightLimitChange={onHeightLimitChange},
-  setHeightLimit={setHeightLimit},
-  heightLimit={heightLimit} ,
+  onWeighingThicknessChange,
+  setWeighingThickness,
+  weighingThickness,
+  onSelectionChange,
+  setSelection,
+  selection,
+  onHeightLimitChange,
+  setHeightLimit,
+  heightLimit,
 }) => {
 
   const weighingThicknesss = [
@@ -48,27 +48,35 @@ const DetailForm = ({
 
   return (
     <Form>
-      <FormItem {...formItemLayout} label={'库位编码'}>
+      {/* <FormItem {...formItemLayout} label={'库位编码'}> */}
+      <FormItem {...formItemLayout} label={getFormattedMsg('newWaresLocation.label.codeL')}>
         {getFieldDecorator('code', {
           initialValue: formData.code || '',
-          rules: [{ required: true, message: '请输入库位编码'}]
+          // rules: [{ required: true, message: '请输入库位编码' }]
+          rules: [{ required: true, message: getFormattedMsg('newWaresLocation.message.codeL') }]
         })(
-          <Input disabled={formData.id} placeholder={'请输入库位编码'} />
+          // <Input disabled={formData.id} placeholder={'请输入库位编码'} />
+          <Input disabled={formData.id} placeholder={getFormattedMsg('newWaresLocation.message.codeL')} />
         )}
       </FormItem>
-      <FormItem {...formItemLayout} label={'库位名称'}>
+      {/* <FormItem {...formItemLayout} label={'库位名称'}> */}
+      <FormItem {...formItemLayout} label={getFormattedMsg('newWaresLocation.label.nameL')}>
         {getFieldDecorator('name', {
           initialValue: formData.name || '',
-          rules: [{ required: true, message: '请输入库位名称'}]
+          // rules: [{ required: true, message: '请输入库位名称' }]
+          rules: [{ required: true, message: getFormattedMsg('newWaresLocation.message.nameL') }]
         })(
-          <Input placeholder={'请输入库位名称'} />
+          // <Input placeholder={'请输入库位名称'} />
+          <Input placeholder={getFormattedMsg('newWaresLocation.message.nameL')} />
         )}
       </FormItem>
-      <FormItem {...formItemLayout} label={'是否称重/测厚'}>
+      {/* <FormItem {...formItemLayout} label={'是否称重/测厚'}> */}
+      <FormItem {...formItemLayout} label={getFormattedMsg('newWaresLocation.label.weighingThickness')}>
         {getFieldDecorator('weighingThickness', {
           initialValue: formData.selection || weighingThickness,
           valuePropName: 'checked',
-          rules: [{ required: true, message: '请选择是否称重/测厚' }]
+          // rules: [{ required: true, message: '请选择是否称重/测厚' }]
+          rules: [{ required: true, message: getFormattedMsg('newWaresLocation.message.weighingThickness') }]
         })(
           <Checkbox.Group
             options={weighingThicknesss}
@@ -78,11 +86,13 @@ const DetailForm = ({
           />
         )}
       </FormItem>
-      <FormItem {...formItemLayout} label={'左右架选择'}>
+      {/* <FormItem {...formItemLayout} label={'左右架选择'}> */}
+      <FormItem {...formItemLayout} label={getFormattedMsg('newWaresLocation.label.selection')}>
         {getFieldDecorator('selection', {
           initialValue: formData.selection || selection,
           valuePropName: 'checked',
-          rules: [{ required: true, message: '请选择左架/右架' }]
+          // rules: [{ required: true, message: '请选择左架/右架' }]          
+          rules: [{ required: true, message: getFormattedMsg('newWaresLocation.message.selection') }]
         })(
           <Checkbox.Group
             options={selections}
@@ -92,11 +102,13 @@ const DetailForm = ({
           />
         )}
       </FormItem>
-      <FormItem {...formItemLayout} label={'限高'}>
+      {/* <FormItem {...formItemLayout} label={'限高'}> */}
+      <FormItem {...formItemLayout} label={getFormattedMsg('newWaresLocation.label.heightLimit')}>
         {getFieldDecorator('heightLimit', {
           initialValue: formData.heightLimit || heightLimit,
           valuePropName: 'checked',
-          rules: [{ required: true, message: '请选择限高高度' }]
+          // rules: [{ required: true, message: '请选择限高高度' }]
+          rules: [{ required: true, message: getFormattedMsg('newWaresLocation.message.heightLimit') }]
         })(
           <Checkbox.Group
             options={heightLimits}
@@ -106,22 +118,28 @@ const DetailForm = ({
           />
         )}
       </FormItem>
-        <FormItem {...formItemLayout} label={'X轴坐标'}>
-          {getFieldDecorator('xcoordinate', {
-            initialValue: formData.xcoordinate || '',
-            rules: [{ required: true, message: '请输入X轴坐标' }]
-          })(
-            <Input placeholder='请输入X轴坐标' />
-          )}
-        </FormItem>
-        <FormItem {...formItemLayout} label={'Y轴坐标'}>
-          {getFieldDecorator('ycoordinate', {
-            initialValue: formData.ycoordinate || '',
-            rules: [{ required: true, message: '请输入Y轴坐标' }]
-          })(
-            <Input placeholder='请输入Y轴坐标' />
-          )}
-        </FormItem>
+      {/* <FormItem {...formItemLayout} label={'X轴坐标'}> */}
+      <FormItem {...formItemLayout} label={getFormattedMsg('newWaresLocation.label.xcoordinate')}>
+        {getFieldDecorator('xcoordinate', {
+          initialValue: formData.xcoordinate || '',
+          // rules: [{ required: true, message: '请输入X轴坐标' }]
+          rules: [{ required: true, message: getFormattedMsg('newWaresLocation.message.xcoordinate') }]
+        })(
+          // <Input placeholder='请输入X轴坐标' />
+          <Input placeholder={getFormattedMsg('newWaresLocation.message.xcoordinate')} />
+        )}
+      </FormItem>
+      {/* <FormItem {...formItemLayout} label={'Y轴坐标'}> */}
+      <FormItem {...formItemLayout} label={getFormattedMsg('newWaresLocation.label.ycoordinate')}>
+        {getFieldDecorator('ycoordinate', {
+          initialValue: formData.ycoordinate || '',
+          // rules: [{ required: true, message: '请输入Y轴坐标' }]
+          rules: [{ required: true, message: getFormattedMsg('newWaresLocation.message.ycoordinate') }]
+        })(
+          // <Input placeholder='请输入Y轴坐标' />
+          <Input placeholder={getFormattedMsg('newWaresLocation.message.ycoordinate')} />
+        )}
+      </FormItem>
     </Form>
   );
 }

@@ -60,15 +60,15 @@ const ContentTwo = ({newDataDetail}) => {
       <div className={styles.Theader}>
         <div className={styles.tNum}>序号</div>
         <div >物料编码</div>
-        <div >名称</div>
-        <div >采购单号</div>
-        <div >材质</div>
-        <div >规格</div>
-        <div >张数</div>
+        <div style={{width:"30%"}}>名称</div>
+        <div style={{width:"40%"}}>采购单号</div>
+        <div style={{width:"30%"}}>材质</div>
+        <div style={{width:"35%"}}>规格</div>
+        <div style={{width:"20%"}}>张数</div>
         <div >重量(kg)</div>
         <div >托盘号</div>
         <div >位置</div>
-        <div className={styles.tcreateTime}>入库时间</div>
+        <div style={{width:"30%"}}>入库时间</div>
       </div>
       <div className={styles.parent} ref={warper}>
 
@@ -83,15 +83,15 @@ const ContentTwo = ({newDataDetail}) => {
             >
               <span className={styles.num}>{index + 1}</span>
               <span >{item.materialCode}</span>
-              <span >{item.materialName}</span>
-              <span >{item.purchaseOrderNumber}</span>
-              <span >{item.materialType}</span>
-              <span >{item.specification}</span>
-              <span >{item.number}</span>
+              <span style={{width:"30%"}}>{item.materialName}</span>
+              <span style={{width:"40%"}}>{item.purchaseOrderNumber}</span>
+              <span style={{width:"30%"}}>{item.materialType}</span>
+              <span style={{width:"35%"}}>{item.specification}</span>
+              <span style={{width:"20%"}}>{item.number}</span>
               <span >{item.weight}</span>
               <span >{item.trayNumber}</span>
               <span >{item.location}</span>
-              <span className={styles.createTime}>{item.createTime}</span>
+              <span style={{width:"30%"}}>{item.createTime}</span>
             </li>
           ))}
         </div>

@@ -9,11 +9,22 @@ import UpdateForm from './UpdateForm';
 import ManualTable from './ManualTable';
 import BindingForm from './BindingForm';
 import { isEmpty } from 'lodash';
+import { withPermission } from '@hvisions/core';
 
 const getFormattedMsg = i18n.getFormattedMsg;
 const { RangePicker } = DatePicker;
 const dateTime = 'YYYY-MM-DD HH:mm:ss';
 const { showTotal } = page;
+
+const AutomaticButton = withPermission(Button, 'Automatic');
+const ManualButton = withPermission(Button, 'Manual');
+const BindingButton = withPermission(Button, 'Binding');
+
+const UpdateButton = withPermission('a', 'Update');
+const DeleteButton = withPermission('a', 'Delete');
+const InStoreButton = withPermission('a', 'InStore');
+const WeighingButton = withPermission('a', 'Weighing');
+const WarehousingButton = withPermission('a', 'Warehousing');
 
 const RawMaterialWarehousingReceipt = ({ history }) => {
   const [tableData, setTableData] = useState([]);
@@ -97,7 +108,8 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
     // },
 
     {
-      title: '采购订单号',
+      // title: '采购订单号',
+      title: getFormattedMsg('RawMaterialWarehousingReceipt.title.associatedNumber'),
       dataIndex: 'associatedNumber',
       key: 'associatedNumber',
       align: 'center',
@@ -144,30 +156,36 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
       align: 'center',
       width: 200,
       render: (_, record) => [
-        record.state != 2 && <a key="update" onClick={() => handleUpdate(record)}>
+        record.state != 2 && [
+        <UpdateButton key="update" onClick={() => handleUpdate(record)}>
           {getFormattedMsg('RawMaterialWarehousingReceipt.button.update')}
-        </a>,
+        </UpdateButton>,
+        <Divider key="divider1" type="vertical" />,
+        <DeleteButton key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)}>
+          {getFormattedMsg('RawMaterialWarehousingReceipt.button.delete')}
+        </DeleteButton>,
+        ],
         record.state == 0 && [
-          <Divider key="divider1" type="vertical" />,
-          <a key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)}>
-            {getFormattedMsg('RawMaterialWarehousingReceipt.button.delete')}
-          </a>,
+          // <Divider key="divider1" type="vertical" />,
+          // <DeleteButton key="delete" style={{ color: 'var(--ne-delete-button-font)', cursor: 'pointer' }} onClick={() => handleDelete(record)}>
+          //   {getFormattedMsg('RawMaterialWarehousingReceipt.button.delete')}
+          // </DeleteButton>,
           <Divider key="divider2" type="vertical" />,
-          <a key="weighing" type="primary" onClick={() => handInStore(record)} >
-            小车进入
-          </a>,
+          <InStoreButton key="inStore" type="primary" onClick={() => handInStore(record)} >
+            {/* 小车进入 */}
+            {getFormattedMsg('RawMaterialWarehousingReceipt.button.inStore')}
+          </InStoreButton>,
         ],
         record.state == 1 && [
           <Divider key="divider4" type="vertical" />,
-          <a key="weighing" type="primary" onClick={() => handleWeighing(record)} >
+          <WeighingButton key="weighing" type="primary" onClick={() => handleWeighing(record)} >
             {getFormattedMsg('RawMaterialWarehousingReceipt.button.weighing')}
-          </a>,
+          </WeighingButton>,
           <Divider key="divider3" type="vertical" />,
-          <a key="warehousing" type="primary" onClick={() => handleWarehousing(record)} >
+          <WarehousingButton key="warehousing" type="primary" onClick={() => handleWarehousing(record)} >
             {getFormattedMsg('RawMaterialWarehousingReceipt.button.warehousing')}
-          </a>
+          </WarehousingButton>
         ],
-
         // <Divider key="divider2" type="vertical" />,
         // <a key="warehousing" type="primary" onClick={(record) => handleWarehousing(record)} >
         //   {getFormattedMsg('RawMaterialWarehousingReceipt.button.warehousing')}
@@ -243,7 +261,7 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
   };
 
   const { Table, SettingButton } = useMemo(
-    () => CacheTable({ columns, scrollHeight: 'calc(100vh - 470px)', key: 'wms_quality' }),
+    () => CacheTable({ columns, scrollHeight: 'calc(100vh - 470px)', key: 'raw_material_delivery_warehousing' }),
     []
   );
 
@@ -321,13 +339,15 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
 
   const handInStore = (record) => {
     Modal.confirm({
-      title: '确认开始小车进入流程？',
+      // title: '确认开始小车进入流程？',
+      title: getFormattedMsg('RawMaterialWarehousingReceipt.title.inStore'),
       onOk: async () => {
         await RawMaterialWarehousingReceiptApi
           .handInStore(record.id)
           .then(res => {
             notification.success({
-              message: '流程已开始'
+              // message: '流程已开始'
+              message: getFormattedMsg('RawMaterialWarehousingReceipt.message.inStoreSuccess'),
             });
             loadData(page, pageSize, { ...searchValue, state: selectedstatus });
           })
@@ -347,7 +367,8 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
       .getWeigh(weighingId)
       .then(res => {
         notification.success({
-          message: '称重成功'
+          // message: '称重成功'
+          message: getFormattedMsg('RawMaterialWarehousingReceipt.message.weighingSuccess'),
         });
         loadData(page, pageSize, { ...searchValue, state: selectedstatus });
       })
@@ -366,12 +387,14 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
       transferType: 0 //原料托盘
     }
     Modal.confirm({
-      title: '确认托盘自动下架？',
+      // title: '确认托盘自动下架？',
+      title: getFormattedMsg('RawMaterialWarehousingReceipt.title.automatic'),
       onOk: async () => {
         await EmptyPalletDeliveryApi.autoTransferOut(data)
           .then(res => {
             notification.success({
-              message: '托盘自动下架成功'
+              // message: '托盘自动下架成功'              
+          message: getFormattedMsg('RawMaterialWarehousingReceipt.message.automaticSuccess'),
             });
             loadData(page, pageSize, { ...searchValue, state: selectedstatus });
           })
@@ -432,13 +455,15 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
     }
     //console.log('data',data);
     Modal.confirm({
-      title: '确认下架托盘？',
+      // title: '确认下架托盘？',
+      title: getFormattedMsg('RawMaterialWarehousingReceipt.title.manualT'),
       onOk: async () => {
         await EmptyPalletDeliveryApi
           .addAnddownShelves(data)
           .then(res => {
             notification.success({
-              message: '托盘出库任务生成成功'
+              // message: '托盘出库任务生成成功'
+              message: getFormattedMsg('RawMaterialWarehousingReceipt.message.manualSuccess'),
             });
             handleCancelManual();
             loadData(page, pageSize, { ...searchValue, state: selectedstatus });
@@ -503,7 +528,8 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
       .inStore(record.id)
       .then(res => {
         notification.success({
-          message: '入库成功'
+          // message: '入库成功'
+          message: getFormattedMsg('RawMaterialWarehousingReceipt.message.warehousingSuccess'),
         });
         loadData(page, pageSize, { ...searchValue, state: selectedstatus });
       })
@@ -570,15 +596,15 @@ const RawMaterialWarehousingReceipt = ({ history }) => {
           icon={<i className="h-visions hv-table" />}
           title={getFormattedMsg('RawMaterialWarehousingReceipt.title.tableName')}
           buttons={[
-            selectedstatus == 0 && <Button key="automatic" type="primary" onClick={() => handleAutomatic()} >
+            selectedstatus == 0 && <AutomaticButton key="automatic" type="primary" onClick={() => handleAutomatic()} >
               {getFormattedMsg('RawMaterialWarehousingReceipt.button.automatic')}
-            </Button>,
-            selectedstatus == 0 && <Button key="manual" type="primary" onClick={() => handleManual()} >
+            </AutomaticButton>,
+            selectedstatus == 0 && <ManualButton key="manual" type="primary" onClick={() => handleManual()} >
               {getFormattedMsg('RawMaterialWarehousingReceipt.button.manual')}
-            </Button>,
-            selectedstatus == 0 && <Button key="binding" type="primary" onClick={() => handleBinding()}>
+            </ManualButton>,
+            selectedstatus == 0 && <BindingButton key="binding" type="primary" onClick={() => handleBinding()}>
               {getFormattedMsg('RawMaterialWarehousingReceipt.button.binding')}
-            </Button>,
+            </BindingButton>,
             // selectedstatus == 1 && <Button key="weighing" type="primary" onClick={() => handleWeighing()} >
             //   {getFormattedMsg('RawMaterialWarehousingReceipt.button.weighing')}
             // </Button>,

@@ -79,31 +79,36 @@ const SemiFinisheDeliveryPalletSelection = ({ history }) => {
     //   align: 'center',
     // },
     {
-      title: '订单号',
+      // title: '订单号',
+      title: getFormattedMsg('SemiFinisheDeliveryPalletSelection.title.orderNumber'),
       dataIndex: 'orderNumber',
       key: 'orderNumber',
       align: 'center',
     },
     {
-      title: '子订单号',
+      // title: '子订单号',
+      title: getFormattedMsg('SemiFinisheDeliveryPalletSelection.title.suborderNumber'),
       dataIndex: 'suborderNumber',
       key: 'suborderNumber',
       align: 'center',
     },
     {
-      title: '产品名称',
+      // title: '产品名称',
+      title: getFormattedMsg('SemiFinisheDeliveryPalletSelection.title.productName'),
       dataIndex: 'productName',
       key: 'productName',
       align: 'center',
     },
     {
-      title: '产品代码',
+      // title: '产品代码',
+      title: getFormattedMsg('SemiFinisheDeliveryPalletSelection.title.productCode'),
       dataIndex: 'productCode',
       key: 'productCode',
       align: 'center',
     },
     {
-      title: '产品数量(张)',
+      // title: '产品数量(张)',
+      title: getFormattedMsg('SemiFinisheDeliveryPalletSelection.title.productNum'),
       dataIndex: 'productNum',
       key: 'productNum',
       align: 'center',
@@ -156,7 +161,8 @@ const SemiFinisheDeliveryPalletSelection = ({ history }) => {
       }
     },
     {
-      title: '备注',
+      // title: '备注',
+      title: getFormattedMsg('SemiFinisheDeliveryPalletSelection.title.desc'),
       dataIndex: 'desc',
       key: 'desc',
       align: 'center',
@@ -228,7 +234,7 @@ const SemiFinisheDeliveryPalletSelection = ({ history }) => {
   };
 
   const { Table: TableL, SettingButton: SettingButtonL } = useMemo(
-    () => CacheTable({ columns: columns, scrollHeight: 'calc(100vh - 470px)', key: 'PalletSelection_L' }),
+    () => CacheTable({ columns: columns, scrollHeight: 'calc(100vh - 470px)', key: 'semi_finished_delivery' }),
     []
   );
 
@@ -294,14 +300,16 @@ const SemiFinisheDeliveryPalletSelection = ({ history }) => {
         .outStore(params.readyMaterials, selectedRowKeys, params.dockingPoint)
         .then(res => {
           notification.success({
-            message: '出库成功',
+            // message: '出库成功',
+            message: getFormattedMsg('SemiFinisheDeliveryPalletSelection.message.outStoreSuccess'),
           });
           loadData(page, pageSize, { ...searchValue });
         })
         .catch(err => {
           setLoading(false);
           notification.warning({
-            message: '出库失败',
+            // message: '出库失败',
+            message: getFormattedMsg('SemiFinisheDeliveryPalletSelection.message.outStoreFailure'),
             description: err.message
           });
         });
@@ -322,10 +330,12 @@ const SemiFinisheDeliveryPalletSelection = ({ history }) => {
               <Input allowClear placeholder={getFormattedMsg('SemiFinisheDeliveryPalletSelection.placeholder.orderNumber')} />
             </SearchForm.Item>
             <SearchForm.Item
-              label={'子订单号'}
+              // label={'子订单号'}
+              label={getFormattedMsg('SemiFinisheDeliveryPalletSelection.title.suborderNumber')}
               name="suborderNumber"
             >
-              <Input allowClear placeholder={'请输入子订单号'} />
+              {/* <Input allowClear placeholder={'请输入子订单号'} /> */}
+              <Input allowClear placeholder={getFormattedMsg('SemiFinisheDeliveryPalletSelection.placeholder.suborderNumber')} />
             </SearchForm.Item>
             <SearchForm.Item
               label={getFormattedMsg('SemiFinisheDeliveryPalletSelection.label.trayNumber')}
@@ -374,17 +384,20 @@ const SemiFinisheDeliveryPalletSelection = ({ history }) => {
               />
             </SearchForm.Item>
             <SearchForm.Item
-              label={'备注'}
+              // label={'备注'}
+              label={getFormattedMsg('SemiFinisheDeliveryPalletSelection.title.desc')}
               name="description"
             >
-              <Input allowClear placeholder={'请输入备注信息'} />
+              {/* <Input allowClear placeholder={'请输入备注信息'} /> */}
+              <Input allowClear placeholder={getFormattedMsg('SemiFinisheDeliveryPalletSelection.placeholder.desc')} />
             </SearchForm.Item>
           </SearchForm>
         </HVLayout.Pane>
         <HVLayout layout="horizontal">
           <Pane
             icon={<i className="h-visions hv-table" />}
-            title={'半成品库存'}
+            // title={'半成品库存'}
+            title={getFormattedMsg('SemiFinisheDeliveryPalletSelection.title.tableName')}
             // buttons={[
             //   <Button key="out" type="primary" onClick={() => handleOut()}>
             //     {getFormattedMsg('SemiFinisheDeliveryPalletSelection.button.out')}

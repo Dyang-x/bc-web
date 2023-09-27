@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import {  HVLayout,  Button,  notification,  Modal,  Spin,  Pagination,  SearchForm,  DatePicker,  Input,  Drawer,Divider} from '@hvisions/h-ui';
+import { Menu, Dropdown, Icon } from '@hvisions/h-ui';
 import { i18n, page } from '@hvisions/toolkit';
 import { CacheTable } from '~/components';
 import moment from 'moment';
@@ -7,11 +8,19 @@ import SurplusMaterialApi from '~/api/SurplusMaterial';
 
 import LineEdgeLibraryApi from '~/api/LineEdgeLibraryController';
 import EmptyPalletsWarehousingApi from '~/api/EmptyPalletsWarehousing';
+import { withPermission } from '@hvisions/core';
 
 const getFormattedMsg = i18n.getFormattedMsg;
 const { RangePicker } = DatePicker;
 const dateTime = 'YYYY-MM-DD HH:mm:ss';
 const { showTotal } = page;
+
+const PutOnButton = withPermission('a', 'PutOn');
+const RelieveOccupationButton = withPermission('a', 'RelieveOccupation');
+const UpButton = withPermission('a', 'Up');
+const DownButton = withPermission('a', 'Down');
+const MaterialReturnButton = withPermission('a', 'MaterialReturn');
+const UpdateButton = withPermission('a', 'Update');
 
 const WirelineStorage = ({ history }) => {
   const [tableData, setTableData] = useState([]);
@@ -30,77 +39,88 @@ const WirelineStorage = ({ history }) => {
 
   const columns = [
     {
-      title: '切割机',
+      // title: '切割机',
+      title: getFormattedMsg('WirelineStorage.title.cuttingMachine'),
       dataIndex: 'cuttingMachine',
       key: 'cuttingMachine',
       align: 'center',
       width:100,
     },
     {
-      title: '材料名称',
+      // title: '材料名称',
+      title: getFormattedMsg('WirelineStorage.title.materialName'),
       dataIndex: 'materialName',
       key: 'materialName',
       align: 'center',
       width:100,
     },
     {
-      title: '材料编码',
+      // title: '材料编码',
+      title: getFormattedMsg('WirelineStorage.title.materialCode'),
       dataIndex: 'materialCode',
       key: 'materialCode',
       align: 'center',
       width:100,
     },
     {
-      title: '材料大小 X',
+      // title: '材料大小 X',
+      title: getFormattedMsg('WirelineStorage.title.materialSizeX'),
       dataIndex: 'materialSizeX',
       key: 'materialSizeX',
       align: 'center',
       width:100,
     },
     {
-      title: '材料大小 Y',
+      // title: '材料大小 Y',
+      title: getFormattedMsg('WirelineStorage.title.materialSizeY'),
       dataIndex: 'materialSizeY',
       key: 'materialSizeY',
       align: 'center',
       width:100,
     },
     {
-      title: '材料厚度',
+      // title: '材料厚度',
+      title: getFormattedMsg('WirelineStorage.title.materialThickness'),
       dataIndex: 'materialThickness',
       key: 'materialThickness',
       align: 'center',
       width:100,
     },
     {
-      title: '出库总数(张)',
+      // title: '出库总数(张)',
+      title: getFormattedMsg('WirelineStorage.title.quantity'),
       dataIndex: 'quantity',
       key: 'quantity',
       align: 'center',
       width:110,
     },
     {
-      title: '剩余数量(张)',
+      // title: '剩余数量(张)',
+      title: getFormattedMsg('WirelineStorage.title.remainderNum'),
       dataIndex: 'remainderNum',
       key: 'remainderNum',
       align: 'center',
       width:110,
     },
     {
-      title: '使用状态',
+      // title: '使用状态',
+      title: getFormattedMsg('WirelineStorage.title.useState'),
       dataIndex: 'useState',
       key: 'useState',
       align: 'center',
       width:100,
     },
     {
-      title: '托盘号',
+      // title: '托盘号',
+      title: getFormattedMsg('WirelineStorage.title.trayNumber'),
       dataIndex: 'trayNumber',
       key: 'trayNumber',
       align: 'center',
       width:100,
     },
     {
-      title: '托盘位置',
+      // title: '托盘位置',
+      title: getFormattedMsg('WirelineStorage.title.trayLocation'),
       dataIndex: 'trayLocation',
       key: 'trayLocation',
       align: 'center',
@@ -110,60 +130,121 @@ const WirelineStorage = ({ history }) => {
       width:100,
     },
     {
-      title: '托盘交接位',
+      // title: '托盘交接位',
+      title: getFormattedMsg('WirelineStorage.title.fromLocation'),
       dataIndex: 'fromLocation',
       key: 'fromLocation',
       align: 'center',
       width:100,
     },
     {
-      title: '托盘到达位',
+      // title: '托盘到达位',
+      title: getFormattedMsg('WirelineStorage.title.toLocation'),
       dataIndex: 'toLocation',
       key: 'toLocation',
       align: 'center',
       width:100,
     },
     {
-      title: '位置名称',
+      // title: '位置名称',
+      title: getFormattedMsg('WirelineStorage.title.locationName'),
       dataIndex: 'locationName',
       key: 'locationName',
       align: 'center',
       width:100,
     },
+    // {
+    //   title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.operation'),
+    //   key: 'opt',
+    //   align: 'center',
+    //   width: 500,
+    //   fixed:'right',
+    //   render: (_, record) => [
+    //     <a key="PutOn" onClick={() => handlePutOn(record)}>
+    //       {/* 上架 */}
+    //       {getFormattedMsg('WirelineStorage.button.handlePutOn')}
+    //     </a>,
+    //     <Divider key="divider1" type="vertical" />,
+    //     <a key="Up" onClick={() => handleUp(record)}>
+    //       {/* 数量+1 */}
+    //       {getFormattedMsg('WirelineStorage.button.handleUp')}
+    //     </a>,
+    //     <Divider key="divider2" type="vertical" />,
+    //     <a key="Down" onClick={() => handleDown(record)}>
+    //       {/* 数量-1 */}
+    //       {getFormattedMsg('WirelineStorage.button.handleDown')}
+    //     </a>,
+    //     <Divider key="divider3" type="vertical" />,
+    //     <a key="MaterialReturn" onClick={() => handMaterialReturn(record)}>
+    //       {/* 手动剩余物料退库 */}
+    //       {getFormattedMsg('WirelineStorage.button.handMaterialReturn')}
+    //     </a>,
+    //     <Divider key="divider4" type="vertical" />,
+    //     <a key="updateHighLevel" onClick={() => updateHighLevel(record)}>
+    //       {/* 更新上下料数据 */}
+    //       {getFormattedMsg('WirelineStorage.button.updateHighLevel')}
+    //     </a>,
+    //     <Divider key="divider5" type="vertical" />,
+    //     <a key="relieveOccupation" onClick={() => relieveOccupation(record)}>
+    //       {/* 解除占用 */}
+    //       {getFormattedMsg('WirelineStorage.button.relieveOccupation')}
+    //     </a>,
+    //   ],
+    // }
     {
       title: getFormattedMsg('RawMaterialDeliveryOrderManagement.title.operation'),
       key: 'opt',
       align: 'center',
-      width: 500,
+      width: 250,
       fixed:'right',
       render: (_, record) => [
-        <a key="detail" onClick={() => handlePutOn(record)}>
-          上架
-        </a>,
+        <PutOnButton key="PutOn" onClick={() => handlePutOn(record)}>
+          {/* 上架 */}
+          {getFormattedMsg('WirelineStorage.button.handlePutOn')}
+        </PutOnButton>,
         <Divider key="divider1" type="vertical" />,
-        <a key="detail" onClick={() => handleUp(record)}>
-          数量+1
-        </a>,
+        <RelieveOccupationButton key="relieveOccupation" onClick={() => relieveOccupation(record)}>
+          {/* 解除占用 */}
+          {getFormattedMsg('WirelineStorage.button.relieveOccupation')}
+        </RelieveOccupationButton>,
         <Divider key="divider2" type="vertical" />,
-        <a key="detail" onClick={() => handleDown(record)}>
-          数量-1
-        </a>,
-        <Divider key="divider3" type="vertical" />,
-        <a key="detail" onClick={() => handMaterialReturn(record)}>
-          手动剩余物料退库
-        </a>,
-        <Divider key="divider4" type="vertical" />,
-        <a key="detail" onClick={() => updateHighLevel(record)}>
-          更新上下料数据
-        </a>,
-        <Divider key="divider5" type="vertical" />,
-        <a key="detail" onClick={() => relieveOccupation(record)}>
-          解除占用
-        </a>,
+        <Dropdown key="dropdown" overlay={menu(record)} placement="bottomLeft">
+          <a className="ant-dropdown-link" href="#">
+            更多 <Icon type="down" />
+          </a>
+        </Dropdown>
       ],
     }
   ]
-
+  
+  const menu = record => (
+    <Menu>
+      <Menu.Item>
+        <UpButton key="Up" onClick={() => handleUp(record)}>
+          {/* 数量+1 */}
+          {getFormattedMsg('WirelineStorage.button.handleUp')}
+        </UpButton>
+      </Menu.Item>
+      <Menu.Item>
+      <DownButton key="Down" onClick={() => handleDown(record)}>
+          {/* 数量-1 */}
+          {getFormattedMsg('WirelineStorage.button.handleDown')}
+        </DownButton>
+      </Menu.Item>
+      <Menu.Item>
+      <MaterialReturnButton key="MaterialReturn" onClick={() => handMaterialReturn(record)}>
+          {/* 手动剩余物料退库 */}
+          {getFormattedMsg('WirelineStorage.button.handMaterialReturn')}
+        </MaterialReturnButton>
+      </Menu.Item>
+      <Menu.Item >
+      <UpdateButton key="updateHighLevel" onClick={() => updateHighLevel(record)}>
+          {/* 更新上下料数据 */}
+          {getFormattedMsg('WirelineStorage.button.updateHighLevel')}
+        </UpdateButton>
+      </Menu.Item>
+    </Menu>
+  );
   //查询页面数据
   const loadData = async ( searchValue) => {
     setLoading(true);
@@ -253,7 +334,8 @@ const WirelineStorage = ({ history }) => {
       .addAndupShelves(data)
       .then(res => {
         notification.success({
-          message: '托盘入库任务生成成功'
+          // message: '托盘入库任务生成成功'
+          message: getFormattedMsg('WirelineStorage.message.addAndupShelves')
         });
         // reFreshFunc()
         loadData({ ...searchValue })
@@ -268,19 +350,22 @@ const WirelineStorage = ({ history }) => {
   const handleUp = (record) => {
     const addremove  = "%2B1"
     Modal.confirm({
-      title: `确认托盘${record.trayNumber}数量+1 ?`,
+      // title: `确认托盘${record.trayNumber}数量+1 ?`,
+      title: `${ getFormattedMsg('WirelineStorage.message.handle')}${record.trayNumber}${ getFormattedMsg('WirelineStorage.button.handleUp')} ?`,
       onOk: async() => {
         await LineEdgeLibraryApi.updateRemainderNum(record.locationName ,addremove,record.cuttingMachine )
         .then(res => {
           notification.success({
-            message: '数量增加成功'
+            // message: '数量增加成功',
+            message: getFormattedMsg('WirelineStorage.message.addSuccess'),
           })
         // reFreshFunc()
         loadData({ ...searchValue })
         })
         .catch(err => {
           notification.warning({
-            message: '数量增加失败',
+            // message: '数量增加失败',
+            message: getFormattedMsg('WirelineStorage.message.addFailure'),
             description: err.message
           })
         })
@@ -291,19 +376,22 @@ const WirelineStorage = ({ history }) => {
   const handleDown = (record) => {
     const addremove  = "-1"
     Modal.confirm({
-      title: `确认托盘${record.trayNumber}数量-1 ?`,
+      // title: `确认托盘${record.trayNumber}数量-1 ?`,
+      title: `${ getFormattedMsg('WirelineStorage.message.handle')}${record.trayNumber}${ getFormattedMsg('WirelineStorage.button.handleDown')} ?`,
       onOk: async() => {
         await LineEdgeLibraryApi.updateRemainderNum(record.locationName ,addremove,record.cuttingMachine )
         .then(res => {
           notification.success({
-            message: '数量减少成功'
+            // message: '数量减少成功'
+            message: getFormattedMsg('WirelineStorage.message.removeSuccess'),
           })
         // reFreshFunc()
         loadData({ ...searchValue })
         })
         .catch(err => {
           notification.warning({
-            message: '数量减少失败',
+            // message: '数量减少失败',
+            message: getFormattedMsg('WirelineStorage.message.removeFailure'),
             description: err.message
           })
         })
@@ -315,14 +403,16 @@ const WirelineStorage = ({ history }) => {
     await LineEdgeLibraryApi.handMaterialReturn(record.id )
         .then(res => {
           notification.success({
-            message: '物料退库成功'
+            // message: '物料退库成功'
+            message: getFormattedMsg('WirelineStorage.message.returnSuccess'),
           })
         // reFreshFunc()
         loadData({ ...searchValue })
         })
         .catch(err => {
           notification.warning({
-            message: '物料退库失败',
+            // message: '物料退库失败',
+            message: getFormattedMsg('WirelineStorage.message.returnFailure'),
             description: err.message
           })
         })
@@ -332,14 +422,16 @@ const WirelineStorage = ({ history }) => {
     await LineEdgeLibraryApi.updateHighLevel(record.id )
         .then(res => {
           notification.success({
-            message: '数据更新成功'
+            // message: '数据更新成功'
+            message: getFormattedMsg('WirelineStorage.message.updateSuccess'),
           })
         // reFreshFunc()
         loadData({ ...searchValue })
         })
         .catch(err => {
           notification.warning({
-            message: '数据更新失败',
+            // message: '数据更新失败',
+            message: getFormattedMsg('WirelineStorage.message.updateFailure'),
             description: err.message
           })
         })
@@ -349,14 +441,16 @@ const WirelineStorage = ({ history }) => {
     await LineEdgeLibraryApi.relieveOccupation(record.fromLocation ,0 )
     .then(res => {
       notification.success({
-        message: '物料解除占用成功'
+        // message: '物料解除占用成功'
+        message: getFormattedMsg('WirelineStorage.message.relieveSuccess'),
       })
         // reFreshFunc()
         loadData({ ...searchValue })
     })
     .catch(err => {
       notification.warning({
-        message: '物料占用失败',
+        // message: '物料解除占用失败',
+        message: getFormattedMsg('WirelineStorage.message.relieveFailure'),
         description: err.message
       })
     })
@@ -434,29 +528,35 @@ const WirelineStorage = ({ history }) => {
         <HVLayout.Pane height={'auto'}>
           <SearchForm onSearch={handleSearch}>
             <SearchForm.Item
-              label={'切割机'}
+              // label={'切割机'}
+              label={getFormattedMsg('WirelineStorage.label.cuttingMachine')}
               name="cuttingMachine"
             >
               <Input
-                placeholder={'请输入切割机信息'}
+                // placeholder={'请输入切割机信息'}
+                placeholder={getFormattedMsg('WirelineStorage.placeholder.cuttingMachine')}
                 allowClear
               />
             </SearchForm.Item>
             <SearchForm.Item
-              label={'任务号'}
+              // label={'任务号'}
+              label={getFormattedMsg('WirelineStorage.label.taskCode')}
               name="taskCode"
             >
               <Input
-                placeholder={'请输入任务号'}
+                // placeholder={'请输入任务号'}
+                placeholder={getFormattedMsg('WirelineStorage.placeholder.taskCode')}
                 allowClear
               />
             </SearchForm.Item>
             <SearchForm.Item
-              label={'托盘号'}
+              // label={'托盘号'}
+              label={getFormattedMsg('WirelineStorage.label.trayNumber')}
               name="trayNumber"
             >
               <Input
-                placeholder={'请输入托盘号'}
+                // placeholder={'请输入托盘号'}
+                placeholder={getFormattedMsg('WirelineStorage.placeholder.trayNumber')}
                 allowClear
               />
             </SearchForm.Item>
@@ -475,7 +575,8 @@ const WirelineStorage = ({ history }) => {
         </HVLayout.Pane>
         <HVLayout.Pane
           icon={<i className="h-visions hv-table" />}
-          title={'原料暂存库'}
+          // title={'原料暂存库'}          
+          title={getFormattedMsg('WirelineStorage.title.tableName')}
           buttons={[ ]}
           settingButton={<SettingButton />}
           onRefresh={reFreshFunc()}

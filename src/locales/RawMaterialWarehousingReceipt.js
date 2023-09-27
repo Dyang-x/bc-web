@@ -11,6 +11,12 @@ module.exports = {
       orderNumber: 'Order number',
       creationTime: 'Creation time',
       material:'Material',
+
+      scan:'scan code',
+      orderNumber2:'order number',
+      lineNumber2:'line number',
+      materialCode2:'Material code',
+      number2:'quantity',
     },
     placeholder: {
       trayNumber: 'Please enter the tray number',
@@ -24,7 +30,7 @@ module.exports = {
       associatedNumber: 'associatedNumber',
       number: 'number',
       materialCode: 'materialCode',
-      materialName: 'materialName',
+      // materialName: 'materialName',
       trayNumber: 'tyayNumber',
       specifications: 'specifications',
       actualWeight: 'actualWeight',
@@ -38,6 +44,21 @@ module.exports = {
       update:'modify',
       manual:'Manual pallet removal',
       binding:'Material binding',
+
+      inStore:'Confirm start the car into the process?',
+      automatic:'Confirm the automatic removal of pallets?',
+      manualT:'Confirm removal of pallet?',
+
+      materialName:'Material name',
+      locationName:'Location name',
+      quantity:'quantity',
+      state:'status',
+      unitName:'unit',
+      materialType:'materialType',
+      specification:'specification',
+      length:'length',
+      width:'width',
+      thickness:'thickness',
     },
     message: {
       trayNumber: 'Please input Tray number',
@@ -73,18 +94,32 @@ module.exports = {
       deleteFailure:'Deletion failure',
       bindingSuccess:'Binding success',
       bindingFailure:'Binding failure',
+
+      inStoreSuccess:'The process has begun',
+      weighingSuccess:'Weighing success',
+      automaticSuccess:'Removed successfully',
+      manualSuccess:'Generated successfully',
+      warehousingSuccess:'Warehousing success',
+
+      scan:'Please scan the receipt bar code',
+      orderNumber2:'Please enter the purchase order number',
+      lineNumber2:'Please enter the tracking number',
+      materialCode2:'Please enter the material code',
+      number2:'Please enter quantity',
     },
     button:{
       weighing:'weighing',
       automatic:'Automatic takedown',
       manual:'Manual takedown',
       binding:'Material binding',
+      // warehousing:'warehousing',
       warehousing:'warehousing',
       update:'update',
       delete:'delete',
       save:'save',
       cancel:'cancel',
       takeOff:'takeOff',
+      inStore:'Car entry',
     },
     operation:{
       delete:'Do you want to delete these items?'
@@ -96,6 +131,12 @@ module.exports = {
       orderNumber: '订单号',
       creationTime: '创建时间',
       material:'原料',
+
+      scan:'收料单扫码',
+      orderNumber2:'采购订单号',
+      lineNumber2:'送货单行号',
+      materialCode2:'物料编码',
+      number2:'数量',
     },
     placeholder: {
       trayNumber: '请输入托盘号',
@@ -106,10 +147,10 @@ module.exports = {
       lineNumber: '行号',
       createTime: '创建时间',
       creator: '创建人',
-      associatedNumber: '关联单号',
+      associatedNumber: '采购订单号',
       number: '单据数量',
       materialCode: '单据物料编码',
-      materialName: '单据物料名称',
+      // materialName: '单据物料名称',
       trayNumber: '托盘号',
       specifications: '规格',
       actualWeight: '实际重量(kg)',
@@ -123,6 +164,21 @@ module.exports = {
       update:'修改',
       manual:'托盘手动下架',
       binding:'物料绑定',
+
+      inStore:'确认开始小车进入流程？',
+      automatic:'确认托盘自动下架？',
+      manualT:'确认下架托盘？',
+
+      materialName: '物料名称',
+      locationName: '库位名称',
+      quantity: '库存数量',
+      state: '状态',
+      unitName: '单位',
+      materialType: '材质',
+      specification: '规格',
+      length: '长度',
+      width: '宽度',
+      thickness: '厚度',
     },
     message: {
       trayNumber: '请输入托盘号',
@@ -158,6 +214,18 @@ module.exports = {
       deleteFailure:'删除失败',
       bindingSuccess:'绑定成功',
       bindingFailure:'绑定失败',
+
+      inStoreSuccess:'流程已开始',
+      weighingSuccess:'称重成功',
+      automaticSuccess:'托盘自动下架成功',
+      manualSuccess:'托盘出库任务生成成功',
+      warehousingSuccess:'入库成功',
+
+      scan:'请扫描收料单条码',
+      orderNumber2:'请输入采购订单号',
+      lineNumber2:'请输入送货单行号',
+      materialCode2:'请输入物料编码',
+      number2:'请输入数量',
     },
     button:{
       weighing:'原材料称重',
@@ -171,9 +239,10 @@ module.exports = {
       save:'保存',
       cancel:'取消',
       takeOff:'下架',
+      inStore:'小车进入',
     },
     operation:{
       delete:'确认删除当前收料单?'
-    }
+    },
   }
 };
